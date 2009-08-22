@@ -1,0 +1,1803 @@
+#LyX 1.6.3 created this file. For more info see http://www.lyx.org/
+\lyxformat 345
+\begin_document
+\begin_header
+\textclass book
+\begin_preamble
+\noweboptions{smallcode}
+\sloppy
+\end_preamble
+\use_default_options true
+\begin_modules
+logicalmkup
+literate-lyx
+\end_modules
+\language english
+\inputencoding auto
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation skip
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\author "" 
+\author "" 
+\end_header
+
+\begin_body
+
+\begin_layout Title
+nofangle
+\end_layout
+
+\begin_layout Author
+Sam Liddicott
+\end_layout
+
+\begin_layout Date
+August 2009
+\end_layout
+
+\begin_layout Chapter*
+Introduction
+\end_layout
+
+\begin_layout Standard
+Nofangle is an awk replacement for notangle, adding some important features,
+ like better integration with LyXand LaTeX, multiple output format conversions,
+ and fixing notangle bugs like -L and indenting.
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset toc
+LatexCommand tableofcontents
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chapter
+License
+\end_layout
+
+\begin_layout Standard
+Licensed under the GPL 3
+\begin_inset CommandInset citation
+LatexCommand cite
+key "gpl-licenses"
+
+\end_inset
+
+ (or later).
+\end_layout
+
+\begin_layout Scrap
+gpl3-copyright
+\begin_inset Newline newline
+\end_inset
+
+newfangle - fully featured notangle replacement in awk
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+Copyright (C) Sam Liddicott 2009
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+This program is free software: you can redistribute it and/or modify
+\begin_inset Newline newline
+\end_inset
+
+it under the terms of the GNU General Public License as published by
+\begin_inset Newline newline
+\end_inset
+
+the Free Software Foundation, either version 3 of the License, or
+\begin_inset Newline newline
+\end_inset
+
+(at your option) any later version.
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+This program is distributed in the hope that it will be useful,
+\begin_inset Newline newline
+\end_inset
+
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+\begin_inset Newline newline
+\end_inset
+
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  See the
+\begin_inset Newline newline
+\end_inset
+
+GNU General Public License for more details.
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+You should have received a copy of the GNU General Public License
+\begin_inset Newline newline
+\end_inset
+
+along with this program.
+  If not, see <http://www.gnu.org/licenses/>.
+\end_layout
+
+\begin_layout Standard
+We also use code from Arnold Robbins public domain getopt (1993 revision)
+ and naturally want to attribute this appropriately.
+\end_layout
+
+\begin_layout Scrap
+getopt-notice  
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+# NOTE: Arnold Robbins public domain getopt for awk is also used:
+\begin_inset Newline newline
+\end_inset
+
+
+\emph on
+getopt.awk-header
+\end_layout
+
+\begin_layout Standard
+And we include these notices in the program header
+\end_layout
+
+\begin_layout Scrap
+./newfangle  
+\begin_inset Newline newline
+\end_inset
+
+#! /usr/bin/awk -f
+\begin_inset Newline newline
+\end_inset
+
+# 
+\emph on
+gpl3-copyright
+\emph default
+
+\begin_inset Newline newline
+\end_inset
+
+
+\emph on
+getopt-notice
+\emph default
+
+\begin_inset Newline newline
+\end_inset
+
+
+\emph on
+getopt.awk-getopt()
+\emph default
+
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\emph on
+chunk-storage-functions
+\emph default
+
+\begin_inset Newline newline
+\end_inset
+
+
+\emph on
+write_chunk_names()
+\emph default
+
+\begin_inset Newline newline
+\end_inset
+
+
+\emph on
+write_chunks()
+\emph default
+
+\begin_inset Newline newline
+\end_inset
+
+
+\emph on
+write_chunk()
+\emph default
+
+\begin_inset Newline newline
+\end_inset
+
+
+\emph on
+begin
+\emph default
+
+\begin_inset Newline newline
+\end_inset
+
+
+\emph on
+recognize-chunk
+\emph default
+
+\begin_inset Newline newline
+\end_inset
+
+
+\emph on
+end
+\end_layout
+
+\begin_layout Chapter
+Recognizing Chunks
+\end_layout
+
+\begin_layout Standard
+Notangle recognizes chunks when a line matches the pattern 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+^<
+\begin_inset space \hspace*{}
+\length 0in
+\end_inset
+
+<.*?>
+\begin_inset space \hspace*{}
+\length 0in
+\end_inset
+
+>=
+\end_layout
+
+\end_inset
+
+ but as we want better LaTeX integration we will also recognize a chunk
+ beginning with 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+
+\backslash
+begin{Chunk}[options]
+\end_layout
+
+\end_inset
+
+.
+ 
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Explain about the lyx layout file using list format
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Chunk start
+\end_layout
+
+\begin_layout Standard
+The variable 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+chunking
+\end_layout
+
+\end_inset
+
+ is used to remember that we are processing a code chunk and not document.
+\end_layout
+
+\begin_layout Scrap
+recognize-chunk  
+\begin_inset Newline newline
+\end_inset
+
+/^
+\backslash
+
+\backslash
+begin{CodeScrap}|^
+\backslash
+
+\backslash
+begin{Chunk}/ {
+\begin_inset Newline newline
+\end_inset
+
+  chunking=1;
+\begin_inset Newline newline
+\end_inset
+
+  next;
+\begin_inset Newline newline
+\end_inset
+
+}
+\end_layout
+
+\begin_layout Standard
+The actual chunk is not declared until the following line, as an 
+\backslash
+item.
+\end_layout
+
+\begin_layout Scrap
+recognize-chunk  
+\begin_inset Newline newline
+\end_inset
+
+/^
+\backslash
+
+\backslash
+item *
+\backslash
+[{/ && chunking {
+\begin_inset Newline newline
+\end_inset
+
+  if (match($0, "^
+\backslash
+
+\backslash
+
+\backslash
+
+\backslash
+item *
+\backslash
+
+\backslash
+[{(.*[^ ]) *}
+\backslash
+
+\backslash
+]", line)) {
+\begin_inset Newline newline
+\end_inset
+
+    new_chunk(line[1]);
+\begin_inset Newline newline
+\end_inset
+
+    next;
+\begin_inset Newline newline
+\end_inset
+
+  }
+\begin_inset Newline newline
+\end_inset
+
+}
+\end_layout
+
+\begin_layout Standard
+We also may as well recognize notangle style chunks too
+\end_layout
+
+\begin_layout Scrap
+recognize-chunk  
+\begin_inset Newline newline
+\end_inset
+
+/^[<]<.*[>]>=/ && chunking {
+\begin_inset Newline newline
+\end_inset
+
+  if (match($0, "^[<]<(.*)[>]>= *$", line)) {
+\begin_inset Newline newline
+\end_inset
+
+    new_chunk(line[1]);
+\begin_inset Newline newline
+\end_inset
+
+    next;
+\begin_inset Newline newline
+\end_inset
+
+  }
+\begin_inset Newline newline
+\end_inset
+
+}
+\end_layout
+
+\begin_layout Section
+Chunk end
+\end_layout
+
+\begin_layout Standard
+Likewise, we need to recognize when a chunk ends.
+\end_layout
+
+\begin_layout Scrap
+recognize-chunk  
+\begin_inset Newline newline
+\end_inset
+
+/^
+\backslash
+
+\backslash
+end{CodeScrap}|^
+\backslash
+
+\backslash
+end{Chunk}|^@/ {
+\begin_inset Newline newline
+\end_inset
+
+  chunking=0;
+\begin_inset Newline newline
+\end_inset
+
+  active_chunk="";
+\begin_inset Newline newline
+\end_inset
+
+}
+\end_layout
+
+\begin_layout Section
+Chunk includes
+\end_layout
+
+\begin_layout Standard
+Chunk contents are any lines read while 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+chunking
+\end_layout
+
+\end_inset
+
+ is true.
+ Some chunk contents are special in that they refer to other chunks, and
+ will be replaced by the contents of these chunks when the file is generated.
+\end_layout
+
+\begin_layout Standard
+Chunk includes are traditionally written as 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+<<chunk-name>>
+\end_layout
+
+\end_inset
+
+ but we also support 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+
+\backslash
+emph{chunk-name}
+\end_layout
+
+\end_inset
+
+ because LyX 1.6.3 has a bug which allows an emphasis inset in a passthrough
+ block, and that suits us.
+\end_layout
+
+\begin_layout Scrap
+recognize-chunk  
+\begin_inset Newline newline
+\end_inset
+
+/^.*
+\backslash
+
+\backslash
+e[m][p][h]{/ {
+\begin_inset Newline newline
+\end_inset
+
+  if (match($0, "^(.*)
+\backslash
+
+\backslash
+
+\backslash
+
+\backslash
+e[m][p][h]{([^}]*)}(.*)", line)) {
+\begin_inset Newline newline
+\end_inset
+
+    chunk_include(active_chunk, line[2], line[1], line[3]);
+\begin_inset Newline newline
+\end_inset
+
+    next;
+\begin_inset Newline newline
+\end_inset
+
+  }
+\begin_inset Newline newline
+\end_inset
+
+}
+\end_layout
+
+\begin_layout Standard
+The leading .* needs to be better implemented --- currently it would match
+ too much normal source - including our own; but we want to be able to prefix
+ an include with a comment character like 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+#
+\end_layout
+
+\end_inset
+
+, and then have it apply to every line of the include, as we do for the
+ GPL3 license.
+\end_layout
+
+\begin_layout Standard
+But we still support the old notangle mechanism:
+\end_layout
+
+\begin_layout Scrap
+recognize-chunk  
+\begin_inset Newline newline
+\end_inset
+
+/^ *[<]<.*[>]>/ && (length(active_chunk)) {
+\begin_inset Newline newline
+\end_inset
+
+  if (match($0, "^( *)[<]<(.*)[>]>(.*)", line)) {
+\begin_inset Newline newline
+\end_inset
+
+    chunk_include(active_chunk, line[2], line[1], line[3]);
+\begin_inset Newline newline
+\end_inset
+
+    next;
+\begin_inset Newline newline
+\end_inset
+
+  }
+\begin_inset Newline newline
+\end_inset
+
+}
+\end_layout
+
+\begin_layout Section
+chunk text
+\end_layout
+
+\begin_layout Standard
+Chunk text is any regular text that is read during chunking.
+\end_layout
+
+\begin_layout Scrap
+recognize-chunk  
+\begin_inset Newline newline
+\end_inset
+
+chunking && length(active_chunk) {
+\begin_inset Newline newline
+\end_inset
+
+  chunk_line(active_chunk, $0);
+\begin_inset Newline newline
+\end_inset
+
+}
+\end_layout
+
+\begin_layout Chapter
+Processing Options
+\end_layout
+
+\begin_layout Standard
+At the start, first we set the default options.
+\end_layout
+
+\begin_layout Scrap
+default-options  
+\begin_inset Newline newline
+\end_inset
+
+debug=0;
+\begin_inset Newline newline
+\end_inset
+
+linenos=0;
+\begin_inset Newline newline
+\end_inset
+
+SUBSEP=",";
+\begin_inset Newline newline
+\end_inset
+
+root="*";
+\end_layout
+
+\begin_layout Standard
+Then we use getopt the standard way, and null out ARGV afterwards.
+\end_layout
+
+\begin_layout Scrap
+read-options  
+\begin_inset Newline newline
+\end_inset
+
+Optind = 1    # skip ARGV[0]
+\begin_inset Newline newline
+\end_inset
+
+while(getopt(ARGC, ARGV, "R:Ld")!=-1) {
+\begin_inset Newline newline
+\end_inset
+
+  
+\emph on
+handle-options
+\emph default
+
+\begin_inset Newline newline
+\end_inset
+
+}
+\begin_inset Newline newline
+\end_inset
+
+for (i=1; i<Optind; i++) { ARGV[i]=""; }
+\end_layout
+
+\begin_layout Standard
+This is how we handle our options:
+\end_layout
+
+\begin_layout Scrap
+handle-options  
+\begin_inset Newline newline
+\end_inset
+
+if (Optopt == "R") root = Optarg;
+\begin_inset Newline newline
+\end_inset
+
+else if (Optopt == "L") linenos = 1;
+\begin_inset Newline newline
+\end_inset
+
+else if (Optopt == "d") debug = 1;
+\end_layout
+
+\begin_layout Standard
+We do all of this at the beginning of the program
+\end_layout
+
+\begin_layout Scrap
+begin  
+\begin_inset Newline newline
+\end_inset
+
+BEGIN{
+\begin_inset Newline newline
+\end_inset
+
+  
+\emph on
+default-options
+\emph default
+
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+  
+\emph on
+read-options
+\emph default
+
+\begin_inset Newline newline
+\end_inset
+
+}
+\end_layout
+
+\begin_layout Standard
+ss
+\end_layout
+
+\begin_layout LyX-Code
+  #  new_chunk("sam");
+\begin_inset Newline newline
+\end_inset
+
+  #  chunk_line("sam", "hello");
+\begin_inset Newline newline
+\end_inset
+
+  #  chunk_line("sam", "there");
+\begin_inset Newline newline
+\end_inset
+
+  #  new_chunk("anne");
+\begin_inset Newline newline
+\end_inset
+
+  #  chunk_line("anne", "caker");
+\begin_inset Newline newline
+\end_inset
+
+  #  chunk_include("sam", "anne", "..");
+\begin_inset Newline newline
+\end_inset
+
+  #  write_chunk("sam");
+\end_layout
+
+\begin_layout Chapter
+Generating the output
+\end_layout
+
+\begin_layout Standard
+We generate output by calling write_chunk:
+\end_layout
+
+\begin_layout Scrap
+generate-output  
+\begin_inset Newline newline
+\end_inset
+
+write_chunk(root);
+\end_layout
+
+\begin_layout Standard
+We also have some other output debugging:
+\end_layout
+
+\begin_layout Scrap
+debug-output  
+\begin_inset Newline newline
+\end_inset
+
+if (debug) {
+\begin_inset Newline newline
+\end_inset
+
+  print "---------------------- chunk names "
+\begin_inset Newline newline
+\end_inset
+
+  write_chunk_names();
+\begin_inset Newline newline
+\end_inset
+
+  print "====================== chunks"
+\begin_inset Newline newline
+\end_inset
+
+  write_chunks();
+\begin_inset Newline newline
+\end_inset
+
+  print "++++++++++++++++++++++ debug"
+\begin_inset Newline newline
+\end_inset
+
+  for (a in chunks) {
+\begin_inset Newline newline
+\end_inset
+
+    print a "=" chunks[a];
+\begin_inset Newline newline
+\end_inset
+
+  }
+\begin_inset Newline newline
+\end_inset
+
+}
+\end_layout
+
+\begin_layout Standard
+We do both of these at the end
+\end_layout
+
+\begin_layout Scrap
+end  
+\begin_inset Newline newline
+\end_inset
+
+END {
+\begin_inset Newline newline
+\end_inset
+
+  
+\emph on
+debug-output
+\emph default
+
+\begin_inset Newline newline
+\end_inset
+
+  
+\emph on
+generate-output
+\emph default
+
+\begin_inset Newline newline
+\end_inset
+
+}
+\end_layout
+
+\begin_layout Standard
+We write chyunk names like this:
+\end_layout
+
+\begin_layout Scrap
+write_chunk_names()  
+\begin_inset Newline newline
+\end_inset
+
+function write_chunk_names(   c) 
+\begin_inset Newline newline
+\end_inset
+
+{
+\begin_inset Newline newline
+\end_inset
+
+  for (c in chunk_names) {
+\begin_inset Newline newline
+\end_inset
+
+    print chunk_names[c];
+\begin_inset Newline newline
+\end_inset
+
+  }
+\begin_inset Newline newline
+\end_inset
+
+}
+\end_layout
+
+\begin_layout Standard
+This function would write out all chunks
+\end_layout
+
+\begin_layout Scrap
+write_chunks()  
+\begin_inset Newline newline
+\end_inset
+
+function write_chunks(  a) 
+\begin_inset Newline newline
+\end_inset
+
+{
+\begin_inset Newline newline
+\end_inset
+
+  for (a in chunk_names) {
+\begin_inset Newline newline
+\end_inset
+
+    write_chunk(chunk_names[a]);
+\begin_inset Newline newline
+\end_inset
+
+  }
+\begin_inset Newline newline
+\end_inset
+
+}
+\end_layout
+
+\begin_layout Section
+Assembling the chunks
+\end_layout
+
+\begin_layout Scrap
+write_chunk()  
+\begin_inset Newline newline
+\end_inset
+
+function write_chunk(chunk_name, indent, tail,
+\begin_inset Newline newline
+\end_inset
+
+  # local vars
+\begin_inset Newline newline
+\end_inset
+
+  part, max_part, line, max_line, chunklet)
+\begin_inset Newline newline
+\end_inset
+
+{
+\end_layout
+
+\begin_layout Standard
+To assemble a chunk, we write out each part.
+\end_layout
+
+\begin_layout Scrap
+write_chunk()  
+\begin_inset Newline newline
+\end_inset
+
+  max_part = chunks[chunk_name, "part"];
+\begin_inset Newline newline
+\end_inset
+
+  for(part = 1; part <= max_part; part++) {
+\begin_inset Newline newline
+\end_inset
+
+    
+\emph on
+write-part
+\emph default
+
+\begin_inset Newline newline
+\end_inset
+
+  }
+\begin_inset Newline newline
+\end_inset
+
+}
+\end_layout
+
+\begin_layout Standard
+A part can either be a chunklet of lines, or an include of another chunk
+\end_layout
+
+\begin_layout Scrap
+write-part  
+\begin_inset Newline newline
+\end_inset
+
+chunklet = chunks[chunk_name, "part", part];
+\begin_inset Newline newline
+\end_inset
+
+if (chunklet SUBSEP "line" in chunks) {
+\begin_inset Newline newline
+\end_inset
+
+  
+\emph on
+write-chunklets
+\emph default
+
+\begin_inset Newline newline
+\end_inset
+
+} else {
+\begin_inset Newline newline
+\end_inset
+
+  write_chunk(chunklet, indent chunks[chunk_name, "part", part, "indent"],
+\begin_inset Newline newline
+\end_inset
+
+                               chunks[chunk_name, "part", part, "tail"]);
+\begin_inset Newline newline
+\end_inset
+
+}
+\end_layout
+
+\begin_layout Standard
+Before we output a chunklet of lines, we first emit the file and linenumber
+ if we have one.
+ Chunklets are generally broken up by includes, so the start of a chunklet
+ is a good place to do this.
+ Then we output each line of the chunklet.
+\end_layout
+
+\begin_layout Scrap
+write-chunklets  
+\begin_inset Newline newline
+\end_inset
+
+if (linenos && (chunk_name SUBSEP "part" SUBSEP part SUBSEP "FILENAME" in
+ chunks)) {
+\begin_inset Newline newline
+\end_inset
+
+  
+\emph on
+write-file-line
+\emph default
+
+\begin_inset Newline newline
+\end_inset
+
+}
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+max_line = chunks[chunklet, "line"];
+\begin_inset Newline newline
+\end_inset
+
+for(line = 1; line <= max_line; line++) {
+\begin_inset Newline newline
+\end_inset
+
+  print indent chunks[chunklet, line] tail;
+\begin_inset Newline newline
+\end_inset
+
+  lineno++;
+\begin_inset Newline newline
+\end_inset
+
+}
+\end_layout
+
+\begin_layout Standard
+Of course there is no point in actually outputting the source filename and
+ line number if they don't say anything new! We only need to emit them if
+ they aren't what is expected.
+ 
+\end_layout
+
+\begin_layout Scrap
+write-file-line  
+\begin_inset Newline newline
+\end_inset
+
+a_filename = chunks[chunk_name, "part", part, "FILENAME"];
+\begin_inset Newline newline
+\end_inset
+
+a_lineno = chunks[chunk_name, "part", part, "LINENO"];
+\begin_inset Newline newline
+\end_inset
+
+if (a_filename != filename || a_lineno != lineno) {
+\begin_inset Newline newline
+\end_inset
+
+  filename = a_filename;
+\begin_inset Newline newline
+\end_inset
+
+  lineno = a_lineno;
+\begin_inset Newline newline
+\end_inset
+
+  print "#file " filename ":" lineno
+\begin_inset Newline newline
+\end_inset
+
+}
+\end_layout
+
+\begin_layout Chapter
+Storing chunks
+\end_layout
+
+\begin_layout Standard
+Awk has pretty limited data structures, so we will use two main hashes.
+ Uninterrupted sequences of a chunk will be stored in 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+chunklets
+\end_layout
+
+\end_inset
+
+ and the chunklets used in a chunk will be stored in 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+chunks
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Scrap
+chunk-storage-functions  
+\begin_inset Newline newline
+\end_inset
+
+function new_chunk(chunk_name)
+\begin_inset Newline newline
+\end_inset
+
+{
+\begin_inset Newline newline
+\end_inset
+
+  if (debug) print "New chunk " chunk_name;
+\begin_inset Newline newline
+\end_inset
+
+  active_chunk = chunk_name;
+\begin_inset Newline newline
+\end_inset
+
+  if (! (chunk_name in chunk_names)) {
+\begin_inset Newline newline
+\end_inset
+
+    chunk_names[++chunk_count] = chunk_name;
+\begin_inset Newline newline
+\end_inset
+
+  }
+\begin_inset Newline newline
+\end_inset
+
+  prime_chunk(chunk_name);
+\begin_inset Newline newline
+\end_inset
+
+}
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+function prime_chunk(chunk_name)
+\begin_inset Newline newline
+\end_inset
+
+{
+\begin_inset Newline newline
+\end_inset
+
+  chunks[chunk_name, "part", ++chunks[chunk_name, "part"] ] = 
+\backslash
+
+\begin_inset Newline newline
+\end_inset
+
+         chunk_name SUBSEP "chunklet" SUBSEP "" ++chunks[chunk_name, "chunklet"]
+;
+\begin_inset Newline newline
+\end_inset
+
+  chunks[chunk_name, "part", chunks[chunk_name, "part"], "FILENAME"] = FILENAME;
+\begin_inset Newline newline
+\end_inset
+
+  chunks[chunk_name, "part", chunks[chunk_name, "part"], "LINENO"] = FNR
+ + 1;
+\begin_inset Newline newline
+\end_inset
+
+}
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+function chunk_line(chunk_name, line){
+\begin_inset Newline newline
+\end_inset
+
+  chunks[chunk_name, "chunklet", chunks[chunk_name, "chunklet"],
+\begin_inset Newline newline
+\end_inset
+
+         ++chunks[chunk_name, "chunklet", chunks[chunk_name, "chunklet"],
+ "line"]  ] = line;
+\begin_inset Newline newline
+\end_inset
+
+}
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+function chunk_include(chunk_name, chunk_ref, indent, tail)
+\begin_inset Newline newline
+\end_inset
+
+{
+\begin_inset Newline newline
+\end_inset
+
+  chunks[chunk_name, "part", ++chunks[chunk_name, "part"] ] = chunk_ref;
+\begin_inset Newline newline
+\end_inset
+
+  chunks[chunk_name, "part", chunks[chunk_name, "part"], "indent" ] = indent;
+\begin_inset Newline newline
+\end_inset
+
+  chunks[chunk_name, "part", chunks[chunk_name, "part"], "tail" ] = tail;
+\begin_inset Newline newline
+\end_inset
+
+  prime_chunk(chunk_name);
+\begin_inset Newline newline
+\end_inset
+
+}
+\end_layout
+
+\begin_layout Chapter
+getopt
+\end_layout
+
+\begin_layout Standard
+I use Arnold Robbins public domain getopt (1993 revision).
+ This is probably the same one that is covered in chapter 12 of 
+\begin_inset Quotes eld
+\end_inset
+
+Edition 3 of GAWK: Effective AWK Programming: A User's Guide for GNU Awk
+\begin_inset Quotes erd
+\end_inset
+
+ but as that is licensed under the GNU Free Documentation License, Version
+ 1.3, which conflicts with the GPL3, I can't use it from there (or it's accompany
+ing explanations), so I do my best to explain how it works here.
+\end_layout
+
+\begin_layout Standard
+The getopt.awk header is:
+\end_layout
+
+\begin_layout Scrap
+getopt.awk-header  
+\begin_inset Newline newline
+\end_inset
+
+# getopt.awk --- do C library getopt(3) function in awk
+\begin_inset Newline newline
+\end_inset
+
+#
+\begin_inset Newline newline
+\end_inset
+
+# Arnold Robbins, arnold@skeeve.com, Public Domain
+\begin_inset Newline newline
+\end_inset
+
+#
+\begin_inset Newline newline
+\end_inset
+
+# Initial version: March, 1991
+\begin_inset Newline newline
+\end_inset
+
+# Revised: May, 1993
+\end_layout
+
+\begin_layout Standard
+The provided explanation is:
+\end_layout
+
+\begin_layout Scrap
+getopt.awk-notes  
+\begin_inset Newline newline
+\end_inset
+
+# External variables:
+\begin_inset Newline newline
+\end_inset
+
+#    Optind -- index in ARGV of first nonoption argument
+\begin_inset Newline newline
+\end_inset
+
+#    Optarg -- string value of argument to current option
+\begin_inset Newline newline
+\end_inset
+
+#    Opterr -- if nonzero, print our own diagnostic
+\begin_inset Newline newline
+\end_inset
+
+#    Optopt -- current option letter
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+# Returns:
+\begin_inset Newline newline
+\end_inset
+
+#    -1     at end of options
+\begin_inset Newline newline
+\end_inset
+
+#    ?      for unrecognized option
+\begin_inset Newline newline
+\end_inset
+
+#    <c>    a character representing the current option
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+# Private Data:
+\begin_inset Newline newline
+\end_inset
+
+#    _opti  -- index in multi-flag option, e.g., -abc
+\end_layout
+
+\begin_layout Standard
+The function follows.
+ The final two parameters, 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+thisopt
+\end_layout
+
+\end_inset
+
+ and 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+i
+\end_layout
+
+\end_inset
+
+ are local variables and not parameters --- as indicated by the multiple
+ spaces preceding them.
+ Awk doesn't care, the multiple spaces are a convention to help us humans.
+\end_layout
+
+\begin_layout Scrap
+getopt.awk-getopt()  
+\begin_inset Newline newline
+\end_inset
+
+function getopt(argc, argv, options,    thisopt, i)
+\begin_inset Newline newline
+\end_inset
+
+{
+\begin_inset Newline newline
+\end_inset
+
+    if (length(options) == 0)    # no options given
+\begin_inset Newline newline
+\end_inset
+
+        return -1
+\begin_inset Newline newline
+\end_inset
+
+    if (argv[Optind] == "--") {  # all done
+\begin_inset Newline newline
+\end_inset
+
+        Optind++
+\begin_inset Newline newline
+\end_inset
+
+        _opti = 0
+\begin_inset Newline newline
+\end_inset
+
+        return -1
+\begin_inset Newline newline
+\end_inset
+
+    } else if (argv[Optind] !~ /^-[^: 
+\backslash
+t
+\backslash
+n
+\backslash
+f
+\backslash
+r
+\backslash
+v
+\backslash
+b]/) {
+\begin_inset Newline newline
+\end_inset
+
+        _opti = 0
+\begin_inset Newline newline
+\end_inset
+
+        return -1
+\begin_inset Newline newline
+\end_inset
+
+    }
+\begin_inset Newline newline
+\end_inset
+
+    if (_opti == 0)
+\begin_inset Newline newline
+\end_inset
+
+        _opti = 2
+\begin_inset Newline newline
+\end_inset
+
+    thisopt = substr(argv[Optind], _opti, 1)
+\begin_inset Newline newline
+\end_inset
+
+    Optopt = thisopt
+\begin_inset Newline newline
+\end_inset
+
+    i = index(options, thisopt)
+\begin_inset Newline newline
+\end_inset
+
+    if (i == 0) {
+\begin_inset Newline newline
+\end_inset
+
+        if (Opterr)
+\begin_inset Newline newline
+\end_inset
+
+            printf("%c -- invalid option
+\backslash
+n",
+\begin_inset Newline newline
+\end_inset
+
+                                  thisopt) > "/dev/stderr"
+\begin_inset Newline newline
+\end_inset
+
+        if (_opti >= length(argv[Optind])) {
+\begin_inset Newline newline
+\end_inset
+
+            Optind++
+\begin_inset Newline newline
+\end_inset
+
+            _opti = 0
+\begin_inset Newline newline
+\end_inset
+
+        } else
+\begin_inset Newline newline
+\end_inset
+
+            _opti++
+\begin_inset Newline newline
+\end_inset
+
+        return "?"
+\begin_inset Newline newline
+\end_inset
+
+    }
+\begin_inset Newline newline
+\end_inset
+
+    if (substr(options, i + 1, 1) == ":") {
+\begin_inset Newline newline
+\end_inset
+
+        # get option argument
+\begin_inset Newline newline
+\end_inset
+
+        if (length(substr(argv[Optind], _opti + 1)) > 0)
+\begin_inset Newline newline
+\end_inset
+
+            Optarg = substr(argv[Optind], _opti + 1)
+\begin_inset Newline newline
+\end_inset
+
+        else
+\begin_inset Newline newline
+\end_inset
+
+            Optarg = argv[++Optind]
+\begin_inset Newline newline
+\end_inset
+
+        _opti = 0
+\begin_inset Newline newline
+\end_inset
+
+    } else
+\begin_inset Newline newline
+\end_inset
+
+        Optarg = ""
+\begin_inset Newline newline
+\end_inset
+
+    if (_opti == 0 || _opti >= length(argv[Optind])) {
+\begin_inset Newline newline
+\end_inset
+
+        Optind++
+\begin_inset Newline newline
+\end_inset
+
+        _opti = 0
+\begin_inset Newline newline
+\end_inset
+
+    } else
+\begin_inset Newline newline
+\end_inset
+
+        _opti++
+\begin_inset Newline newline
+\end_inset
+
+    return thisopt
+\begin_inset Newline newline
+\end_inset
+
+}
+\end_layout
+
+\begin_layout Standard
+A test program is built in, too
+\end_layout
+
+\begin_layout Scrap
+getopt.awk-begin  
+\begin_inset Newline newline
+\end_inset
+
+BEGIN {
+\begin_inset Newline newline
+\end_inset
+
+    Opterr = 1    # default is to diagnose
+\begin_inset Newline newline
+\end_inset
+
+    Optind = 1    # skip ARGV[0]
+\begin_inset Newline newline
+\end_inset
+
+    # test program
+\begin_inset Newline newline
+\end_inset
+
+    if (_getopt_test) {
+\begin_inset Newline newline
+\end_inset
+
+        while ((_go_c = getopt(ARGC, ARGV, "ab:cd")) != -1)
+\begin_inset Newline newline
+\end_inset
+
+            printf("c = <%c>, optarg = <%s>
+\backslash
+n",
+\begin_inset Newline newline
+\end_inset
+
+                                       _go_c, Optarg)
+\begin_inset Newline newline
+\end_inset
+
+        printf("non-option arguments:
+\backslash
+n")
+\begin_inset Newline newline
+\end_inset
+
+        for (; Optind < ARGC; Optind++)
+\begin_inset Newline newline
+\end_inset
+
+            printf("
+\backslash
+tARGV[%d] = <%s>
+\backslash
+n",
+\begin_inset Newline newline
+\end_inset
+
+                                    Optind, ARGV[Optind])
+\begin_inset Newline newline
+\end_inset
+
+    }
+\begin_inset Newline newline
+\end_inset
+
+}
+\end_layout
+
+\begin_layout Standard
+The entire getopt.awk is made out of these chunks in order
+\end_layout
+
+\begin_layout Scrap
+getopt.awk  
+\begin_inset Newline newline
+\end_inset
+
+
+\emph on
+getopt.awk-header
+\emph default
+
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\emph on
+getopt.awk-notes
+\emph default
+
+\begin_inset Newline newline
+\end_inset
+
+
+\emph on
+getopt.awk-getopt()
+\emph default
+
+\begin_inset Newline newline
+\end_inset
+
+
+\emph on
+getopt.awk-begin
+\end_layout
+
+\begin_layout Standard
+Although we only want the header and function:
+\end_layout
+
+\begin_layout Scrap
+getopt  
+\begin_inset Newline newline
+\end_inset
+
+# try: locate getopt.awk for the full original file
+\begin_inset Newline newline
+\end_inset
+
+# as part of your standard awk installation
+\begin_inset Newline newline
+\end_inset
+
+
+\emph on
+getopt.awk-header
+\emph default
+
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\emph on
+getopt.awk-getopt()
+\end_layout
+
+\end_body
+\end_document
