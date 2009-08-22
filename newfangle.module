@@ -1,0 +1,127 @@
+#\DeclareLyXModule{Newfangle Literate Listings}
+#DescriptionBegin
+#  Newfangle literate listings allow one to write
+#   literate programs after the fashion of noweb, but without having
+#   to use noweave to generate the documentation. Instead the listings
+#   package is extended in conjunction with the noweb package to implement
+#   to code formating directly as latex.
+#  The newfangle awk script
+#DescriptionEnd
+
+Format 11
+
+AddToPreamble
+\usepackage{listings}
+\usepackage{noweb}
+\renewcommand{\code}[1]{\texttt{#1}}
+\lstset{numbers=left, stepnumber=5, numbersep=5pt,
+        breaklines=false,basicstyle=\ttfamily,
+        numberstyle=\tiny, language=C}
+\lstset{escapeinside={=<}{>}}
+%\makeatletter
+%somehow re-defining maketitle gives us a left-aligned title
+%which is extactly what our specially formatted title needs!
+\global\let\newfangle@lst@maketitle\lst@maketitle%
+\global\def\lst@maketitle{}%
+\def\Chunk#1{%
+  \lstset{title={\newfanglecaption},name=#1}%
+  \global\edef\lst@chunkname{\lst@intname}%
+}%
+\def\lst@chunkname{\empty}%
+\def\newfanglecaption{\protect\newfangle@caption}%
+\newcounter{newfangle@chunkcounter}%
+\def\newfangle@caption{%
+  \edef\chunkcount{lst-chunk-\lst@intname}%
+  \@ifundefined{\chunkcount}{%
+    \expandafter\gdef\csname \chunkcount\endcsname{0}%
+    \setcounter{newfangle@chunkcounter}{\csname \chunkcount\endcsname}%
+    \let\prevchunkname\relax%
+  }{%
+    \setcounter{newfangle@chunkcounter}{\csname \chunkcount\endcsname}%
+    \edef\prevchunkname{\lst@intname-\arabic{newfangle@chunkcounter}}%
+  }%
+  \addtocounter{newfangle@chunkcounter}{1}%
+  \global\expandafter\edef\csname \chunkcount\endcsname{\arabic{newfangle@chunkcounter}}%
+  \edef\chunkname{\lst@intname-\arabic{newfangle@chunkcounter}}%
+  \edef\firstchunkname{\lst@intname-1}%
+  \addtocounter{newfangle@chunkcounter}{1}%
+  \edef\nextchunkname{\lst@intname-\arabic{newfangle@chunkcounter}}%
+  \@ifundefined{r@label-\nextchunkname}{\let\nextchunkname\relax}{}%
+  \sublabel{\chunkname}%
+% define this label for every chunk instance, so we
+% can tell when we are the last chunk of this name
+  \label{label-\chunkname}%
+  \addcontentsline{lol}{lstlisting}{\lst@name~[\protect\subpageref{\chunkname}]}%
+  \nwmargintag{%
+    {%
+      \nwtagstyle{}%
+      \subpageref{\chunkname}%
+    }%
+  }%
+%
+  \moddef{%
+    {\lst@name}%
+    {%
+      \nwtagstyle{}\/[\csname \chunkcount\endcsname]~%%
+      \subpageref{\firstchunkname}%
+    }%
+  }%
+%
+  \ifx\relax\prevchunkname\endmoddef\else\plusendmoddef\fi%
+%  \nwstartdeflinemarkup%
+  \nwprevnextdefs{\prevchunkname}{\nextchunkname}%
+%  \nwenddeflinemarkup%
+}%
+%\lst@BeginAspect{newfangle}
+%\lst@Key{newfangle}{true}[t]{\lstKV@SetIf{#1}{true}}
+\lst@AddToHookExe{PreSet}{\global\let\lst@intname\lst@chunkname}
+\lst@AddToHook{Init}{}%\newfangle@caption}
+%\lst@EndAspect
+\newcommand\chunkref[2][1]{%
+  \def\chunk{#2}%
+  \def\chunkname{#2-#1}%
+  \let\lst@arg\chunk%
+  \lst@ReplaceIn\chunk\lst@filenamerpl%
+  \LA{%\moddef{%
+    {\chunk}%
+    {%
+      \nwtagstyle{}\/[#1]~%
+      \subpageref{\chunkname}%
+    }%
+  }%
+  \RA%\endmoddef%
+}%
+%
+%\makeatother
+EndPreamble
+
+Style Chunk
+  LatexType             Command
+  LatexName             Chunk
+  Margin                First_Dynamic
+  LeftMargin            Chunk:xxx
+  LabelSep              xx
+  LabelType             Static
+  LabelString           "Chunk:"
+  Align                 Left
+  PassThru              1
+
+  LabelFont
+    Family              Sans
+    Size                Large
+    Series              Bold
+    Shape               Italic
+    Color               red
+  EndFont
+End
+
+InsetLayout Chunkref
+  LyxType               charstyle
+  LatexType             Command
+  LatexName             chunkref
+  PassThru              1
+  LabelFont             
+    Shape               Italic
+    Color               red
+  EndFont
+End

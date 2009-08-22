@@ -1,0 +1,326 @@
+#! /usr/bin/awk -f
+# newfangle - fully featured notangle replacement in awk
+# 
+# Copyright (C) Sam Liddicott 2009
+# 
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+# 
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+# NOTE: Arnold Robbins public domain getopt for awk is also used:
+# getopt.awk --- do C library getopt(3) function in awk
+#
+# Arnold Robbins, arnold@skeeve.com, Public Domain
+#
+# Initial version: March, 1991
+# Revised: May, 1993
+function getopt(argc, argv, options,    thisopt, i)
+{
+    if (length(options) == 0)    # no options given
+        return -1
+    if (argv[Optind] == "--") {  # all done
+        Optind++
+        _opti = 0
+        return -1
+    } else if (argv[Optind] !~ /^-[^: \t\n\f\r\v\b]/) {
+        _opti = 0
+        return -1
+    }
+    if (_opti == 0)
+        _opti = 2
+    thisopt = substr(argv[Optind], _opti, 1)
+    Optopt = thisopt
+    i = index(options, thisopt)
+    if (i == 0) {
+        if (Opterr)
+            printf("%c -- invalid option\n",
+                                  thisopt) > "/dev/stderr"
+        if (_opti >= length(argv[Optind])) {
+            Optind++
+            _opti = 0
+        } else
+            _opti++
+        return "?"
+    }
+    if (substr(options, i + 1, 1) == ":") {
+        # get option argument
+        if (length(substr(argv[Optind], _opti + 1)) > 0)
+            Optarg = substr(argv[Optind], _opti + 1)
+        else
+            Optarg = argv[++Optind]
+        _opti = 0
+    } else
+        Optarg = ""
+    if (_opti == 0 || _opti >= length(argv[Optind])) {
+        Optind++
+        _opti = 0
+    } else
+        _opti++
+    return thisopt
+}
+
+function error(message)
+{
+  print message > "/dev/stderr";
+  exit 1;
+}
+function get_chunk_args(text, args,
+  # local vars
+  pairs, p, k, r)
+{
+  split("", args);
+  r=split(text ,pairs, " *, *");
+  for(p in pairs) {
+    if (split(pairs[p], k, " *= *")) {
+      args[k[1]]=k[2];
+    }
+  }
+}
+function new_chunk(chunk_name, params)
+{
+  active_chunk = chunk_name;
+  if (! (chunk_name in chunk_names)) {
+    if (debug) print "New chunk " chunk_name;
+    chunk_names[chunk_name];
+    if (length(params["params"])) {
+      chunks[chunk_name, "params"] = params["params"];
+    }
+  }
+  prime_chunk(chunk_name);
+}
+
+function prime_chunk(chunk_name)
+{
+  chunks[chunk_name, "part", ++chunks[chunk_name, "part"] ] = \
+         chunk_name SUBSEP "chunklet" SUBSEP "" ++chunks[chunk_name, "chunklet"];
+  chunks[chunk_name, "part", chunks[chunk_name, "part"], "FILENAME"] = FILENAME;
+  chunks[chunk_name, "part", chunks[chunk_name, "part"], "LINENO"] = FNR + 1;
+}
+
+function chunk_line(chunk_name, line){
+  chunks[chunk_name, "chunklet", chunks[chunk_name, "chunklet"],
+         ++chunks[chunk_name, "chunklet", chunks[chunk_name, "chunklet"], "line"]  ] = line;
+}
+
+function chunk_include(chunk_name, chunk_ref, indent, tail)
+{
+  chunks[chunk_name, "part", ++chunks[chunk_name, "part"] ] = chunk_ref;
+  chunks[chunk_name, "part", chunks[chunk_name, "part"], "type" ] = part_type_chunk;
+  chunks[chunk_name, "part", chunks[chunk_name, "part"], "indent" ] = indent;
+  chunks[chunk_name, "part", chunks[chunk_name, "part"], "tail" ] = tail;
+  prime_chunk(chunk_name);
+}
+function write_chunk_names(   c, prefix, suffix) 
+{
+  if (notangle_mode) {
+    prefix="<<";
+    suffix=">>";
+  }
+  for (c in chunk_names) {
+    print prefix c suffix;
+  }
+}
+function write_chunks(  a) 
+{
+  for (a in chunk_names) {
+    write_chunk(chunk_names[a]);
+  }
+}
+function write_chunk(chunk_name, indent, tail,
+  # optional vars
+  chunk_path,
+  # local vars
+  part, max_part, line, max_line, chunklet, only_part, chunk_args)
+{
+if (match(chunk_name, "^(.*){(.*)}$", chunk_name_parts)) {
+    chunk_name = chunk_name_parts[1];
+    split(chunk_name_parts[2], chunk_args, " *, *");
+  }
+  if (match(chunk_name, "^(.*)\\[([0-9]*)\\]$", chunk_name_parts)) {
+    chunk_name = chunk_name_parts[1];
+    only_part = chunk_name_parts[2];
+  }
+  split(chunks[chunk_name, "params"], chunk_params, " *; *");
+  if (! (chunk_name in chunk_names)) {
+    error(sprintf(_"The root module <<%s>> was not defined.\nUsed by: %s",\
+                  chunk_name, chunk_path));
+  }
+
+  max_part = chunks[chunk_name, "part"];
+  for(part = 1; part <= max_part; part++) {
+    if (! only_part || part == only_part) {
+      chunklet = chunks[chunk_name, "part", part];
+      if (chunks[chunk_name, "part", part, "type"] == part_type_chunk) {
+        write_chunk(chunklet, indent chunks[chunk_name, "part", part, "indent"],
+                                     chunks[chunk_name, "part", part, "tail"],
+                                     chunk_path "\n         " chunk_name);
+      } else if (chunklet SUBSEP "line" in chunks) {
+        if (linenos && (chunk_name SUBSEP "part" SUBSEP part SUBSEP "FILENAME" in chunks)) {
+          if (! lineno_suppressed) {
+            a_filename = chunks[chunk_name, "part", part, "FILENAME"];
+            a_lineno = chunks[chunk_name, "part", part, "LINENO"];
+            if (a_filename != filename || a_lineno != lineno || lineno_needed) {
+              filename = a_filename;
+              lineno = a_lineno;
+              print "#line " lineno " \"" filename "\""
+            }
+            lineno_needed=0;
+          } else {
+            lineno_needed=1;
+          }
+        }
+        
+        max_line = chunks[chunklet, "line"];
+        for(line = 1; line <= max_line; line++) {
+          lastline = chunks[chunklet, line];
+        
+          /* check params */
+        #  if (length(chunk_args)) {
+            lastline = expand_chunk_args(lastline, chunk_params, chunk_args);
+        #  }
+        
+          lastline = indent lastline tail;
+          print lastline;
+          if (linenos) {
+            lineno_suppressed = substr(lastline, length(lastline)) == "\\";
+          }
+          lineno++;
+        }
+      } else {
+        # empty last chunklet
+      }
+    }
+  }
+}
+function expand_chunk_args(text, params, args,  
+  p, text_array, next_text, v, t, l)
+{
+  if (split(text, text_array, "\\${")) {
+    for(p in params) {
+      v[params[p]]=args[p];
+    }
+    text=text_array[1];
+    for(t in text_array) if (t>1) {
+      # check the text up to } for a parameter and replace with arg
+      if (match(text_array[t], "^([a-zA-Z_][a-zA-Z0-9_]*)}", l) &&
+          l[1] in v) 
+      {
+        text = text v[l[1]] substr(text_array[t], length(l[1])+2);
+      } else {
+        text = text "${" text_array[t];
+      }
+    }
+  }
+  return text;
+}
+BEGIN {
+  part_type_chunk=1;
+  debug=0;
+  linenos=0;
+  notangle_mode=0;
+  SUBSEP=",";
+  root="*";
+
+  Optind = 1    # skip ARGV[0]
+  while(getopt(ARGC, ARGV, "R:Ldhr")!=-1) {
+    if (Optopt == "R") root = Optarg;
+    else if (Optopt == "r") root="";
+    else if (Optopt == "L") linenos = 1;
+    else if (Optopt == "d") debug = 1;
+    else if (Optopt == "h") help();
+    else if (Optopt == "?") help();
+  }
+  for (i=1; i<Optind; i++) { ARGV[i]=""; }
+}
+/^\\Chunk{/ {
+  if (match($0, "^\\\\Chunk{ *([^ ,}]*),?(.*)}", line)) {
+    next_chunk_name=line[1];
+    get_chunk_args(line[2], next_chunk_args);
+  }
+  next;
+}
+/^\\begin{lstlisting}/ {
+  if (match($0, "}.*[[,] *name= *{? *([^], }]*)", line)) {
+    new_chunk(line[1]);
+  } else {
+    new_chunk(next_chunk_name, next_chunk_args);
+  }
+  chunking=1;
+  next;
+}
+/^\\begin{CodeScrap}|^\\begin{Chunk}/ {
+  chunking=1;
+  next;
+}
+/^\\item *\[{/ && chunking {
+  if (match($0, "^\\\\item *\\[{(.*[^ ]) *}\\]", line)) {
+    new_chunk(line[1]);
+    next;
+  }
+}
+/^[<]<.*[>]>=/ {
+  if (match($0, "^[<]<(.*)[>]>= *$", line)) {
+    chunking=1;
+    notangle_mode=1;
+    new_chunk(line[1]);
+    next;
+  }
+}
+/^\\[e]nd{lstlisting}/ {
+  chunking=0;
+  active_chunk="";
+  next;
+}
+/^\\end{CodeScrap}|^\\end{Chunk}|^@/ {
+  chunking=0;
+  active_chunk="";
+}
+/^@/ {
+  chunking=0;
+  active_chunk="";
+}
+! chunking { next; }
+/^.*[=]<\\chunkref{/ {
+  if (match($0, "^(.*)[=]<\\\\chunkref{(.*)}>(.*)", line)) {
+    chunk_include(active_chunk, line[2], line[1], line[3]);
+    next;
+  }
+}
+/^.*\\e[m][p][h]{/ {
+  if (match($0, "^(.*)\\\\e[m][p][h]{([^}]*)}(.*)", line)) {
+    chunk_include(active_chunk, line[2], line[1], line[3]);
+    next;
+  }
+}
+/^[#\/ ]*[<]<.*[>]>/ && (length(active_chunk)) {
+  if (match($0, "^(.*)[<]<(.*)[>]>(.*)", line)) {
+    chunk_include(active_chunk, line[2], line[1], line[3]);
+    next;
+  }
+}
+length(active_chunk) {
+  chunk_line(active_chunk, $0);
+}
+END {
+  if (debug) {
+    print "------ chunk names "
+    write_chunk_names();
+    print "====== chunks"
+    write_chunks();
+    print "++++++ debug"
+    for (a in chunks) {
+      print a "=" chunks[a];
+    }
+  }
+  if (length(root)) write_chunk(root);
+  else write_chunk_names();
+}
