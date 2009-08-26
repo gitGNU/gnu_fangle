@@ -3024,7 +3024,7 @@ function get_chunk_args(text, values,
 
 \begin_layout Plain Layout
 
-  a)
+  a, name)
 \end_layout
 
 \end_inset
@@ -3076,11 +3076,6 @@ status open
 \begin_layout Plain Layout
 
     if (match(text, "^ *}(.*)", a)) {
-\end_layout
-
-\begin_layout Plain Layout
-
-      print "Done: " text;
 \end_layout
 
 \begin_layout Plain Layout
@@ -3144,23 +3139,13 @@ status open
 
 \begin_layout Plain Layout
 
-if (match(text, " *([^,=]*[^,= ]) *(([,=]) *(([^,}]*) *,* *(.*))|)$", a))
+if (! match(text, " *([^,=]*[^,= ]) *(([,=]) *(([^,}]*) *,* *(.*))|)$", a))
  {
 \end_layout
 
 \begin_layout Plain Layout
 
-  print "Match " text;
-\end_layout
-
-\begin_layout Plain Layout
-
-} else {
-\end_layout
-
-\begin_layout Plain Layout
-
-  print "No match " text;
+  return text;
 \end_layout
 
 \begin_layout Plain Layout
@@ -3410,11 +3395,6 @@ name=a[1];
 
 \begin_layout Plain Layout
 
-print ">name " a[1];
-\end_layout
-
-\begin_layout Plain Layout
-
 if (a[3] == "=") {
 \end_layout
 
@@ -3431,11 +3411,6 @@ if (a[3] == "=") {
 \begin_layout Plain Layout
 
   } else {
-\end_layout
-
-\begin_layout Plain Layout
-
-    print "Simple: " a[5] " REST " a[6];
 \end_layout
 
 \begin_layout Plain Layout
@@ -6114,7 +6089,17 @@ status open
 
 \begin_layout Plain Layout
 
-function new_chunk(chunk_name, params)
+function new_chunk(chunk_name, params,
+\end_layout
+
+\begin_layout Plain Layout
+
+  # local vars
+\end_layout
+
+\begin_layout Plain Layout
+
+  p )
 \end_layout
 
 \begin_layout Plain Layout
@@ -6144,12 +6129,12 @@ function new_chunk(chunk_name, params)
 
 \begin_layout Plain Layout
 
-    if (length(params["params"])) {
+    for (p in params) {
 \end_layout
 
 \begin_layout Plain Layout
 
-      chunks[chunk_name, "params"] = params["params"];
+      chunks[chunk_name, p] = params[p];
 \end_layout
 
 \begin_layout Plain Layout
