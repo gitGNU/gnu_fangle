@@ -28,6 +28,7 @@ AddToPreamble
   \global\edef\lst@chunkname{\lst@intname}%
 }%
 \def\lst@chunkname{\empty}%
+\lst@Key{params}\relax{\def\newfangle@chunk@params{#1}}%
 \def\newfanglecaption{\protect\newfangle@caption}%
 \newcounter{newfangle@chunkcounter}%
 \def\newfangle@caption{%

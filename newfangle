@@ -73,18 +73,6 @@ function error(message)
   print message > "/dev/stderr";
   exit 1;
 }
-function get_chunk_args(text, args,
-  # local vars
-  pairs, p, k, r)
-{
-  split("", args);
-  r=split(text ,pairs, " *, *");
-  for(p in pairs) {
-    if (split(pairs[p], k, " *= *")) {
-      args[k[1]]=k[2];
-    }
-  }
-}
 function new_chunk(chunk_name, params)
 {
   active_chunk = chunk_name;
@@ -323,4 +311,30 @@ END {
   }
   if (length(root)) write_chunk(root);
   else write_chunk_names();
+}
+function get_chunk_args(text, values,
+  # optional parameters
+  path,
+  # local vars
+  a
+)
+{
+  while(length(text)) {
+    if (match(text, " *}(.*)", a) {
+      return a[1];
+    }
+    match(text, "^ *([^,=]*[^,= ]) *(([,=]) *(([^,]*) *,* *(.*)))$", a);
+    name=a[1];
+    if (a[3] == "=") {
+      if (substr(a[4],1,1) == "{") {
+        text = recurse(a[4], values, path name SUBSEP);
+      } else {
+        values[path name]=a[5];
+        text = a[6];
+    } else {
+      values[path name]="";
+      text = a2;
+    }
+  }
+  return text;
 }

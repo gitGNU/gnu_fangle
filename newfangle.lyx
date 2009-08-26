@@ -93,7 +93,65 @@ LatexCommand tableofcontents
 \end_layout
 
 \begin_layout Part
-Newfangle
+Running Newfangle
+\end_layout
+
+\begin_layout Standard
+Newfangle is a replacement for noweb, which consists of 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+notangle
+\end_layout
+
+\end_inset
+
+, 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+noroots
+\end_layout
+
+\end_inset
+
+ and 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+noweave
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Like 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+notangle
+\end_layout
+
+\end_inset
+
+ and 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+noroots
+\end_layout
+
+\end_inset
+
+ it can read multiple named files, or from stdin.
 \end_layout
 
 \begin_layout Chapter
@@ -210,68 +268,6 @@ along with this program.
 \end_inset
 
 
-\end_layout
-
-\begin_layout Chapter
-Using Newfangle
-\end_layout
-
-\begin_layout Standard
-Newfangle is a replacement for noweb, which consists of 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-notangle
-\end_layout
-
-\end_inset
-
-, 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-noroots
-\end_layout
-
-\end_inset
-
- and 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-noweave
-\end_layout
-
-\end_inset
-
-.
-\end_layout
-
-\begin_layout Standard
-Like 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-notangle
-\end_layout
-
-\end_inset
-
- and 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-noroots
-\end_layout
-
-\end_inset
-
- it can read multiple named files, or from stdin.
 \end_layout
 
 \begin_layout Chapter
@@ -511,6 +507,14 @@ listings.sty
 
  package is also required, as it is used for formatting the code chunks
  themselves.
+\end_layout
+
+\begin_layout Chapter
+Literate Programming with Newfangle
+\end_layout
+
+\begin_layout Standard
+Todo
 \end_layout
 
 \begin_layout Chapter
@@ -1289,7 +1293,7 @@ cd $PROJECT_DIR || exit 1
 
 \begin_layout Plain Layout
 
-make -f ./Makefile.inc notangle_sources
+make -f ./Makefile.inc newfangle_sources
 \end_layout
 
 \end_inset
@@ -2579,7 +2583,7 @@ If Makefile.inc is included into Makefile, then extracted files can be updated
 \end_layout
 
 \begin_layout LyX-Code
-make notangle_sources
+make newfangle_sources
 \end_layout
 
 \begin_layout Standard
@@ -2587,7 +2591,7 @@ otherwise, with:
 \end_layout
 
 \begin_layout LyX-Code
-make -f Makefile.inc notangle_sources
+make -f Makefile.inc newfangle_sources
 \end_layout
 
 \begin_layout Part
@@ -2807,11 +2811,865 @@ status open
 \end_layout
 
 \begin_layout Section
+lstlistings
+\end_layout
+
+\begin_layout Standard
+LaTeX arguments to lstlistings macros are a comma seperated list of key-value
+ pairs.
+ Values containing commas are enclosed in { braces }.
+\end_layout
+
+\begin_layout Standard
+We need a function that can parse such an expression and assign the values
+ to an 
+\noun on
+AWK
+\noun default
+ associated array.
+\end_layout
+
+\begin_layout Standard
+A sample expressions is:
+\end_layout
+
+\begin_layout LyX-Code
+name=thomas, params={a, b}, something, something-else
+\end_layout
+
+\begin_layout Standard
+but we see that this is just a simpler form of this expression:
+\end_layout
+
+\begin_layout LyX-Code
+name=freddie, foo={bar=baz, quux={quirk, a=fleeg}}, etc
+\end_layout
+
+\begin_layout Standard
+And that it would be a good idea to use a recursive parser into a multi-dimensio
+nal hash
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+as AWK doesn't have nested-hash support
+\end_layout
+
+\end_inset
+
+, resulting in:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Tabular
+<lyxtabular version="3" rows="6" columns="2">
+<features>
+<column alignment="left" valignment="top" width="0">
+<column alignment="left" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+key
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+value
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+a[name]
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+freddie
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+a[foo, bar]
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+baz
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+a[foo, quux, quirk]
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+a[foo, quux, a]
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+fleeg
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+a[etc]
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chunk
+get_chunk_args()
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+function get_chunk_args(text, values,
+\end_layout
+
+\begin_layout Plain Layout
+
+  # optional parameters
+\end_layout
+
+\begin_layout Plain Layout
+
+  path,
+\end_layout
+
+\begin_layout Plain Layout
+
+  # local vars
+\end_layout
+
+\begin_layout Plain Layout
+
+  a)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The rule would then be to parse the name, and then look for a value.
+ If the value begins with a brace 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+{
+\end_layout
+
+\end_inset
+
+, then we recurse and consume as much of the text as necessary, returning
+ the remaining text when we encounter a leading close-brace 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+}
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\begin_layout Plain Layout
+
+  while(length(text)) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    if (match(text, "^ *}(.*)", a)) {
+\end_layout
+
+\begin_layout Plain Layout
+
+      print "Done: " text;
+\end_layout
+
+\begin_layout Plain Layout
+
+      return a[1];
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+    =<
+\backslash
+chunkref{parse-chunk-args}>
+\end_layout
+
+\begin_layout Plain Layout
+
+  }
+\end_layout
+
+\begin_layout Plain Layout
+
+  return text;
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Plain Layout
+Use BNF package here
+\end_layout
+
+\end_inset
+
+We can see that the text could be inspected with this regex:
+\end_layout
+
+\begin_layout Chunk
+parse-chunk-args
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+if (match(text, " *([^,=]*[^,= ]) *(([,=]) *(([^,}]*) *,* *(.*))|)$", a))
+ {
+\end_layout
+
+\begin_layout Plain Layout
+
+  print "Match " text;
+\end_layout
+
+\begin_layout Plain Layout
+
+} else {
+\end_layout
+
+\begin_layout Plain Layout
+
+  print "No match " text;
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+and that 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+a
+\end_layout
+
+\end_inset
+
+ will have the following values:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Tabular
+<lyxtabular version="3" rows="7" columns="2">
+<features>
+<column alignment="center" valignment="top" width="0">
+<column alignment="left" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+a[n]
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+assigned text
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+freddie
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+2
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout LyX-Code
+=freddie, foo={bar=baz, quux={quirk, a=fleeg}}, etc
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+3
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+=
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+4
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout LyX-Code
+freddie, foo={bar=baz, quux={quirk, a=fleeg}}, etc
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+5
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout LyX-Code
+freddie
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+6
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout LyX-Code
+, foo={bar=baz, quux={quirk, a=fleeg}}, etc
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+a[3] will be either 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+=
+\end_layout
+
+\end_inset
+
+ or 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+,
+\end_layout
+
+\end_inset
+
+ and signify whether the option named in 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+a[1]
+\end_layout
+
+\end_inset
+
+ has a value or not (respectively).
+\end_layout
+
+\begin_layout Standard
+If the option does have a value, then if 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+substr(a[4],1,1)
+\end_layout
+
+\end_inset
+
+ is a brace 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+{
+\end_layout
+
+\end_inset
+
+ it will signify that we need to recurse:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+name=a[1];
+\end_layout
+
+\begin_layout Plain Layout
+
+print ">name " a[1];
+\end_layout
+
+\begin_layout Plain Layout
+
+if (a[3] == "=") {
+\end_layout
+
+\begin_layout Plain Layout
+
+  if (substr(a[4],1,1) == "{") {
+\end_layout
+
+\begin_layout Plain Layout
+
+    text = get_chunk_args(substr(a[4],2), values, path name SUBSEP);
+\end_layout
+
+\begin_layout Plain Layout
+
+  } else {
+\end_layout
+
+\begin_layout Plain Layout
+
+    print "Simple: " a[5] " REST " a[6];
+\end_layout
+
+\begin_layout Plain Layout
+
+    values[path name]=a[5];
+\end_layout
+
+\begin_layout Plain Layout
+
+    text = a[6];
+\end_layout
+
+\begin_layout Plain Layout
+
+  }
+\end_layout
+
+\begin_layout Plain Layout
+
+} else {
+\end_layout
+
+\begin_layout Plain Layout
+
+  values[path name]="";
+\end_layout
+
+\begin_layout Plain Layout
+
+  text = a[2];
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+We can test this function like this:
+\end_layout
+
+\begin_layout Chunk
+gca-test.awk
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+=<
+\backslash
+chunkref{get_chunk_args()}>
+\end_layout
+
+\begin_layout Plain Layout
+
+BEGIN {
+\end_layout
+
+\begin_layout Plain Layout
+
+  SUBSEP=".";
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+  print ">>" get_chunk_args("name=freddie, foo={bar=baz, quux={quirk, a=fleeg}},
+ etc", a);
+\end_layout
+
+\begin_layout Plain Layout
+
+  for (b in a) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    print "a[" b "] => " a[b];
+\end_layout
+
+\begin_layout Plain Layout
+
+  }
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chunk
+./newfangle
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+=<
+\backslash
+chunkref{get_chunk_args()}>
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The portable way to erase an array in awk is to split the empty string,
+ like this:
+\end_layout
+
+\begin_layout Chunk
+awk-delete-array,params=ARRAY
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+split("", ${ARRAY});
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chunk
+old-get_chunk_args()
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+function get_chunk_args(text, args,
+\end_layout
+
+\begin_layout Plain Layout
+
+  # local vars
+\end_layout
+
+\begin_layout Plain Layout
+
+  pairs, p, k, r)
+\end_layout
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\begin_layout Plain Layout
+
+  =<
+\backslash
+chunkref{awk-delete-array{args}}>
+\end_layout
+
+\begin_layout Plain Layout
+
+  r=split(text ,pairs, " *, *");
+\end_layout
+
+\begin_layout Plain Layout
+
+  for(p in pairs) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    if (split(pairs[p], k, " *= *")) {
+\end_layout
+
+\begin_layout Plain Layout
+
+      args[k[1]]=k[2];
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+  }
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
 Recognizing Chunks
 \end_layout
 
 \begin_layout Standard
-Notangle recognizes chunks when a line matches the pattern 
+Newfangle recognizes notangle chunks when a line matches the pattern 
 \begin_inset Flex CharStyle:Code
 status collapsed
 
@@ -2835,6 +3693,30 @@ status collapsed
 \end_layout
 
 \begin_layout Itemize
+notangle chunks matching the pattern 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+^<
+\begin_inset space \hspace*{}
+\length 0in
+\end_inset
+
+<.*?>
+\begin_inset space \hspace*{}
+\length 0in
+\end_inset
+
+>=
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
 a chunks beginning with 
 \begin_inset Flex CharStyle:Code
 status collapsed
@@ -2851,14 +3733,14 @@ begin{lstlistings}
 \begin_inset Newline newline
 \end_inset
 
-possibly prefixed with 
+possibly with 
 \backslash
 Chunk{\SpecialChar \ldots{}
-}
+} on the previous line
 \end_layout
 
 \begin_layout Itemize
-as well as an older form I have used, beginning with 
+an older form I have used, beginning with 
 \begin_inset Flex CharStyle:Code
 status collapsed
 
@@ -3000,83 +3882,8 @@ lstset
 .
 \end_layout
 
-\begin_layout Standard
-This means that the aguments are a comma-separated list of key/values.
- 
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-function get_chunk_args(text, args,
-\end_layout
-
-\begin_layout Plain Layout
-
-  # local vars
-\end_layout
-
-\begin_layout Plain Layout
-
-  pairs, p, k, r)
-\end_layout
-
-\begin_layout Plain Layout
-
-{
-\end_layout
-
-\begin_layout Plain Layout
-
-  split("", args);
-\end_layout
-
-\begin_layout Plain Layout
-
-  r=split(text ,pairs, " *, *");
-\end_layout
-
-\begin_layout Plain Layout
-
-  for(p in pairs) {
-\end_layout
-
-\begin_layout Plain Layout
-
-    if (split(pairs[p], k, " *= *")) {
-\end_layout
-
-\begin_layout Plain Layout
-
-      args[k[1]]=k[2];
-\end_layout
-
-\begin_layout Plain Layout
-
-    }
-\end_layout
-
-\begin_layout Plain Layout
-
-  }
-\end_layout
-
-\begin_layout Plain Layout
-
-}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
 \begin_layout Chunk
-recognize-chunk,params=sam
+recognize-chunk
 \end_layout
 
 \begin_layout Standard
@@ -4256,7 +5063,7 @@ Generating the output
 \end_layout
 
 \begin_layout Standard
-We generate output by calling write_chunk, or listing the chunks
+We generate output by calling write_chunk, or listing the chunks.
 \end_layout
 
 \begin_layout Chunk
@@ -4392,7 +5199,17 @@ END {
 \begin_layout Standard
 We write chunk names like this.
  If we seem to be running in notangle compatibility mode, then we enclose
- the name the same way notangle does:
+ the name like this 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+<<name>>
+\end_layout
+
+\end_inset
+
+ the same way notangle does:
 \end_layout
 
 \begin_layout Chunk
@@ -4511,8 +5328,35 @@ function write_chunks(  a)
 Assembling the chunks
 \end_layout
 
+\begin_layout Standard
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+chunk_path
+\end_layout
+
+\end_inset
+
+ holds a string consisting of the names of all the chunks that resulted
+ in this chunk being output.
+ 
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Plain Layout
+Make sure it includes the line numbers too...
+ 
+\end_layout
+
+\end_inset
+
+It should probably also contain the source line numbers at which each inclusion
+ also occured.
+\end_layout
+
 \begin_layout Chunk
-write_chunk()
+write_chunk(),emph={chunk_path}
 \end_layout
 
 \begin_layout Standard
@@ -4560,7 +5404,18 @@ Chunk parameters
 \end_layout
 
 \begin_layout Standard
-Chunks may also have parameters
+Chunks may also have LaTeX style arguments in braces, after the chunk name,
+ looking like this in the document: 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+chunkname{param1, param2}
+\end_layout
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Standard
@@ -4651,6 +5506,31 @@ status open
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+We extract into 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+chunk_params
+\end_layout
+
+\end_inset
+
+ the names of the parameters that this chunk accepts, whose values should
+ now be in 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+chunk_args
+\end_layout
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Standard
@@ -6601,17 +7481,18 @@ We also define a notangle-like mechanism for
 escaping
 \emph default
  to LaTeX from the listing, and by which we can refer to other listings.
- We permit the 
+ We declare the 
 \begin_inset Flex CharStyle:Code
 status collapsed
 
 \begin_layout Plain Layout
-=<LaTeX>
+=<\SpecialChar \ldots{}
+>
 \end_layout
 
 \end_inset
 
- sequence to contain LaTeX code, and to include another chunk: 
+ sequence to contain LaTeX code, and include another like this chunk: 
 \begin_inset Flex CharStyle:Code
 status collapsed
 
@@ -6624,10 +7505,88 @@ chunkref{chunkname}>
 \end_inset
 
 .
+ However, because 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+=<\SpecialChar \ldots{}
+>
+\end_layout
+
+\end_inset
+
+ is already defined to contain LaTeX code for this document --- this is
+ a 
+\noun on
+newfangle
+\noun default
+ document after all --- the code fragment below effectively contains the
+ LaTeX code: 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+}{
+\end_layout
+
+\end_inset
+
+.
+ To avoid problems with document generation, I had to declare an lstlistings
+ property: 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+escapeinside={}
+\end_layout
+
+\end_inset
+
+ for this listing only; which in LyX was done by right-clicking the listings
+ inset, choosing 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+settings
+\end_layout
+
+\end_inset
+
+\SpecialChar \menuseparator
+
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+advanced
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Plain Layout
+=< isn't enjoyed literally here, in a listing when the escape sequence is
+ already defined as shown...
+ we need to somehow escape this representation...
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
 \begin_inset listings
+lstparams "escapeinside={}"
 inline false
 status open
 
@@ -6848,6 +7807,41 @@ def
 lst@chunkname{
 \backslash
 empty}%
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Chunk parameters
+\end_layout
+
+\begin_layout Standard
+Newfangle permits parameterized chunks, and requires the paramters to be
+ specified as listings options.
+ The newfangle script uses this, and although we don't do anything with
+ these in the LaTeX code right now, we need to stop the listings package
+ complaining.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+lst@Key{params}
+\backslash
+relax{
+\backslash
+def
+\backslash
+newfangle@chunk@params{#1}}%
 \end_layout
 
 \end_inset
