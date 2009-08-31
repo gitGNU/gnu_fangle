@@ -5034,6 +5034,285 @@ function help() {
 \end_layout
 
 \begin_layout Section
+Chunk Modes
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+In Progress!
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+lstlistings and newfangle both recognize source languages, and perform some
+ basic parsing.
+ lstlistings can detect strings and comments within a language definition
+ and perform suitable rendering, such as italics for comments, and visible-space
+s within strings.
+\end_layout
+
+\begin_layout Standard
+newfangle similarly can recognize strings, and comments, etc, within a language,
+ so that any chunks included with 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+
+\backslash
+chunkref
+\end_layout
+
+\end_inset
+
+ can be suitably quoted.
+\end_layout
+
+\begin_layout Standard
+For instance, consider this chunk with 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+language=perl
+\end_layout
+
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Chunk
+example-perl,language=perl
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+s/"$/'/;
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+If it were included in a chunk with 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+language=sh
+\end_layout
+
+\end_inset
+
+, like this:
+\end_layout
+
+\begin_layout Chunk
+example-sh,language=sh
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+perl
+\lang english
+ -
+p
+\lang english
+e "=<
+\backslash
+chunkref{example-
+perl
+\lang english
+}>"
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+we would expect the output to look like this:
+\end_layout
+
+\begin_layout LyX-Code
+perl -pe "s/
+\backslash
+"
+\backslash
+$/'/;"
+\end_layout
+
+\begin_layout Standard
+and if that were then included in a chunk with 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+language=make
+\end_layout
+
+\end_inset
+
+, like this:
+\end_layout
+
+\begin_layout Chunk
+example-makefile,language=make
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+target: pre-req; =<
+\backslash
+chunkref{sh-example}>
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+We would expect the output to look like this --- note the $$:
+\end_layout
+
+\begin_layout LyX-Code
+target: pre-req; perl -pe "s/
+\backslash
+"
+\backslash
+$$/'/;"
+\end_layout
+
+\begin_layout Standard
+In order to do this, we need to define a mode-tracker for each supported
+ language, that can detect the various quoting modes, and provide a transformati
+on that must be applied to any included text so that it will be presented
+ literally and not subject to additional interpolation.
+\end_layout
+
+\begin_layout Standard
+For example, the transformation for text to be inserted into sh double-quoted
+ strings would be:
+\end_layout
+
+\begin_layout LyX-Code
+s/
+\backslash
+
+\backslash
+/
+\backslash
+
+\backslash
+
+\backslash
+
+\backslash
+/g;s/$/
+\backslash
+
+\backslash
+$/g;s/"/
+\backslash
+
+\backslash
+"/g;
+\end_layout
+
+\begin_layout Standard
+which protects 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+
+\backslash
+ $ "
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+The mode tracker must also track nested mode-changes, as in this 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+sh
+\end_layout
+
+\end_inset
+
+ example.
+\end_layout
+
+\begin_layout LyX-Code
+echo "hello `id **`"
+\end_layout
+
+\begin_layout Standard
+Any literal text inserted at the point marked ** would need to be escaped
+ in all kinds of ways, including 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+` | *
+\end_layout
+
+\end_inset
+
+ among others.
+ First it would need escaping for the back-ticks `, and then for the double-quot
+es ".
+\end_layout
+
+\begin_layout Standard
+Escaping need not occur if the format and mode of the included chunk matches
+ that of the including chunk, which would suggest that any back-ticks might
+ need to be part of the included chunk and not including chunk
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+or is it the other way around?
+\end_layout
+
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Section
 Generating the output
 \end_layout
 
