@@ -3231,7 +3231,7 @@ freddie
 <cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
-\begin_layout LyX-Code
+\begin_layout Plain Layout
 =freddie, foo={bar=baz, quux={quirk, a=fleeg}}, etc
 \end_layout
 
@@ -3271,7 +3271,7 @@ freddie
 <cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
-\begin_layout LyX-Code
+\begin_layout Plain Layout
 freddie, foo={bar=baz, quux={quirk, a=fleeg}}, etc
 \end_layout
 
@@ -3291,7 +3291,7 @@ freddie, foo={bar=baz, quux={quirk, a=fleeg}}, etc
 <cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
-\begin_layout LyX-Code
+\begin_layout Plain Layout
 freddie
 \end_layout
 
@@ -3311,7 +3311,7 @@ freddie
 <cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
-\begin_layout LyX-Code
+\begin_layout Plain Layout
 , foo={bar=baz, quux={quirk, a=fleeg}}, etc
 \end_layout
 
@@ -5099,6 +5099,7 @@ inline false
 status open
 
 \begin_layout Plain Layout
+
 s/"$/'/;
 \end_layout
 
@@ -5132,17 +5133,9 @@ status open
 
 \begin_layout Plain Layout
 
-perl
-\lang english
- -
-p
-\lang english
-e "=<
+perl -pe "=<
 \backslash
-chunkref{example-
-perl
-\lang english
-}>"
+chunkref{example-perl}>"
 \end_layout
 
 \end_inset
@@ -5186,6 +5179,7 @@ inline false
 status open
 
 \begin_layout Plain Layout
+
 target: pre-req; =<
 \backslash
 chunkref{sh-example}>

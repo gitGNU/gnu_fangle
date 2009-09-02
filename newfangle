@@ -73,14 +73,16 @@ function error(message)
   print message > "/dev/stderr";
   exit 1;
 }
-function new_chunk(chunk_name, params)
+function new_chunk(chunk_name, params,
+  # local vars
+  p )
 {
   active_chunk = chunk_name;
   if (! (chunk_name in chunk_names)) {
     if (debug) print "New chunk " chunk_name;
     chunk_names[chunk_name];
-    if (length(params["params"])) {
-      chunks[chunk_name, "params"] = params["params"];
+    for (p in params) {
+      chunks[chunk_name, p] = params[p];
     }
   }
   prime_chunk(chunk_name);
@@ -316,24 +318,26 @@ function get_chunk_args(text, values,
   # optional parameters
   path,
   # local vars
-  a
-)
+  a, name)
 {
   while(length(text)) {
-    if (match(text, " *}(.*)", a) {
+    if (match(text, "^ *}(.*)", a)) {
       return a[1];
     }
-    match(text, "^ *([^,=]*[^,= ]) *(([,=]) *(([^,]*) *,* *(.*)))$", a);
+    if (! match(text, " *([^,=]*[^,= ]) *(([,=]) *(([^,}]*) *,* *(.*))|)$", a)) {
+      return text;
+    }
     name=a[1];
     if (a[3] == "=") {
       if (substr(a[4],1,1) == "{") {
-        text = recurse(a[4], values, path name SUBSEP);
+        text = get_chunk_args(substr(a[4],2), values, path name SUBSEP);
       } else {
         values[path name]=a[5];
         text = a[6];
+      }
     } else {
       values[path name]="";
-      text = a2;
+      text = a[2];
     }
   }
   return text;
