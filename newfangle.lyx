@@ -7286,7 +7286,7 @@ AddToPreamble
 
 \begin_layout Plain Layout
 
-<<preamble>>
+<<./newfangle.sty>>
 \end_layout
 
 \begin_layout Plain Layout
@@ -7641,7 +7641,7 @@ code
 \end_layout
 
 \begin_layout Chunk
-preamble,language=tex,basicstyle=
+./newfangle.sty,language=tex,basicstyle=
 \backslash
 ttfamily
 \end_layout
@@ -8444,7 +8444,7 @@ endcsname}%
 \end_layout
 
 \begin_layout Chunk
-preamble
+./newfangle.sty
 \end_layout
 
 \begin_layout Standard
