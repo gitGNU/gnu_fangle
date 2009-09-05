@@ -1,14 +1,14 @@
-#LyX 1.6.3 created this file. For more info see http://www.lyx.org/
+#LyX 1.6.2 created this file. For more info see http://www.lyx.org/
 \lyxformat 345
 \begin_document
 \begin_header
 \textclass book
 \begin_preamble
-\usepackage{xcolor}
-\definecolor{darkgreen}{rgb}{0,0.5,0}
+%\usepackage{xcolor}
+%\definecolor{darkgreen}{rgb}{0,0.5,0}
 \lstset{numbers=left, stepnumber=5, numbersep=5pt, breaklines=false,
 basicstyle=\footnotesize\ttfamily,
-keywordstyle=\color{darkgreen},
+%keywordstyle=\color{darkgreen},
 numberstyle=\tiny,language=C,columns=fullflexible,
 numberfirstline=true}
 \end_preamble
@@ -31,7 +31,20 @@ newfangle
 \graphics default
 \paperfontsize default
 \spacing single
-\use_hyperref false
+\use_hyperref true
+\pdf_title "Newfangle"
+\pdf_author "Sam Liddicott"
+\pdf_subject "Literate Programing"
+\pdf_keywords "notangle noweb noweave literate programming cweb"
+\pdf_bookmarks true
+\pdf_bookmarksnumbered false
+\pdf_bookmarksopen false
+\pdf_bookmarksopenlevel 1
+\pdf_breaklinks false
+\pdf_pdfborder false
+\pdf_colorlinks false
+\pdf_backref false
+\pdf_pdfusetitle true
 \papersize default
 \use_geometry false
 \use_amsmath 1
@@ -73,9 +86,8 @@ Introduction
 
 \begin_layout Standard
 Newfangle is an awk replacement for notangle, adding some important features,
- like better integration with LyXand LaTeX, multiple output format conversions,
+ like better integration with LyX and LaTeX, multiple output format conversions,
  and fixing notangle bugs like -L and indenting.
- 
 \end_layout
 
 \begin_layout Standard
@@ -165,7 +177,7 @@ License
 \end_layout
 
 \begin_layout Standard
-Licensed under the GPL 3
+Newfangle is licensed under the GPL 3
 \begin_inset CommandInset citation
 LatexCommand cite
 key "gpl-licenses"
@@ -419,8 +431,7 @@ status collapsed
  any line ending with a backslash.
  This does mean that sometimes the compiler might calculate the source line
  wrongly when generating error messages in such cases, but there isn't any
- other way around it if people insist on multi-line macros that include
- other chunks.
+ other way around if multi-line macros include other chunks.
 \end_layout
 
 \begin_layout Chapter
@@ -680,7 +691,11 @@ Add the new module
 \emph on
 Newfangle Literate
 \emph default
- Listings and possible also 
+ 
+\emph on
+Listings
+\emph default
+ and possibley also 
 \emph on
 Logical Markup
 \emph default
@@ -771,6 +786,16 @@ It ought to apply only to chunks of the same name.
 
 \end_inset
 
+
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+So make sure they only apply to chunks of that name
+\end_layout
+
+\end_inset
+
 .
 \end_layout
 
@@ -779,7 +804,11 @@ Global customisations
 \end_layout
 
 \begin_layout Standard
-As lstlistings is used to set the code chunks, it's 
+As 
+\emph on
+lstlistings
+\emph default
+ is used to set the code chunks, it's 
 \begin_inset Flex CharStyle:Code
 status collapsed
 
@@ -1249,7 +1278,9 @@ status open
 
 \begin_layout Plain Layout
 
-<<lyx-build-helper>>
+=<
+\backslash
+chunkref{lyx-build-helper}>
 \end_layout
 
 \begin_layout Plain Layout
@@ -1342,12 +1373,16 @@ status open
 
 \begin_layout Plain Layout
 
-<<Makefile.inc-vars>>
+=<
+\backslash
+chunkref{Makefile.inc-vars}>
 \end_layout
 
 \begin_layout Plain Layout
 
-<<Makefile.inc-targets>>
+=<
+\backslash
+chunkref{Makefile.inc-targets}>
 \end_layout
 
 \end_inset
@@ -2645,7 +2680,9 @@ status open
 
 \begin_layout Plain Layout
 
-<<getopt.awk-header>>
+=<
+\backslash
+chunkref{getopt.awk-header}>
 \end_layout
 
 \end_inset
@@ -2673,17 +2710,23 @@ status open
 
 \begin_layout Plain Layout
 
-# <<gpl3-copyright>>
+# =<
+\backslash
+chunkref{gpl3-copyright}>
 \end_layout
 
 \begin_layout Plain Layout
 
-<<getopt-notice>>
+=<
+\backslash
+chunkref{getopt-notice}>
 \end_layout
 
 \begin_layout Plain Layout
 
-<<getopt.awk-getopt()>>
+=<
+\backslash
+chunkref{getopt.awk-getopt()}>
 \end_layout
 
 \begin_layout Plain Layout
@@ -2692,47 +2735,65 @@ status open
 
 \begin_layout Plain Layout
 
-<<helper-functions>>
+=<
+\backslash
+chunkref{helper-functions}>
 \end_layout
 
 \begin_layout Plain Layout
 
-<<chunk-storage-functions>>
+=<
+\backslash
+chunkref{chunk-storage-functions}>
 \end_layout
 
 \begin_layout Plain Layout
 
-<<write_chunk_names()>>
+=<
+\backslash
+chunkref{write_chunk_names()}>
 \end_layout
 
 \begin_layout Plain Layout
 
-<<write_chunks()>>
+=<
+\backslash
+chunkref{write_chunks()}>
 \end_layout
 
 \begin_layout Plain Layout
 
-<<write_chunk()>>
+=<
+\backslash
+chunkref{write_chunk()}>
 \end_layout
 
 \begin_layout Plain Layout
 
-<<expand_chunk_args()>>
+=<
+\backslash
+chunkref{expand_chunk_args()}>
 \end_layout
 
 \begin_layout Plain Layout
 
-<<begin>>
+=<
+\backslash
+chunkref{begin}>
 \end_layout
 
 \begin_layout Plain Layout
 
-<<recognize-chunk>>
+=<
+\backslash
+chunkref{recognize-chunk}>
 \end_layout
 
 \begin_layout Plain Layout
 
-<<end>>
+=<
+\backslash
+chunkref{end}>
 \end_layout
 
 \end_inset
@@ -2802,7 +2863,9 @@ status open
 
 \begin_layout Plain Layout
 
-<<error()>>
+=<
+\backslash
+chunkref{error()}>
 \end_layout
 
 \end_inset
@@ -4843,7 +4906,9 @@ while(getopt(ARGC, ARGV, "R:Ldhr")!=-1) {
 
 \begin_layout Plain Layout
 
-  <<handle-options>>
+  =<
+\backslash
+chunkref{handle-options}>
 \end_layout
 
 \begin_layout Plain Layout
@@ -4929,12 +4994,16 @@ BEGIN {
 
 \begin_layout Plain Layout
 
-  <<constants>>
+  =<
+\backslash
+chunkref{constants}>
 \end_layout
 
 \begin_layout Plain Layout
 
-  <<default-options>>
+  =<
+\backslash
+chunkref{default-options}>
 \end_layout
 
 \begin_layout Plain Layout
@@ -4943,7 +5012,9 @@ BEGIN {
 
 \begin_layout Plain Layout
 
-  <<read-options>>
+  =<
+\backslash
+chunkref{read-options}>
 \end_layout
 
 \begin_layout Plain Layout
@@ -5426,12 +5497,16 @@ END {
 
 \begin_layout Plain Layout
 
-  <<debug-output>>
+  =<
+\backslash
+chunkref{debug-output}>
 \end_layout
 
 \begin_layout Plain Layout
 
-  <<generate-output>>
+  =<
+\backslash
+chunkref{generate-output}>
 \end_layout
 
 \begin_layout Plain Layout
@@ -5854,7 +5929,9 @@ nUsed by: %s",
 
 \begin_layout Plain Layout
 
-      <<write-part>>
+      =<
+\backslash
+chunkref{write-part}>
 \end_layout
 
 \begin_layout Plain Layout
@@ -5924,7 +6001,9 @@ n         " chunk_name);
 
 \begin_layout Plain Layout
 
-  <<write-chunklets>>
+  =<
+\backslash
+chunkref{write-chunklets}>
 \end_layout
 
 \begin_layout Plain Layout
@@ -5997,7 +6076,9 @@ if (linenos && (chunk_name SUBSEP "part" SUBSEP part SUBSEP "FILENAME" in
 
 \begin_layout Plain Layout
 
-    <<write-file-line>>
+    =<
+\backslash
+chunkref{write-file-line}>
 \end_layout
 
 \begin_layout Plain Layout
@@ -7099,7 +7180,9 @@ status open
 
 \begin_layout Plain Layout
 
-<<getopt.awk-header>>
+=<
+\backslash
+chunkref{getopt.awk-header}>
 \end_layout
 
 \begin_layout Plain Layout
@@ -7108,17 +7191,23 @@ status open
 
 \begin_layout Plain Layout
 
-<<getopt.awk-notes>>
+=<
+\backslash
+chunkref{getopt.awk-notes}>
 \end_layout
 
 \begin_layout Plain Layout
 
-<<getopt.awk-getopt()>>
+=<
+\backslash
+chunkref{getopt.awk-getopt()}>
 \end_layout
 
 \begin_layout Plain Layout
 
-<<getopt.awk-begin>>
+=<
+\backslash
+chunkref{getopt.awk-begin}>
 \end_layout
 
 \end_inset
@@ -7151,7 +7240,9 @@ status open
 
 \begin_layout Plain Layout
 
-<<getopt.awk-header>>
+=<
+\backslash
+chunkref{getopt.awk-header}>
 \end_layout
 
 \begin_layout Plain Layout
@@ -7160,7 +7251,9 @@ status open
 
 \begin_layout Plain Layout
 
-<<getopt.awk-getopt()>>
+=<
+\backslash
+chunkref{getopt.awk-getopt()}>
 \end_layout
 
 \end_inset
@@ -7286,7 +7379,9 @@ AddToPreamble
 
 \begin_layout Plain Layout
 
-<<./newfangle.sty>>
+=<
+\backslash
+chunkref{./newfangle.sty}>
 \end_layout
 
 \begin_layout Plain Layout
@@ -7300,7 +7395,9 @@ EndPreamble
 
 \begin_layout Plain Layout
 
-<<chunkstyle>>
+=<
+\backslash
+chunkref{chunkstyle}>
 \end_layout
 
 \begin_layout Plain Layout
@@ -7309,7 +7406,9 @@ EndPreamble
 
 \begin_layout Plain Layout
 
-<<chunkref>>
+=<
+\backslash
+chunkref{chunkref}>
 \end_layout
 
 \end_inset
@@ -9486,7 +9585,9 @@ set -x
 
 \begin_layout Plain Layout
 
-<<lyx-build-helper>>
+=<
+\backslash
+chunkref{lyx-build-helper}>
 \end_layout
 
 \begin_layout Plain Layout
