@@ -1,4 +1,4 @@
-#LyX 1.6.2 created this file. For more info see http://www.lyx.org/
+#LyX 1.6.3 created this file. For more info see http://www.lyx.org/
 \lyxformat 345
 \begin_document
 \begin_header
@@ -4826,6 +4826,34 @@ chunk text
 
 \begin_layout Standard
 Chunk text is any regular text that is read during chunking.
+ 
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:ORS-chunk-text"
+
+\end_inset
+
+We add the output record separator 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+ORS
+\end_layout
+
+\end_inset
+
+ to the line now, because we will set 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+ORS
+\end_layout
+
+\end_inset
+
+ to the empty string when we generate the output.
 \end_layout
 
 \begin_layout Chunk
@@ -4844,7 +4872,7 @@ length(active_chunk) {
 
 \begin_layout Plain Layout
 
-  chunk_line(active_chunk, $0);
+  chunk_line(active_chunk, $0 ORS);
 \end_layout
 
 \begin_layout Plain Layout
@@ -5501,7 +5529,26 @@ if (debug) {
 \end_layout
 
 \begin_layout Standard
-We do both of these at the end
+We do both of these at the end.
+ We also set 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+ORS=""
+\end_layout
+
+\end_inset
+
+ because each chunklet is not necessarily a complete line, but we added
+ ORS to the input in section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:ORS-chunk-text"
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Chunk
@@ -5523,6 +5570,11 @@ END {
   =<
 \backslash
 chunkref{debug-output}>
+\end_layout
+
+\begin_layout Plain Layout
+
+  ORS="";
 \end_layout
 
 \begin_layout Plain Layout

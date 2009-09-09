@@ -298,7 +298,7 @@ BEGIN {
   }
 }
 length(active_chunk) {
-  chunk_line(active_chunk, $0);
+  chunk_line(active_chunk, $0 ORS);
 }
 END {
   if (debug) {
@@ -311,6 +311,7 @@ END {
       print a "=" chunks[a];
     }
   }
+  ORS="";
   if (length(root)) write_chunk(root);
   else write_chunk_names();
 }
