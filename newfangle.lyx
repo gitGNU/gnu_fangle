@@ -6134,6 +6134,24 @@ for(line = 1; line <= max_line; line++) {
 
 \begin_layout Plain Layout
 
+    if (line == max_line && length(chunk_path) && substr(lastline, length(lastli
+ne)) == "
+\backslash
+n") {
+\end_layout
+
+\begin_layout Plain Layout
+
+      lastline = substr(lastline, 1, length(lastline) -1);
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
 #  }
 \end_layout
 
