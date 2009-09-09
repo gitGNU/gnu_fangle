@@ -127,14 +127,10 @@ function write_chunks(  a)
 }
 function write_chunk(chunk_name, indent, tail,
   # optional vars
-  chunk_path,
+  chunk_path, chunk_args, 
   # local vars
-  part, max_part, line, max_line, chunklet, only_part, chunk_args)
+  part, max_part, line, max_line, chunklet, only_part, call_chunk_args)
 {
-if (match(chunk_name, "^(.*){(.*)}$", chunk_name_parts)) {
-    chunk_name = chunk_name_parts[1];
-    split(chunk_name_parts[2], chunk_args, " *, *");
-  }
   if (match(chunk_name, "^(.*)\\[([0-9]*)\\]$", chunk_name_parts)) {
     chunk_name = chunk_name_parts[1];
     only_part = chunk_name_parts[2];
@@ -150,9 +146,19 @@ if (match(chunk_name, "^(.*){(.*)}$", chunk_name_parts)) {
     if (! only_part || part == only_part) {
       chunklet = chunks[chunk_name, "part", part];
       if (chunks[chunk_name, "part", part, "type"] == part_type_chunk) {
+        if (match(chunklet, "^([^{]*){(.*)}$", chunklet_parts)) {
+          chunklet = chunklet_parts[1];
+          split(chunklet_parts[2], call_chunk_args, " *, *");
+          for (c in call_chunk_args) {
+            call_chunk_args[c] = expand_chunk_args(call_chunk_args[c], chunk_params, chunk_args);
+          }
+        } else {
+          split("", call_chunk_args);
+        }
         write_chunk(chunklet, indent chunks[chunk_name, "part", part, "indent"],
                                      chunks[chunk_name, "part", part, "tail"],
-                                     chunk_path "\n         " chunk_name);
+                                     chunk_path "\n         " chunk_name,
+                                     call_chunk_args);
       } else if (chunklet SUBSEP "line" in chunks) {
         if (linenos && (chunk_name SUBSEP "part" SUBSEP part SUBSEP "FILENAME" in chunks)) {
           if (! lineno_suppressed) {
@@ -279,26 +285,21 @@ BEGIN {
   active_chunk="";
 }
 ! chunking { next; }
-/^.*[=]<\\chunkref{/ {
-  if (match($0, "^(.*)[=]<\\\\chunkref{(.*)}>(.*)", line)) {
-    chunk_include(active_chunk, line[2], line[1], line[3]);
-    next;
-  }
-}
-/^.*\\e[m][p][h]{/ {
-  if (match($0, "^(.*)\\\\e[m][p][h]{([^}]*)}(.*)", line)) {
-    chunk_include(active_chunk, line[2], line[1], line[3]);
-    next;
-  }
-}
-/^[#\/ ]*[<]<.*[>]>/ && (length(active_chunk)) {
-  if (match($0, "^(.*)[<]<(.*)[>]>(.*)", line)) {
-    chunk_include(active_chunk, line[2], line[1], line[3]);
-    next;
-  }
-}
 length(active_chunk) {
-  chunk_line(active_chunk, $0 ORS);
+  chunk = $0 ORS;
+  while(match(chunk, "(=<\\\\chunkref{([^>]*)}>|<<([a-zA-Z_][-a-zA-Z0-9_]*)>>)", line)) {
+    chunk_line(active_chunk, substr(chunk, 1, RSTART - 1));
+    chunk = substr(chunk, RSTART + RLENGTH);
+    if (substr(line[1], 1, 1) == "=") {
+      # chunk name up to [}{
+      chunk_include(active_chunk, line[2]);
+    } else if (substr(line[1], 1, 1) == "<") {
+      chunk_include(active_chunk, line[3]);
+    } else {
+      error("Unknown chunk fragment: " line[1]);
+    }
+  }
+  chunk_line(active_chunk, chunk);
 }
 END {
   if (debug) {

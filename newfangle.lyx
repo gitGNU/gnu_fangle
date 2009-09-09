@@ -4441,7 +4441,7 @@ status open
 \end_layout
 
 \begin_layout Subsection
-Chunk includes
+Chunk contents
 \end_layout
 
 \begin_layout Standard
@@ -4458,6 +4458,95 @@ chunking
  is true.
  Some chunk contents are special in that they refer to other chunks, and
  will be replaced by the contents of these chunks when the file is generated.
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:ORS-chunk-text"
+
+\end_inset
+
+We add the output record separator 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+ORS
+\end_layout
+
+\end_inset
+
+ to the line now, because we will set 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+ORS
+\end_layout
+
+\end_inset
+
+ to the empty string when we generate the output.
+\end_layout
+
+\begin_layout Chunk
+recognize-chunk
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+length(active_chunk) {
+\end_layout
+
+\begin_layout Plain Layout
+
+  =<
+\backslash
+chunkref{process-chunk}>
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+If a chunk just consisted of plain text, we could handle the chunk like
+ this:
+\end_layout
+
+\begin_layout Chunk
+process-chunk-simple
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+chunk_line(active_chunk, $0 ORS);
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+but in fact a chunk can include references to other chunks.
  Chunk includes are traditionally written as 
 \begin_inset Flex CharStyle:Code
 status collapsed
@@ -4468,7 +4557,7 @@ status collapsed
 
 \end_inset
 
-.
+, but we support other variations.
 \end_layout
 
 \begin_layout Subsubsection
@@ -4552,8 +4641,13 @@ status collapsed
  as an end delimiter for the texcl escape.
 \end_layout
 
+\begin_layout Standard
+As each chunk line may contain more than one chunk include, we will split
+ of chunk includes in an iterative fashion
+\end_layout
+
 \begin_layout Chunk
-recognize-chunk
+process-chunk
 \end_layout
 
 \begin_layout Standard
@@ -4563,16 +4657,12 @@ status open
 
 \begin_layout Plain Layout
 
-/^.*[=]<
-\backslash
-
-\backslash
-chunkref{/ {
+chunk = $0 ORS;
 \end_layout
 
 \begin_layout Plain Layout
 
-  if (match($0, "^(.*)[=]<
+while(match(chunk, "(=<
 \backslash
 
 \backslash
@@ -4580,17 +4670,52 @@ chunkref{/ {
 \backslash
 
 \backslash
-chunkref{(.*)}>(.*)", line)) {
+chunkref{([^>]*)}>|<<([a-zA-Z_][-a-zA-Z0-9_]*)>>)", line)) {
 \end_layout
 
 \begin_layout Plain Layout
 
-    chunk_include(active_chunk, line[2], line[1], line[3]);
+  chunk_line(active_chunk, substr(chunk, 1, RSTART - 1));
 \end_layout
 
 \begin_layout Plain Layout
 
-    next;
+  chunk = substr(chunk, RSTART + RLENGTH);
+\end_layout
+
+\begin_layout Plain Layout
+
+  if (substr(line[1], 1, 1) == "=") {
+\end_layout
+
+\begin_layout Plain Layout
+
+    # chunk name up to [}{
+\end_layout
+
+\begin_layout Plain Layout
+
+    chunk_include(active_chunk, line[2]);
+\end_layout
+
+\begin_layout Plain Layout
+
+  } else if (substr(line[1], 1, 1) == "<") {
+\end_layout
+
+\begin_layout Plain Layout
+
+    chunk_include(active_chunk, line[3]);
+\end_layout
+
+\begin_layout Plain Layout
+
+  } else {
+\end_layout
+
+\begin_layout Plain Layout
+
+    error("Unknown chunk fragment: " line[1]);
 \end_layout
 
 \begin_layout Plain Layout
@@ -4601,6 +4726,11 @@ chunkref{(.*)}>(.*)", line)) {
 \begin_layout Plain Layout
 
 }
+\end_layout
+
+\begin_layout Plain Layout
+
+chunk_line(active_chunk, chunk);
 \end_layout
 
 \end_inset
@@ -4645,240 +4775,6 @@ This is handled in section
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "sub:Chunk-parts"
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Subsubsection
-CodeScrap
-\end_layout
-
-\begin_layout Standard
-We also support 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-
-\backslash
-emph{chunk-name}
-\end_layout
-
-\end_inset
-
- because LyX 1.6.3 has a bug which allows an emphasis inset in a passthrough
- block, and that suited me at one point.
-\end_layout
-
-\begin_layout Chunk
-recognize-chunk
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-/^.*
-\backslash
-
-\backslash
-e[m][p][h]{/ {
-\end_layout
-
-\begin_layout Plain Layout
-
-  if (match($0, "^(.*)
-\backslash
-
-\backslash
-
-\backslash
-
-\backslash
-e[m][p][h]{([^}]*)}(.*)", line)) {
-\end_layout
-
-\begin_layout Plain Layout
-
-    chunk_include(active_chunk, line[2], line[1], line[3]);
-\end_layout
-
-\begin_layout Plain Layout
-
-    next;
-\end_layout
-
-\begin_layout Plain Layout
-
-  }
-\end_layout
-
-\begin_layout Plain Layout
-
-}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-The leading .* needs to be better implemented --- currently it would match
- too much normal source - including our own; but we want to be able to prefix
- an include with a comment character like 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-#
-\end_layout
-
-\end_inset
-
-, and then have it apply to every line of the include, as we do for the
- GPL3 license.
-\end_layout
-
-\begin_layout Standard
-We haven't yet worked out how to handle a line that contains semantic content
- in addition to an include.
-\end_layout
-
-\begin_layout Subsubsection
-\begin_inset CommandInset label
-LatexCommand label
-name "sub:noweb"
-
-\end_inset
-
-noweb
-\end_layout
-
-\begin_layout Standard
-But we still support the old noweb 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-<<chunk-name>>
-\end_layout
-
-\end_inset
-
- mechanism:
-\end_layout
-
-\begin_layout Chunk
-recognize-chunk
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-/^[#
-\backslash
-/ ]*[<]<.*[>]>/ && (length(active_chunk)) {
-\end_layout
-
-\begin_layout Plain Layout
-
-  if (match($0, "^(.*)[<]<(.*)[>]>(.*)", line)) {
-\end_layout
-
-\begin_layout Plain Layout
-
-    chunk_include(active_chunk, line[2], line[1], line[3]);
-\end_layout
-
-\begin_layout Plain Layout
-
-    next;
-\end_layout
-
-\begin_layout Plain Layout
-
-  }
-\end_layout
-
-\begin_layout Plain Layout
-
-}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Subsection
-chunk text
-\end_layout
-
-\begin_layout Standard
-Chunk text is any regular text that is read during chunking.
- 
-\begin_inset CommandInset label
-LatexCommand label
-name "sub:ORS-chunk-text"
-
-\end_inset
-
-We add the output record separator 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-ORS
-\end_layout
-
-\end_inset
-
- to the line now, because we will set 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-ORS
-\end_layout
-
-\end_inset
-
- to the empty string when we generate the output.
-\end_layout
-
-\begin_layout Chunk
-recognize-chunk
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-length(active_chunk) {
-\end_layout
-
-\begin_layout Plain Layout
-
-  chunk_line(active_chunk, $0 ORS);
-\end_layout
-
-\begin_layout Plain Layout
-
-}
-\end_layout
 
 \end_inset
 
@@ -5774,7 +5670,7 @@ function write_chunk(chunk_name, indent, tail,
 
 \begin_layout Plain Layout
 
-  chunk_path,
+  chunk_path, chunk_args, 
 \end_layout
 
 \begin_layout Plain Layout
@@ -5784,61 +5680,12 @@ function write_chunk(chunk_name, indent, tail,
 
 \begin_layout Plain Layout
 
-  part, max_part, line, max_line, chunklet, only_part, chunk_args)
+  part, max_part, line, max_line, chunklet, only_part, call_chunk_args)
 \end_layout
 
 \begin_layout Plain Layout
 
 {
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Subsubsection
-Chunk parameters
-\end_layout
-
-\begin_layout Standard
-Chunks may also have LaTeX style arguments in braces, after the chunk name,
- looking like this in the document: 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-chunkname{param1, param2}
-\end_layout
-
-\end_inset
-
-.
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-if (match(chunk_name, "^(.*){(.*)}$", chunk_name_parts)) {
-\end_layout
-
-\begin_layout Plain Layout
-
-    chunk_name = chunk_name_parts[1];
-\end_layout
-
-\begin_layout Plain Layout
-
-    split(chunk_name_parts[2], chunk_args, " *, *");
-\end_layout
-
-\begin_layout Plain Layout
-
-  }
 \end_layout
 
 \end_inset
@@ -6033,6 +5880,21 @@ chunkref{write-part}>
 A part can either be a chunklet of lines, or an include of another chunk.
 \end_layout
 
+\begin_layout Standard
+Chunks may also have LaTeX style arguments in braces, after the chunk name,
+ looking like this in the document: 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+chunkname{param1, param2}
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
 \begin_layout Chunk
 write-part
 \end_layout
@@ -6054,6 +5916,52 @@ if (chunks[chunk_name, "part", part, "type"] == part_type_chunk) {
 
 \begin_layout Plain Layout
 
+  if (match(chunklet, "^([^{]*){(.*)}$", chunklet_parts)) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    chunklet = chunklet_parts[1];
+\end_layout
+
+\begin_layout Plain Layout
+
+    split(chunklet_parts[2], call_chunk_args, " *, *");
+\end_layout
+
+\begin_layout Plain Layout
+
+    for (c in call_chunk_args) {
+\end_layout
+
+\begin_layout Plain Layout
+
+      call_chunk_args[c] = expand_chunk_args(call_chunk_args[c], chunk_params,
+ chunk_args);
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+  } else {
+\end_layout
+
+\begin_layout Plain Layout
+
+    split("", call_chunk_args);
+\end_layout
+
+\begin_layout Plain Layout
+
+  }
+\end_layout
+
+\begin_layout Plain Layout
+
   write_chunk(chunklet, indent chunks[chunk_name, "part", part, "indent"],
 \end_layout
 
@@ -6066,7 +5974,12 @@ if (chunks[chunk_name, "part", part, "type"] == part_type_chunk) {
 
                                chunk_path "
 \backslash
-n         " chunk_name);
+n         " chunk_name,
+\end_layout
+
+\begin_layout Plain Layout
+
+                               call_chunk_args);
 \end_layout
 
 \begin_layout Plain Layout
@@ -9821,14 +9734,9 @@ status open
 
 \begin_layout Plain Layout
 
-I see a ${THING} of colour ${colour}, looking closer 
-\end_layout
-
-\begin_layout Plain Layout
-
-=<
+I see a ${THING} of colour ${colour}, looking closer =<
 \backslash
-chunkref{tests-sub-sub{me}}>
+chunkref{tests-sub-sub{${colour}}}>
 \end_layout
 
 \end_inset
@@ -9871,16 +9779,9 @@ What do you see?
 
 \begin_layout Plain Layout
 
-\begin_inset Quotes eld
-\end_inset
-
-=<
+"=<
 \backslash
-chunkref{tests-sub{joe,red}}>
-\begin_inset Quotes erd
-\end_inset
-
-
+chunkref{tests-sub{joe,red}}>"
 \end_layout
 
 \begin_layout Plain Layout
