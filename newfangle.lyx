@@ -167,16 +167,16 @@ noroots
 \end_layout
 
 \begin_layout Chapter
+License
+\end_layout
+
+\begin_layout Standard
 \begin_inset CommandInset label
 LatexCommand label
 name "cha:License"
 
 \end_inset
 
-License
-\end_layout
-
-\begin_layout Standard
 Newfangle is licensed under the GPL 3
 \begin_inset CommandInset citation
 LatexCommand cite
@@ -1038,16 +1038,16 @@ Boot-strapping the extraction
 \end_layout
 
 \begin_layout Subsection
+Using a Makefile
+\end_layout
+
+\begin_layout Standard
 \begin_inset CommandInset label
 LatexCommand label
 name "sub:Bootstrap-Using-a-Makefile"
 
 \end_inset
 
-Using a Makefile
-\end_layout
-
-\begin_layout Standard
 It seems convenient to have the makefile extract or update the C source
  files as part of it's operation.
  It also seems convenient to have the makefile itself extracted from this
@@ -1333,12 +1333,6 @@ make -f ./Makefile.inc newfangle_sources
 \end_layout
 
 \begin_layout Section
-\begin_inset CommandInset label
-LatexCommand label
-name "sub:Keeping-extracted-files"
-
-\end_inset
-
 Extracting Sources
 \end_layout
 
@@ -1347,6 +1341,12 @@ Including Makefile.inc
 \end_layout
 
 \begin_layout Standard
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Keeping-extracted-files"
+
+\end_inset
+
 Makefile.inc will cope with extracting all the other source files from this
  document and keeping them up to date.
  
@@ -3056,6 +3056,22 @@ a[etc]
 
 \end_layout
 
+\begin_layout Standard
+On reflection it seems that sometimes such nesting is not desirable, as
+ the braces are used to delimit values that contain commas; so I may change
+ this behaviour.
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Plain Layout
+So change it
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Chunk
 get_chunk_args()
 \end_layout
@@ -3727,7 +3743,7 @@ status collapsed
 
 \end_inset
 
- but as we want better LaTeX integration we will also recognize:
+ but as we want better LaTeX integration we will recognize:
 \end_layout
 
 \begin_layout Itemize
@@ -3895,7 +3911,14 @@ Chunk
 
 \end_inset
 
- macro the text 
+ macro (section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:The-chunk-command"
+
+\end_inset
+
+) the text 
 \begin_inset Flex CharStyle:Code
 status collapsed
 
@@ -8058,6 +8081,12 @@ lst@maketitle{}%
 \end_layout
 
 \begin_layout Subsection
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:The-chunk-command"
+
+\end_inset
+
 The chunk command
 \end_layout
 
@@ -9721,6 +9750,14 @@ Make chunk-name settings only apply to chunks with that name
 includes in the middle of semantic content.
 \end_layout
 
+\begin_layout Part
+Tests
+\end_layout
+
+\begin_layout Chapter
+Chunk Parameters
+\end_layout
+
 \begin_layout Chunk
 tests-sub,params=THING;colour
 \end_layout
@@ -9732,7 +9769,33 @@ status open
 
 \begin_layout Plain Layout
 
-hello ${THING} of colour ${colour}
+I see a ${THING} of colour ${colour}, looking closer 
+\end_layout
+
+\begin_layout Plain Layout
+
+=<
+\backslash
+chunkref{tests-sub-sub{me}}>
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chunk
+tests-sub-sub,params=colour
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+a funny shade of ${colour}
 \end_layout
 
 \end_inset
@@ -9751,24 +9814,35 @@ status open
 
 \begin_layout Plain Layout
 
-I say
+What do you see?
 \end_layout
 
 \begin_layout Plain Layout
+
+\begin_inset Quotes eld
+\end_inset
 
 =<
 \backslash
 chunkref{tests-sub{joe,red}}>
+\begin_inset Quotes erd
+\end_inset
+
+
 \end_layout
 
 \begin_layout Plain Layout
 
-hello
+Well, fancy!
 \end_layout
 
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+Should generate output:
 \end_layout
 
 \end_body
