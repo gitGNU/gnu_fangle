@@ -42,7 +42,7 @@ newfangle
 \pdf_bookmarksopenlevel 1
 \pdf_breaklinks false
 \pdf_pdfborder false
-\pdf_colorlinks false
+\pdf_colorlinks true
 \pdf_backref false
 \pdf_pdfusetitle true
 \papersize default
@@ -201,79 +201,83 @@ status open
 
 \begin_layout Plain Layout
 
-newfangle - fully featured notangle replacement in awk
+#newfangle - fully featured notangle replacement in awk
 \end_layout
 
 \begin_layout Plain Layout
 
+#
 \end_layout
 
 \begin_layout Plain Layout
 
-Copyright (C) Sam Liddicott 2009
+#Copyright (C) Sam Liddicott 2009
 \end_layout
 
 \begin_layout Plain Layout
 
+#
 \end_layout
 
 \begin_layout Plain Layout
 
-This program is free software: you can redistribute it and/or modify
+#This program is free software: you can redistribute it and/or modify
 \end_layout
 
 \begin_layout Plain Layout
 
-it under the terms of the GNU General Public License as published by
+#it under the terms of the GNU General Public License as published by
 \end_layout
 
 \begin_layout Plain Layout
 
-the Free Software Foundation, either version 3 of the License, or
+#the Free Software Foundation, either version 3 of the License, or
 \end_layout
 
 \begin_layout Plain Layout
 
-(at your option) any later version.
+#(at your option) any later version.
 \end_layout
 
 \begin_layout Plain Layout
 
+#
 \end_layout
 
 \begin_layout Plain Layout
 
-This program is distributed in the hope that it will be useful,
+#This program is distributed in the hope that it will be useful,
 \end_layout
 
 \begin_layout Plain Layout
 
-but WITHOUT ANY WARRANTY; without even the implied warranty of
+#but WITHOUT ANY WARRANTY; without even the implied warranty of
 \end_layout
 
 \begin_layout Plain Layout
 
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+#MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
   See the
 \end_layout
 
 \begin_layout Plain Layout
 
-GNU General Public License for more details.
+#GNU General Public License for more details.
 \end_layout
 
 \begin_layout Plain Layout
 
+#
 \end_layout
 
 \begin_layout Plain Layout
 
-You should have received a copy of the GNU General Public License
+#You should have received a copy of the GNU General Public License
 \end_layout
 
 \begin_layout Plain Layout
 
-along with this program.
+#along with this program.
   If not, see <http://www.gnu.org/licenses/>.
 \end_layout
 
@@ -4662,7 +4666,7 @@ chunk = $0 ORS;
 
 \begin_layout Plain Layout
 
-while(match(chunk, "(=<
+while(match(chunk, "([=]<
 \backslash
 
 \backslash
@@ -4670,7 +4674,15 @@ while(match(chunk, "(=<
 \backslash
 
 \backslash
-chunkref{([^>]*)}>|<<([a-zA-Z_][-a-zA-Z0-9_]*)>>)", line)) {
+chunkref{([^}>]*)}(
+\backslash
+
+\backslash
+[.*
+\backslash
+
+\backslash
+]|)>|<<([a-zA-Z_][-a-zA-Z0-9_]*)>>)", line)) {
 \end_layout
 
 \begin_layout Plain Layout
@@ -4695,7 +4707,7 @@ chunkref{([^>]*)}>|<<([a-zA-Z_][-a-zA-Z0-9_]*)>>)", line)) {
 
 \begin_layout Plain Layout
 
-    chunk_include(active_chunk, line[2]);
+    chunk_include(active_chunk, line[2] line[3]);
 \end_layout
 
 \begin_layout Plain Layout
@@ -4705,7 +4717,7 @@ chunkref{([^>]*)}>|<<([a-zA-Z_][-a-zA-Z0-9_]*)>>)", line)) {
 
 \begin_layout Plain Layout
 
-    chunk_include(active_chunk, line[3]);
+    chunk_include(active_chunk, line[4]);
 \end_layout
 
 \begin_layout Plain Layout
@@ -5916,7 +5928,19 @@ if (chunks[chunk_name, "part", part, "type"] == part_type_chunk) {
 
 \begin_layout Plain Layout
 
-  if (match(chunklet, "^([^{]*){(.*)}$", chunklet_parts)) {
+  if (match(chunklet, "^([^
+\backslash
+
+\backslash
+[]*)
+\backslash
+
+\backslash
+[(.*)
+\backslash
+
+\backslash
+]$", chunklet_parts)) {
 \end_layout
 
 \begin_layout Plain Layout
@@ -7725,9 +7749,13 @@ We require the
 \noun on
 listings
 \noun default
- and 
+, 
 \noun on
 noweb
+\noun default
+ and 
+\noun on
+xargs
 \noun default
  packages.
  As noweb defines it's own 
@@ -7760,14 +7788,21 @@ status open
 
 
 \backslash
-usepackage{listings}
+usepackage{listings}%
 \end_layout
 
 \begin_layout Plain Layout
 
 
 \backslash
-usepackage{noweb}
+usepackage{noweb}%
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+usepackage{xargs}%
 \end_layout
 
 \begin_layout Plain Layout
@@ -7778,7 +7813,7 @@ renewcommand{
 \backslash
 code}[1]{
 \backslash
-texttt{#1}}
+texttt{#1}}%
 \end_layout
 
 \end_inset
@@ -7830,7 +7865,7 @@ ttfamily,
 
         numberstyle=
 \backslash
-tiny, language=C}
+tiny, language=C}%
 \end_layout
 
 \end_inset
@@ -7957,7 +7992,7 @@ status open
 
 
 \backslash
-lstset{escapeinside={=<}{>}}
+lstset{escapeinside={=<}{>}}%
 \end_layout
 
 \end_inset
@@ -9289,13 +9324,13 @@ Cross references
 \begin_layout Standard
 We define the 
 \backslash
-chunkref command which makes it easy to generate visual references to differenc
+chunkref command which makes it easy to generate visual references to different
  code chunks, e.g.
 \end_layout
 
 \begin_layout Standard
 \begin_inset Tabular
-<lyxtabular version="3" rows="3" columns="2">
+<lyxtabular version="3" rows="4" columns="2">
 <features>
 <column alignment="center" valignment="top" width="0">
 <column alignment="center" valignment="top" width="0">
@@ -9354,7 +9389,7 @@ chunkref{preamble}
 </cell>
 </row>
 <row>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -9365,7 +9400,7 @@ chunkref[3]{preamble}
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -9387,11 +9422,51 @@ chunkref[3]{preamble}
 \end_inset
 </cell>
 </row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\backslash
+chunkref{preamble}[arg1, arg2]
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+chunkref{preamble}[arg1, arg2]
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
 </lyxtabular>
 
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+Chunkref can also be used within a code chunk to include another code chunk.
+ The third optional parameter to chunkref is a comma sepatarated list of
+ arguments, which will replace defined parameters in the chunkref.
 \end_layout
 
 \begin_layout Standard
@@ -9403,9 +9478,9 @@ status open
 
 
 \backslash
-newcommand
+newcommandx
 \backslash
-chunkref[2][1]{%
+chunkref[3][1,3]{%
 \end_layout
 
 \begin_layout Plain Layout
@@ -9423,7 +9498,61 @@ chunk{#2}%
 \backslash
 def
 \backslash
-chunkname{#2-#1}%
+chunkno{#1}%
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\backslash
+def
+\backslash
+chunkargs{#3}%
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\backslash
+ifx
+\backslash
+chunkno
+\backslash
+empty%
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\backslash
+def
+\backslash
+chunkname{#2-1}%
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\backslash
+else%
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\backslash
+def
+\backslash
+chunkname{#2-
+\backslash
+chunkno}%
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\backslash
+fi%
 \end_layout
 
 \begin_layout Plain Layout
@@ -9475,12 +9604,74 @@ chunk}%
 \backslash
 nwtagstyle{}
 \backslash
-/[#1]~%
+/%
 \end_layout
 
 \begin_layout Plain Layout
 
       
+\backslash
+ifx
+\backslash
+chunkno
+\backslash
+empty%
+\end_layout
+
+\begin_layout Plain Layout
+
+      
+\backslash
+else%
+\end_layout
+
+\begin_layout Plain Layout
+
+      [
+\backslash
+chunkno]%
+\end_layout
+
+\begin_layout Plain Layout
+
+      
+\backslash
+fi%
+\end_layout
+
+\begin_layout Plain Layout
+
+      
+\backslash
+ifx
+\backslash
+chunkargs
+\backslash
+empty%
+\end_layout
+
+\begin_layout Plain Layout
+
+      
+\backslash
+else%
+\end_layout
+
+\begin_layout Plain Layout
+
+        (#3)%
+\end_layout
+
+\begin_layout Plain Layout
+
+      
+\backslash
+fi%
+\end_layout
+
+\begin_layout Plain Layout
+
+      ~
 \backslash
 subpageref{
 \backslash
@@ -9706,6 +9897,10 @@ Todo
 \end_layout
 
 \begin_layout Enumerate
+Fix indents
+\end_layout
+
+\begin_layout Enumerate
 Have listings detect and process <<includes>> using hooks.
 \end_layout
 
@@ -9754,7 +9949,7 @@ status open
 
 I see a ${THING} of colour ${colour}, looking closer =<
 \backslash
-chunkref{tests-sub-sub{${colour}}}>
+chunkref{tests-sub-sub}[${colour}]>
 \end_layout
 
 \end_inset
@@ -9799,7 +9994,7 @@ What do you see?
 
 "=<
 \backslash
-chunkref{tests-sub{joe,red}}>"
+chunkref{tests-sub}[joe,red]>"
 \end_layout
 
 \begin_layout Plain Layout
