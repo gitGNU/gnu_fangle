@@ -182,7 +182,7 @@ function write_chunk(chunk_name, indent, tail,
           /* check params */
         #  if (length(chunk_args)) {
             lastline = expand_chunk_args(lastline, chunk_params, chunk_args);
-            if (line == max_line && length(chunk_path) && substr(lastline, length(lastline)) == "\n") {
+            if (part == max_part && line == max_line && length(chunk_path) && substr(lastline, length(lastline)) == "\n") {
               lastline = substr(lastline, 1, length(lastline) -1);
             }
         #  }

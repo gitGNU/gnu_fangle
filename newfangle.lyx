@@ -6134,8 +6134,8 @@ for(line = 1; line <= max_line; line++) {
 
 \begin_layout Plain Layout
 
-    if (line == max_line && length(chunk_path) && substr(lastline, length(lastli
-ne)) == "
+    if (part == max_part && line == max_line && length(chunk_path) && substr(las
+tline, length(lastline)) == "
 \backslash
 n") {
 \end_layout
