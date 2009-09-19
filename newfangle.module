@@ -90,6 +90,7 @@ AddToPreamble
   \fi%
   \let\lst@arg\chunk%
   \lst@ReplaceIn\chunk\lst@filenamerpl%
+  \lst@ReplaceIn\chunkargs\lst@filenamerpl%
   \LA{%\moddef{%
     {\chunk}%
     {%
@@ -100,7 +101,7 @@ AddToPreamble
       \fi%
       \ifx\chunkargs\empty%
       \else%
-        (#3)%
+        (\chunkargs)%
       \fi%
       ~\subpageref{\chunkname}%
     }%

@@ -9581,6 +9581,17 @@ lst@filenamerpl%
 
   
 \backslash
+lst@ReplaceIn
+\backslash
+chunkargs
+\backslash
+lst@filenamerpl%
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\backslash
 LA{%
 \backslash
 moddef{%
@@ -9659,7 +9670,9 @@ else%
 
 \begin_layout Plain Layout
 
-        (#3)%
+        (
+\backslash
+chunkargs)%
 \end_layout
 
 \begin_layout Plain Layout
