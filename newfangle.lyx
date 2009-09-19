@@ -85,14 +85,73 @@ Introduction
 \end_layout
 
 \begin_layout Standard
-Newfangle is an awk replacement for notangle, adding some important features,
- like better integration with LyX and LaTeX, multiple output format conversions,
- and fixing notangle bugs like -L and indenting.
+Newfangle is a tool for newfangled literate programming.
+ Newfangled is defined as 
+\emph on
+New and often needlessly novel
+\emph default
+ by 
+\noun on
+TheFreeDictionary.com
+\noun default
+.
+\end_layout
+
+\begin_layout Standard
+
+\noun on
+Literate Programming
+\noun default
+ has a long history featuring such distinctive figures as the great 
+\noun on
+Donald Knuth
+\noun default
+ whose literate programming tools seem to make use of as many escaped abbreviati
+ons for semantic markup as TeX itself.
+\end_layout
+
+\begin_layout Standard
+
+\noun on
+Norman Ramsey
+\noun default
+ wrote the notangle set of tools which fortunately reduced the amount of
+ magic characters to one, an eminently manageable quanity, and in doing
+ so inadvertantly brought the wonders of literate programming within my
+ reach.
+\end_layout
+
+\begin_layout Standard
+Using LyX for LaTeX editing, I had various troubles with the no-tangle tools,
+ some of which were my fault, some of which were notangles fault (or noweave)
+ and some of which were LyX's fault.
+\end_layout
+
+\begin_layout Standard
+Notangle generally brought literate programming to the masses through removing
+ some of the complexity of the original literate programming, but this would
+ be of no advantage to me if the LyX --- LaTeX combination brings more complicat
+ions in their place.
+\end_layout
+
+\begin_layout Standard
+Newfangle was thus born --- as an awk replacement for notangle, adding some
+ important features, like better integration with LyX and LaTeX, multiple
+ output format conversions, and fixing notangle bugs like -L and indenting.
+\end_layout
+
+\begin_layout Standard
+Significantly, newfangle has one program which replaces various programs
+ in notangle.
+ Specifically noweave is done away with and implemented directly as LaTeX
+ macros.
 \end_layout
 
 \begin_layout Standard
 Newfangle is written in awk for portability reasons, awk being available
  for most platforms.
+ A python conversion will probably be attempted for the benefit of LyX.
+ (Hasn't anyone implemented awk in python yet?)
 \end_layout
 
 \begin_layout Standard
