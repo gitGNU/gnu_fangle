@@ -113,7 +113,7 @@ function chunk_include(chunk_name, chunk_ref, indent, tail)
 function indent_string(indent) {
   return sprintf("%" indent "s", "");
 }
-function write_chunk_names(   c, prefix, suffix) 
+function output_chunk_names(   c, prefix, suffix) 
 {
   if (notangle_mode) {
     prefix="<<";
@@ -123,17 +123,25 @@ function write_chunk_names(   c, prefix, suffix)
     print prefix c suffix;
   }
 }
-function write_chunks(  a) 
+function output_chunks(  a) 
 {
   for (a in chunk_names) {
-    write_chunk(chunk_names[a]);
+    output_chunk(chunk_names[a]);
   }
 }
+
+function output_chunk(chunk) {
+  newline = 1;
+  lineno_needed = 1;
+
+  write_chunk(chunk);
+}
+
 function write_chunk(chunk_name, indent, tail,
   # optional vars
   chunk_path, chunk_args, 
   # local vars
-  part, max_part, line, frag, max_frag, chunklet, only_part, call_chunk_args)
+  part, max_part, part_line, frag, max_frag, text, chunklet, only_part, call_chunk_args)
 {
   if (match(chunk_name, "^(.*)\\[([0-9]*)\\]$", chunk_name_parts)) {
     chunk_name = chunk_name_parts[1];
@@ -148,7 +156,14 @@ function write_chunk(chunk_name, indent, tail,
   max_part = chunks[chunk_name, "part"];
   for(part = 1; part <= max_part; part++) {
     if (! only_part || part == only_part) {
-      line = 0;
+      if (linenos && (chunk_name SUBSEP "part" SUBSEP part SUBSEP "FILENAME" in chunks)) {
+        a_filename = chunks[chunk_name, "part", part, "FILENAME"];
+        a_lineno = chunks[chunk_name, "part", part, "LINENO"];
+        if (a_filename != filename || a_lineno != lineno) {
+          lineno_needed++;
+        }
+      }
+      
       chunklet = chunks[chunk_name, "part", part];
       if (chunks[chunk_name, "part", part, "type"] == part_type_chunk) {
         if (match(chunklet, "^([^\\[]*)\\[(.*)\\]$", chunklet_parts)) {
@@ -165,42 +180,39 @@ function write_chunk(chunk_name, indent, tail,
                               chunk_path "\n         " chunk_name,
                               call_chunk_args);
       } else if (chunklet SUBSEP "line" in chunks) {
-        if (linenos && (chunk_name SUBSEP "part" SUBSEP part SUBSEP "FILENAME" in chunks)) {
-    if (! lineno_suppressed) {
-      a_filename = chunks[chunk_name, "part", part, "FILENAME"];
-    a_lineno = chunks[chunk_name, "part", part, "LINENO"];
-    if (a_filename != filename || a_lineno != lineno || lineno_needed) {
-      filename = a_filename;
-      lineno = a_lineno;
-      print "#line " lineno " \"" filename "\""
-    }
-      lineno_needed=0;
-    } else {
-      lineno_needed=1;
-    }
+        max_frag = chunks[chunklet, "line"];
+  for(frag = 1; frag <= max_frag; frag++) {
+    if (newline && lineno_needed && ! lineno_suppressed) {
+    filename = a_filename;
+    lineno = a_lineno;
+    print "#line " lineno " \"" filename "\"\n"
+    lineno_needed = 0;
   }
   
-  max_frag = chunks[chunklet, "line"];
-  for(frag = 1; frag <= max_frag; frag++) {
-    lastfrag = chunks[chunklet, frag];
   
+    text = chunks[chunklet, frag];
+   
     /* check params */
-    lastfrag = expand_chunk_args(lastfrag, chunk_params, chunk_args);
-    if (lastfrag == "\n") {
-      line++;
+    text = expand_chunk_args(text, chunk_params, chunk_args);
+  
+    if (text == "\n") {
+      lineno++;
       if (part == max_part && frag == max_frag && length(chunk_path)) {
-        lastfrag = "";
+        text = "";
+        break;
       } else {
-        lastfrag = lastfrag indent;
+        newline = 1;
       }
+    } else {
+      if (newline) text = indent text;
+      newline = 0;
     }
   
-    lastfrag = lastfrag tail;
-    print lastfrag;
+    text = text tail;
+    print text;
     if (linenos) {
       lineno_suppressed = substr(lastline, length(lastline)) == "\\";
     }
-    lineno++;
   }
       } else {
         # empty last chunklet
@@ -319,17 +331,17 @@ length(active_chunk) {
 END {
   if (debug) {
     print "------ chunk names "
-    write_chunk_names();
+    output_chunk_names();
     print "====== chunks"
-    write_chunks();
+    output_chunks();
     print "++++++ debug"
     for (a in chunks) {
       print a "=" chunks[a];
     }
   }
   ORS="";
-  if (length(root)) write_chunk(root);
-  else write_chunk_names();
+  if (length(root)) output_chunk(root);
+  else output_chunk_names();
 }
 function get_chunk_args(text, values,
   # optional parameters

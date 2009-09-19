@@ -2832,14 +2832,14 @@ chunkref{chunk-storage-functions}>
 
 =<
 \backslash
-chunkref{write_chunk_names()}>
+chunkref{output_chunk_names()}>
 \end_layout
 
 \begin_layout Plain Layout
 
 =<
 \backslash
-chunkref{write_chunks()}>
+chunkref{output_chunks()}>
 \end_layout
 
 \begin_layout Plain Layout
@@ -5553,7 +5553,7 @@ Generating the output
 \end_layout
 
 \begin_layout Standard
-We generate output by calling write_chunk, or listing the chunks.
+We generate output by calling output_chunk, or listing the chunks.
 \end_layout
 
 \begin_layout Chunk
@@ -5567,12 +5567,12 @@ status open
 
 \begin_layout Plain Layout
 
-if (length(root)) write_chunk(root);
+if (length(root)) output_chunk(root);
 \end_layout
 
 \begin_layout Plain Layout
 
-else write_chunk_names();
+else output_chunk_names();
 \end_layout
 
 \end_inset
@@ -5605,7 +5605,7 @@ if (debug) {
 
 \begin_layout Plain Layout
 
-  write_chunk_names();
+  output_chunk_names();
 \end_layout
 
 \begin_layout Plain Layout
@@ -5615,7 +5615,7 @@ if (debug) {
 
 \begin_layout Plain Layout
 
-  write_chunks();
+  output_chunks();
 \end_layout
 
 \begin_layout Plain Layout
@@ -5731,7 +5731,7 @@ status collapsed
 \end_layout
 
 \begin_layout Chunk
-write_chunk_names()
+output_chunk_names()
 \end_layout
 
 \begin_layout Standard
@@ -5741,7 +5741,7 @@ status open
 
 \begin_layout Plain Layout
 
-function write_chunk_names(   c, prefix, suffix) 
+function output_chunk_names(   c, prefix, suffix) 
 \end_layout
 
 \begin_layout Plain Layout
@@ -5799,7 +5799,7 @@ This function would write out all chunks
 \end_layout
 
 \begin_layout Chunk
-write_chunks()
+output_chunks()
 \end_layout
 
 \begin_layout Standard
@@ -5809,7 +5809,7 @@ status open
 
 \begin_layout Plain Layout
 
-function write_chunks(  a) 
+function output_chunks(  a) 
 \end_layout
 
 \begin_layout Plain Layout
@@ -5824,7 +5824,7 @@ function write_chunks(  a)
 
 \begin_layout Plain Layout
 
-    write_chunk(chunk_names[a]);
+    output_chunk(chunk_names[a]);
 \end_layout
 
 \begin_layout Plain Layout
@@ -5835,6 +5835,43 @@ function write_chunks(  a)
 \begin_layout Plain Layout
 
 }
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+function output_chunk(chunk) {
+\end_layout
+
+\begin_layout Plain Layout
+
+  newline = 1;
+\end_layout
+
+\begin_layout Plain Layout
+
+  lineno_needed = 1;
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+  write_chunk(chunk);
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
 \end_layout
 
 \end_inset
@@ -5904,7 +5941,8 @@ function write_chunk(chunk_name, indent, tail,
 
 \begin_layout Plain Layout
 
-  part, max_part, line, frag, max_frag, chunklet, only_part, call_chunk_args)
+  part, max_part, part_line, frag, max_frag, text, chunklet, only_part,
+ call_chunk_args)
 \end_layout
 
 \begin_layout Plain Layout
@@ -6130,7 +6168,42 @@ status open
 
 \begin_layout Plain Layout
 
-line = 0;
+if (linenos && (chunk_name SUBSEP "part" SUBSEP part SUBSEP "FILENAME" in
+ chunks)) {
+\end_layout
+
+\begin_layout Plain Layout
+
+  a_filename = chunks[chunk_name, "part", part, "FILENAME"];
+\end_layout
+
+\begin_layout Plain Layout
+
+  a_lineno = chunks[chunk_name, "part", part, "LINENO"];
+\end_layout
+
+\begin_layout Plain Layout
+
+  if (a_filename != filename || a_lineno != lineno) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    lineno_needed++;
+\end_layout
+
+\begin_layout Plain Layout
+
+  }
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
 \end_layout
 
 \begin_layout Plain Layout
@@ -6294,53 +6367,6 @@ status open
 
 \begin_layout Plain Layout
 
-if (linenos && (chunk_name SUBSEP "part" SUBSEP part SUBSEP "FILENAME" in
- chunks)) {
-\end_layout
-
-\begin_layout Plain Layout
-
-  if (! lineno_suppressed) {
-\end_layout
-
-\begin_layout Plain Layout
-
-    =<
-\backslash
-chunkref{write-file-line}>
-\end_layout
-
-\begin_layout Plain Layout
-
-    lineno_needed=0;
-\end_layout
-
-\begin_layout Plain Layout
-
-  } else {
-\end_layout
-
-\begin_layout Plain Layout
-
-    lineno_needed=1;
-\end_layout
-
-\begin_layout Plain Layout
-
-  }
-\end_layout
-
-\begin_layout Plain Layout
-
-}
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
 max_frag = chunks[chunklet, "line"];
 \end_layout
 
@@ -6351,11 +6377,23 @@ for(frag = 1; frag <= max_frag; frag++) {
 
 \begin_layout Plain Layout
 
-  lastfrag = chunks[chunklet, frag];
+  =<
+\backslash
+chunkref{write-file-line}>
 \end_layout
 
 \begin_layout Plain Layout
 
+\end_layout
+
+\begin_layout Plain Layout
+
+  text = chunks[chunklet, frag];
+\end_layout
+
+\begin_layout Plain Layout
+
+ 
 \end_layout
 
 \begin_layout Plain Layout
@@ -6365,19 +6403,23 @@ for(frag = 1; frag <= max_frag; frag++) {
 
 \begin_layout Plain Layout
 
-  lastfrag = expand_chunk_args(lastfrag, chunk_params, chunk_args);
+  text = expand_chunk_args(text, chunk_params, chunk_args);
 \end_layout
 
 \begin_layout Plain Layout
 
-  if (lastfrag == "
+\end_layout
+
+\begin_layout Plain Layout
+
+  if (text == "
 \backslash
 n") {
 \end_layout
 
 \begin_layout Plain Layout
 
-    line++;
+    lineno++;
 \end_layout
 
 \begin_layout Plain Layout
@@ -6387,7 +6429,12 @@ n") {
 
 \begin_layout Plain Layout
 
-      lastfrag = "";
+      text = "";
+\end_layout
+
+\begin_layout Plain Layout
+
+      break;
 \end_layout
 
 \begin_layout Plain Layout
@@ -6397,12 +6444,27 @@ n") {
 
 \begin_layout Plain Layout
 
-      lastfrag = lastfrag indent;
+      newline = 1;
 \end_layout
 
 \begin_layout Plain Layout
 
     }
+\end_layout
+
+\begin_layout Plain Layout
+
+  } else {
+\end_layout
+
+\begin_layout Plain Layout
+
+    if (newline) text = indent text;
+\end_layout
+
+\begin_layout Plain Layout
+
+    newline = 0;
 \end_layout
 
 \begin_layout Plain Layout
@@ -6416,12 +6478,12 @@ n") {
 
 \begin_layout Plain Layout
 
-  lastfrag = lastfrag tail;
+  text = text tail;
 \end_layout
 
 \begin_layout Plain Layout
 
-  print lastfrag;
+  print text;
 \end_layout
 
 \begin_layout Plain Layout
@@ -6441,11 +6503,6 @@ n") {
 \begin_layout Plain Layout
 
   }
-\end_layout
-
-\begin_layout Plain Layout
-
-  lineno++;
 \end_layout
 
 \begin_layout Plain Layout
@@ -6476,17 +6533,7 @@ status open
 
 \begin_layout Plain Layout
 
-a_filename = chunks[chunk_name, "part", part, "FILENAME"];
-\end_layout
-
-\begin_layout Plain Layout
-
-a_lineno = chunks[chunk_name, "part", part, "LINENO"];
-\end_layout
-
-\begin_layout Plain Layout
-
-if (a_filename != filename || a_lineno != lineno || lineno_needed) {
+if (newline && lineno_needed && ! lineno_suppressed) {
 \end_layout
 
 \begin_layout Plain Layout
@@ -6505,12 +6552,23 @@ if (a_filename != filename || a_lineno != lineno || lineno_needed) {
 \backslash
 "" filename "
 \backslash
-""
+"
+\backslash
+n"
+\end_layout
+
+\begin_layout Plain Layout
+
+  lineno_needed = 0;
 \end_layout
 
 \begin_layout Plain Layout
 
 }
+\end_layout
+
+\begin_layout Plain Layout
+
 \end_layout
 
 \end_inset
