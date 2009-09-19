@@ -4773,7 +4773,12 @@ status open
 
 \begin_layout Plain Layout
 
-chunk = $0 ORS;
+chunk = $0;
+\end_layout
+
+\begin_layout Plain Layout
+
+indent = 0;
 \end_layout
 
 \begin_layout Plain Layout
@@ -4799,7 +4804,17 @@ chunkref{([^}>]*)}(
 
 \begin_layout Plain Layout
 
-  chunk_line(active_chunk, substr(chunk, 1, RSTART - 1));
+  chunklet = substr(chunk, 1, RSTART - 1);
+\end_layout
+
+\begin_layout Plain Layout
+
+  indent += length(chunklet);
+\end_layout
+
+\begin_layout Plain Layout
+
+  chunk_line(active_chunk, chunklet);
 \end_layout
 
 \begin_layout Plain Layout
@@ -4867,7 +4882,7 @@ status open
 
 \begin_layout Plain Layout
 
-    chunk_include(active_chunk, line[2] line[3]);
+    chunk_include(active_chunk, line[2] line[3], indent);
 \end_layout
 
 \begin_layout Plain Layout
@@ -4877,7 +4892,7 @@ status open
 
 \begin_layout Plain Layout
 
-    chunk_include(active_chunk, line[4]);
+    chunk_include(active_chunk, line[4], indent);
 \end_layout
 
 \begin_layout Plain Layout
@@ -4922,6 +4937,32 @@ chunk_line(active_chunk, chunk);
 
 \end_inset
 
+
+\end_layout
+
+\begin_layout Standard
+We add the newline (ORS) as a chunklet on it's own, to make it easier to
+ count detect new lines and thus indent rules when processing the output.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+chunk_line(active_chunk, "
+\backslash
+n");
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 We will also permit a chunk-part number to follow in square brackets, so
  that 
 \begin_inset Flex CharStyle:Code
@@ -5863,7 +5904,7 @@ function write_chunk(chunk_name, indent, tail,
 
 \begin_layout Plain Layout
 
-  part, max_part, line, max_line, chunklet, only_part, call_chunk_args)
+  part, max_part, line, frag, max_frag, chunklet, only_part, call_chunk_args)
 \end_layout
 
 \begin_layout Plain Layout
@@ -6089,6 +6130,11 @@ status open
 
 \begin_layout Plain Layout
 
+line = 0;
+\end_layout
+
+\begin_layout Plain Layout
+
 chunklet = chunks[chunk_name, "part", part];
 \end_layout
 
@@ -6157,24 +6203,24 @@ if (chunks[chunk_name, "part", part, "type"] == part_type_chunk) {
 
 \begin_layout Plain Layout
 
-  write_chunk(chunklet, indent chunks[chunk_name, "part", part, "indent"],
+  write_chunk(chunklet, chunks[chunk_name, "part", part, "indent"],
 \end_layout
 
 \begin_layout Plain Layout
 
-                               chunks[chunk_name, "part", part, "tail"],
+                        chunks[chunk_name, "part", part, "tail"],
 \end_layout
 
 \begin_layout Plain Layout
 
-                               chunk_path "
+                        chunk_path "
 \backslash
 n         " chunk_name,
 \end_layout
 
 \begin_layout Plain Layout
 
-                               call_chunk_args);
+                        call_chunk_args);
 \end_layout
 
 \begin_layout Plain Layout
@@ -6295,17 +6341,17 @@ chunkref{write-file-line}>
 
 \begin_layout Plain Layout
 
-max_line = chunks[chunklet, "line"];
+max_frag = chunks[chunklet, "line"];
 \end_layout
 
 \begin_layout Plain Layout
 
-for(line = 1; line <= max_line; line++) {
+for(frag = 1; frag <= max_frag; frag++) {
 \end_layout
 
 \begin_layout Plain Layout
 
-  lastline = chunks[chunklet, line];
+  lastfrag = chunks[chunklet, frag];
 \end_layout
 
 \begin_layout Plain Layout
@@ -6319,25 +6365,39 @@ for(line = 1; line <= max_line; line++) {
 
 \begin_layout Plain Layout
 
-#  if (length(chunk_args)) {
+  lastfrag = expand_chunk_args(lastfrag, chunk_params, chunk_args);
 \end_layout
 
 \begin_layout Plain Layout
 
-    lastline = expand_chunk_args(lastline, chunk_params, chunk_args);
-\end_layout
-
-\begin_layout Plain Layout
-
-    if (part == max_part && line == max_line && length(chunk_path) && substr(las
-tline, length(lastline)) == "
+  if (lastfrag == "
 \backslash
 n") {
 \end_layout
 
 \begin_layout Plain Layout
 
-      lastline = substr(lastline, 1, length(lastline) -1);
+    line++;
+\end_layout
+
+\begin_layout Plain Layout
+
+    if (part == max_part && frag == max_frag && length(chunk_path)) {
+\end_layout
+
+\begin_layout Plain Layout
+
+      lastfrag = "";
+\end_layout
+
+\begin_layout Plain Layout
+
+    } else {
+\end_layout
+
+\begin_layout Plain Layout
+
+      lastfrag = lastfrag indent;
 \end_layout
 
 \begin_layout Plain Layout
@@ -6347,7 +6407,7 @@ n") {
 
 \begin_layout Plain Layout
 
-#  }
+  }
 \end_layout
 
 \begin_layout Plain Layout
@@ -6356,12 +6416,12 @@ n") {
 
 \begin_layout Plain Layout
 
-  lastline = indent lastline tail;
+  lastfrag = lastfrag tail;
 \end_layout
 
 \begin_layout Plain Layout
 
-  print lastline;
+  print lastfrag;
 \end_layout
 
 \begin_layout Plain Layout
@@ -6784,6 +6844,31 @@ function chunk_line(chunk_name, line){
 
 \end_layout
 
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Chunk include represents a 
+\emph on
+chunkref
+\emph default
+ statement, and stores the requirement to include another chunk.
+ The parameter indent represents the quanity of literal text characters
+ that preceded this 
+\emph on
+chunkref
+\emph default
+ statement and therefore by how much additional lines of the included chunk
+ should be indented.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
 \begin_layout Plain Layout
 
 function chunk_include(chunk_name, chunk_ref, indent, tail)
@@ -6807,7 +6892,8 @@ unk;
 
 \begin_layout Plain Layout
 
-  chunks[chunk_name, "part", chunks[chunk_name, "part"], "indent" ] = indent;
+  chunks[chunk_name, "part", chunks[chunk_name, "part"], "indent" ] = indent_str
+ing(indent);
 \end_layout
 
 \begin_layout Plain Layout
@@ -6818,6 +6904,51 @@ unk;
 \begin_layout Plain Layout
 
   prime_chunk(chunk_name);
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The indent is calculated by indent_string, which may in future convert some
+ spaces into tab characters.
+ This function works by generating a printf padded format string, like 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+%22s
+\end_layout
+
+\end_inset
+
+ for an indent of 22, and then printing an empty string using that format.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+function indent_string(indent) {
+\end_layout
+
+\begin_layout Plain Layout
+
+  return sprintf("%" indent "s", "");
 \end_layout
 
 \begin_layout Plain Layout
@@ -10131,7 +10262,17 @@ status open
 
 \begin_layout Plain Layout
 
-I see a ${THING} of colour ${colour}, looking closer =<
+I see a ${THING} of 
+\end_layout
+
+\begin_layout Plain Layout
+
+colour ${colour}, 
+\end_layout
+
+\begin_layout Plain Layout
+
+looking closer =<
 \backslash
 chunkref{tests-sub-sub}[${colour}]>
 \end_layout
@@ -10171,12 +10312,7 @@ status open
 
 \begin_layout Plain Layout
 
-What do you see?
-\end_layout
-
-\begin_layout Plain Layout
-
-"=<
+What do you see? "=<
 \backslash
 chunkref{tests-sub}[joe,red]>"
 \end_layout
