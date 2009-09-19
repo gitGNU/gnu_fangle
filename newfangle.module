@@ -15,6 +15,7 @@ AddToPreamble
 \usepackage{noweb}%
 \usepackage{xargs}%
 \renewcommand{\code}[1]{\texttt{#1}}%
+\lstnewenvironment{Chunk}{\relax}{\relax}%
 \lstset{numbers=left, stepnumber=5, numbersep=5pt,
         breaklines=false,basicstyle=\ttfamily,
         numberstyle=\tiny, language=C}%

@@ -6,7 +6,7 @@
 \begin_preamble
 %\usepackage{xcolor}
 %\definecolor{darkgreen}{rgb}{0,0.5,0}
-\lstset{numbers=left, stepnumber=5, numbersep=5pt, breaklines=false,
+\lstset{numbers=left, stepnumber=1, numbersep=5pt, breaklines=false,
 basicstyle=\footnotesize\ttfamily,
 %keywordstyle=\color{darkgreen},
 numberstyle=\tiny,language=C,columns=fullflexible,
@@ -137,7 +137,8 @@ ions in their place.
 \begin_layout Standard
 Newfangle was thus born --- as an awk replacement for notangle, adding some
  important features, like better integration with LyX and LaTeX, multiple
- output format conversions, and fixing notangle bugs like -L and indenting.
+ output format conversions, and fixing notangle bugs like indenting when
+ using -L for line numbers.
 \end_layout
 
 \begin_layout Standard
@@ -614,6 +615,40 @@ Setting up Lyx
 \end_layout
 
 \begin_layout Subsection
+Installing the LyX module
+\end_layout
+
+\begin_layout Standard
+Copy 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+newfangle.module
+\end_layout
+
+\end_inset
+
+ to your LyX layouts directory, which for unix users will be 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+~/.lyx/layouts
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+You will need to reconfigure LyX by clicking Tools\SpecialChar \menuseparator
+Reconfigure, and then
+ re-start LyX.
+\end_layout
+
+\begin_layout Subsection
 \begin_inset CommandInset label
 LatexCommand label
 name "sub:Configuring-the-build"
@@ -721,40 +756,6 @@ newfangle
 \end_layout
 
 \begin_layout Subsection
-Installing the LyX module
-\end_layout
-
-\begin_layout Standard
-Copy 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-newfangle.module
-\end_layout
-
-\end_inset
-
- to your LyX layouts directory, which for unix users will be 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-~/.lyx/layouts
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-You will need to reconfigure LyX by clicking Tools\SpecialChar \menuseparator
-Reconfigure, and then
- re-start LyX.
-\end_layout
-
-\begin_layout Subsection
 Preparing your Lyx document
 \end_layout
 
@@ -848,7 +849,7 @@ status collapsed
 
 \end_inset
 
- after the chunk name!
+ after the chunk name.
 \end_layout
 
 \begin_layout Standard
@@ -915,7 +916,7 @@ columns=fullflexible
 
 \end_inset
 
- may be a good idea, or the capital letters will get croweded.
+ may be a good idea, or the capital letters will get crowded.
  (I think lstlistings ought to use a slightly smaller font for captial letters
  so that they still fit).
 \end_layout
@@ -1049,6 +1050,25 @@ Newfangle with Makefiles
 \end_layout
 
 \begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+This chapter needs revising
+\end_layout
+
+\end_inset
+
+
+\begin_inset Note Greyedout
+status open
+
+\begin_layout Plain Layout
+This chapter needs revising
+\end_layout
+
+\end_inset
+
 Here we describe a Makefile.inc that you can include in your own Makefiles,
  or glue as a recursive make to other projects.
 \end_layout
@@ -2729,6 +2749,32 @@ reference "cha:License"
 .
 \end_layout
 
+\begin_layout Chunk
+./newfangle,language=awk,morestring=[b]{/},morekeywords=else
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+#! /usr/bin/awk -f
+\end_layout
+
+\begin_layout Plain Layout
+
+=<
+\backslash
+chunkref{gpl3-copyright}>
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Standard
 We also code from Arnold Robbins public domain getopt (1993 revision) defined
  in chapter 
@@ -2739,10 +2785,6 @@ reference "cha:getopt"
 \end_inset
 
 , and naturally want to attribute this appropriately.
-\end_layout
-
-\begin_layout Chunk
-getopt-notice,language=awk,morestring=[b]{/},morekeywords=else
 \end_layout
 
 \begin_layout Standard
@@ -2766,41 +2808,8 @@ status open
 chunkref{getopt.awk-header}>
 \end_layout
 
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-And we include these notices in the program header
-\end_layout
-
-\begin_layout Chunk
-./newfangle
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
 \begin_layout Plain Layout
 
-#! /usr/bin/awk -f
-\end_layout
-
-\begin_layout Plain Layout
-
-# =<
-\backslash
-chunkref{gpl3-copyright}>
-\end_layout
-
-\begin_layout Plain Layout
-
-=<
-\backslash
-chunkref{getopt-notice}>
 \end_layout
 
 \begin_layout Plain Layout
@@ -2813,6 +2822,24 @@ chunkref{getopt.awk-getopt()}>
 \begin_layout Plain Layout
 
 \end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+And assemble the following chunks
+\end_layout
+
+\begin_layout Chunk
+./newfangle
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
 
 \begin_layout Plain Layout
 
@@ -2875,6 +2902,34 @@ chunkref{recognize-chunk}>
 =<
 \backslash
 chunkref{end}>
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+AWK tricks
+\end_layout
+
+\begin_layout Standard
+The portable way to erase an array in awk is to split the empty string,
+ like this:
+\end_layout
+
+\begin_layout Chunk
+awk-delete-array,params=ARRAY
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+split("", ${ARRAY});
 \end_layout
 
 \end_inset
@@ -3181,6 +3236,72 @@ So change it
 
 \end_layout
 
+\begin_layout Standard
+Function 
+\begin_inset Flex Chunkref
+status collapsed
+
+\begin_layout Plain Layout
+get_chunk_args()
+\end_layout
+
+\end_inset
+
+ will accept two paramters, 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+text
+\end_layout
+
+\end_inset
+
+ being the text to parse, and 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+values
+\end_layout
+
+\end_inset
+
+ being an array to receive the parsed values as described above.
+ The optional parameter 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+path
+\end_layout
+
+\end_inset
+
+ is used during recursion to build up the multi-dimensional array path.
+\end_layout
+
+\begin_layout Chunk
+./newfangle
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+=<
+\backslash
+chunkref{get_chunk_args()}>
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Chunk
 get_chunk_args()
 \end_layout
@@ -3202,7 +3323,7 @@ function get_chunk_args(text, values,
 
 \begin_layout Plain Layout
 
-  path,
+  path, # hierarchical precursors
 \end_layout
 
 \begin_layout Plain Layout
@@ -3221,7 +3342,7 @@ function get_chunk_args(text, values,
 \end_layout
 
 \begin_layout Standard
-The rule would then be to parse the name, and then look for a value.
+The strategy is to parse the name, and then look for a value.
  If the value begins with a brace 
 \begin_inset Flex CharStyle:Code
 status collapsed
@@ -3244,6 +3365,9 @@ status collapsed
 \end_inset
 
 .
+ This being the strategy --- and executed in a loop --- we realise that
+ we must first look for the closing brace (perhaps preceded by white space)
+ in order to terminate the recursion, and returning remaining text.
 \end_layout
 
 \begin_layout Standard
@@ -3677,7 +3801,7 @@ BEGIN {
 
 \begin_layout Plain Layout
 
-  print ">>" get_chunk_args("name=freddie, foo={bar=baz, quux={quirk, a=fleeg}},
+  print get_chunk_args("name=freddie, foo={bar=baz, quux={quirk, a=fleeg}},
  etc", a);
 \end_layout
 
@@ -3706,8 +3830,12 @@ BEGIN {
 
 \end_layout
 
+\begin_layout Standard
+which should give this output:
+\end_layout
+
 \begin_layout Chunk
-./newfangle
+gca-test.awk-results
 \end_layout
 
 \begin_layout Standard
@@ -3717,109 +3845,27 @@ status open
 
 \begin_layout Plain Layout
 
-=<
-\backslash
-chunkref{get_chunk_args()}>
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-The portable way to erase an array in awk is to split the empty string,
- like this:
-\end_layout
-
-\begin_layout Chunk
-awk-delete-array,params=ARRAY
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-split("", ${ARRAY});
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Chunk
-old-get_chunk_args()
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-function get_chunk_args(text, args,
+a[foo.quux.quirk] => 
 \end_layout
 
 \begin_layout Plain Layout
 
-  # local vars
+a[foo.quux.a] => fleeg
 \end_layout
 
 \begin_layout Plain Layout
 
-  pairs, p, k, r)
+a[foo.bar] => baz
 \end_layout
 
 \begin_layout Plain Layout
 
-{
+a[etc] => 
 \end_layout
 
 \begin_layout Plain Layout
 
-  =<
-\backslash
-chunkref{awk-delete-array{args}}>
-\end_layout
-
-\begin_layout Plain Layout
-
-  r=split(text ,pairs, " *, *");
-\end_layout
-
-\begin_layout Plain Layout
-
-  for(p in pairs) {
-\end_layout
-
-\begin_layout Plain Layout
-
-    if (split(pairs[p], k, " *= *")) {
-\end_layout
-
-\begin_layout Plain Layout
-
-      args[k[1]]=k[2];
-\end_layout
-
-\begin_layout Plain Layout
-
-    }
-\end_layout
-
-\begin_layout Plain Layout
-
-  }
-\end_layout
-
-\begin_layout Plain Layout
-
-}
+a[name] => freddie
 \end_layout
 
 \end_inset
@@ -3832,27 +3878,8 @@ Recognizing Chunks
 \end_layout
 
 \begin_layout Standard
-Newfangle recognizes notangle chunks when a line matches the pattern 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-^<
-\begin_inset space \hspace*{}
-\length 0in
-\end_inset
-
-<.*?>
-\begin_inset space \hspace*{}
-\length 0in
-\end_inset
-
->=
-\end_layout
-
-\end_inset
-
- but as we want better LaTeX integration we will recognize:
+Newfangle recognizes notangle chunks, but as we want better LaTeX integration
+ we will recognize:
 \end_layout
 
 \begin_layout Itemize
@@ -3915,8 +3942,17 @@ begin{Chunk}[options]
 
 \end_inset
 
+ --- also more suitable for plain LaTeX users
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Is there such a thing as plain LaTeX?
+\end_layout
+
+\end_inset
+
 .
- 
 \end_layout
 
 \begin_layout Subsection
@@ -4008,7 +4044,8 @@ lstset
 
 \end_inset
 
-; in fact within the LaTeX 
+.
+ (In fact within the LaTeX 
 \begin_inset Flex CharStyle:Code
 status collapsed
 
@@ -4049,7 +4086,7 @@ lstset
 
 \end_inset
 
-.
+).
 \end_layout
 
 \begin_layout Chunk
@@ -4085,7 +4122,7 @@ Chunk{ *([^ ,}]*),?(.*)}", line)) {
 
 \begin_layout Plain Layout
 
-    next_chunk_name=line[1];
+    next_chunk_name = line[1];
 \end_layout
 
 \begin_layout Plain Layout
@@ -4121,7 +4158,12 @@ status collapsed
 \begin_layout Plain Layout
 
 \backslash
-lstlistings[name=chunk-name]
+lstlistings[name=
+\begin_inset space \hspace{}
+\length 0in
+\end_inset
+
+chunk-name]
 \end_layout
 
 \end_inset
@@ -4129,6 +4171,39 @@ lstlistings[name=chunk-name]
  text, otherwise we fall back to the name found in the previous chunk command.
  This attempt is very basic and doesn't support commas or spaces or square
  brackets as part of the chunkname.
+ We also recognize 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+
+\backslash
+begin{Chunk}
+\end_layout
+
+\end_inset
+
+ which is convenient for some users
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+but not yet supported in LaTeX
+\end_layout
+
+\end_inset
+
+
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Plain Layout
+Add noweave support
+\end_layout
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Standard
@@ -4142,7 +4217,11 @@ status open
 \backslash
 
 \backslash
-begin{lstlisting}/ {
+begin{lstlisting}|^
+\backslash
+
+\backslash
+begin{Chunk}/ {
 \end_layout
 
 \begin_layout Plain Layout
@@ -4191,134 +4270,11 @@ begin{lstlisting}/ {
 \end_layout
 
 \begin_layout Subsubsection
-Codescrap
-\end_layout
-
-\begin_layout Standard
-We also recognize a previous scheme for marking chunks as I still have documents
- using that format.
-\end_layout
-
-\begin_layout Chunk
-recognize-chunk
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-/^
-\backslash
-
-\backslash
-begin{CodeScrap}|^
-\backslash
-
-\backslash
-begin{Chunk}/ {
-\end_layout
-
-\begin_layout Plain Layout
-
-  chunking=1;
-\end_layout
-
-\begin_layout Plain Layout
-
-  next;
-\end_layout
-
-\begin_layout Plain Layout
-
-}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-The actual chunk is not declared until the following line, as an 
-\backslash
-item.
-\end_layout
-
-\begin_layout Chunk
-recognize-chunk
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-/^
-\backslash
-
-\backslash
-item *
-\backslash
-[{/ && chunking {
-\end_layout
-
-\begin_layout Plain Layout
-
-  if (match($0, "^
-\backslash
-
-\backslash
-
-\backslash
-
-\backslash
-item *
-\backslash
-
-\backslash
-[{(.*[^ ]) *}
-\backslash
-
-\backslash
-]", line)) {
-\end_layout
-
-\begin_layout Plain Layout
-
-    new_chunk(line[1]);
-\end_layout
-
-\begin_layout Plain Layout
-
-    next;
-\end_layout
-
-\begin_layout Plain Layout
-
-  }
-\end_layout
-
-\begin_layout Plain Layout
-
-}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Subsubsection
 Noweb
 \end_layout
 
 \begin_layout Standard
-We also may as well recognize notangle style chunks too
+We recognize notangle style chunks too:
 \end_layout
 
 \begin_layout Chunk
@@ -4394,7 +4350,28 @@ e
 \emph default
  is surrounded by square brackets so that when this document is processed,
  this fragment doesn't end early as the lstlistings package recognizes it's
- end-string!
+ own end-string! 
+\begin_inset Note Greyedout
+status open
+
+\begin_layout Plain Layout
+This doesn't make sense as the regex is anchored with ^, which this line
+ does not begin with!
+\end_layout
+
+\end_inset
+
+
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+No, it doesn't.
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Chunk
@@ -4412,7 +4389,11 @@ status open
 \backslash
 
 \backslash
-[e]nd{lstlisting}/ {
+[e]nd{lstlisting}|^
+\backslash
+
+\backslash
+[e]nd{Chunk}/ {
 \end_layout
 
 \begin_layout Plain Layout
@@ -4428,52 +4409,6 @@ status open
 \begin_layout Plain Layout
 
   next;
-\end_layout
-
-\begin_layout Plain Layout
-
-}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Subsubsection
-CodeScrap
-\end_layout
-
-\begin_layout Chunk
-recognize-chunk
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-/^
-\backslash
-
-\backslash
-end{CodeScrap}|^
-\backslash
-
-\backslash
-end{Chunk}|^@/ {
-\end_layout
-
-\begin_layout Plain Layout
-
-  chunking=0;
-\end_layout
-
-\begin_layout Plain Layout
-
-  active_chunk="";
 \end_layout
 
 \begin_layout Plain Layout
@@ -4699,7 +4634,12 @@ status collapsed
 \begin_layout Plain Layout
 =<
 \backslash
-chunkref{chunk-name}>
+chunkref{
+\begin_inset space \hspace{}
+\length 0in
+\end_inset
+
+chunk-name}>
 \end_layout
 
 \end_inset
@@ -4747,7 +4687,41 @@ status collapsed
 
 \end_inset
 
- as an end delimiter for the texcl escape.
+ as an end delimiter for the 
+\emph on
+texcl
+\emph default
+ escape, so we must make do with a single 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+>
+\end_layout
+
+\end_inset
+
+, which is better matched by 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+=<
+\end_layout
+
+\end_inset
+
+ than 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+<<
+\end_layout
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Standard
@@ -4756,10 +4730,31 @@ As each chunk line may contain more than one chunk include, we will split
 \end_layout
 
 \begin_layout Standard
-First, as long as the chunk contains a chunkref command we take as much
- as we can up to the first chunkref command, and process it, setting the
- chunk to the text after that chunkref command.
- We will process this as we continue around the loop.
+First, as long as the chunk contains a 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+
+\backslash
+chunkref
+\end_layout
+
+\end_inset
+
+ command we take as much as we can up to the first 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+
+\backslash
+chunkref
+\end_layout
+
+\end_inset
+
+ command.
 \end_layout
 
 \begin_layout Chunk
@@ -4783,7 +4778,12 @@ indent = 0;
 
 \begin_layout Plain Layout
 
-while(match(chunk, "([=]<
+while(match(chunk, 
+\end_layout
+
+\begin_layout Plain Layout
+
+            "([=]<
 \backslash
 
 \backslash
@@ -4799,13 +4799,58 @@ chunkref{([^}>]*)}(
 \backslash
 
 \backslash
-]|)>|<<([a-zA-Z_][-a-zA-Z0-9_]*)>>)", line)) {
+]|)>|<<([a-zA-Z_][-a-zA-Z0-9_]*)>>)", 
+\end_layout
+
+\begin_layout Plain Layout
+
+            line)
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+) {
 \end_layout
 
 \begin_layout Plain Layout
 
   chunklet = substr(chunk, 1, RSTART - 1);
 \end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+We keep track of the indent count, by counting the number of literal characters
+ found.
+ We can then preserve this indent when multi-line chunks are expanded.
+\end_layout
+
+\begin_layout Standard
+We then process it this literal text, and set the chunk to be the text after
+ the 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+
+\backslash
+chunkref
+\end_layout
+
+\end_inset
+
+ command, which we will process this tex as we continue around the loop.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
 
 \begin_layout Plain Layout
 
@@ -4862,7 +4907,7 @@ line[3]
 \end_inset
 
  and are considered at this stage of processing to be part of the name of
- the chink to be included.
+ the chunk to be included.
 \end_layout
 
 \begin_layout Standard
@@ -4941,8 +4986,8 @@ chunk_line(active_chunk, chunk);
 \end_layout
 
 \begin_layout Standard
-We add the newline (ORS) as a chunklet on it's own, to make it easier to
- count detect new lines and thus indent rules when processing the output.
+We add the newline character as a chunklet on it's own, to make it easier
+ to detect new lines and thus chunk indents when processing the output.
 \end_layout
 
 \begin_layout Standard
@@ -8174,6 +8219,77 @@ renewcommand{
 code}[1]{
 \backslash
 texttt{#1}}%
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+We also define a 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+CChunk
+\end_layout
+
+\end_inset
+
+ macro, for use as: 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+
+\backslash
+begin{CChunk}
+\end_layout
+
+\end_inset
+
+ which will need renaming to 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+
+\backslash
+begin{Chunk}
+\end_layout
+
+\end_inset
+
+ when I can do this without clashing with 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+
+\backslash
+Chunk
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+lstnewenvironment{Chunk}{
+\backslash
+relax}{
+\backslash
+relax}%
 \end_layout
 
 \end_inset

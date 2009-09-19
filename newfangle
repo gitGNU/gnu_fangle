@@ -1,20 +1,20 @@
 #! /usr/bin/awk -f
-# #newfangle - fully featured notangle replacement in awk
-  #
-  #Copyright (C) Sam Liddicott 2009
-  #
-  #This program is free software: you can redistribute it and/or modify
-  #it under the terms of the GNU General Public License as published by
-  #the Free Software Foundation, either version 3 of the License, or
-  #(at your option) any later version.
-  #
-  #This program is distributed in the hope that it will be useful,
-  #but WITHOUT ANY WARRANTY; without even the implied warranty of
-  #MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  #GNU General Public License for more details.
-  #
-  #You should have received a copy of the GNU General Public License
-  #along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#newfangle - fully featured notangle replacement in awk
+#
+#Copyright (C) Sam Liddicott 2009
+#
+#This program is free software: you can redistribute it and/or modify
+#it under the terms of the GNU General Public License as published by
+#the Free Software Foundation, either version 3 of the License, or
+#(at your option) any later version.
+#
+#This program is distributed in the hope that it will be useful,
+#but WITHOUT ANY WARRANTY; without even the implied warranty of
+#MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#GNU General Public License for more details.
+#
+#You should have received a copy of the GNU General Public License
+#along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # NOTE: Arnold Robbins public domain getopt for awk is also used:
 # getopt.awk --- do C library getopt(3) function in awk
@@ -23,6 +23,7 @@
 #
 # Initial version: March, 1991
 # Revised: May, 1993
+
 function getopt(argc, argv, options,    thisopt, i)
 {
     if (length(options) == 0)    # no options given
@@ -262,12 +263,12 @@ BEGIN {
 }
 /^\\Chunk{/ {
   if (match($0, "^\\\\Chunk{ *([^ ,}]*),?(.*)}", line)) {
-    next_chunk_name=line[1];
+    next_chunk_name = line[1];
     get_chunk_args(line[2], next_chunk_args);
   }
   next;
 }
-/^\\begin{lstlisting}/ {
+/^\\begin{lstlisting}|^\\begin{Chunk}/ {
   if (match($0, "}.*[[,] *name= *{? *([^], }]*)", line)) {
     new_chunk(line[1]);
   } else {
@@ -275,16 +276,6 @@ BEGIN {
   }
   chunking=1;
   next;
-}
-/^\\begin{CodeScrap}|^\\begin{Chunk}/ {
-  chunking=1;
-  next;
-}
-/^\\item *\[{/ && chunking {
-  if (match($0, "^\\\\item *\\[{(.*[^ ]) *}\\]", line)) {
-    new_chunk(line[1]);
-    next;
-  }
 }
 /^[<]<.*[>]>=/ {
   if (match($0, "^[<]<(.*)[>]>= *$", line)) {
@@ -294,14 +285,10 @@ BEGIN {
     next;
   }
 }
-/^\\[e]nd{lstlisting}/ {
+/^\\[e]nd{lstlisting}|^\\[e]nd{Chunk}/ {
   chunking=0;
   active_chunk="";
   next;
-}
-/^\\end{CodeScrap}|^\\end{Chunk}|^@/ {
-  chunking=0;
-  active_chunk="";
 }
 /^@/ {
   chunking=0;
@@ -311,7 +298,10 @@ BEGIN {
 length(active_chunk) {
   chunk = $0;
   indent = 0;
-  while(match(chunk, "([=]<\\\\chunkref{([^}>]*)}(\\[.*\\]|)>|<<([a-zA-Z_][-a-zA-Z0-9_]*)>>)", line)) {
+  while(match(chunk, 
+              "([=]<\\\\chunkref{([^}>]*)}(\\[.*\\]|)>|<<([a-zA-Z_][-a-zA-Z0-9_]*)>>)", 
+              line)\
+  ) {
     chunklet = substr(chunk, 1, RSTART - 1);
     indent += length(chunklet);
     chunk_line(active_chunk, chunklet);
@@ -345,7 +335,7 @@ END {
 }
 function get_chunk_args(text, values,
   # optional parameters
-  path,
+  path, # hierarchical precursors
   # local vars
   a, name)
 {
