@@ -583,6 +583,20 @@ listings.sty
  themselves.
 \end_layout
 
+\begin_layout Standard
+The 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+xargs.sty
+\end_layout
+
+\end_inset
+
+ package is also required.
+\end_layout
+
 \begin_layout Chapter
 Literate Programming with Newfangle
 \end_layout
@@ -758,7 +772,7 @@ Newfangle Literate
 \emph on
 Listings
 \emph default
- and possibley also 
+ and possibly also 
 \emph on
 Logical Markup
 \emph default
@@ -803,7 +817,11 @@ Customising the listing appearance
 \end_layout
 
 \begin_layout Standard
-In the final document, the code is formatted using the lstlistings package.
+In the final document, the code is formatted using the 
+\noun on
+lstlistings
+\noun default
+ package.
  The chunk style doesn't just define the chunk name, but can also define
  any other chunk options supported by the lstlistings package 
 \begin_inset Flex CharStyle:Code
@@ -3121,8 +3139,36 @@ a[etc]
 
 \begin_layout Standard
 On reflection it seems that sometimes such nesting is not desirable, as
- the braces are used to delimit values that contain commas; so I may change
- this behaviour.
+ the braces are also used to delimit values that contain commas --- we may
+ consider that
+\end_layout
+
+\begin_layout LyX-Code
+name={williamson, freddie}
+\end_layout
+
+\begin_layout Standard
+should assign 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+williamson, freddie
+\end_layout
+
+\end_inset
+
+ to 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+name
+\end_layout
+
+\end_inset
+
+ --- so I may change this behaviour.
 \begin_inset Note Note
 status collapsed
 
@@ -4706,7 +4752,14 @@ status collapsed
 
 \begin_layout Standard
 As each chunk line may contain more than one chunk include, we will split
- of chunk includes in an iterative fashion
+ of chunk includes in an iterative fashion.
+\end_layout
+
+\begin_layout Standard
+First, as long as the chunk contains a chunkref command we take as much
+ as we can up to the first chunkref command, and process it, setting the
+ chunk to the text after that chunkref command.
+ We will process this as we continue around the loop.
 \end_layout
 
 \begin_layout Chunk
@@ -4754,6 +4807,54 @@ chunkref{([^}>]*)}(
   chunk = substr(chunk, RSTART + RLENGTH);
 \end_layout
 
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+We then consider the type of chunk command we have found, whether it is
+ the newfangle style command beginning with 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+=<
+\end_layout
+
+\end_inset
+
+ or the older notangle style beginning with 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+<<
+\end_layout
+
+\end_inset
+
+.
+ Newfangle chunks may have parameters contained within square brackets.
+ These will be matched in 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+line[3]
+\end_layout
+
+\end_inset
+
+ and are considered at this stage of processing to be part of the name of
+ the chink to be included.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
 \begin_layout Plain Layout
 
   if (substr(line[1], 1, 1) == "=") {
@@ -4761,7 +4862,7 @@ chunkref{([^}>]*)}(
 
 \begin_layout Plain Layout
 
-    # chunk name up to [}{
+    # chunk name up to }
 \end_layout
 
 \begin_layout Plain Layout
@@ -4794,6 +4895,21 @@ chunkref{([^}>]*)}(
   }
 \end_layout
 
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The loop will continue until there are no more chunkref statements in the
+ text, at which point we process the final part of the chunk.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
 \begin_layout Plain Layout
 
 }
@@ -4806,10 +4922,6 @@ chunk_line(active_chunk, chunk);
 
 \end_inset
 
-
-\end_layout
-
-\begin_layout Standard
 We will also permit a chunk-part number to follow in square brackets, so
  that 
 \begin_inset Flex CharStyle:Code

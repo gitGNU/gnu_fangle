@@ -294,7 +294,7 @@ while(match(chunk, "([=]<\\\\chunkref{([^}>]*)}(\\[.*\\]|)>|<<([a-zA-Z_][-a-zA-Z
   chunk_line(active_chunk, substr(chunk, 1, RSTART - 1));
   chunk = substr(chunk, RSTART + RLENGTH);
   if (substr(line[1], 1, 1) == "=") {
-    # chunk name up to [}{
+    # chunk name up to }
     chunk_include(active_chunk, line[2] line[3]);
   } else if (substr(line[1], 1, 1) == "<") {
     chunk_include(active_chunk, line[4]);
