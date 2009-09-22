@@ -133,7 +133,7 @@ function output_chunks(  a)
 
 function output_chunk(chunk) {
   newline = 1;
-  lineno_needed = 1;
+  lineno_needed = linenos;
 
   write_chunk(chunk);
 }

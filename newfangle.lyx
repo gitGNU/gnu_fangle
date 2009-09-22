@@ -11,6 +11,7 @@ basicstyle=\footnotesize\ttfamily,
 %keywordstyle=\color{darkgreen},
 numberstyle=\tiny,language=C,columns=fullflexible,
 numberfirstline=true}
+ 
 \end_preamble
 \use_default_options true
 \begin_modules
@@ -85,7 +86,11 @@ Introduction
 \end_layout
 
 \begin_layout Standard
-Newfangle is a tool for newfangled literate programming.
+
+\noun on
+Newfangle
+\noun default
+ is a tool for newfangled literate programming.
  Newfangled is defined as 
 \emph on
 New and often needlessly novel
@@ -95,6 +100,11 @@ New and often needlessly novel
 TheFreeDictionary.com
 \noun default
 .
+\end_layout
+
+\begin_layout Standard
+In this case, newfangled means yet another new and improved method for literate
+ programming.
 \end_layout
 
 \begin_layout Standard
@@ -115,23 +125,30 @@ ons for semantic markup as TeX itself.
 \noun on
 Norman Ramsey
 \noun default
- wrote the notangle set of tools which fortunately reduced the amount of
- magic characters to one, an eminently manageable quanity, and in doing
- so inadvertantly brought the wonders of literate programming within my
- reach.
+ wrote the 
+\noun on
+noweb
+\noun default
+ set of tools (notangle, noweave and noroots) which helpfully reduced the
+ amount of magic characters to one (an eminently manageable quanity) and
+ in doing so brought the wonders of literate programming within my reach.
 \end_layout
 
 \begin_layout Standard
-Using LyX for LaTeX editing, I had various troubles with the no-tangle tools,
- some of which were my fault, some of which were notangles fault (or noweave)
- and some of which were LyX's fault.
+Using LyX for LaTeX editing, I had various troubles with the noweb tools,
+ some of which were my fault, some of which were noweb's fault and some
+ of which were LyX's fault.
 \end_layout
 
 \begin_layout Standard
-Notangle generally brought literate programming to the masses through removing
- some of the complexity of the original literate programming, but this would
- be of no advantage to me if the LyX --- LaTeX combination brings more complicat
-ions in their place.
+
+\noun on
+Noweb
+\noun default
+ generally brought literate programming to the masses through removing some
+ of the complexity of the original literate programming, but this would
+ be of no advantage to me if the LyX --- LaTeX combination brought more
+ complications in their place.
 \end_layout
 
 \begin_layout Standard
@@ -143,7 +160,7 @@ Newfangle was thus born --- as an awk replacement for notangle, adding some
 
 \begin_layout Standard
 Significantly, newfangle has one program which replaces various programs
- in notangle.
+ in Noweb.
  Specifically noweave is done away with and implemented directly as LaTeX
  macros.
 \end_layout
@@ -162,68 +179,6 @@ LatexCommand tableofcontents
 \end_inset
 
 
-\end_layout
-
-\begin_layout Part
-Running Newfangle
-\end_layout
-
-\begin_layout Standard
-Newfangle is a replacement for noweb, which consists of 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-notangle
-\end_layout
-
-\end_inset
-
-, 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-noroots
-\end_layout
-
-\end_inset
-
- and 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-noweave
-\end_layout
-
-\end_inset
-
-.
-\end_layout
-
-\begin_layout Standard
-Like 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-notangle
-\end_layout
-
-\end_inset
-
- and 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-noroots
-\end_layout
-
-\end_inset
-
- it can read multiple named files, or from stdin.
 \end_layout
 
 \begin_layout Chapter
@@ -344,6 +299,68 @@ status open
 \end_inset
 
 
+\end_layout
+
+\begin_layout Part
+Running Newfangle
+\end_layout
+
+\begin_layout Standard
+Newfangle is a replacement for noweb, which consists of 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+notangle
+\end_layout
+
+\end_inset
+
+, 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+noroots
+\end_layout
+
+\end_inset
+
+ and 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+noweave
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Like 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+notangle
+\end_layout
+
+\end_inset
+
+ and 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+noroots
+\end_layout
+
+\end_inset
+
+ it can read multiple named files, or from stdin.
 \end_layout
 
 \begin_layout Chapter
@@ -679,7 +696,11 @@ set -x ; newfangle -Rlyx-build $$i |
 \begin_layout Standard
 (But don't cut-n-paste it from this document or you'll be pasting a multi-line
  string which will break your lyx preferences file).
- I hope that one day, LyX will set these into the environment when calling
+ 
+\end_layout
+
+\begin_layout Standard
+I hope that one day, LyX will set these into the environment when calling
  the build script.
 \end_layout
 
@@ -1395,37 +1416,38 @@ cd $PROJECT_DIR || exit 1
 
 \begin_layout Plain Layout
 
-/usr/bin/newfangle -filter ./notanglefix-filter 
+#/usr/bin/newfangle -filter ./notanglefix-filter 
 \backslash
 
 \end_layout
 
 \begin_layout Plain Layout
 
-  -R./Makefile.inc "../../noweb-lyx/noweb-lyx3.lyx" 
+#  -R./Makefile.inc "../../noweb-lyx/noweb-lyx3.lyx" 
 \backslash
 
 \end_layout
 
 \begin_layout Plain Layout
 
-  | sed '/NOWEB_SOURCE=/s/=.*/=samba4-dfs.lyx/' 
+#  | sed '/NOWEB_SOURCE=/s/=.*/=samba4-dfs.lyx/' 
 \backslash
 
 \end_layout
 
 \begin_layout Plain Layout
 
-  > ./Makefile.inc
+#  > ./Makefile.inc
 \end_layout
 
 \begin_layout Plain Layout
 
+#
 \end_layout
 
 \begin_layout Plain Layout
 
-make -f ./Makefile.inc newfangle_sources
+#make -f ./Makefile.inc newfangle_sources
 \end_layout
 
 \end_inset
@@ -2776,8 +2798,8 @@ chunkref{gpl3-copyright}>
 \end_layout
 
 \begin_layout Standard
-We also code from Arnold Robbins public domain getopt (1993 revision) defined
- in chapter 
+We also use code from Arnold Robbins public domain getopt (1993 revision)
+ defined in chapter 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "cha:getopt"
@@ -2829,7 +2851,7 @@ chunkref{getopt.awk-getopt()}>
 \end_layout
 
 \begin_layout Standard
-And assemble the following chunks
+And include the following chunks
 \end_layout
 
 \begin_layout Chunk
@@ -2937,6 +2959,10 @@ split("", ${ARRAY});
 
 \end_layout
 
+\begin_layout Chunk
+,params=
+\end_layout
+
 \begin_layout Section
 Catching errors
 \end_layout
@@ -3009,7 +3035,7 @@ chunkref{error()}>
 
 \end_layout
 
-\begin_layout Section
+\begin_layout Chapter
 lstlistings
 \end_layout
 
@@ -3672,7 +3698,7 @@ a[1]
 \end_layout
 
 \begin_layout Standard
-If the option does have a value, then if 
+If the option does have a value, then if the expression 
 \begin_inset Flex CharStyle:Code
 status collapsed
 
@@ -3682,7 +3708,7 @@ substr(a[4],1,1)
 
 \end_inset
 
- is a brace 
+ returns a brace 
 \begin_inset Flex CharStyle:Code
 status collapsed
 
@@ -3874,12 +3900,139 @@ a[name] => freddie
 \end_layout
 
 \begin_layout Section
+Expanding chunk args
+\end_layout
+
+\begin_layout Chunk
+expand_chunk_args()
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+function expand_chunk_args(text, params, args,  
+\end_layout
+
+\begin_layout Plain Layout
+
+  p, text_array, next_text, v, t, l)
+\end_layout
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\begin_layout Plain Layout
+
+  if (split(text, text_array, "
+\backslash
+
+\backslash
+${")) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    for(p in params) {
+\end_layout
+
+\begin_layout Plain Layout
+
+      v[params[p]]=args[p];
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+    text=text_array[1];
+\end_layout
+
+\begin_layout Plain Layout
+
+    for(t in text_array) if (t>1) {
+\end_layout
+
+\begin_layout Plain Layout
+
+      # check the text up to } for a parameter and replace with arg
+\end_layout
+
+\begin_layout Plain Layout
+
+      if (match(text_array[t], "^([a-zA-Z_][a-zA-Z0-9_]*)}", l) &&
+\end_layout
+
+\begin_layout Plain Layout
+
+          l[1] in v) 
+\end_layout
+
+\begin_layout Plain Layout
+
+      {
+\end_layout
+
+\begin_layout Plain Layout
+
+        text = text v[l[1]] substr(text_array[t], length(l[1])+2);
+\end_layout
+
+\begin_layout Plain Layout
+
+      } else {
+\end_layout
+
+\begin_layout Plain Layout
+
+        text = text "${" text_array[t];
+\end_layout
+
+\begin_layout Plain Layout
+
+      }
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+  }
+\end_layout
+
+\begin_layout Plain Layout
+
+  return text;
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chapter
 Recognizing Chunks
 \end_layout
 
 \begin_layout Standard
-Newfangle recognizes notangle chunks, but as we want better LaTeX integration
- we will recognize:
+Newfangle recognizes noweb chunks, but as we also want better LaTeX integration
+ we will recognize any of these:
 \end_layout
 
 \begin_layout Itemize
@@ -3919,11 +4072,7 @@ begin{lstlistings}
 
 \end_inset
 
-,
-\begin_inset Newline newline
-\end_inset
-
-possibly with 
+, possibly with 
 \backslash
 Chunk{\SpecialChar \ldots{}
 } on the previous line
@@ -3955,7 +4104,7 @@ Is there such a thing as plain LaTeX?
 .
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Section
 Chunk start
 \end_layout
 
@@ -3974,7 +4123,7 @@ chunking
  In such a state, input lines will be assigned to the current chunk.
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 lstlistings
 \end_layout
 
@@ -4269,7 +4418,7 @@ begin{Chunk}/ {
 
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 Noweb
 \end_layout
 
@@ -4331,7 +4480,7 @@ status open
 
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Section
 Chunk end
 \end_layout
 
@@ -4339,7 +4488,7 @@ Chunk end
 Likewise, we need to recognize when a chunk ends.
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 lstlistings
 \end_layout
 
@@ -4421,7 +4570,7 @@ status open
 
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 noweb
 \end_layout
 
@@ -4484,7 +4633,7 @@ status open
 
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Section
 Chunk contents
 \end_layout
 
@@ -4604,7 +4753,7 @@ status collapsed
 , but we support other variations.
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 \begin_inset CommandInset label
 LatexCommand label
 name "sub:lstlistings-includes"
@@ -5050,7 +5199,7 @@ reference "sub:Chunk-parts"
 
 \end_layout
 
-\begin_layout Section
+\begin_layout Chapter
 Processing Options
 \end_layout
 
@@ -5320,7 +5469,7 @@ function help() {
 
 \end_layout
 
-\begin_layout Section
+\begin_layout Chapter
 Chunk Modes
 \end_layout
 
@@ -5346,7 +5495,7 @@ s within strings.
 \end_layout
 
 \begin_layout Standard
-newfangle similarly can recognize strings, and comments, etc, within a language,
+Newfangle similarly can recognize strings, and comments, etc, within a language,
  so that any chunks included with 
 \begin_inset Flex CharStyle:Code
 status collapsed
@@ -5431,7 +5580,9 @@ chunkref{example-perl}>"
 \end_layout
 
 \begin_layout Standard
-we would expect the output to look like this:
+we would need the output to like this if it were to work: (note that the
+ double quote " as part of the regex has been quoted with a slash to protect
+ it from shell interpretation.
 \end_layout
 
 \begin_layout LyX-Code
@@ -5443,7 +5594,7 @@ $/'/;"
 \end_layout
 
 \begin_layout Standard
-and if that were then included in a chunk with 
+If that were then included in a chunk with 
 \begin_inset Flex CharStyle:Code
 status collapsed
 
@@ -5478,7 +5629,7 @@ chunkref{sh-example}>
 \end_layout
 
 \begin_layout Standard
-We would expect the output to look like this --- note the $$:
+We would need the output to look like this --- note the $$:
 \end_layout
 
 \begin_layout LyX-Code
@@ -5493,12 +5644,12 @@ $$/'/;"
 In order to do this, we need to define a mode-tracker for each supported
  language, that can detect the various quoting modes, and provide a transformati
 on that must be applied to any included text so that it will be presented
- literally and not subject to additional interpolation.
+ correctly after the additional interpolation that it will be subject to.
 \end_layout
 
 \begin_layout Standard
 For example, the transformation for text to be inserted into sh double-quoted
- strings would be:
+ strings would be something like:
 \end_layout
 
 \begin_layout LyX-Code
@@ -5593,7 +5744,7 @@ or is it the other way around?
  
 \end_layout
 
-\begin_layout Section
+\begin_layout Chapter
 Generating the output
 \end_layout
 
@@ -5898,7 +6049,7 @@ function output_chunk(chunk) {
 
 \begin_layout Plain Layout
 
-  lineno_needed = 1;
+  lineno_needed = linenos;
 \end_layout
 
 \begin_layout Plain Layout
@@ -5924,7 +6075,7 @@ function output_chunk(chunk) {
 
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Section
 Assembling the chunks
 \end_layout
 
@@ -6000,7 +6151,7 @@ function write_chunk(chunk_name, indent, tail,
 
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 \begin_inset CommandInset label
 LatexCommand label
 name "sub:Chunk-parts"
@@ -6621,134 +6772,7 @@ n"
 
 \end_layout
 
-\begin_layout Subsection
-Expanding chunk args
-\end_layout
-
-\begin_layout Chunk
-expand_chunk_args()
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-function expand_chunk_args(text, params, args,  
-\end_layout
-
-\begin_layout Plain Layout
-
-  p, text_array, next_text, v, t, l)
-\end_layout
-
-\begin_layout Plain Layout
-
-{
-\end_layout
-
-\begin_layout Plain Layout
-
-  if (split(text, text_array, "
-\backslash
-
-\backslash
-${")) {
-\end_layout
-
-\begin_layout Plain Layout
-
-    for(p in params) {
-\end_layout
-
-\begin_layout Plain Layout
-
-      v[params[p]]=args[p];
-\end_layout
-
-\begin_layout Plain Layout
-
-    }
-\end_layout
-
-\begin_layout Plain Layout
-
-    text=text_array[1];
-\end_layout
-
-\begin_layout Plain Layout
-
-    for(t in text_array) if (t>1) {
-\end_layout
-
-\begin_layout Plain Layout
-
-      # check the text up to } for a parameter and replace with arg
-\end_layout
-
-\begin_layout Plain Layout
-
-      if (match(text_array[t], "^([a-zA-Z_][a-zA-Z0-9_]*)}", l) &&
-\end_layout
-
-\begin_layout Plain Layout
-
-          l[1] in v) 
-\end_layout
-
-\begin_layout Plain Layout
-
-      {
-\end_layout
-
-\begin_layout Plain Layout
-
-        text = text v[l[1]] substr(text_array[t], length(l[1])+2);
-\end_layout
-
-\begin_layout Plain Layout
-
-      } else {
-\end_layout
-
-\begin_layout Plain Layout
-
-        text = text "${" text_array[t];
-\end_layout
-
-\begin_layout Plain Layout
-
-      }
-\end_layout
-
-\begin_layout Plain Layout
-
-    }
-\end_layout
-
-\begin_layout Plain Layout
-
-  }
-\end_layout
-
-\begin_layout Plain Layout
-
-  return text;
-\end_layout
-
-\begin_layout Plain Layout
-
-}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Section
+\begin_layout Chapter
 Storing chunks
 \end_layout
 
@@ -8175,7 +8199,8 @@ code
 
 \end_inset
 
- environment, we re-define the better one here.
+ environment, we re-define the one that LyX logical markup module expects
+ here.
 \end_layout
 
 \begin_layout Chunk
@@ -9610,7 +9635,31 @@ lst@name}%
 \backslash
 nwtagstyle{}
 \backslash
-/[
+/%
+\end_layout
+
+\begin_layout Plain Layout
+
+      
+\backslash
+@ifundefined{newfangle@chunk@params}{}{%
+\end_layout
+
+\begin_layout Plain Layout
+
+        (
+\backslash
+newfangle@chunk@params)%
+\end_layout
+
+\begin_layout Plain Layout
+
+      }%
+\end_layout
+
+\begin_layout Plain Layout
+
+      [
 \backslash
 csname 
 \backslash
@@ -10386,27 +10435,12 @@ Todo
 \end_layout
 
 \begin_layout Enumerate
-Fix indents
+^^ is always going to be a problem, see texbytopic 1.2.2 (Work out what I
+ meant by this).
 \end_layout
 
 \begin_layout Enumerate
-Have listings detect and process <<includes>> using hooks.
-\end_layout
-
-\begin_layout Enumerate
-Raise error if non-defined chunk is included
-\end_layout
-
-\begin_layout Enumerate
-^^ is always going to be a problem, see texbytopic 1.2.2
-\end_layout
-
-\begin_layout Enumerate
-Work out what I meant by the previous item.
-\end_layout
-
-\begin_layout Enumerate
-copy over Makefile guide from noweb-lyx document
+copy over up to date Makefile guide from noweb-lyx document
 \end_layout
 
 \begin_layout Enumerate
@@ -10414,7 +10448,8 @@ Make chunk-name settings only apply to chunks with that name
 \end_layout
 
 \begin_layout Enumerate
-includes in the middle of semantic content.
+indent of multi-line chunks may be mode dependant (i.e.
+ not in string literals)
 \end_layout
 
 \begin_layout Part
@@ -10503,6 +10538,44 @@ Well, fancy!
 
 \begin_layout Standard
 Should generate output:
+\end_layout
+
+\begin_layout Chunk
+tests-result
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+What do you see? "I see a joe of 
+\end_layout
+
+\begin_layout Plain Layout
+
+                  colour red, 
+\end_layout
+
+\begin_layout Plain Layout
+
+                  looking closer a funny shade of red"
+\end_layout
+
+\begin_layout Plain Layout
+
+Well, fancy!
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_body

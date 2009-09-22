@@ -65,7 +65,11 @@ AddToPreamble
   \moddef{%
     {\lst@name}%
     {%
-      \nwtagstyle{}\/[\csname \chunkcount\endcsname]~%%
+      \nwtagstyle{}\/%
+      \@ifundefined{newfangle@chunk@params}{}{%
+        (\newfangle@chunk@params)%
+      }%
+      [\csname \chunkcount\endcsname]~%%
       \subpageref{\firstchunkname}%
     }%
   }%
