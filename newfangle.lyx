@@ -3961,6 +3961,15 @@ Expanding chunk arguments
 \end_layout
 
 \begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Explain this in the documentation section too
+\end_layout
+
+\end_inset
+
 As an extension to many literate-programming styles, newfangle permits code
  chunks to take parameters and thus operate somewhat like C pre-processor
  macros, or like C++ templates.
@@ -3982,6 +3991,27 @@ params
 
 \begin_layout LyX-Code
 achunk,language=C,params=name;address
+\end_layout
+
+\begin_layout Standard
+When such a chunk is included the arguments are expressed thus, in square
+ brackets as optional arguments separated by a comma
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+We ought to support qouting in {} like [{Jones, John}, Jones@example.com]
+\end_layout
+
+\end_inset
+
+:
+\end_layout
+
+\begin_layout LyX-Code
+
+\backslash
+chunkref{achunk}[John Jones, jones@example.com]
 \end_layout
 
 \begin_layout Standard
@@ -5535,6 +5565,12 @@ chunk_line(active_chunk, chunk);
 \end_layout
 
 \begin_layout Standard
+\begin_inset CommandInset label
+LatexCommand label
+name "lone-newline"
+
+\end_inset
+
 We add the newline character as a chunklet on it's own, to make it easier
  to detect new lines and thus manage indentation when processing the output.
 \end_layout
@@ -5903,10 +5939,20 @@ function help() {
 \end_layout
 
 \begin_layout Chapter
-Chunk Modes
+Chunk Language Modes
 \end_layout
 
 \begin_layout Standard
+\begin_inset Note Greyedout
+status open
+
+\begin_layout Plain Layout
+This feature is in-development and does not work yet
+\end_layout
+
+\end_inset
+
+
 \begin_inset Note Note
 status open
 
@@ -6013,9 +6059,7 @@ chunkref{example-perl}>"
 \end_layout
 
 \begin_layout Standard
-we would need the output to like this if it were to work: (note that the
- double quote " as part of the regex has been quoted with a slash to protect
- it from shell interpretation.
+we would need the output to like this if it were to work: 
 \end_layout
 
 \begin_layout LyX-Code
@@ -6026,6 +6070,13 @@ perl -pe "s/
 $/'/;"
 \end_layout
 
+\begin_deeper
+\begin_layout Standard
+note that the double quote " as part of the regex has been quoted with a
+ slash to protect it from shell interpretation.
+\end_layout
+
+\end_deeper
 \begin_layout Standard
 If that were then included in a chunk with 
 \begin_inset Flex CharStyle:Code
@@ -6051,9 +6102,14 @@ status open
 
 \begin_layout Plain Layout
 
-target: pre-req; =<
+target: pre-req
+\end_layout
+
+\begin_layout Plain Layout
+
+		=<
 \backslash
-chunkref{sh-example}>
+chunkref{example-sh}>
 \end_layout
 
 \end_inset
@@ -6066,7 +6122,11 @@ We would need the output to look like this --- note the $$:
 \end_layout
 
 \begin_layout LyX-Code
-target: pre-req; perl -pe "s/
+target: pre-req
+\end_layout
+
+\begin_layout LyX-Code
+        perl -pe "s/
 \backslash
 "
 \backslash
@@ -6077,7 +6137,8 @@ $$/'/;"
 In order to do this, we need to define a mode-tracker for each supported
  language, that can detect the various quoting modes, and provide a transformati
 on that must be applied to any included text so that it will be presented
- correctly after the additional interpolation that it will be subject to.
+ correctly after the additional interpolation that it will be subject to
+ at run-time.
 \end_layout
 
 \begin_layout Standard
@@ -6290,7 +6351,17 @@ ORS=""
 \end_inset
 
  because each chunklet is not necessarily a complete line, but we added
- ORS to the input in section 
+ 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+ORS
+\end_layout
+
+\end_inset
+
+ to the input in section 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "sub:ORS-chunk-text"
@@ -6786,6 +6857,12 @@ chunkname{param1, param2}
 .
 \end_layout
 
+\begin_layout Standard
+Before we process each part, we check that the source position hasn't changed
+ unexpectedly, so that we can know if we need to output a new file-line
+ directive.
+\end_layout
+
 \begin_layout Chunk
 write-part
 \end_layout
@@ -6797,38 +6874,9 @@ status open
 
 \begin_layout Plain Layout
 
-if (linenos && (chunk_name SUBSEP "part" SUBSEP part SUBSEP "FILENAME" in
- chunks)) {
-\end_layout
-
-\begin_layout Plain Layout
-
-  a_filename = chunks[chunk_name, "part", part, "FILENAME"];
-\end_layout
-
-\begin_layout Plain Layout
-
-  a_lineno = chunks[chunk_name, "part", part, "LINENO"];
-\end_layout
-
-\begin_layout Plain Layout
-
-  if (a_filename != filename || a_lineno != lineno) {
-\end_layout
-
-\begin_layout Plain Layout
-
-    lineno_needed++;
-\end_layout
-
-\begin_layout Plain Layout
-
-  }
-\end_layout
-
-\begin_layout Plain Layout
-
-}
+=<
+\backslash
+chunkref{check-source-jump}>
 \end_layout
 
 \begin_layout Plain Layout
@@ -6847,82 +6895,9 @@ if (chunks[chunk_name, "part", part, "type"] == part_type_chunk) {
 
 \begin_layout Plain Layout
 
-  if (match(chunklet, "^([^
+  =<
 \backslash
-
-\backslash
-[]*)
-\backslash
-
-\backslash
-[(.*)
-\backslash
-
-\backslash
-]$", chunklet_parts)) {
-\end_layout
-
-\begin_layout Plain Layout
-
-    chunklet = chunklet_parts[1];
-\end_layout
-
-\begin_layout Plain Layout
-
-    split(chunklet_parts[2], call_chunk_args, " *, *");
-\end_layout
-
-\begin_layout Plain Layout
-
-    for (c in call_chunk_args) {
-\end_layout
-
-\begin_layout Plain Layout
-
-      call_chunk_args[c] = expand_chunk_args(call_chunk_args[c], chunk_params,
- chunk_args);
-\end_layout
-
-\begin_layout Plain Layout
-
-    }
-\end_layout
-
-\begin_layout Plain Layout
-
-  } else {
-\end_layout
-
-\begin_layout Plain Layout
-
-    split("", call_chunk_args);
-\end_layout
-
-\begin_layout Plain Layout
-
-  }
-\end_layout
-
-\begin_layout Plain Layout
-
-  write_chunk(chunklet, chunks[chunk_name, "part", part, "indent"],
-\end_layout
-
-\begin_layout Plain Layout
-
-                        chunks[chunk_name, "part", part, "tail"],
-\end_layout
-
-\begin_layout Plain Layout
-
-                        chunk_path "
-\backslash
-n         " chunk_name,
-\end_layout
-
-\begin_layout Plain Layout
-
-                        call_chunk_args);
+chunkref{write-included-chunk}>
 \end_layout
 
 \begin_layout Plain Layout
@@ -6950,6 +6925,118 @@ chunkref{write-chunklets}>
 \begin_layout Plain Layout
 
 }
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+To write an included chunk, we must detect any optional chunk arguments
+ in square brackets.
+ Then we recurse calling 
+\begin_inset Flex Chunkref
+status collapsed
+
+\begin_layout Plain Layout
+write_chunk()
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Chunk
+write-included-chunk
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+if (match(chunklet, "^([^
+\backslash
+
+\backslash
+[]*)
+\backslash
+
+\backslash
+[(.*)
+\backslash
+
+\backslash
+]$", chunklet_parts)) {
+\end_layout
+
+\begin_layout Plain Layout
+
+  chunklet = chunklet_parts[1];
+\end_layout
+
+\begin_layout Plain Layout
+
+  split(chunklet_parts[2], call_chunk_args, " *, *");
+\end_layout
+
+\begin_layout Plain Layout
+
+  for (c in call_chunk_args) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    call_chunk_args[c] = expand_chunk_args(call_chunk_args[c], chunk_params,
+ chunk_args);
+\end_layout
+
+\begin_layout Plain Layout
+
+  }
+\end_layout
+
+\begin_layout Plain Layout
+
+} else {
+\end_layout
+
+\begin_layout Plain Layout
+
+  =<
+\backslash
+chunkref{awk-delete-array}[call_chunk_args]>
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+write_chunk(chunklet, chunks[chunk_name, "part", part, "indent"],
+\end_layout
+
+\begin_layout Plain Layout
+
+                      chunks[chunk_name, "part", part, "tail"],
+\end_layout
+
+\begin_layout Plain Layout
+
+                      chunk_path "
+\backslash
+n         " chunk_name,
+\end_layout
+
+\begin_layout Plain Layout
+
+                      call_chunk_args);
 \end_layout
 
 \end_inset
@@ -7011,6 +7098,20 @@ for(frag = 1; frag <= max_frag; frag++) {
 chunkref{write-file-line}>
 \end_layout
 
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+We then extract the chunklet text and expand any arguments.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
 \begin_layout Plain Layout
 
 \end_layout
@@ -7035,13 +7136,53 @@ chunkref{write-file-line}>
   text = expand_chunk_args(text, chunk_params, chunk_args);
 \end_layout
 
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+If the text is a single newline (which we keep separate - see 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "lone-newline"
+
+\end_inset
+
+) then we increment the line number.
+ In the case where this is the last line of a chunk and it is not a top-level
+ chunk we replace the newline with an empty string --- because the chunk
+ that included this chunk will have the newline at the end of the line that
+ included this chunk.
+\end_layout
+
+\begin_layout Standard
+We also note by 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+newline = 1
+\end_layout
+
+\end_inset
+
+ that we have started a new line, so that indentation can be managed with
+ the following piece of text.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
 \begin_layout Plain Layout
 
 \end_layout
 
 \begin_layout Plain Layout
 
-  if (text == "
+ if (text == "
 \backslash
 n") {
 \end_layout
@@ -7081,6 +7222,43 @@ n") {
     }
 \end_layout
 
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+If this text does not represent a newline, but we see that we are the first
+ piece of text on a newline, then we prefix our text with the current indent.
+ NOTE: 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+newline
+\end_layout
+
+\end_inset
+
+ is a global output-state variable, but the 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+indent
+\end_layout
+
+\end_inset
+
+ is not.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
 \begin_layout Plain Layout
 
   } else {
@@ -7105,6 +7283,20 @@ n") {
 
 \end_layout
 
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Tail will soon no longer be relevant once mode-detection is in place.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
 \begin_layout Plain Layout
 
   text = text tail;
@@ -7114,6 +7306,22 @@ n") {
 
   print text;
 \end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+If a line ends in a backslash --- suggesting continuation --- then we supress
+ outputting file-line as it would probably break the continued lines.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
 
 \begin_layout Plain Layout
 
@@ -7146,9 +7354,9 @@ n") {
 
 \begin_layout Standard
 Of course there is no point in actually outputting the source filename and
- line number if they don't say anything new! We only need to emit them if
- they aren't what is expected, or if we we not able to emit one when they
- had changed.
+ line number (file-line) if they don't say anything new! We only need to
+ emit them if they aren't what is expected, or if we we not able to emit
+ one when they had changed.
 \end_layout
 
 \begin_layout Chunk
@@ -7196,8 +7404,60 @@ n"
 }
 \end_layout
 
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+We check if a new file-line is needed by checking if the source line matches
+ what we (or a compiler) would expect.
+ 
+\end_layout
+
+\begin_layout Chunk
+check-source-jump
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
 \begin_layout Plain Layout
 
+if (linenos && (chunk_name SUBSEP "part" SUBSEP part SUBSEP "FILENAME" in
+ chunks)) {
+\end_layout
+
+\begin_layout Plain Layout
+
+  a_filename = chunks[chunk_name, "part", part, "FILENAME"];
+\end_layout
+
+\begin_layout Plain Layout
+
+  a_lineno = chunks[chunk_name, "part", part, "LINENO"];
+\end_layout
+
+\begin_layout Plain Layout
+
+  if (a_filename != filename || a_lineno != lineno) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    lineno_needed++;
+\end_layout
+
+\begin_layout Plain Layout
+
+  }
+\end_layout
+
+\begin_layout Plain Layout
+
+}
 \end_layout
 
 \end_inset

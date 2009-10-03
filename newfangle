@@ -158,28 +158,28 @@ function write_chunk(chunk_name, indent, tail,
   for(part = 1; part <= max_part; part++) {
     if (! only_part || part == only_part) {
       if (linenos && (chunk_name SUBSEP "part" SUBSEP part SUBSEP "FILENAME" in chunks)) {
-        a_filename = chunks[chunk_name, "part", part, "FILENAME"];
-        a_lineno = chunks[chunk_name, "part", part, "LINENO"];
-        if (a_filename != filename || a_lineno != lineno) {
-          lineno_needed++;
-        }
-      }
+  a_filename = chunks[chunk_name, "part", part, "FILENAME"];
+  a_lineno = chunks[chunk_name, "part", part, "LINENO"];
+  if (a_filename != filename || a_lineno != lineno) {
+    lineno_needed++;
+  }
+}
       
       chunklet = chunks[chunk_name, "part", part];
       if (chunks[chunk_name, "part", part, "type"] == part_type_chunk) {
         if (match(chunklet, "^([^\\[]*)\\[(.*)\\]$", chunklet_parts)) {
-          chunklet = chunklet_parts[1];
-          split(chunklet_parts[2], call_chunk_args, " *, *");
-          for (c in call_chunk_args) {
-            call_chunk_args[c] = expand_chunk_args(call_chunk_args[c], chunk_params, chunk_args);
-          }
-        } else {
-          split("", call_chunk_args);
-        }
-        write_chunk(chunklet, chunks[chunk_name, "part", part, "indent"],
-                              chunks[chunk_name, "part", part, "tail"],
-                              chunk_path "\n         " chunk_name,
-                              call_chunk_args);
+    chunklet = chunklet_parts[1];
+    split(chunklet_parts[2], call_chunk_args, " *, *");
+    for (c in call_chunk_args) {
+      call_chunk_args[c] = expand_chunk_args(call_chunk_args[c], chunk_params, chunk_args);
+    }
+  } else {
+    split("", call_chunk_args);
+  }
+  write_chunk(chunklet, chunks[chunk_name, "part", part, "indent"],
+                        chunks[chunk_name, "part", part, "tail"],
+                        chunk_path "\n         " chunk_name,
+                        call_chunk_args);
       } else if (chunklet SUBSEP "line" in chunks) {
         max_frag = chunks[chunklet, "line"];
   for(frag = 1; frag <= max_frag; frag++) {
@@ -190,13 +190,12 @@ function write_chunk(chunk_name, indent, tail,
     lineno_needed = 0;
   }
   
-  
     text = chunks[chunklet, frag];
    
     /* check params */
     text = expand_chunk_args(text, chunk_params, chunk_args);
   
-    if (text == "\n") {
+   if (text == "\n") {
       lineno++;
       if (part == max_part && frag == max_frag && length(chunk_path)) {
         text = "";
