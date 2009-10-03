@@ -3961,6 +3961,13 @@ Expanding chunk arguments
 \end_layout
 
 \begin_layout Standard
+\begin_inset CommandInset label
+LatexCommand label
+name "cha:Chunk Arguments"
+
+\end_inset
+
+
 \begin_inset Note Note
 status open
 
@@ -7518,6 +7525,60 @@ part_type_chunk=1;
 
 \end_layout
 
+\begin_layout Standard
+The 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+params
+\end_layout
+
+\end_inset
+
+ mentioned are not chunk parameters for parameterized chunks, as mentioned
+ in 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "cha:Chunk Arguments"
+
+\end_inset
+
+, but the lstlistings style parameters used in the 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+
+\backslash
+Chunk
+\end_layout
+
+\end_inset
+
+ command
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+The 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+params
+\end_layout
+
+\end_inset
+
+ parameter is used to hold the parameters for parameterized chunks
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
 \begin_layout Chunk
 chunk-storage-functions
 \end_layout
@@ -7596,6 +7657,16 @@ function new_chunk(chunk_name, params,
 
 }
 \end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
 
 \begin_layout Plain Layout
 
