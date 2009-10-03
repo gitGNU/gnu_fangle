@@ -176,10 +176,11 @@ function write_chunk(chunk_name, indent, tail,
   } else {
     split("", call_chunk_args);
   }
-  write_chunk(chunklet, chunks[chunk_name, "part", part, "indent"],
-                        chunks[chunk_name, "part", part, "tail"],
-                        chunk_path "\n         " chunk_name,
-                        call_chunk_args);
+  write_chunk(chunklet,
+              chunks[chunk_name, "part", part, "indent"] indent,
+              chunks[chunk_name, "part", part, "tail"],
+              chunk_path "\n         " chunk_name,
+              call_chunk_args);
       } else if (chunklet SUBSEP "line" in chunks) {
         max_frag = chunks[chunklet, "line"];
   for(frag = 1; frag <= max_frag; frag++) {

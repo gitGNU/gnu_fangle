@@ -7019,24 +7019,29 @@ chunkref{awk-delete-array}[call_chunk_args]>
 
 \begin_layout Plain Layout
 
-write_chunk(chunklet, chunks[chunk_name, "part", part, "indent"],
+write_chunk(chunklet,
 \end_layout
 
 \begin_layout Plain Layout
 
-                      chunks[chunk_name, "part", part, "tail"],
+            chunks[chunk_name, "part", part, "indent"] indent,
 \end_layout
 
 \begin_layout Plain Layout
 
-                      chunk_path "
+            chunks[chunk_name, "part", part, "tail"],
+\end_layout
+
+\begin_layout Plain Layout
+
+            chunk_path "
 \backslash
 n         " chunk_name,
 \end_layout
 
 \begin_layout Plain Layout
 
-                      call_chunk_args);
+            call_chunk_args);
 \end_layout
 
 \end_inset
