@@ -230,14 +230,13 @@ function expand_chunk_args(text, params, args,
     }
     text=text_array[1];
     for(t in text_array) if (t>1) {
-      # check the text up to } for a parameter and replace with arg
       if (match(text_array[t], "^([a-zA-Z_][a-zA-Z0-9_]*)}", l) &&
-          l[1] in v) 
-      {
-        text = text v[l[1]] substr(text_array[t], length(l[1])+2);
-      } else {
-        text = text "${" text_array[t];
-      }
+      l[1] in v) 
+  {
+    text = text v[l[1]] substr(text_array[t], length(l[1])+2);
+  } else {
+    text = text "${" text_array[t];
+  }
     }
   }
   return text;

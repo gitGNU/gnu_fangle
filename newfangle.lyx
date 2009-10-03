@@ -1,4 +1,4 @@
-#LyX 1.6.3 created this file. For more info see http://www.lyx.org/
+#LyX 1.6.4 created this file. For more info see http://www.lyx.org/
 \lyxformat 345
 \begin_document
 \begin_header
@@ -112,7 +112,7 @@ In this case, newfangled means yet another new and improved method for literate
 \noun on
 Literate Programming
 \noun default
- has a long history featuring such distinctive figures as the great 
+ has a long history starting with the great 
 \noun on
 Donald Knuth
 \noun default
@@ -129,9 +129,29 @@ Norman Ramsey
 \noun on
 noweb
 \noun default
- set of tools (notangle, noweave and noroots) which helpfully reduced the
- amount of magic characters to one (an eminently manageable quanity) and
- in doing so brought the wonders of literate programming within my reach.
+ set of tools (notangle, noweave and noroots) and helpfully reduced the
+ amount of magic character sequences to just 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+<<
+\end_layout
+
+\end_inset
+
+ and 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+@
+\end_layout
+
+\end_inset
+
+, and in doing so brought the wonders of literate programming within my
+ reach.
 \end_layout
 
 \begin_layout Standard
@@ -152,17 +172,25 @@ Noweb
 \end_layout
 
 \begin_layout Standard
-Newfangle was thus born --- as an awk replacement for notangle, adding some
- important features, like better integration with LyX and LaTeX, multiple
- output format conversions, and fixing notangle bugs like indenting when
- using -L for line numbers.
+
+\noun on
+Newfangle
+\noun default
+ was thus born --- as an awk replacement for notangle, adding some important
+ features, like better integration with LyX and LaTeX, multiple output format
+ conversions, and fixing notangle bugs like indenting when using -L for
+ line numbers.
 \end_layout
 
 \begin_layout Standard
-Significantly, newfangle has one program which replaces various programs
+Significantly, newfangle is just one program which replaces various programs
  in Noweb.
  Specifically noweave is done away with and implemented directly as LaTeX
- macros.
+ macros, and noroots is implemented as a function of the untangler 
+\noun on
+newfangle
+\noun default
+.
 \end_layout
 
 \begin_layout Standard
@@ -170,6 +198,34 @@ Newfangle is written in awk for portability reasons, awk being available
  for most platforms.
  A python conversion will probably be attempted for the benefit of LyX.
  (Hasn't anyone implemented awk in python yet?)
+\end_layout
+
+\begin_layout Section*
+Todo
+\end_layout
+
+\begin_layout Enumerate
+^^ is always going to be a problem, see texbytopic 1.2.2 (Work out what I
+ meant by this).
+\end_layout
+
+\begin_layout Enumerate
+copy over up to date Makefile guide from noweb-lyx document
+\end_layout
+
+\begin_layout Enumerate
+Make chunk-name settings only apply to chunks with that name
+\end_layout
+
+\begin_layout Enumerate
+indent of multi-line chunks may be mode dependant (i.e.
+ not in string literals)
+\end_layout
+
+\begin_layout Enumerate
+support chunk-param usage =<
+\backslash
+param{name}>
 \end_layout
 
 \begin_layout Standard
@@ -781,8 +837,8 @@ Preparing your Lyx document
 \end_layout
 
 \begin_layout Standard
-It is no longer necessary to base your literate document on any of the literate
- classes; so select a regular class for your document type.
+It is not necessary to base your literate document on any of the original
+ LyX literate classes; so select a regular class for your document type.
 \end_layout
 
 \begin_layout Standard
@@ -830,8 +886,8 @@ Program Listing.
 \begin_layout Standard
 Inside the white listing box you can type (or paste using shift+ctrl+V)
  your listing.
- There is not need to use ctrl+enter at the end of lines, just press enter
- as normal.
+ There is not need to use ctrl+enter at the end of lines as with some older
+ LyX literate techniques --- just press enter as normal.
 \end_layout
 
 \begin_layout Subsubsection
@@ -883,7 +939,7 @@ Of course you can do this by editing the listings box advanced properties
 status collapsed
 
 \begin_layout Plain Layout
-It ought to apply only to chunks of the same name.
+It ought to apply only to subsequent chunks of the same name.
  I'll fix that later
 \end_layout
 
@@ -927,7 +983,8 @@ lstset
 \end_layout
 
 \begin_layout Standard
-If your source has much words with capital letters, then 
+If your source has many words with long sequences of capital letters, then
+ 
 \begin_inset Flex CharStyle:Code
 status collapsed
 
@@ -2968,7 +3025,7 @@ Catching errors
 \end_layout
 
 \begin_layout Standard
-Terminal errors are issued with the error function:
+Fatal errors are issued with the error function:
 \end_layout
 
 \begin_layout Chunk
@@ -3899,8 +3956,111 @@ a[name] => freddie
 
 \end_layout
 
-\begin_layout Section
-Expanding chunk args
+\begin_layout Chapter
+Expanding chunk arguments
+\end_layout
+
+\begin_layout Standard
+As an extension to many literate-programming styles, newfangle permits code
+ chunks to take parameters and thus operate somewhat like C pre-processor
+ macros, or like C++ templates.
+\end_layout
+
+\begin_layout Standard
+Chunk parameters are declared with a chunk argument called 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+params
+\end_layout
+
+\end_inset
+
+, which holds a semi-colon separated list of parameters, like this:
+\end_layout
+
+\begin_layout LyX-Code
+achunk,language=C,params=name;address
+\end_layout
+
+\begin_layout Standard
+Within the body a chunk, parameters are expressed as: 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+${name}
+\end_layout
+
+\end_inset
+
+ and 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+${address}
+\end_layout
+
+\end_inset
+
+.
+ There is a strong case that a LaTeX style notation should be used, like
+ 
+\backslash
+param{name} --- =<
+\backslash
+param{name}> as it would appear in the lstlisting.
+ Such notation would make me go blind, but I do intend to adopt it.
+\end_layout
+
+\begin_layout Standard
+We therefore need a function 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+expand_chunk_args
+\end_layout
+
+\end_inset
+
+ which will take a block of text, a list of permitted parameters and the
+ arguments which must substitute for the parameters.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset label
+LatexCommand label
+name "Here-we-split"
+
+\end_inset
+
+Here we split the text on 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+${
+\end_layout
+
+\end_inset
+
+ which means that all parts except the first will begin with a parameter
+ name.
+ The split function will consume the literal 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+${
+\end_layout
+
+\end_inset
+
+ in each case.
 \end_layout
 
 \begin_layout Chunk
@@ -3938,72 +4098,9 @@ ${")) {
 
 \begin_layout Plain Layout
 
-    for(p in params) {
-\end_layout
-
-\begin_layout Plain Layout
-
-      v[params[p]]=args[p];
-\end_layout
-
-\begin_layout Plain Layout
-
-    }
-\end_layout
-
-\begin_layout Plain Layout
-
-    text=text_array[1];
-\end_layout
-
-\begin_layout Plain Layout
-
-    for(t in text_array) if (t>1) {
-\end_layout
-
-\begin_layout Plain Layout
-
-      # check the text up to } for a parameter and replace with arg
-\end_layout
-
-\begin_layout Plain Layout
-
-      if (match(text_array[t], "^([a-zA-Z_][a-zA-Z0-9_]*)}", l) &&
-\end_layout
-
-\begin_layout Plain Layout
-
-          l[1] in v) 
-\end_layout
-
-\begin_layout Plain Layout
-
-      {
-\end_layout
-
-\begin_layout Plain Layout
-
-        text = text v[l[1]] substr(text_array[t], length(l[1])+2);
-\end_layout
-
-\begin_layout Plain Layout
-
-      } else {
-\end_layout
-
-\begin_layout Plain Layout
-
-        text = text "${" text_array[t];
-\end_layout
-
-\begin_layout Plain Layout
-
-      }
-\end_layout
-
-\begin_layout Plain Layout
-
-    }
+    =<
+\backslash
+chunkref{substitute-chunk-args}>
 \end_layout
 
 \begin_layout Plain Layout
@@ -4014,6 +4111,230 @@ ${")) {
 \begin_layout Plain Layout
 
   return text;
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+First, we produce an associative array of substitution values indexed by
+ parameter names
+\end_layout
+
+\begin_layout Chunk
+substitute-chunk-args
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+for(p in params) {
+\end_layout
+
+\begin_layout Plain Layout
+
+  v[params[p]]=args[p];
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+We accumulate substituted text in the variable 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+text
+\end_layout
+
+\end_inset
+
+.
+ As the first part of the split function is the part before the delimiter
+ --- which is 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+${
+\end_layout
+
+\end_inset
+
+ in our case --- this part will never contain a parameter reference, so
+ we assign this directly to the result kept in 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+$text
+\end_layout
+
+\end_inset
+
+.
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+text=text_array[1];
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+We then iterate over the remaining values in the array
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+
+I don't know why I think that it will enumerate the array in order, but
+ it seems to work
+\end_layout
+
+\end_inset
+
+
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Plain Layout
+
+So fix it or porve it
+\end_layout
+
+\end_inset
+
+, and substitute each reference for it's argument.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+for(t in text_array) if (t>1) {
+\end_layout
+
+\begin_layout Plain Layout
+
+  =<
+\backslash
+chunkref{substitute-chunk-arg}>
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+After the split on 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+${
+\end_layout
+
+\end_inset
+
+ a valid parameter reference will consist of valid parameter name terminated
+ by a close-brace 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+}
+\end_layout
+
+\end_inset
+
+.
+ A valid character name begins with the underscore or a letter, and may
+ contain letters, digits or underscores.
+\end_layout
+
+\begin_layout Standard
+A valid looking reference that is not actually the name of a parameter will
+ be and not substituted.
+ This is good because there is nothing to substitute anyway, and it avoids
+ clashes when writing code for languages where ${\SpecialChar \ldots{}
+} is a valid construct
+ --- such constructs will not be interfered with unless the parameter name
+ also matches.
+\end_layout
+
+\begin_layout Chunk
+substitute-chunk-arg
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+if (match(text_array[t], "^([a-zA-Z_][a-zA-Z0-9_]*)}", l) &&
+\end_layout
+
+\begin_layout Plain Layout
+
+    l[1] in v) 
+\end_layout
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\begin_layout Plain Layout
+
+  text = text v[l[1]] substr(text_array[t], length(l[1])+2);
+\end_layout
+
+\begin_layout Plain Layout
+
+} else {
+\end_layout
+
+\begin_layout Plain Layout
+
+  text = text "${" text_array[t];
 \end_layout
 
 \begin_layout Plain Layout
@@ -4120,7 +4441,8 @@ chunking
 \end_inset
 
  is used to signify that we are processing a code chunk and not document.
- In such a state, input lines will be assigned to the current chunk.
+ In such a state, input lines will be assigned to the current chunk; otherwise
+ they are ignored.
 \end_layout
 
 \begin_layout Subsection
@@ -4334,10 +4656,10 @@ begin{Chunk}
 
  which is convenient for some users
 \begin_inset Foot
-status collapsed
+status open
 
 \begin_layout Plain Layout
-but not yet supported in LaTeX
+but not yet supported in the LaTeX macros
 \end_layout
 
 \end_inset
@@ -4494,14 +4816,30 @@ lstlistings
 
 \begin_layout Standard
 The 
-\emph on
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
 e
-\emph default
+\end_layout
+
+\end_inset
+
+ in 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+[e]end{lislisting}
+\end_layout
+
+\end_inset
+
  is surrounded by square brackets so that when this document is processed,
- this fragment doesn't end early as the lstlistings package recognizes it's
- own end-string! 
+ this chunk doesn't terminate early when the lstlistings package recognizes
+ it's own end-string! 
 \begin_inset Note Greyedout
-status open
+status collapsed
 
 \begin_layout Plain Layout
 This doesn't make sense as the regex is anchored with ^, which this line
@@ -4680,7 +5018,37 @@ ORS
 
 \end_inset
 
- to the empty string when we generate the output.
+ to the empty string when we generate the output
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+So that we can print partial lines using 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+print
+\end_layout
+
+\end_inset
+
+ instead of 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+printf
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Chunk
@@ -4875,7 +5243,34 @@ status collapsed
 
 \begin_layout Standard
 As each chunk line may contain more than one chunk include, we will split
- of chunk includes in an iterative fashion.
+ out chunk includes in an iterative fashion
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+Contrary to our use of 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+split
+\end_layout
+
+\end_inset
+
+ when substituting parameters in chapter 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "Here-we-split"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Standard
@@ -4976,12 +5371,13 @@ chunkref{([^}>]*)}(
 \begin_layout Standard
 We keep track of the indent count, by counting the number of literal characters
  found.
- We can then preserve this indent when multi-line chunks are expanded.
+ We can then preserve this indent on each output line when multi-line chunks
+ are expanded.
 \end_layout
 
 \begin_layout Standard
-We then process it this literal text, and set the chunk to be the text after
- the 
+We then process this first part literal text, and set the chunk which is
+ still to be processed to be the text after the 
 \begin_inset Flex CharStyle:Code
 status collapsed
 
@@ -4993,7 +5389,7 @@ chunkref
 
 \end_inset
 
- command, which we will process this tex as we continue around the loop.
+ command, which we will process next as we continue around the loop.
 \end_layout
 
 \begin_layout Standard
@@ -5044,7 +5440,11 @@ status collapsed
 \end_inset
 
 .
- Newfangle chunks may have parameters contained within square brackets.
+ 
+\end_layout
+
+\begin_layout Standard
+Newfangle chunks may have parameters contained within square brackets.
  These will be matched in 
 \begin_inset Flex CharStyle:Code
 status collapsed
@@ -5136,7 +5536,7 @@ chunk_line(active_chunk, chunk);
 
 \begin_layout Standard
 We add the newline character as a chunklet on it's own, to make it easier
- to detect new lines and thus chunk indents when processing the output.
+ to detect new lines and thus manage indentation when processing the output.
 \end_layout
 
 \begin_layout Standard
@@ -5181,11 +5581,7 @@ chunkref{chunk-name[1]}>
 \begin_layout LyX-Code
 =<
 \backslash
-chunkref{chunk-name[1]}>
-\end_layout
-
-\begin_layout LyX-Code
-;
+chunkref{chunk-name[1]}>;
 \end_layout
 
 \begin_layout Standard
@@ -5193,6 +5589,42 @@ This is handled in section
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "sub:Chunk-parts"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+We should perhaps introduce a notion of language specific chunk options;
+ so that perhaps we could specify:
+\end_layout
+
+\begin_layout LyX-Code
+=<
+\backslash
+chunkref{chunk-name[function-declaration]}>;
+\end_layout
+
+\begin_layout Standard
+which applies a transform 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+function-declaration
+\end_layout
+
+\end_inset
+
+ to the chunk --- which in this case would extract a function prototype
+ from a function.
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+So do it
+\end_layout
 
 \end_inset
 
@@ -5247,7 +5679,8 @@ root="*";
 \end_layout
 
 \begin_layout Standard
-Then we use getopt the standard way, and null out ARGV afterwards.
+Then we use getopt the standard way, and null out ARGV afterwards in the
+ normal AWK fashion.
 \end_layout
 
 \begin_layout Chunk
@@ -5393,7 +5826,7 @@ chunkref{read-options}>
 \end_layout
 
 \begin_layout Standard
-With a simple help function
+And have a simple help function
 \end_layout
 
 \begin_layout Chunk
@@ -10428,28 +10861,6 @@ newfangle -R./newfangle.module newfangle.tex > ./newfangle.module
 \end_inset
 
 
-\end_layout
-
-\begin_layout Chapter
-Todo
-\end_layout
-
-\begin_layout Enumerate
-^^ is always going to be a problem, see texbytopic 1.2.2 (Work out what I
- meant by this).
-\end_layout
-
-\begin_layout Enumerate
-copy over up to date Makefile guide from noweb-lyx document
-\end_layout
-
-\begin_layout Enumerate
-Make chunk-name settings only apply to chunks with that name
-\end_layout
-
-\begin_layout Enumerate
-indent of multi-line chunks may be mode dependant (i.e.
- not in string literals)
 \end_layout
 
 \begin_layout Part
