@@ -227,6 +227,10 @@ support chunk-param usage =<
 param{name}>
 \end_layout
 
+\begin_layout Enumerate
+trim spaces from param
+\end_layout
+
 \begin_layout Standard
 \begin_inset CommandInset toc
 LatexCommand tableofcontents
@@ -11674,7 +11678,7 @@ chunkref{tests-sub-sub}(${colour})>
 \end_layout
 
 \begin_layout Chunk
-tests-sub-sub,params=colour 
+tests-sub-sub,params=colour
 \end_layout
 
 \begin_layout Standard
@@ -11705,7 +11709,7 @@ status open
 
 What do you see? "=<
 \backslash
-chunkref{tests-sub}({joej_joe[hi],red})>"
+chunkref{tests-sub}(joe, red)>"
 \end_layout
 
 \begin_layout Plain Layout
