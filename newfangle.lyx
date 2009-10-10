@@ -11,7 +11,6 @@ basicstyle=\footnotesize\ttfamily,
 %keywordstyle=\color{darkgreen},
 numberstyle=\tiny,language=C,columns=fullflexible,
 numberfirstline=true}
- 
 \end_preamble
 \use_default_options true
 \begin_modules
@@ -676,7 +675,9 @@ Literate Programming with Newfangle
 \end_layout
 
 \begin_layout Standard
-Todo
+Todo.
+ Should really follow on from a part-0 explanation of what literate programming
+ is.
 \end_layout
 
 \begin_layout Chapter
@@ -947,7 +948,7 @@ It ought to apply only to subsequent chunks of the same name.
 
 
 \begin_inset Note Note
-status open
+status collapsed
 
 \begin_layout Plain Layout
 So make sure they only apply to chunks of that name
@@ -2931,6 +2932,13 @@ chunkref{helper-functions}>
 
 =<
 \backslash
+chunkref{mode-tracker}>
+\end_layout
+
+\begin_layout Plain Layout
+
+=<
+\backslash
 chunkref{chunk-storage-functions}>
 \end_layout
 
@@ -4007,7 +4015,7 @@ When such a chunk is included the arguments are expressed thus, in square
 status open
 
 \begin_layout Plain Layout
-We ought to support qouting in {} like [{Jones, John}, Jones@example.com]
+We ought to support qouting in {} like ({Jones, John}, Jones@example.com)
 \end_layout
 
 \end_inset
@@ -4018,7 +4026,7 @@ We ought to support qouting in {} like [{Jones, John}, Jones@example.com]
 \begin_layout LyX-Code
 
 \backslash
-chunkref{achunk}[John Jones, jones@example.com]
+chunkref{achunk}(John Jones, jones@example.com)
 \end_layout
 
 \begin_layout Standard
@@ -4244,13 +4252,11 @@ text=text_array[1];
 \end_layout
 
 \begin_layout Standard
-
 We then iterate over the remaining values in the array
 \begin_inset Foot
 status collapsed
 
 \begin_layout Plain Layout
-
 I don't know why I think that it will enumerate the array in order, but
  it seems to work
 \end_layout
@@ -4262,7 +4268,6 @@ I don't know why I think that it will enumerate the array in order, but
 status collapsed
 
 \begin_layout Plain Layout
-
 So fix it or porve it
 \end_layout
 
@@ -5376,11 +5381,11 @@ chunkref{([^}>]*)}(
 \backslash
 
 \backslash
-[.*
+(.*
 \backslash
 
 \backslash
-]|)>|<<([a-zA-Z_][-a-zA-Z0-9_]*)>>)", 
+)|)>|<<([a-zA-Z_][-a-zA-Z0-9_]*)>>)", 
 \end_layout
 
 \begin_layout Plain Layout
@@ -6066,7 +6071,7 @@ chunkref{example-perl}>"
 \end_layout
 
 \begin_layout Standard
-we would need the output to like this if it were to work: 
+would need to generate output like this if it were to work: 
 \end_layout
 
 \begin_layout LyX-Code
@@ -6077,13 +6082,11 @@ perl -pe "s/
 $/'/;"
 \end_layout
 
-\begin_deeper
 \begin_layout Standard
-note that the double quote " as part of the regex has been quoted with a
+See that the double quote " as part of the regex has been quoted with a
  slash to protect it from shell interpretation.
 \end_layout
 
-\end_deeper
 \begin_layout Standard
 If that were then included in a chunk with 
 \begin_inset Flex CharStyle:Code
@@ -6141,11 +6144,11 @@ $$/'/;"
 \end_layout
 
 \begin_layout Standard
-In order to do this, we need to define a mode-tracker for each supported
+In order to make this work, we need to define a mode-tracker for each supported
  language, that can detect the various quoting modes, and provide a transformati
-on that must be applied to any included text so that it will be presented
- correctly after the additional interpolation that it will be subject to
- at run-time.
+on that must be applied to any included text so that included text will
+ be interpreted correctly after the additional interpolation that it will
+ be subject to at run-time.
 \end_layout
 
 \begin_layout Standard
@@ -6194,6 +6197,15 @@ status collapsed
 \end_layout
 
 \begin_layout Standard
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Plain Layout
+I don't think this example is true
+\end_layout
+
+\end_inset
+
 The mode tracker must also track nested mode-changes, as in this 
 \begin_inset Flex CharStyle:Code
 status collapsed
@@ -6233,7 +6245,7 @@ Escaping need not occur if the format and mode of the included chunk matches
  that of the including chunk, which would suggest that any back-ticks might
  need to be part of the included chunk and not including chunk
 \begin_inset Note Note
-status open
+status collapsed
 
 \begin_layout Plain Layout
 or is it the other way around?
@@ -6242,7 +6254,276 @@ or is it the other way around?
 \end_inset
 
 .
- 
+\end_layout
+
+\begin_layout Standard
+As each chunk is output a new mode tracker for that language is initialized
+ in it's normal state.
+ As text is output for that chunk the output mode is tracked.
+ When a new chunk is included, a transformation appropriate to that mode
+ is selected and pushed onto a stack of transformations.
+ Any text to be output is first passed through this stack of transformations.
+\end_layout
+
+\begin_layout Standard
+It remains to consider if the chunk-include function should return it's
+ generated text so that the caller can apply any transformations (and formatting
+), or if it should apply the stack of transformations itself.
+\end_layout
+
+\begin_layout Standard
+Note that the transformed text should have the property of not being able
+ to change the mode in the current chunk.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Note chunk parameters should probably also be transformed
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chunk
+new_mode()
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+function new_mode(language, mode) {
+\end_layout
+
+\begin_layout Plain Layout
+
+  mode["language"] = language;
+\end_layout
+
+\begin_layout Plain Layout
+
+  mode["state"]="";
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Because awk functions cannot return an array, we must create the array first
+ and pass it in.
+\end_layout
+
+\begin_layout Chunk
+new-mode,params=language;mode
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+=<
+\backslash
+chunkref{awk-delete-array}(${mode})>
+\end_layout
+
+\begin_layout Plain Layout
+
+new_mode(${language}, ${mode});
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+And for tracking modes, we dispatch to a mode-tracker action based on the
+ current language
+\end_layout
+
+\begin_layout Chunk
+track_mode()
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+function track_mode(mode, text) {
+\end_layout
+
+\begin_layout Plain Layout
+
+  if (mode["language"] == "C") {
+\end_layout
+
+\begin_layout Plain Layout
+
+    =<
+\backslash
+chunkref{track-mode-C}>
+\end_layout
+
+\begin_layout Plain Layout
+
+    return;
+\end_layout
+
+\begin_layout Plain Layout
+
+  }
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+For each mode, we look for a character that has the power to change the
+ mode.
+\end_layout
+
+\begin_layout Standard
+In plain mode:
+\end_layout
+
+\begin_layout List
+\labelwidthstring 00.00.0000
+\begin_inset Quotes eld
+\end_inset
+
+ enters double-quote mode
+\end_layout
+
+\begin_layout List
+\labelwidthstring 00.00.0000
+' enters single-quote mode
+\end_layout
+
+\begin_layout List
+\labelwidthstring 00.00.0000
+trailing-
+\backslash
+ enters multi-line mode
+\end_layout
+
+\begin_layout List
+\labelwidthstring 00.00.0000
+# enters #define sub-mode, needs 
+\backslash
+ escaping end of line too
+\end_layout
+
+\begin_layout List
+\labelwidthstring 00.00.0000
+/* enters comment mode
+\end_layout
+
+\begin_layout Standard
+In double-quote mode, escape 
+\backslash
+ and 
+\begin_inset Quotes eld
+\end_inset
+
+ and newline
+\end_layout
+
+\begin_layout Standard
+
+\backslash
+ escapes prevents 
+\begin_inset Quotes eld
+\end_inset
+
+ from leaving mode
+\end_layout
+
+\begin_layout Standard
+\begin_inset Quotes eld
+\end_inset
+
+ leaves mode
+\end_layout
+
+\begin_layout Standard
+newline needs to close and re-open string or something
+\end_layout
+
+\begin_layout Standard
+in single-quote mode escape 
+\backslash
+ and 
+\begin_inset Quotes eld
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chunk
+track-mode-C
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chunk
+mode-tracker
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+=<
+\backslash
+chunkref{new_mode()}>
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Chapter
@@ -6250,7 +6531,7 @@ Generating the output
 \end_layout
 
 \begin_layout Standard
-We generate output by calling output_chunk, or listing the chunks.
+We generate output by calling output_chunk, or listing the chunk names.
 \end_layout
 
 \begin_layout Chunk
@@ -6357,8 +6638,8 @@ ORS=""
 
 \end_inset
 
- because each chunklet is not necessarily a complete line, but we added
- 
+ because each chunklet is not necessarily a complete line, and we already
+ added 
 \begin_inset Flex CharStyle:Code
 status collapsed
 
@@ -6368,7 +6649,7 @@ ORS
 
 \end_inset
 
- to the input in section 
+ to each input line in section 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "sub:ORS-chunk-text"
@@ -6648,8 +6929,12 @@ function write_chunk(chunk_name, indent, tail,
 
 \begin_layout Plain Layout
 
-  part, max_part, part_line, frag, max_frag, text, chunklet, only_part,
- call_chunk_args)
+  part, max_part, part_line, frag, max_frag, text, 
+\end_layout
+
+\begin_layout Plain Layout
+
+  chunklet, only_part, call_chunk_args, mode)
 \end_layout
 
 \begin_layout Plain Layout
@@ -6723,6 +7008,32 @@ status open
 \end_layout
 
 \begin_layout Standard
+We first create the mode tracker for this chunk.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+  =<
+\backslash
+chunkref{awk-delete-array}(mode)>
+\end_layout
+
+\begin_layout Plain Layout
+
+  new_mode(chunks[chunk_name, "language"], mode);
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 We extract into 
 \begin_inset Flex CharStyle:Code
 status collapsed
@@ -6733,8 +7044,8 @@ chunk_params
 
 \end_inset
 
- the names of the parameters that this chunk accepts, whose values should
- now be in 
+ the names of the parameters that this chunk accepts, whose values were
+ (optionally) passed in 
 \begin_inset Flex CharStyle:Code
 status collapsed
 
@@ -6850,13 +7161,26 @@ A part can either be a chunklet of lines, or an include of another chunk.
 \end_layout
 
 \begin_layout Standard
-Chunks may also have LaTeX style arguments in braces, after the chunk name,
- looking like this in the document: 
+Chunks may also have parameters, specified in LaTeX style with braces after
+ the chunk name --- looking like this in the document: 
 \begin_inset Flex CharStyle:Code
 status collapsed
 
 \begin_layout Plain Layout
 chunkname{param1, param2}
+\end_layout
+
+\end_inset
+
+.
+ Arguments are passed in square brackets: 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+
+\backslash
+chunkref{chunkname}[arg1, arg2]
 \end_layout
 
 \end_inset
@@ -6941,7 +7265,7 @@ chunkref{write-chunklets}>
 
 \begin_layout Standard
 To write an included chunk, we must detect any optional chunk arguments
- in square brackets.
+ in parenthesis.
  Then we recurse calling 
 \begin_inset Flex Chunkref
 status collapsed
@@ -6974,11 +7298,11 @@ if (match(chunklet, "^([^
 \backslash
 
 \backslash
-[(.*)
+((.*)
 \backslash
 
 \backslash
-]$", chunklet_parts)) {
+)$", chunklet_parts)) {
 \end_layout
 
 \begin_layout Plain Layout
@@ -7016,7 +7340,7 @@ if (match(chunklet, "^([^
 
   =<
 \backslash
-chunkref{awk-delete-array}[call_chunk_args]>
+chunkref{awk-delete-array}(call_chunk_args)>
 \end_layout
 
 \begin_layout Plain Layout
@@ -7316,6 +7640,11 @@ status open
 
 \begin_layout Plain Layout
 
+#  track_mode(mode, text);
+\end_layout
+
+\begin_layout Plain Layout
+
   print text;
 \end_layout
 
@@ -7606,6 +7935,24 @@ function new_chunk(chunk_name, params,
 \begin_layout Plain Layout
 
 {
+\end_layout
+
+\begin_layout Plain Layout
+
+  # HACK WHILE WE CHANGE TO ( ) for PARAM CHUNKS
+\end_layout
+
+\begin_layout Plain Layout
+
+  gsub("
+\backslash
+
+\backslash
+(
+\backslash
+
+\backslash
+)$", "", chunk_name);
 \end_layout
 
 \begin_layout Plain Layout
@@ -10761,6 +11108,19 @@ chunkref{preamble}[arg1, arg2]
 Chunkref can also be used within a code chunk to include another code chunk.
  The third optional parameter to chunkref is a comma sepatarated list of
  arguments, which will replace defined parameters in the chunkref.
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Darn it, if I have: =<
+\backslash
+chunkref{new-mode}[{chunks[chunk_name, "language"]},{mode}]> the inner braces
+ (inside [ ]) cause _ to signify subscript even though we have lst@ReplaceIn
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -10772,9 +11132,95 @@ status open
 
 
 \backslash
-newcommandx
+def
 \backslash
-chunkref[3][1,3]{%
+chunkref@args#1,{%
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\backslash
+def
+\backslash
+arg{#1}%
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\backslash
+lst@ReplaceIn
+\backslash
+arg
+\backslash
+lst@filenamerpl%
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\backslash
+arg%
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\backslash
+@ifnextchar){
+\backslash
+relax}{, 
+\backslash
+chunkref@args}%
+\end_layout
+
+\begin_layout Plain Layout
+
+}%
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+newcommand
+\backslash
+chunkref[2][0]{%
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\backslash
+@ifnextchar({
+\backslash
+chunkref@i{#1}{#2}}{
+\backslash
+chunkref@i{#1}{#2}()}%
+\end_layout
+
+\begin_layout Plain Layout
+
+}%
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+def
+\backslash
+chunkref@i#1#2(#3){%
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\backslash
+def
+\backslash
+zero{0}%
 \end_layout
 
 \begin_layout Plain Layout
@@ -10812,7 +11258,7 @@ ifx
 \backslash
 chunkno
 \backslash
-empty%
+zero%
 \end_layout
 
 \begin_layout Plain Layout
@@ -10875,17 +11321,6 @@ lst@filenamerpl%
 
   
 \backslash
-lst@ReplaceIn
-\backslash
-chunkargs
-\backslash
-lst@filenamerpl%
-\end_layout
-
-\begin_layout Plain Layout
-
-  
-\backslash
 LA{%
 \backslash
 moddef{%
@@ -10920,7 +11355,7 @@ ifx
 \backslash
 chunkno
 \backslash
-empty%
+zero%
 \end_layout
 
 \begin_layout Plain Layout
@@ -10966,7 +11401,7 @@ else%
 
         (
 \backslash
-chunkargs)%
+chunkref@args #3,)%
 \end_layout
 
 \begin_layout Plain Layout
@@ -11230,7 +11665,7 @@ colour ${colour},
 
 looking closer =<
 \backslash
-chunkref{tests-sub-sub}[${colour}]>
+chunkref{tests-sub-sub}(${colour})>
 \end_layout
 
 \end_inset
@@ -11239,7 +11674,7 @@ chunkref{tests-sub-sub}[${colour}]>
 \end_layout
 
 \begin_layout Chunk
-tests-sub-sub,params=colour
+tests-sub-sub,params=colour 
 \end_layout
 
 \begin_layout Standard
@@ -11270,7 +11705,7 @@ status open
 
 What do you see? "=<
 \backslash
-chunkref{tests-sub}[joe,red]>"
+chunkref{tests-sub}({joej_joe[hi],red})>"
 \end_layout
 
 \begin_layout Plain Layout

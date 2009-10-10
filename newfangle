@@ -74,10 +74,16 @@ function error(message)
   print message > "/dev/stderr";
   exit 1;
 }
+function new_mode(language, mode) {
+  mode["language"] = language;
+  mode["state"]="";
+}
 function new_chunk(chunk_name, params,
   # local vars
   p )
 {
+  # HACK WHILE WE CHANGE TO ( ) for PARAM CHUNKS
+  gsub("\\(\\)$", "", chunk_name);
   active_chunk = chunk_name;
   if (! (chunk_name in chunk_names)) {
     if (debug) print "New chunk " chunk_name;
@@ -142,12 +148,15 @@ function write_chunk(chunk_name, indent, tail,
   # optional vars
   chunk_path, chunk_args, 
   # local vars
-  part, max_part, part_line, frag, max_frag, text, chunklet, only_part, call_chunk_args)
+  part, max_part, part_line, frag, max_frag, text, 
+  chunklet, only_part, call_chunk_args, mode)
 {
   if (match(chunk_name, "^(.*)\\[([0-9]*)\\]$", chunk_name_parts)) {
     chunk_name = chunk_name_parts[1];
     only_part = chunk_name_parts[2];
   }
+  split("", mode);
+  new_mode(chunks[chunk_name, "language"], mode);
   split(chunks[chunk_name, "params"], chunk_params, " *; *");
   if (! (chunk_name in chunk_names)) {
     error(sprintf(_"The root module <<%s>> was not defined.\nUsed by: %s",\
@@ -158,63 +167,64 @@ function write_chunk(chunk_name, indent, tail,
   for(part = 1; part <= max_part; part++) {
     if (! only_part || part == only_part) {
       if (linenos && (chunk_name SUBSEP "part" SUBSEP part SUBSEP "FILENAME" in chunks)) {
-  a_filename = chunks[chunk_name, "part", part, "FILENAME"];
-  a_lineno = chunks[chunk_name, "part", part, "LINENO"];
-  if (a_filename != filename || a_lineno != lineno) {
-    lineno_needed++;
-  }
-}
+        a_filename = chunks[chunk_name, "part", part, "FILENAME"];
+        a_lineno = chunks[chunk_name, "part", part, "LINENO"];
+        if (a_filename != filename || a_lineno != lineno) {
+          lineno_needed++;
+        }
+      }
       
       chunklet = chunks[chunk_name, "part", part];
       if (chunks[chunk_name, "part", part, "type"] == part_type_chunk) {
-        if (match(chunklet, "^([^\\[]*)\\[(.*)\\]$", chunklet_parts)) {
-    chunklet = chunklet_parts[1];
-    split(chunklet_parts[2], call_chunk_args, " *, *");
-    for (c in call_chunk_args) {
-      call_chunk_args[c] = expand_chunk_args(call_chunk_args[c], chunk_params, chunk_args);
-    }
-  } else {
-    split("", call_chunk_args);
-  }
-  write_chunk(chunklet,
-              chunks[chunk_name, "part", part, "indent"] indent,
-              chunks[chunk_name, "part", part, "tail"],
-              chunk_path "\n         " chunk_name,
-              call_chunk_args);
+        if (match(chunklet, "^([^\\[]*)\\((.*)\\)$", chunklet_parts)) {
+          chunklet = chunklet_parts[1];
+          split(chunklet_parts[2], call_chunk_args, " *, *");
+          for (c in call_chunk_args) {
+            call_chunk_args[c] = expand_chunk_args(call_chunk_args[c], chunk_params, chunk_args);
+          }
+        } else {
+          split("", call_chunk_args);
+        }
+        write_chunk(chunklet,
+                    chunks[chunk_name, "part", part, "indent"] indent,
+                    chunks[chunk_name, "part", part, "tail"],
+                    chunk_path "\n         " chunk_name,
+                    call_chunk_args);
       } else if (chunklet SUBSEP "line" in chunks) {
         max_frag = chunks[chunklet, "line"];
-  for(frag = 1; frag <= max_frag; frag++) {
-    if (newline && lineno_needed && ! lineno_suppressed) {
-    filename = a_filename;
-    lineno = a_lineno;
-    print "#line " lineno " \"" filename "\"\n"
-    lineno_needed = 0;
-  }
-  
-    text = chunks[chunklet, frag];
-   
-    /* check params */
-    text = expand_chunk_args(text, chunk_params, chunk_args);
-  
-   if (text == "\n") {
-      lineno++;
-      if (part == max_part && frag == max_frag && length(chunk_path)) {
-        text = "";
-        break;
-      } else {
-        newline = 1;
-      }
-    } else {
-      if (newline) text = indent text;
-      newline = 0;
-    }
-  
-    text = text tail;
-    print text;
-    if (linenos) {
-      lineno_suppressed = substr(lastline, length(lastline)) == "\\";
-    }
-  }
+        for(frag = 1; frag <= max_frag; frag++) {
+          if (newline && lineno_needed && ! lineno_suppressed) {
+            filename = a_filename;
+            lineno = a_lineno;
+            print "#line " lineno " \"" filename "\"\n"
+            lineno_needed = 0;
+          }
+        
+          text = chunks[chunklet, frag];
+         
+          /* check params */
+          text = expand_chunk_args(text, chunk_params, chunk_args);
+        
+         if (text == "\n") {
+            lineno++;
+            if (part == max_part && frag == max_frag && length(chunk_path)) {
+              text = "";
+              break;
+            } else {
+              newline = 1;
+            }
+          } else {
+            if (newline) text = indent text;
+            newline = 0;
+          }
+        
+          text = text tail;
+        #  track_mode(mode, text);
+          print text;
+          if (linenos) {
+            lineno_suppressed = substr(lastline, length(lastline)) == "\\";
+          }
+        }
       } else {
         # empty last chunklet
       }
@@ -231,12 +241,12 @@ function expand_chunk_args(text, params, args,
     text=text_array[1];
     for(t in text_array) if (t>1) {
       if (match(text_array[t], "^([a-zA-Z_][a-zA-Z0-9_]*)}", l) &&
-      l[1] in v) 
-  {
-    text = text v[l[1]] substr(text_array[t], length(l[1])+2);
-  } else {
-    text = text "${" text_array[t];
-  }
+          l[1] in v) 
+      {
+        text = text v[l[1]] substr(text_array[t], length(l[1])+2);
+      } else {
+        text = text "${" text_array[t];
+      }
     }
   }
   return text;
@@ -252,11 +262,11 @@ BEGIN {
   Optind = 1    # skip ARGV[0]
   while(getopt(ARGC, ARGV, "R:Ldhr")!=-1) {
     if (Optopt == "R") root = Optarg;
-  else if (Optopt == "r") root="";
-  else if (Optopt == "L") linenos = 1;
-  else if (Optopt == "d") debug = 1;
-  else if (Optopt == "h") help();
-  else if (Optopt == "?") help();
+    else if (Optopt == "r") root="";
+    else if (Optopt == "L") linenos = 1;
+    else if (Optopt == "d") debug = 1;
+    else if (Optopt == "h") help();
+    else if (Optopt == "?") help();
   }
   for (i=1; i<Optind; i++) { ARGV[i]=""; }
 }
@@ -298,7 +308,7 @@ length(active_chunk) {
   chunk = $0;
   indent = 0;
   while(match(chunk, 
-              "([=]<\\\\chunkref{([^}>]*)}(\\[.*\\]|)>|<<([a-zA-Z_][-a-zA-Z0-9_]*)>>)", 
+              "([=]<\\\\chunkref{([^}>]*)}(\\(.*\\)|)>|<<([a-zA-Z_][-a-zA-Z0-9_]*)>>)", 
               line)\
   ) {
     chunklet = substr(chunk, 1, RSTART - 1);
