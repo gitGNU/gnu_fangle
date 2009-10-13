@@ -231,16 +231,7 @@ param{name}>
 trim spaces from param
 \end_layout
 
-\begin_layout Standard
-\begin_inset CommandInset toc
-LatexCommand tableofcontents
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Chapter
+\begin_layout Chapter*
 License
 \end_layout
 
@@ -360,7 +351,20 @@ status open
 
 \end_layout
 
+\begin_layout Standard
+\begin_inset CommandInset toc
+LatexCommand tableofcontents
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Part
+Using Newfangle
+\end_layout
+
+\begin_layout Chapter
 Running Newfangle
 \end_layout
 
@@ -422,8 +426,8 @@ noroots
  it can read multiple named files, or from stdin.
 \end_layout
 
-\begin_layout Chapter
-noroots replacment
+\begin_layout Section
+Listing roots
 \end_layout
 
 \begin_layout Standard
@@ -500,8 +504,8 @@ status collapsed
  and have the form of a filename.
 \end_layout
 
-\begin_layout Chapter
-notangle replacement
+\begin_layout Section
+Extracting roots
 \end_layout
 
 \begin_layout Standard
@@ -574,8 +578,8 @@ status collapsed
  other way around if multi-line macros include other chunks.
 \end_layout
 
-\begin_layout Chapter
-noweave replacement
+\begin_layout Section
+Formatting source in LaTeX
 \end_layout
 
 \begin_layout Standard
