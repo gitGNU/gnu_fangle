@@ -178,8 +178,9 @@ function write_chunk(chunk_name, indent, tail,
       if (chunks[chunk_name, "part", part, "type"] == part_type_chunk) {
         if (match(chunklet, "^([^\\[]*)\\((.*)\\)$", chunklet_parts)) {
           chunklet = chunklet_parts[1];
-          get_chunk_args(chunklet_parts[2], chunk_args);
+        #  parse_chunk_args(chunklet_parts[2], chunk_args);
         # TO BE parse_chunk_args SOON
+          split(chunklet_parts[2], call_chunk_args, " *, *");
           for (c in call_chunk_args) {
             call_chunk_args[c] = expand_chunk_args(call_chunk_args[c], chunk_params, chunk_args);
           }
@@ -259,13 +260,15 @@ BEGIN {
   notangle_mode=0;
   SUBSEP=",";
   root="*";
+  tabs = "";
 
   Optind = 1    # skip ARGV[0]
-  while(getopt(ARGC, ARGV, "R:Ldhr")!=-1) {
+  while(getopt(ARGC, ARGV, "R:LdT:hr")!=-1) {
     if (Optopt == "R") root = Optarg;
     else if (Optopt == "r") root="";
     else if (Optopt == "L") linenos = 1;
     else if (Optopt == "d") debug = 1;
+    else if (Optopt == "T") tabs = indent_string(Optarg+0);
     else if (Optopt == "h") help();
     else if (Optopt == "?") help();
   }
@@ -306,6 +309,9 @@ BEGIN {
 }
 ! chunking { next; }
 length(active_chunk) {
+  if (length(tabs)) {
+    gsub("\t", tabs);
+  }
   chunk = $0;
   indent = 0;
   while(match(chunk, 

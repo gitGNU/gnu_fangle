@@ -231,6 +231,22 @@ param{name}>
 trim spaces from param
 \end_layout
 
+\begin_layout Enumerate
+add support for other commands in =<...>, starting with 
+\backslash
+label which takes the line-number within the chunk, and maybe should also
+ take the chunk name/page
+\end_layout
+
+\begin_layout Enumerate
+cant have listing inside a ruled box
+\end_layout
+
+\begin_layout Enumerate
+when a parameterized chunk is included as well as the #line emission, say
+ what the paremeters were for that invocation.
+\end_layout
+
 \begin_layout Chapter*
 License
 \end_layout
@@ -2314,7 +2330,12 @@ status open
 
 \begin_layout Plain Layout
 
-nf_line=-L
+TABS=8
+\end_layout
+
+\begin_layout Plain Layout
+
+nf_line=-L -T$(TABS)
 \end_layout
 
 \begin_layout Plain Layout
@@ -5821,7 +5842,7 @@ ORS
 
  to the empty string when we generate the output
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 So that we can print partial lines using 
@@ -5864,6 +5885,13 @@ status open
 \begin_layout Plain Layout
 
 length(active_chunk) {
+\end_layout
+
+\begin_layout Plain Layout
+
+  =<
+\backslash
+chunkref{process-chunk-tabs}>
 \end_layout
 
 \begin_layout Plain Layout
@@ -5920,6 +5948,64 @@ status collapsed
 \end_inset
 
 , but we support other variations.
+\end_layout
+
+\begin_layout Standard
+However, we also process tabs at this point, a tab at input can be replaced
+ by a number of spaces defined by the 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+tabs
+\end_layout
+
+\end_inset
+
+ variable, set by the 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+-T
+\end_layout
+
+\end_inset
+
+ option.
+ Of course this is poor tab behaviour, we should probably have the option
+ to use proper counted tab-stops and process this on output.
+\end_layout
+
+\begin_layout Chunk
+process-chunk-tabs
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+if (length(tabs)) {
+\end_layout
+
+\begin_layout Plain Layout
+
+  gsub("
+\backslash
+t", tabs);
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection
@@ -6480,6 +6566,11 @@ SUBSEP=",";
 root="*";
 \end_layout
 
+\begin_layout Plain Layout
+
+tabs = "";
+\end_layout
+
 \end_inset
 
 
@@ -6506,7 +6597,7 @@ Optind = 1    # skip ARGV[0]
 
 \begin_layout Plain Layout
 
-while(getopt(ARGC, ARGV, "R:Ldhr")!=-1) {
+while(getopt(ARGC, ARGV, "R:LdT:hr")!=-1) {
 \end_layout
 
 \begin_layout Plain Layout
@@ -6562,6 +6653,11 @@ else if (Optopt == "L") linenos = 1;
 \begin_layout Plain Layout
 
 else if (Optopt == "d") debug = 1;
+\end_layout
+
+\begin_layout Plain Layout
+
+else if (Optopt == "T") tabs = indent_string(Optarg+0);
 \end_layout
 
 \begin_layout Plain Layout
@@ -8090,12 +8186,17 @@ if (match(chunklet, "^([^
 
 \begin_layout Plain Layout
 
-  get_chunk_args(chunklet_parts[2], chunk_args);
+#  parse_chunk_args(chunklet_parts[2], chunk_args);
 \end_layout
 
 \begin_layout Plain Layout
 
 # TO BE parse_chunk_args SOON
+\end_layout
+
+\begin_layout Plain Layout
+
+  split(chunklet_parts[2], call_chunk_args, " *, *");
 \end_layout
 
 \begin_layout Plain Layout
