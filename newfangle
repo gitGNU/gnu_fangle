@@ -127,7 +127,7 @@ function output_chunk_names(   c, prefix, suffix)
     suffix=">>";
   }
   for (c in chunk_names) {
-    print prefix c suffix;
+    print prefix c suffix "\n";
   }
 }
 function output_chunks(  a) 
@@ -178,7 +178,8 @@ function write_chunk(chunk_name, indent, tail,
       if (chunks[chunk_name, "part", part, "type"] == part_type_chunk) {
         if (match(chunklet, "^([^\\[]*)\\((.*)\\)$", chunklet_parts)) {
           chunklet = chunklet_parts[1];
-          split(chunklet_parts[2], call_chunk_args, " *, *");
+          get_chunk_args(chunklet_parts[2], chunk_args);
+        # TO BE parse_chunk_args SOON
           for (c in call_chunk_args) {
             call_chunk_args[c] = expand_chunk_args(call_chunk_args[c], chunk_params, chunk_args);
           }

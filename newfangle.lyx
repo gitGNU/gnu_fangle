@@ -1604,7 +1604,7 @@ status open
 
 \begin_layout Plain Layout
 
-LYX_SOURCE=../../noweb-lyx/newfangle.lyx
+LYX_SOURCE=
 \end_layout
 
 \begin_layout Plain Layout
@@ -2012,7 +2012,7 @@ $(NEWFANGLE_SOURCE_STAMP): $(NEWFANGLE_SOURCE)
 
 \begin_layout Plain Layout
 
-        touch $(NEWFANGLE_SOURCE_STAMP)
+        echo > $(NEWFANGLE_SOURCE_STAMP)
 \end_layout
 
 \begin_layout Plain Layout
@@ -2717,7 +2717,7 @@ NEWFANGLE_DOCS=$(NEWFANGLE_PDF)
 \end_layout
 
 \begin_layout Standard
-We also define noweb_docs as a convenient phony target<
+We also define newfangle_docs as a convenient phony target<
 \end_layout
 
 \begin_layout Chunk
@@ -2736,7 +2736,7 @@ status open
 
 \begin_layout Plain Layout
 
-newfangle_docs: $(NOWEB_DOCS)
+newfangle_docs: $(NEWFANGLE_DOCS)
 \end_layout
 
 \begin_layout Plain Layout
@@ -4081,7 +4081,758 @@ expand_chunk_args
 
  which will take a block of text, a list of permitted parameters and the
  arguments which must substitute for the parameters.
- 
+ We also need to be able to parse a parameter list into an array of parameters.
+\end_layout
+
+\begin_layout Section
+Parsing argument lists
+\end_layout
+
+\begin_layout Standard
+An argument list may be as simple as in 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+
+\backslash
+chunkref{pull}(thing, otherthing)
+\end_layout
+
+\end_inset
+
+ or as complex as:
+\end_layout
+
+\begin_layout LyX-Code
+
+\backslash
+chunkref{pull}(things[x, y], get_other_things(a, "all")) 
+\end_layout
+
+\begin_layout Standard
+--- which for all it's commas and quotes and parenthesis represents only
+ two parameters.
+\end_layout
+
+\begin_layout Standard
+How do we stop the comma in 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+things[x,y]
+\end_layout
+
+\end_inset
+
+ from splitting it into two arguments 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+things[x
+\end_layout
+
+\end_inset
+
+ and 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+y]
+\end_layout
+
+\end_inset
+
+--- neither of which make sense on their own? 
+\end_layout
+
+\begin_layout Standard
+One way it could be done is by refusing to split text between maching delimiters
+, such as 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+[
+\end_layout
+
+\end_inset
+
+, 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+]
+\end_layout
+
+\end_inset
+
+, 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+(
+\end_layout
+
+\end_inset
+
+, 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+)
+\end_layout
+
+\end_inset
+
+, 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+{
+\end_layout
+
+\end_inset
+
+, 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+}
+\end_layout
+
+\end_inset
+
+and most likely also 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+"
+\end_layout
+
+\end_inset
+
+, 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+"
+\end_layout
+
+\end_inset
+
+ and 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+'
+\end_layout
+
+\end_inset
+
+, 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+'
+\end_layout
+
+\end_inset
+
+.
+ Of course this also makes it impossible to pass such mis-matched code fragments
+ as parameters, but I don't think users could cope with people passing such
+ code unbalanced fragments as chunk parameters
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+I know that I couldn't cope with users doing such things, and although the
+ GPL3 license prevents me from actually forbidding anyone from trying, if
+ they wan't it to work they'll have to write the code themselves and not
+ expect any support from me.
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Unfortunately, the full set of matching delimiters may vary from language
+ to language.
+ In certain C++ template contexts, 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+<
+\end_layout
+
+\end_inset
+
+ and 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+>
+\end_layout
+
+\end_inset
+
+ would count as delimiters, and yet in other contexts they would not.
+\end_layout
+
+\begin_layout Standard
+This puts me in the unfortunate position of having to parse-somewhat all
+ programming languages without knowing what they are! Eventually this will
+ be managed in the chunk modes in chapter 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "cha:modes"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Another way, inspired by LaTeX, is if the first character of the parameter
+ is an opening-delimiter, to read up to the matching closing-delimiter wthout
+ considering intervening commas; thus the above example could be expressed:
+\end_layout
+
+\begin_layout LyX-Code
+
+\backslash
+chunkref{pull}({things[x, y]}, [get_other_things(a, "all")])
+\end_layout
+
+\begin_layout Standard
+--- using 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+{
+\end_layout
+
+\end_inset
+
+, 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+}
+\end_layout
+
+\end_inset
+
+ to wrap the first agument, and 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+(
+\end_layout
+
+\end_inset
+
+, 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+)
+\end_layout
+
+\end_inset
+
+to wrap the second argument and protect the comma.
+\end_layout
+
+\begin_layout Standard
+In the meantime, I'll work with the first method, and a fixed list of delimiters.
+\end_layout
+
+\begin_layout Standard
+-------
+\end_layout
+
+\begin_layout Chunk
+parse_chunk_args
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+function parse_chunk_args(text, values,
+\end_layout
+
+\begin_layout Plain Layout
+
+  # optional parameters
+\end_layout
+
+\begin_layout Plain Layout
+
+  path, # hierarchical precursors
+\end_layout
+
+\begin_layout Plain Layout
+
+  stack, # delimiters to be matched
+\end_layout
+
+\begin_layout Plain Layout
+
+  delimiters,
+\end_layout
+
+\begin_layout Plain Layout
+
+  # local vars
+\end_layout
+
+\begin_layout Plain Layout
+
+  a, name)
+\end_layout
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\begin_layout Plain Layout
+
+  split(chunklet_parts[2], call_chunk_args, " *, *");
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The strategy is to parse the name, and then look for a value.
+ If the value begins with a brace 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+{
+\end_layout
+
+\end_inset
+
+, then we recurse and consume as much of the text as necessary, returning
+ the remaining text when we encounter a leading close-brace 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+}
+\end_layout
+
+\end_inset
+
+.
+ This being the strategy --- and executed in a loop --- we realise that
+ we must first look for the closing brace (perhaps preceded by white space)
+ in order to terminate the recursion, and returning remaining text.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\begin_layout Plain Layout
+
+  modes["
+\backslash
+"", "delimiters" ]="
+\backslash
+"" "|
+\backslash
+"";
+\end_layout
+
+\begin_layout Plain Layout
+
+  modes["
+\backslash
+"", "terminators"]="
+\backslash
+"";
+\end_layout
+
+\begin_layout Plain Layout
+
+  modes["{",  "delimiters" ]="
+\backslash
+
+\backslash
+|
+\backslash
+"|{|}|(|)|
+\backslash
+
+\backslash
+[|
+\backslash
+
+\backslash
+]|'|/*" "|}";
+\end_layout
+
+\begin_layout Plain Layout
+
+  modes["{",  "terminators"]="}";
+\end_layout
+
+\begin_layout Plain Layout
+
+  modes["[",  "delimiters" ]="
+\backslash
+
+\backslash
+|
+\backslash
+"|{|}|(|)|
+\backslash
+
+\backslash
+[|
+\backslash
+
+\backslash
+]|'|/*" "|
+\backslash
+
+\backslash
+]";
+\end_layout
+
+\begin_layout Plain Layout
+
+  modes["[",  "terminators"]="]";
+\end_layout
+
+\begin_layout Plain Layout
+
+  modes["(",  "delimiters" ]="
+\backslash
+
+\backslash
+|
+\backslash
+"|{|}|(|)|
+\backslash
+
+\backslash
+[|
+\backslash
+
+\backslash
+]|'|/*" "|)";
+\end_layout
+
+\begin_layout Plain Layout
+
+  modes["(",  "terminators"]=")";
+\end_layout
+
+\begin_layout Plain Layout
+
+  modes["'",  "delimiters" ]="
+\backslash
+
+\backslash
+";
+\end_layout
+
+\begin_layout Plain Layout
+
+  modes["'",  "terminators"]="'";
+\end_layout
+
+\begin_layout Plain Layout
+
+  modes["/*", "terminators"]="*/";
+\end_layout
+
+\begin_layout Plain Layout
+
+  modes["//", "terminators"]="
+\backslash
+n";
+\end_layout
+
+\begin_layout Plain Layout
+
+  modes["",   "delimiters" ]="
+\backslash
+
+\backslash
+|
+\backslash
+"|{|}|(|)|
+\backslash
+
+\backslash
+[|
+\backslash
+
+\backslash
+]|'|/*";
+\end_layout
+
+\begin_layout Plain Layout
+
+  mode="";
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+  delimiters=modes[mode, "delimiters"];
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+  while(length(text)) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    if match(text, "(" delimiters ")", a) {
+\end_layout
+
+\begin_layout Plain Layout
+
+      if (a[1] == modes[mode, "terminator"]) return result a[1];
+\end_layout
+
+\begin_layout Plain Layout
+
+      new_mode=a[1];
+\end_layout
+
+\begin_layout Plain Layout
+
+      #check if new_mode is defined
+\end_layout
+
+\begin_layout Plain Layout
+
+      if (! (new_mode, "terminators") in modes) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        error("Delimiter %s set unknown mode in text: %s", new_mode, text);
+\end_layout
+
+\begin_layout Plain Layout
+
+      }
+\end_layout
+
+\begin_layout Plain Layout
+
+      text = substr(text, RSTART));
+\end_layout
+
+\begin_layout Plain Layout
+
+      result = result substr(text, 1, RSTART -1) RECURSE(text,,new_mode);
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+    result = result text;
+\end_layout
+
+\begin_layout Plain Layout
+
+    text = "";
+\end_layout
+
+\begin_layout Plain Layout
+
+  }
+\end_layout
+
+\begin_layout Plain Layout
+
+  return result;
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+We can test this function like this:
+\end_layout
+
+\begin_layout Chunk
+pca-test.awk
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+=<
+\backslash
+chunkref{get_chunk_args()}>
+\end_layout
+
+\begin_layout Plain Layout
+
+BEGIN {
+\end_layout
+
+\begin_layout Plain Layout
+
+  SUBSEP=".";
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+  print parse_chunk_args("things[x, y], get_other_things(a, 
+\backslash
+"all
+\backslash
+")", a);
+\end_layout
+
+\begin_layout Plain Layout
+
+  for (b in a) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    print "a[" b "] => " a[b];
+\end_layout
+
+\begin_layout Plain Layout
+
+  }
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+which should give this output:
+\end_layout
+
+\begin_layout Chunk
+pca-test.awk-results
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+a[foo.quux.quirk] => 
+\end_layout
+
+\begin_layout Plain Layout
+
+a[foo.quux.a] => fleeg
+\end_layout
+
+\begin_layout Plain Layout
+
+a[foo.bar] => baz
+\end_layout
+
+\begin_layout Plain Layout
+
+a[etc] => 
+\end_layout
+
+\begin_layout Plain Layout
+
+a[name] => freddie
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Expanding parameters
 \end_layout
 
 \begin_layout Standard
@@ -5963,6 +6714,13 @@ Chunk Language Modes
 \end_layout
 
 \begin_layout Standard
+\begin_inset CommandInset label
+LatexCommand label
+name "cha:modes"
+
+\end_inset
+
+
 \begin_inset Note Greyedout
 status open
 
@@ -6772,7 +7530,9 @@ function output_chunk_names(   c, prefix, suffix)
 
 \begin_layout Plain Layout
 
-    print prefix c suffix;
+    print prefix c suffix "
+\backslash
+n";
 \end_layout
 
 \begin_layout Plain Layout
@@ -7020,15 +7780,19 @@ We first create the mode tracker for this chunk.
 \end_layout
 
 \begin_layout Standard
+#  =<
+\backslash
+chunkref{awk-delete-array}(mode)>
+\end_layout
+
+\begin_layout Standard
 \begin_inset listings
 inline false
 status open
 
 \begin_layout Plain Layout
 
-  =<
-\backslash
-chunkref{awk-delete-array}(mode)>
+  split("", mode);
 \end_layout
 
 \begin_layout Plain Layout
@@ -7039,6 +7803,12 @@ chunkref{awk-delete-array}(mode)>
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+#  =<
+\backslash
+chunkref{new-mode}(chunks[chunk_name, "language"], mode)>
 \end_layout
 
 \begin_layout Standard
@@ -7320,7 +8090,12 @@ if (match(chunklet, "^([^
 
 \begin_layout Plain Layout
 
-  split(chunklet_parts[2], call_chunk_args, " *, *");
+  get_chunk_args(chunklet_parts[2], chunk_args);
+\end_layout
+
+\begin_layout Plain Layout
+
+# TO BE parse_chunk_args SOON
 \end_layout
 
 \begin_layout Plain Layout
@@ -7346,9 +8121,7 @@ if (match(chunklet, "^([^
 
 \begin_layout Plain Layout
 
-  =<
-\backslash
-chunkref{awk-delete-array}(call_chunk_args)>
+  split("", call_chunk_args);
 \end_layout
 
 \begin_layout Plain Layout
