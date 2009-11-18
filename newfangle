@@ -215,7 +215,7 @@ function write_chunk(chunk_name, indent, tail,
             } else {
               newline = 1;
             }
-          } else {
+          } else if (length(text) || length(tail)) {
             if (newline) text = indent text;
             newline = 0;
           }

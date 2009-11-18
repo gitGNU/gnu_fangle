@@ -247,6 +247,11 @@ when a parameterized chunk is included as well as the #line emission, say
  what the paremeters were for that invocation.
 \end_layout
 
+\begin_layout Enumerate
+with 2 macro expansions on one line ${} ${} the first is too greedy and
+ looks to the wrong }
+\end_layout
+
 \begin_layout Chapter*
 License
 \end_layout
@@ -8479,7 +8484,7 @@ status open
 
 \begin_layout Plain Layout
 
-  } else {
+  } else if (length(text) || length(tail)) {
 \end_layout
 
 \begin_layout Plain Layout
