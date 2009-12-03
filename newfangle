@@ -71,8 +71,12 @@ function getopt(argc, argv, options,    thisopt, i)
 
 function error(message)
 {
-  print message > "/dev/stderr";
+  print "ERROR: " FILENAME ":" FNR " " message > "/dev/stderr";
   exit 1;
+}function warning(message)
+{
+  print "WARNING: " FILENAME ":" FNR " " message > "/dev/stderr";
+  warnings++;
 }
 function new_mode(language, mode) {
   mode["language"] = language;
@@ -80,11 +84,10 @@ function new_mode(language, mode) {
 }
 function new_chunk(chunk_name, params,
   # local vars
-  p )
+  p, append )
 {
   # HACK WHILE WE CHANGE TO ( ) for PARAM CHUNKS
   gsub("\\(\\)$", "", chunk_name);
-  active_chunk = chunk_name;
   if (! (chunk_name in chunk_names)) {
     if (debug) print "New chunk " chunk_name;
     chunk_names[chunk_name];
@@ -92,6 +95,15 @@ function new_chunk(chunk_name, params,
       chunks[chunk_name, p] = params[p];
     }
   }
+  if ("append" in params) {
+    append=params["append"];
+    if (! (append in chunk_names)) {
+      warning("Chunk " chunk_name " is appended to chunk " append " which is not defined yet");
+      new_chunk(append);
+    }
+    chunk_include(append, chunk_name);
+  }
+  active_chunk = chunk_name;
   prime_chunk(chunk_name);
 }
 
@@ -173,7 +185,7 @@ function write_chunk(chunk_name, indent, tail,
           lineno_needed++;
         }
       }
-      
+
       chunklet = chunks[chunk_name, "part", part];
       if (chunks[chunk_name, "part", part, "type"] == part_type_chunk) {
         if (match(chunklet, "^([^\\[]*)\\((.*)\\)$", chunklet_parts)) {
@@ -201,12 +213,12 @@ function write_chunk(chunk_name, indent, tail,
             print "#line " lineno " \"" filename "\"\n"
             lineno_needed = 0;
           }
-        
+
           text = chunks[chunklet, frag];
          
           /* check params */
           text = expand_chunk_args(text, chunk_params, chunk_args);
-        
+
          if (text == "\n") {
             lineno++;
             if (part == max_part && frag == max_frag && length(chunk_path)) {
@@ -219,7 +231,7 @@ function write_chunk(chunk_name, indent, tail,
             if (newline) text = indent text;
             newline = 0;
           }
-        
+
           text = text tail;
         #  track_mode(mode, text);
           print text;
@@ -355,6 +367,7 @@ function get_chunk_args(text, values,
   # local vars
   a, name)
 {
+  split("", next_chunk_args);
   while(length(text)) {
     if (match(text, "^ *}(.*)", a)) {
       return a[1];

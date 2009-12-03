@@ -10,7 +10,8 @@
 basicstyle=\footnotesize\ttfamily,
 %keywordstyle=\color{darkgreen},
 numberstyle=\tiny,language=C,columns=fullflexible,
-numberfirstline=true}
+numberfirstline=true
+}
 \end_preamble
 \use_default_options true
 \begin_modules
@@ -166,8 +167,8 @@ Noweb
 \noun default
  generally brought literate programming to the masses through removing some
  of the complexity of the original literate programming, but this would
- be of no advantage to me if the LyX --- LaTeX combination brought more
- complications in their place.
+ be of no advantage to me if the LyX / LaTeX combination brought more complicati
+ons in their place.
 \end_layout
 
 \begin_layout Standard
@@ -177,7 +178,7 @@ Newfangle
 \noun default
  was thus born --- as an awk replacement for notangle, adding some important
  features, like better integration with LyX and LaTeX, multiple output format
- conversions, and fixing notangle bugs like indenting when using -L for
+ conversions, and fixing notangle bugs like indentation when using -L for
  line numbers.
 \end_layout
 
@@ -249,7 +250,7 @@ when a parameterized chunk is included as well as the #line emission, say
 
 \begin_layout Enumerate
 with 2 macro expansions on one line ${} ${} the first is too greedy and
- looks to the wrong }
+ looks to the final }
 \end_layout
 
 \begin_layout Enumerate
@@ -3098,7 +3099,7 @@ Fatal errors are issued with the error function:
 \end_layout
 
 \begin_layout Chunk
-error()
+error(),append=helper-functions
 \end_layout
 
 \begin_layout Standard
@@ -3118,7 +3119,7 @@ function error(message)
 
 \begin_layout Plain Layout
 
-  print message > "/dev/stderr";
+  print "ERROR: " FILENAME ":" FNR " " message > "/dev/stderr";
 \end_layout
 
 \begin_layout Plain Layout
@@ -3136,12 +3137,8 @@ function error(message)
 
 \end_layout
 
-\begin_layout Standard
-This is one of the helper functions.
-\end_layout
-
 \begin_layout Chunk
-helper-functions
+warning(),append=helper-functions
 \end_layout
 
 \begin_layout Standard
@@ -3151,9 +3148,27 @@ status open
 
 \begin_layout Plain Layout
 
-=<
-\backslash
-chunkref{error()}>
+function warning(message)
+\end_layout
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\begin_layout Plain Layout
+
+  print "WARNING: " FILENAME ":" FNR " " message > "/dev/stderr";
+\end_layout
+
+\begin_layout Plain Layout
+
+  warnings++;
+\end_layout
+
+\begin_layout Plain Layout
+
+}
 \end_layout
 
 \end_inset
@@ -3530,6 +3545,11 @@ status open
 \begin_layout Plain Layout
 
 {
+\end_layout
+
+\begin_layout Plain Layout
+
+  split("", next_chunk_args);
 \end_layout
 
 \begin_layout Plain Layout
@@ -8823,6 +8843,24 @@ params
 \end_layout
 
 \begin_layout Chunk
+helper-functionsx
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chunk
 chunk-storage-functions
 \end_layout
 
@@ -8843,7 +8881,7 @@ function new_chunk(chunk_name, params,
 
 \begin_layout Plain Layout
 
-  p )
+  p, append )
 \end_layout
 
 \begin_layout Plain Layout
@@ -8867,11 +8905,6 @@ function new_chunk(chunk_name, params,
 
 \backslash
 )$", "", chunk_name);
-\end_layout
-
-\begin_layout Plain Layout
-
-  active_chunk = chunk_name;
 \end_layout
 
 \begin_layout Plain Layout
@@ -8907,6 +8940,52 @@ function new_chunk(chunk_name, params,
 \begin_layout Plain Layout
 
   }
+\end_layout
+
+\begin_layout Plain Layout
+
+  if ("append" in params) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    append=params["append"];
+\end_layout
+
+\begin_layout Plain Layout
+
+    if (! (append in chunk_names)) {
+\end_layout
+
+\begin_layout Plain Layout
+
+      warning("Chunk " chunk_name " is appended to chunk " append " which
+ is not defined yet");
+\end_layout
+
+\begin_layout Plain Layout
+
+      new_chunk(append);
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+    chunk_include(append, chunk_name);
+\end_layout
+
+\begin_layout Plain Layout
+
+  }
+\end_layout
+
+\begin_layout Plain Layout
+
+  active_chunk = chunk_name;
 \end_layout
 
 \begin_layout Plain Layout
@@ -10771,6 +10850,46 @@ status open
 
 \backslash
 lst@Key{params}
+\backslash
+relax{
+\backslash
+def
+\backslash
+newfangle@chunk@params{#1}}%
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+As it is common to define a chunk which then needs appending to another
+ chunk, and annoying to have to declare a single line chunk to manage the
+ include, we support an 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+append=
+\end_layout
+
+\end_inset
+
+ option.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+lst@Key{append}
 \backslash
 relax{
 \backslash
