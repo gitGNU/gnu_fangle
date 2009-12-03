@@ -252,6 +252,33 @@ with 2 macro expansions on one line ${} ${} the first is too greedy and
  looks to the wrong }
 \end_layout
 
+\begin_layout Enumerate
+
+\backslash
+chunkref[3]{preamble} to include a certain chunk needs to work in newfangle.awk
+ instead of failing to be recognized at all
+\end_layout
+
+\begin_layout Enumerate
+make in-listins labels track the chunk ref too, and make 
+\backslash
+chunref{[2],thing}> resolve to 41c (or d, or whatever chunk the 2nd chunk
+ of thing is
+\end_layout
+
+\begin_layout Enumerate
+
+\backslash
+chunkref in text needs a trailing space maybe, it keeps butting up to the
+ next word
+\end_layout
+
+\begin_layout Enumerate
+because the white-space indent is output by the parent chunk, the #line
+ is that of the parent chunk.
+ White space indents must be passed to the child chunk
+\end_layout
+
 \begin_layout Chapter*
 License
 \end_layout
