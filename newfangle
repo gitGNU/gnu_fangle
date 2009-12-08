@@ -73,7 +73,8 @@ function error(message)
 {
   print "ERROR: " FILENAME ":" FNR " " message > "/dev/stderr";
   exit 1;
-}function warning(message)
+}
+function warning(message)
 {
   print "WARNING: " FILENAME ":" FNR " " message > "/dev/stderr";
   warnings++;
@@ -94,14 +95,15 @@ function new_chunk(chunk_name, params,
     for (p in params) {
       chunks[chunk_name, p] = params[p];
     }
-  }
-  if ("append" in params) {
-    append=params["append"];
-    if (! (append in chunk_names)) {
-      warning("Chunk " chunk_name " is appended to chunk " append " which is not defined yet");
-      new_chunk(append);
+    if ("append" in params) {
+      append=params["append"];
+      if (! (append in chunk_names)) {
+        warning("Chunk " chunk_name " is appended to chunk " append " which is not defined yet");
+        new_chunk(append);
+      }
+      chunk_include(append, chunk_name);
+      chunk_line(append, ORS);
     }
-    chunk_include(append, chunk_name);
   }
   active_chunk = chunk_name;
   prime_chunk(chunk_name);

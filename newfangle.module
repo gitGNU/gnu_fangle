@@ -31,7 +31,7 @@ AddToPreamble
 }%
 \def\lst@chunkname{\empty}%
 \lst@Key{params}\relax{\def\newfangle@chunk@params{#1}}%
-\lst@Key{append}\relax{\def\newfangle@chunk@params{#1}}%
+\lst@Key{append}\relax{\def\newfangle@chunk@append{#1}}%
 \def\newfanglecaption{\protect\newfangle@caption}%
 \newcounter{newfangle@chunkcounter}%
 \def\newfangle@caption{%
@@ -70,9 +70,16 @@ AddToPreamble
       \@ifundefined{newfangle@chunk@params}{}{%
         (\newfangle@chunk@params)%
       }%
-      [\csname \chunkcount\endcsname]~%%
+      [\csname \chunkcount\endcsname]~%
       \subpageref{\firstchunkname}%
     }%
+    \@ifundefined{newfangle@chunk@append}{}{%
+    \ifx{}\newfangle@chunk@append{x}\else%
+        ,~add~to~\newfangle@chunk@append%
+    \fi%
+    }%
+\global\def\newfangle@chunk@append{}%
+\lstset{append=x}%
   }%
 %
   \ifx\relax\prevchunkname\endmoddef\else\plusendmoddef\fi%

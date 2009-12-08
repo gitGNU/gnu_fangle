@@ -10,8 +10,7 @@
 basicstyle=\footnotesize\ttfamily,
 %keywordstyle=\color{darkgreen},
 numberstyle=\tiny,language=C,columns=fullflexible,
-numberfirstline=true
-}
+numberfirstline=true}
 \end_preamble
 \use_default_options true
 \begin_modules
@@ -3135,10 +3134,6 @@ function error(message)
 \end_inset
 
 
-\end_layout
-
-\begin_layout Chunk
-warning(),append=helper-functions
 \end_layout
 
 \begin_layout Standard
@@ -8843,24 +8838,6 @@ params
 \end_layout
 
 \begin_layout Chunk
-helper-functionsx
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Chunk
 chunk-storage-functions
 \end_layout
 
@@ -8939,43 +8916,48 @@ function new_chunk(chunk_name, params,
 
 \begin_layout Plain Layout
 
-  }
+    if ("append" in params) {
 \end_layout
 
 \begin_layout Plain Layout
 
-  if ("append" in params) {
+      append=params["append"];
 \end_layout
 
 \begin_layout Plain Layout
 
-    append=params["append"];
+      if (! (append in chunk_names)) {
 \end_layout
 
 \begin_layout Plain Layout
 
-    if (! (append in chunk_names)) {
-\end_layout
-
-\begin_layout Plain Layout
-
-      warning("Chunk " chunk_name " is appended to chunk " append " which
+        warning("Chunk " chunk_name " is appended to chunk " append " which
  is not defined yet");
 \end_layout
 
 \begin_layout Plain Layout
 
-      new_chunk(append);
+        new_chunk(append);
+\end_layout
+
+\begin_layout Plain Layout
+
+      }
+\end_layout
+
+\begin_layout Plain Layout
+
+      chunk_include(append, chunk_name);
+\end_layout
+
+\begin_layout Plain Layout
+
+      chunk_line(append, ORS);
 \end_layout
 
 \begin_layout Plain Layout
 
     }
-\end_layout
-
-\begin_layout Plain Layout
-
-    chunk_include(append, chunk_name);
 \end_layout
 
 \begin_layout Plain Layout
@@ -10895,7 +10877,7 @@ relax{
 \backslash
 def
 \backslash
-newfangle@chunk@params{#1}}%
+newfangle@chunk@append{#1}}%
 \end_layout
 
 \end_inset
@@ -11814,7 +11796,7 @@ csname
 \backslash
 chunkcount
 \backslash
-endcsname]~%%
+endcsname]~%
 \end_layout
 
 \begin_layout Plain Layout
@@ -11829,6 +11811,61 @@ firstchunkname}%
 \begin_layout Plain Layout
 
     }%
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\backslash
+@ifundefined{newfangle@chunk@append}{}{%
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\backslash
+ifx{}
+\backslash
+newfangle@chunk@append{x}
+\backslash
+else%
+\end_layout
+
+\begin_layout Plain Layout
+
+        ,~add~to~
+\backslash
+newfangle@chunk@append%
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\backslash
+fi%
+\end_layout
+
+\begin_layout Plain Layout
+
+    }%
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+global
+\backslash
+def
+\backslash
+newfangle@chunk@append{}%
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+lstset{append=x}%
 \end_layout
 
 \begin_layout Plain Layout
