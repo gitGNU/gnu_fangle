@@ -2882,7 +2882,7 @@ Newfangle awk source code
 \begin_layout Standard
 We use the copyright notice from chapter 
 \begin_inset CommandInset ref
-LatexCommand ref
+LatexCommand vref
 reference "cha:License"
 
 \end_inset
@@ -3078,6 +3078,55 @@ status open
 \begin_layout Plain Layout
 
 split("", ${ARRAY});
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chunk
+dump-array,params=ARRAY
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+print "
+\backslash
+nDump: ${ARRAY}
+\backslash
+n--------
+\backslash
+n" > "/dev/stderr";
+\end_layout
+
+\begin_layout Plain Layout
+
+for (_x in ${ARRAY}) {
+\end_layout
+
+\begin_layout Plain Layout
+
+  print _x "=" ${ARRAY}[_x] "
+\backslash
+n" > "/dev/stderr";
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+print "========
+\backslash
+n" > "/dev/stderr";
 \end_layout
 
 \end_inset
@@ -4085,8 +4134,8 @@ achunk,language=C,params=name;address
 \end_layout
 
 \begin_layout Standard
-When such a chunk is included the arguments are expressed thus, in square
- brackets as optional arguments separated by a comma
+When such a chunk is included, the arguments are expressed in round brackets
+ as a comma separated list of optional arguments:
 \begin_inset Note Note
 status open
 
@@ -4106,7 +4155,7 @@ chunkref{achunk}(John Jones, jones@example.com)
 \end_layout
 
 \begin_layout Standard
-Within the body a chunk, parameters are expressed as: 
+Within the body of a chunk, the parameters are referred to with: 
 \begin_inset Flex CharStyle:Code
 status collapsed
 
@@ -4130,9 +4179,23 @@ ${address}
  There is a strong case that a LaTeX style notation should be used, like
  
 \backslash
-param{name} --- =<
+param{name} which would be expressed in the listing as =<
 \backslash
-param{name}> as it would appear in the lstlisting.
+param{name}> and be rendered as 
+\begin_inset listings
+inline true
+status open
+
+\begin_layout Plain Layout
+
+=<
+\backslash
+param{name}>
+\end_layout
+
+\end_inset
+
+.
  Such notation would make me go blind, but I do intend to adopt it.
 \end_layout
 
@@ -4279,7 +4342,7 @@ status collapsed
 
 \end_inset
 
-and most likely also 
+ and most likely also 
 \begin_inset Flex CharStyle:Code
 status collapsed
 
@@ -4329,7 +4392,7 @@ status collapsed
 \begin_layout Plain Layout
 I know that I couldn't cope with users doing such things, and although the
  GPL3 license prevents me from actually forbidding anyone from trying, if
- they wan't it to work they'll have to write the code themselves and not
+ they want it to work they'll have to write the code themselves and not
  expect any support from me.
 \end_layout
 
@@ -4442,6 +4505,262 @@ In the meantime, I'll work with the first method, and a fixed list of delimiters
 \end_layout
 
 \begin_layout Chunk
+mode-definitions
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+modes["", "",  "submodes" ]="
+\backslash
+
+\backslash
+
+\backslash
+
+\backslash
+|
+\backslash
+"|{|
+\backslash
+
+\backslash
+(|
+\backslash
+
+\backslash
+[|'|/
+\backslash
+
+\backslash
+*";
+\end_layout
+
+\begin_layout Plain Layout
+
+modes["", "",  "delimeters"]=" *, *";
+\end_layout
+
+\begin_layout Plain Layout
+
+modes["", "
+\backslash
+"", "submodes" ]="
+\backslash
+"";
+\end_layout
+
+\begin_layout Plain Layout
+
+modes["", "
+\backslash
+"", "terminators"]="
+\backslash
+"";
+\end_layout
+
+\begin_layout Plain Layout
+
+modes["", "{",  "submodes" ]="
+\backslash
+
+\backslash
+
+\backslash
+
+\backslash
+|
+\backslash
+"|{|
+\backslash
+
+\backslash
+(|
+\backslash
+
+\backslash
+[|'|/
+\backslash
+
+\backslash
+*";
+\end_layout
+
+\begin_layout Plain Layout
+
+modes["", "{",  "delimeters"]=" *, *";
+\end_layout
+
+\begin_layout Plain Layout
+
+modes["", "{",  "terminators"]="}";
+\end_layout
+
+\begin_layout Plain Layout
+
+modes["", "[",  "submodes" ]="
+\backslash
+
+\backslash
+
+\backslash
+
+\backslash
+|
+\backslash
+"|{|
+\backslash
+
+\backslash
+(|
+\backslash
+
+\backslash
+[|'|/
+\backslash
+
+\backslash
+*";
+\end_layout
+
+\begin_layout Plain Layout
+
+modes["", "[",  "delimiters"]=" *, *";
+\end_layout
+
+\begin_layout Plain Layout
+
+modes["", "[",  "terminators"]="
+\backslash
+
+\backslash
+]";
+\end_layout
+
+\begin_layout Plain Layout
+
+modes["", "(",  "submodes" ]="
+\backslash
+
+\backslash
+
+\backslash
+
+\backslash
+|
+\backslash
+"|{|
+\backslash
+
+\backslash
+(|
+\backslash
+
+\backslash
+[|'|/
+\backslash
+
+\backslash
+*";
+\end_layout
+
+\begin_layout Plain Layout
+
+modes["", "(",  "delimiters"]=" *, *";
+\end_layout
+
+\begin_layout Plain Layout
+
+modes["", "(",  "terminators"]="
+\backslash
+
+\backslash
+)";
+\end_layout
+
+\begin_layout Plain Layout
+
+modes["", "'",  "submodes" ]="
+\backslash
+
+\backslash
+
+\backslash
+
+\backslash
+";
+\end_layout
+
+\begin_layout Plain Layout
+
+modes["", "'",  "terminators"]="'";
+\end_layout
+
+\begin_layout Plain Layout
+
+modes["", "/*", "submodes"]="
+\backslash
+
+\backslash
+*/";
+\end_layout
+
+\begin_layout Plain Layout
+
+modes["", "/*", "terminators"]="*/";
+\end_layout
+
+\begin_layout Plain Layout
+
+modes["", "//", "submodes"]="
+\backslash
+n";
+\end_layout
+
+\begin_layout Plain Layout
+
+modes["", "//", "terminators"]="
+\backslash
+n";
+\end_layout
+
+\begin_layout Plain Layout
+
+modes["", "",   "submodes" ]="
+\backslash
+
+\backslash
+
+\backslash
+
+\backslash
+|
+\backslash
+"|{|
+\backslash
+
+\backslash
+(|
+\backslash
+
+\backslash
+[|'|/
+\backslash
+
+\backslash
+*";
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chunk
 parse_chunk_args
 \end_layout
 
@@ -4452,12 +4771,17 @@ status open
 
 \begin_layout Plain Layout
 
-function parse_chunk_args(text, values,
+function parse_chunk_args(language, text, values,
 \end_layout
 
 \begin_layout Plain Layout
 
   # optional parameters
+\end_layout
+
+\begin_layout Plain Layout
+
+  mode, 
 \end_layout
 
 \begin_layout Plain Layout
@@ -4472,7 +4796,7 @@ function parse_chunk_args(text, values,
 
 \begin_layout Plain Layout
 
-  delimiters,
+  submodes,
 \end_layout
 
 \begin_layout Plain Layout
@@ -4482,7 +4806,7 @@ function parse_chunk_args(text, values,
 
 \begin_layout Plain Layout
 
-  a, name)
+  c, a, part, item, name, result, new_values, new_mode)
 \end_layout
 
 \begin_layout Plain Layout
@@ -4492,12 +4816,7 @@ function parse_chunk_args(text, values,
 
 \begin_layout Plain Layout
 
-  split(chunklet_parts[2], call_chunk_args, " *, *");
-\end_layout
-
-\begin_layout Plain Layout
-
-}
+#  split(chunklet_parts[2], call_chunk_args, " *, *");
 \end_layout
 
 \end_inset
@@ -4541,162 +4860,37 @@ status open
 
 \begin_layout Plain Layout
 
-{
+  submodes=modes[language, mode, "submodes"];
 \end_layout
 
 \begin_layout Plain Layout
 
-  modes["
-\backslash
-"", "delimiters" ]="
-\backslash
-"" "|
-\backslash
-"";
+  if ((language, mode, "delimiters") in modes) {
 \end_layout
 
 \begin_layout Plain Layout
 
-  modes["
-\backslash
-"", "terminators"]="
-\backslash
-"";
+    submodes=submodes "|" modes[language, mode, "delimiters"];
 \end_layout
 
 \begin_layout Plain Layout
 
-  modes["{",  "delimiters" ]="
-\backslash
-
-\backslash
-|
-\backslash
-"|{|}|(|)|
-\backslash
-
-\backslash
-[|
-\backslash
-
-\backslash
-]|'|/*" "|}";
+  }
 \end_layout
 
 \begin_layout Plain Layout
 
-  modes["{",  "terminators"]="}";
+  if ((language, mode, "terminators") in modes) {
 \end_layout
 
 \begin_layout Plain Layout
 
-  modes["[",  "delimiters" ]="
-\backslash
-
-\backslash
-|
-\backslash
-"|{|}|(|)|
-\backslash
-
-\backslash
-[|
-\backslash
-
-\backslash
-]|'|/*" "|
-\backslash
-
-\backslash
-]";
+    submodes=submodes "|" modes[language, mode, "terminators"];
 \end_layout
 
 \begin_layout Plain Layout
 
-  modes["[",  "terminators"]="]";
-\end_layout
-
-\begin_layout Plain Layout
-
-  modes["(",  "delimiters" ]="
-\backslash
-
-\backslash
-|
-\backslash
-"|{|}|(|)|
-\backslash
-
-\backslash
-[|
-\backslash
-
-\backslash
-]|'|/*" "|)";
-\end_layout
-
-\begin_layout Plain Layout
-
-  modes["(",  "terminators"]=")";
-\end_layout
-
-\begin_layout Plain Layout
-
-  modes["'",  "delimiters" ]="
-\backslash
-
-\backslash
-";
-\end_layout
-
-\begin_layout Plain Layout
-
-  modes["'",  "terminators"]="'";
-\end_layout
-
-\begin_layout Plain Layout
-
-  modes["/*", "terminators"]="*/";
-\end_layout
-
-\begin_layout Plain Layout
-
-  modes["//", "terminators"]="
-\backslash
-n";
-\end_layout
-
-\begin_layout Plain Layout
-
-  modes["",   "delimiters" ]="
-\backslash
-
-\backslash
-|
-\backslash
-"|{|}|(|)|
-\backslash
-
-\backslash
-[|
-\backslash
-
-\backslash
-]|'|/*";
-\end_layout
-
-\begin_layout Plain Layout
-
-  mode="";
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-  delimiters=modes[mode, "delimiters"];
+  }
 \end_layout
 
 \begin_layout Plain Layout
@@ -4710,32 +4904,32 @@ n";
 
 \begin_layout Plain Layout
 
-    if match(text, "(" delimiters ")", a) {
+    if (match(text, "(" submodes ")", a)) {
 \end_layout
 
 \begin_layout Plain Layout
 
-      if (a[1] == modes[mode, "terminator"]) return result a[1];
+      part = substr(text, 1, RSTART -1);
 \end_layout
 
 \begin_layout Plain Layout
 
-      new_mode=a[1];
+      item = item part;
 \end_layout
 
 \begin_layout Plain Layout
 
-      #check if new_mode is defined
+      if (match(a[1], "^" modes[language, mode, "terminators"] "$")) {
 \end_layout
 
 \begin_layout Plain Layout
 
-      if (! (new_mode, "terminators") in modes) {
+       values[++c] = item;
 \end_layout
 
 \begin_layout Plain Layout
 
-        error("Delimiter %s set unknown mode in text: %s", new_mode, text);
+       return result item a[1];
 \end_layout
 
 \begin_layout Plain Layout
@@ -4745,12 +4939,108 @@ n";
 
 \begin_layout Plain Layout
 
-      text = substr(text, RSTART));
+      if (match(a[1], "^" modes[language, mode, "delimiters"] "$")) {
 \end_layout
 
 \begin_layout Plain Layout
 
-      result = result substr(text, 1, RSTART -1) RECURSE(text,,new_mode);
+        values[++c] = item;
+\end_layout
+
+\begin_layout Plain Layout
+
+        text = substr(text, 1 + length(part) + length(a[1]));
+\end_layout
+
+\begin_layout Plain Layout
+
+        result = result item a[1];
+\end_layout
+
+\begin_layout Plain Layout
+
+        item = "";
+\end_layout
+
+\begin_layout Plain Layout
+
+      } else if ((language, a[1], "terminators") in modes) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        new_mode=a[1];
+\end_layout
+
+\begin_layout Plain Layout
+
+        #check if new_mode is defined
+\end_layout
+
+\begin_layout Plain Layout
+
+        text = substr(text, 1 + length(part) + length(a[1]));
+\end_layout
+
+\begin_layout Plain Layout
+
+        s = parse_chunk_args(language, text,new_values,new_mode);
+\end_layout
+
+\begin_layout Plain Layout
+
+        text = substr(text, length(s) +1);
+\end_layout
+
+\begin_layout Plain Layout
+
+        item = item a[1] s;
+\end_layout
+
+\begin_layout Plain Layout
+
+      } else {
+\end_layout
+
+\begin_layout Plain Layout
+
+        error(sprintf("Submode '%s' set unknown mode in text: %s", new_mode,
+ text));
+\end_layout
+
+\begin_layout Plain Layout
+
+        text = substr(text, 1 + length(part) + length(a[1]));
+\end_layout
+
+\begin_layout Plain Layout
+
+      }
+\end_layout
+
+\begin_layout Plain Layout
+
+    } else {
+\end_layout
+
+\begin_layout Plain Layout
+
+      result = result item text;
+\end_layout
+
+\begin_layout Plain Layout
+
+      values[++c] = text;
+\end_layout
+
+\begin_layout Plain Layout
+
+      text = "";
+\end_layout
+
+\begin_layout Plain Layout
+
+      item = "";
 \end_layout
 
 \begin_layout Plain Layout
@@ -4760,22 +5050,17 @@ n";
 
 \begin_layout Plain Layout
 
-    result = result text;
-\end_layout
-
-\begin_layout Plain Layout
-
-    text = "";
-\end_layout
-
-\begin_layout Plain Layout
-
   }
 \end_layout
 
 \begin_layout Plain Layout
 
-  return result;
+  if (length(item)) values[++c] = item;
+\end_layout
+
+\begin_layout Plain Layout
+
+  return result item;
 \end_layout
 
 \begin_layout Plain Layout
@@ -4805,7 +5090,14 @@ status open
 
 =<
 \backslash
-chunkref{get_chunk_args()}>
+chunkref{error()}>
+\end_layout
+
+\begin_layout Plain Layout
+
+=<
+\backslash
+chunkref{parse_chunk_args()}>
 \end_layout
 
 \begin_layout Plain Layout
@@ -4820,15 +5112,37 @@ BEGIN {
 
 \begin_layout Plain Layout
 
+  =<
+\backslash
+chunkref{mode-definitions}>
 \end_layout
 
 \begin_layout Plain Layout
 
-  print parse_chunk_args("things[x, y], get_other_things(a, 
+\end_layout
+
+\begin_layout Plain Layout
+
+#  print parse_chunk_args("", "things[x, y], get_other_things(a, 
 \backslash
 "all
 \backslash
-")", a);
+"), 99", a, "(");
+\end_layout
+
+\begin_layout Plain Layout
+
+#  print parse_chunk_args("", "1,2,3)", a, "(");
+\end_layout
+
+\begin_layout Plain Layout
+
+#  print parse_chunk_args("", "joe, red", a, "(");
+\end_layout
+
+\begin_layout Plain Layout
+
+  print parse_chunk_args("", "${colour}", a, "(");
 \end_layout
 
 \begin_layout Plain Layout
@@ -6605,11 +6919,6 @@ notangle_mode=0;
 
 \begin_layout Plain Layout
 
-SUBSEP=",";
-\end_layout
-
-\begin_layout Plain Layout
-
 root="*";
 \end_layout
 
@@ -6745,6 +7054,13 @@ BEGIN {
   =<
 \backslash
 chunkref{constants}>
+\end_layout
+
+\begin_layout Plain Layout
+
+  =<
+\backslash
+chunkref{mode-definitions}>
 \end_layout
 
 \begin_layout Plain Layout
@@ -7428,6 +7744,13 @@ status open
 =<
 \backslash
 chunkref{new_mode()}>
+\end_layout
+
+\begin_layout Plain Layout
+
+=<
+\backslash
+chunkref{parse_chunk_args}>
 \end_layout
 
 \end_inset
@@ -8233,17 +8556,7 @@ if (match(chunklet, "^([^
 
 \begin_layout Plain Layout
 
-#  parse_chunk_args(chunklet_parts[2], chunk_args);
-\end_layout
-
-\begin_layout Plain Layout
-
-# TO BE parse_chunk_args SOON
-\end_layout
-
-\begin_layout Plain Layout
-
-  split(chunklet_parts[2], call_chunk_args, " *, *");
+  parse_chunk_args("", chunklet_parts[2], call_chunk_args, "(");
 \end_layout
 
 \begin_layout Plain Layout
@@ -8776,6 +9089,11 @@ status open
 \begin_layout Plain Layout
 
 part_type_chunk=1;
+\end_layout
+
+\begin_layout Plain Layout
+
+SUBSEP=",";
 \end_layout
 
 \end_inset

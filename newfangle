@@ -83,6 +83,58 @@ function new_mode(language, mode) {
   mode["language"] = language;
   mode["state"]="";
 }
+function parse_chunk_args(language, text, values,
+  # optional parameters
+  mode, 
+  path, # hierarchical precursors
+  stack, # delimiters to be matched
+  submodes,
+  # local vars
+  c, a, part, item, name, result, new_values, new_mode)
+{
+#  split(chunklet_parts[2], call_chunk_args, " *, *");
+  submodes=modes[language, mode, "submodes"];
+  if ((language, mode, "delimiters") in modes) {
+    submodes=submodes "|" modes[language, mode, "delimiters"];
+  }
+  if ((language, mode, "terminators") in modes) {
+    submodes=submodes "|" modes[language, mode, "terminators"];
+  }
+
+  while(length(text)) {
+    if (match(text, "(" submodes ")", a)) {
+      part = substr(text, 1, RSTART -1);
+      item = item part;
+      if (match(a[1], "^" modes[language, mode, "terminators"] "$")) {
+       values[++c] = item;
+       return result item a[1];
+      }
+      if (match(a[1], "^" modes[language, mode, "delimiters"] "$")) {
+        values[++c] = item;
+        text = substr(text, 1 + length(part) + length(a[1]));
+        result = result item a[1];
+        item = "";
+      } else if ((language, a[1], "terminators") in modes) {
+        new_mode=a[1];
+        #check if new_mode is defined
+        text = substr(text, 1 + length(part) + length(a[1]));
+        s = parse_chunk_args(language, text,new_values,new_mode);
+        text = substr(text, length(s) +1);
+        item = item a[1] s;
+      } else {
+        error(sprintf("Submode '%s' set unknown mode in text: %s", new_mode, text));
+        text = substr(text, 1 + length(part) + length(a[1]));
+      }
+    } else {
+      result = result item text;
+      values[++c] = text;
+      text = "";
+      item = "";
+    }
+  }
+  if (length(item)) values[++c] = item;
+  return result item;
+}
 function new_chunk(chunk_name, params,
   # local vars
   p, append )
@@ -192,9 +244,7 @@ function write_chunk(chunk_name, indent, tail,
       if (chunks[chunk_name, "part", part, "type"] == part_type_chunk) {
         if (match(chunklet, "^([^\\[]*)\\((.*)\\)$", chunklet_parts)) {
           chunklet = chunklet_parts[1];
-        #  parse_chunk_args(chunklet_parts[2], chunk_args);
-        # TO BE parse_chunk_args SOON
-          split(chunklet_parts[2], call_chunk_args, " *, *");
+          parse_chunk_args("", chunklet_parts[2], call_chunk_args, "(");
           for (c in call_chunk_args) {
             call_chunk_args[c] = expand_chunk_args(call_chunk_args[c], chunk_params, chunk_args);
           }
@@ -269,10 +319,30 @@ function expand_chunk_args(text, params, args,
 }
 BEGIN {
   part_type_chunk=1;
+  SUBSEP=",";
+  modes["", "",  "submodes" ]="\\\\|\"|{|\\(|\\[|'|/\\*";
+  modes["", "",  "delimeters"]=" *, *";
+  modes["", "\"", "submodes" ]="\"";
+  modes["", "\"", "terminators"]="\"";
+  modes["", "{",  "submodes" ]="\\\\|\"|{|\\(|\\[|'|/\\*";
+  modes["", "{",  "delimeters"]=" *, *";
+  modes["", "{",  "terminators"]="}";
+  modes["", "[",  "submodes" ]="\\\\|\"|{|\\(|\\[|'|/\\*";
+  modes["", "[",  "delimiters"]=" *, *";
+  modes["", "[",  "terminators"]="\\]";
+  modes["", "(",  "submodes" ]="\\\\|\"|{|\\(|\\[|'|/\\*";
+  modes["", "(",  "delimiters"]=" *, *";
+  modes["", "(",  "terminators"]="\\)";
+  modes["", "'",  "submodes" ]="\\\\";
+  modes["", "'",  "terminators"]="'";
+  modes["", "/*", "submodes"]="\\*/";
+  modes["", "/*", "terminators"]="*/";
+  modes["", "//", "submodes"]="\n";
+  modes["", "//", "terminators"]="\n";
+  modes["", "",   "submodes" ]="\\\\|\"|{|\\(|\\[|'|/\\*";
   debug=0;
   linenos=0;
   notangle_mode=0;
-  SUBSEP=",";
   root="*";
   tabs = "";
 
