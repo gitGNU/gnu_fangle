@@ -90,26 +90,29 @@ function parse_chunk_args(language, text, values,
   stack, # delimiters to be matched
   submodes,
   # local vars
-  c, a, part, item, name, result, new_values, new_mode)
+  c, a, part, item, name, result, new_values, new_mode, delimiters)
 {
 #  split(chunklet_parts[2], call_chunk_args, " *, *");
   submodes=modes[language, mode, "submodes"];
   if ((language, mode, "delimiters") in modes) {
-    submodes=submodes "|" modes[language, mode, "delimiters"];
+    delimiters = modes[language, mode, "delimiters"];
+    submodes=submodes "|" delimiters;
   }
   if ((language, mode, "terminators") in modes) {
     submodes=submodes "|" modes[language, mode, "terminators"];
   }
-
   while(length(text)) {
     if (match(text, "(" submodes ")", a)) {
+      if (RLENGTH<1) {
+        error("Internal error, matched zero length submode, should be impossible - likely regex computation error");
+      }
       part = substr(text, 1, RSTART -1);
       item = item part;
       if (match(a[1], "^" modes[language, mode, "terminators"] "$")) {
        values[++c] = item;
        return result item a[1];
       }
-      if (match(a[1], "^" modes[language, mode, "delimiters"] "$")) {
+      if (match(a[1], "^" delimiters "$")) {
         values[++c] = item;
         text = substr(text, 1 + length(part) + length(a[1]));
         result = result item a[1];
@@ -320,9 +323,10 @@ function expand_chunk_args(text, params, args,
 BEGIN {
   part_type_chunk=1;
   SUBSEP=",";
-  modes["", "",  "submodes" ]="\\\\|\"|{|\\(|\\[|'|/\\*";
   modes["", "",  "delimeters"]=" *, *";
-  modes["", "\"", "submodes" ]="\"";
+  modes["", "",  "submodes" ]="\\\\|\"|'|{|\\(|\\[|/\\*";
+  modes["", "\\", "terminators"]=".";
+  modes["", "\"", "submodes" ]="\\\\";
   modes["", "\"", "terminators"]="\"";
   modes["", "{",  "submodes" ]="\\\\|\"|{|\\(|\\[|'|/\\*";
   modes["", "{",  "delimeters"]=" *, *";
