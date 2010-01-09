@@ -79,24 +79,20 @@ function warning(message)
   print "WARNING: " FILENAME ":" FNR " " message > "/dev/stderr";
   warnings++;
 }
-function new_mode(language, mode) {
-  mode["language"] = language;
-  mode["state"]="";
+function new_mode_tracker(language, context, mode) {
+  context[""] = 0;
+  context[0, "language"] = language;
+  context[0, "mode"] = mode;
 }
-function parse_chunk_args(language, text, values, _mode, context,
+function mode_tracker(context, text, values, 
   # optional parameters
   # local vars
-  mode,
-  submodes,
+  mode, submodes, language,
   cindex, c, a, part, item, name, result, new_values, new_mode, delimiters)
 {
   cindex = context[""] + 0;
-#  if (language != context[cindex, "language"]) {
-#    cindex++;
-#    context[""] = cindex;
-#  }
-  if (length(_mode)) context[cindex, "mode"] = _mode;
   mode = context[cindex, "mode"];
+  language = context[cindex, "language" ];
   submodes=modes[language, mode, "submodes"];
   if ((language, mode, "delimiters") in modes) {
     delimiters = modes[language, mode, "delimiters"];
@@ -105,8 +101,7 @@ function parse_chunk_args(language, text, values, _mode, context,
   if ((language, mode, "terminators") in modes) {
     submodes=submodes "|" modes[language, mode, "terminators"];
   }
-  while(length(text)) {
-    if (cindex <0) error("Can't read text, cindex=" cindex " text=[" text "]");
+  while((cindex >= 0) && length(text)) {
     if (match(text, "(" submodes ")", a)) {
       if (RLENGTH<1) {
         error("Internal error, matched zero length submode, should be impossible - likely regex computation error");
@@ -173,10 +168,21 @@ else {
   context["item"] = item;
 
   if (length(item)) context[cindex, "values", ++context[cindex, "values"]] = item;
-  # save values
+  return text;
+}
+function parse_chunk_args(language, text, values, mode,
+  # local vars
+  c, context, rest)
+{
+  split("", context);
+  new_mode_tracker(language, context,
+  mode);
+  rest = mode_tracker(context, text, values);
+  # extract values
   for(c=1; c <= context[0, "values"]; c++) {
     values[c] = context[0, "values", c];
   }
+  return rest;
 }
 function new_chunk(chunk_name, params,
   # local vars
@@ -255,7 +261,7 @@ function output_chunk(chunk) {
 
 function write_chunk(chunk_name, indent, tail,
   # optional vars
-  chunk_path, chunk_args, 
+  chunk_path, chunk_args, chunk_params,
   # local vars
   part, max_part, part_line, frag, max_frag, text, 
   chunklet, only_part, call_chunk_args, mode)
@@ -265,7 +271,7 @@ function write_chunk(chunk_name, indent, tail,
     only_part = chunk_name_parts[2];
   }
   split("", mode);
-  new_mode(chunks[chunk_name, "language"], mode);
+  new_mode_tracker(chunks[chunk_name, "language"], mode, "");
   split(chunks[chunk_name, "params"], chunk_params, " *; *");
   if (! (chunk_name in chunk_names)) {
     error(sprintf(_"The root module <<%s>> was not defined.\nUsed by: %s",\
@@ -358,6 +364,7 @@ function expand_chunk_args(text, params, args,
       }
     }
   }
+
   return text;
 }
 BEGIN {

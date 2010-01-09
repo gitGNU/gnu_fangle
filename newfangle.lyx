@@ -3000,6 +3000,13 @@ chunkref{mode-tracker}>
 
 =<
 \backslash
+chunkref{parse_chunk_args}>
+\end_layout
+
+\begin_layout Plain Layout
+
+=<
+\backslash
 chunkref{chunk-storage-functions}>
 \end_layout
 
@@ -4145,7 +4152,7 @@ chunkref
 
 \end_inset
 
- can be suitably quoted.
+ can be suitably escape or quoted.
 \end_layout
 
 \begin_layout Standard
@@ -4217,7 +4224,7 @@ chunkref{example-perl}>"
 \end_layout
 
 \begin_layout Standard
-would need to generate output like this if it were to work: 
+newfangle would need to generate output like this if it were to work: 
 \end_layout
 
 \begin_layout LyX-Code
@@ -4230,7 +4237,7 @@ $/'/;"
 
 \begin_layout Standard
 See that the double quote " as part of the regex has been quoted with a
- slash to protect it from shell interpretation.
+ back-slash to protect it from shell interpretation.
 \end_layout
 
 \begin_layout Standard
@@ -4290,16 +4297,16 @@ $$/'/;"
 \end_layout
 
 \begin_layout Standard
-In order to make this work, we need to define a mode-tracker for each supported
- language, that can detect the various quoting modes, and provide a transformati
-on that must be applied to any included text so that included text will
- be interpreted correctly after the additional interpolation that it will
- be subject to at run-time.
+In order to make this work, we need to define a mode-tracker supporting
+ each language, that can detect the various quoting modes, and provide a
+ transformation that must be applied to any included text so that included
+ text will be interpreted correctly after the additional interpolation that
+ it will be subject to at run-time.
 \end_layout
 
 \begin_layout Standard
-For example, the transformation for text to be inserted into sh double-quoted
- strings would be something like:
+For example, the sed transformation for text to be inserted into sh double-quote
+d strings would be something like:
 \end_layout
 
 \begin_layout LyX-Code
@@ -4435,8 +4442,12 @@ Note chunk parameters should probably also be transformed
 
 \end_layout
 
+\begin_layout Section
+Constructor
+\end_layout
+
 \begin_layout Chunk
-new_mode()
+new_mode_tracker()
 \end_layout
 
 \begin_layout Standard
@@ -4446,17 +4457,22 @@ status open
 
 \begin_layout Plain Layout
 
-function new_mode(language, mode) {
+function new_mode_tracker(language, context, mode) {
 \end_layout
 
 \begin_layout Plain Layout
 
-  mode["language"] = language;
+  context[""] = 0;
 \end_layout
 
 \begin_layout Plain Layout
 
-  mode["state"]="";
+  context[0, "language"] = language;
+\end_layout
+
+\begin_layout Plain Layout
+
+  context[0, "mode"] = mode;
 \end_layout
 
 \begin_layout Plain Layout
@@ -4475,7 +4491,7 @@ Because awk functions cannot return an array, we must create the array first
 \end_layout
 
 \begin_layout Chunk
-new-mode,params=language;mode
+new-mode-tracker,params=language;context;mode
 \end_layout
 
 \begin_layout Standard
@@ -4487,12 +4503,17 @@ status open
 
 =<
 \backslash
-chunkref{awk-delete-array}(${mode})>
+chunkref{awk-delete-array}(${context})>
 \end_layout
 
 \begin_layout Plain Layout
 
-new_mode(${language}, ${mode});
+new_mode_tracker(${language}, ${context},
+\end_layout
+
+\begin_layout Plain Layout
+
+${mode});
 \end_layout
 
 \end_inset
@@ -4505,150 +4526,8 @@ And for tracking modes, we dispatch to a mode-tracker action based on the
  current language
 \end_layout
 
-\begin_layout Chunk
-track_mode()
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-function track_mode(mode, text) {
-\end_layout
-
-\begin_layout Plain Layout
-
-  if (mode["language"] == "C") {
-\end_layout
-
-\begin_layout Plain Layout
-
-    =<
-\backslash
-chunkref{track-mode-C}>
-\end_layout
-
-\begin_layout Plain Layout
-
-    return;
-\end_layout
-
-\begin_layout Plain Layout
-
-  }
-\end_layout
-
-\begin_layout Plain Layout
-
-}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-For each mode, we look for a character that has the power to change the
- mode.
-\end_layout
-
-\begin_layout Standard
-In plain mode:
-\end_layout
-
-\begin_layout List
-\labelwidthstring 00.00.0000
-\begin_inset Quotes eld
-\end_inset
-
- enters double-quote mode
-\end_layout
-
-\begin_layout List
-\labelwidthstring 00.00.0000
-' enters single-quote mode
-\end_layout
-
-\begin_layout List
-\labelwidthstring 00.00.0000
-trailing-
-\backslash
- enters multi-line mode
-\end_layout
-
-\begin_layout List
-\labelwidthstring 00.00.0000
-# enters #define sub-mode, needs 
-\backslash
- escaping end of line too
-\end_layout
-
-\begin_layout List
-\labelwidthstring 00.00.0000
-/* enters comment mode
-\end_layout
-
-\begin_layout Standard
-In double-quote mode, escape 
-\backslash
- and 
-\begin_inset Quotes eld
-\end_inset
-
- and newline
-\end_layout
-
-\begin_layout Standard
-
-\backslash
- escapes prevents 
-\begin_inset Quotes eld
-\end_inset
-
- from leaving mode
-\end_layout
-
-\begin_layout Standard
-\begin_inset Quotes eld
-\end_inset
-
- leaves mode
-\end_layout
-
-\begin_layout Standard
-newline needs to close and re-open string or something
-\end_layout
-
-\begin_layout Standard
-in single-quote mode escape 
-\backslash
- and 
-\begin_inset Quotes eld
-\end_inset
-
-
-\end_layout
-
-\begin_layout Chunk
-track-mode-C
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
-
+\begin_layout Section
+Processor
 \end_layout
 
 \begin_layout Chunk
@@ -4664,395 +4543,19 @@ status open
 
 =<
 \backslash
-chunkref{new_mode()}>
+chunkref{new_mode_tracker()}>
 \end_layout
 
 \begin_layout Plain Layout
 
 =<
 \backslash
-chunkref{parse_chunk_args}>
+chunkref{mode_tracker()}>
 \end_layout
 
 \end_inset
 
 
-\end_layout
-
-\begin_layout Chapter
-Expanding chunk arguments
-\end_layout
-
-\begin_layout Standard
-\begin_inset CommandInset label
-LatexCommand label
-name "cha:Chunk Arguments"
-
-\end_inset
-
-
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-Explain this in the documentation section too
-\end_layout
-
-\end_inset
-
-As an extension to many literate-programming styles, newfangle permits code
- chunks to take parameters and thus operate somewhat like C pre-processor
- macros, or like C++ templates.
-\end_layout
-
-\begin_layout Standard
-Chunk parameters are declared with a chunk argument called 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-params
-\end_layout
-
-\end_inset
-
-, which holds a semi-colon separated list of parameters, like this:
-\end_layout
-
-\begin_layout LyX-Code
-achunk,language=C,params=name;address
-\end_layout
-
-\begin_layout Standard
-When such a chunk is included, the arguments are expressed in round brackets
- as a comma separated list of optional arguments:
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-We ought to support qouting in {} like ({Jones, John}, Jones@example.com)
-\end_layout
-
-\end_inset
-
-:
-\end_layout
-
-\begin_layout LyX-Code
-
-\backslash
-chunkref{achunk}(John Jones, jones@example.com)
-\end_layout
-
-\begin_layout Standard
-Within the body of a chunk, the parameters are referred to with: 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-${name}
-\end_layout
-
-\end_inset
-
- and 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-${address}
-\end_layout
-
-\end_inset
-
-.
- There is a strong case that a LaTeX style notation should be used, like
- 
-\backslash
-param{name} which would be expressed in the listing as =<
-\backslash
-param{name}> and be rendered as 
-\begin_inset listings
-inline true
-status open
-
-\begin_layout Plain Layout
-
-=<
-\backslash
-param{name}>
-\end_layout
-
-\end_inset
-
-.
- Such notation would make me go blind, but I do intend to adopt it.
-\end_layout
-
-\begin_layout Standard
-We therefore need a function 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-expand_chunk_args
-\end_layout
-
-\end_inset
-
- which will take a block of text, a list of permitted parameters and the
- arguments which must substitute for the parameters.
- 
-\end_layout
-
-\begin_layout Standard
-We also need to be able to parse a parameter list into an array of parameters.
-\end_layout
-
-\begin_layout Section
-Parsing argument lists
-\end_layout
-
-\begin_layout Standard
-An argument list may be as simple as in 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-
-\backslash
-chunkref{pull}(thing, otherthing)
-\end_layout
-
-\end_inset
-
- or as complex as:
-\end_layout
-
-\begin_layout LyX-Code
-
-\backslash
-chunkref{pull}(things[x, y], get_other_things(a, "(all)")) 
-\end_layout
-
-\begin_layout Standard
---- which for all it's commas and quotes and parenthesis represents only
- two parameters: 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-things[x, y]
-\end_layout
-
-\end_inset
-
- and 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-get_other_things(a, "(all)")
-\end_layout
-
-\end_inset
-
-.
-\end_layout
-
-\begin_layout Standard
-If we simply split parameter list on commas, then the comma in 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-things[x,y]
-\end_layout
-
-\end_inset
-
- would split into two seperate arguments: 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-things[x
-\end_layout
-
-\end_inset
-
- and 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-y]
-\end_layout
-
-\end_inset
-
---- neither of which make sense on their own.
-\end_layout
-
-\begin_layout Standard
-One way to prevent this would be by refusing to split text between maching
- delimiters, such as 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-[
-\end_layout
-
-\end_inset
-
-, 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-]
-\end_layout
-
-\end_inset
-
-, 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-(
-\end_layout
-
-\end_inset
-
-, 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-)
-\end_layout
-
-\end_inset
-
-, 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-{
-\end_layout
-
-\end_inset
-
-, 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-}
-\end_layout
-
-\end_inset
-
- and most likely also 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-"
-\end_layout
-
-\end_inset
-
-, 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-"
-\end_layout
-
-\end_inset
-
- and 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-'
-\end_layout
-
-\end_inset
-
-, 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-'
-\end_layout
-
-\end_inset
-
-.
- Of course this also makes it impossible to pass such mis-matched code fragments
- as parameters, but I think that it would be hard for readers to cope with
- authors who would pass such code unbalanced fragments as chunk parameters
-\begin_inset Foot
-status collapsed
-
-\begin_layout Plain Layout
-I know that I couldn't cope with users doing such things, and although the
- GPL3 license prevents me from actually forbidding anyone from trying, if
- they want it to work they'll have to write the code themselves and not
- expect any support from me.
-\end_layout
-
-\end_inset
-
-.
-\end_layout
-
-\begin_layout Standard
-Unfortunately, the full set of matching delimiters may vary from language
- to language.
- In certain C++ template contexts, 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-<
-\end_layout
-
-\end_inset
-
- and 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
->
-\end_layout
-
-\end_inset
-
- would count as delimiters, and yet in other contexts they would not.
-\end_layout
-
-\begin_layout Standard
-This puts me in the unfortunate position of having to parse-somewhat all
- programming languages without knowing what they are!
-\end_layout
-
-\begin_layout Standard
-This is the basis of mode-tracking, by tracking parse-modes for different
- languages.
-\end_layout
-
-\begin_layout Subsection
-Parse modes
 \end_layout
 
 \begin_layout Standard
@@ -5344,7 +4847,7 @@ status collapsed
 .
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 Backslash
 \end_layout
 
@@ -5396,7 +4899,7 @@ modes["", "
 
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 Strings
 \end_layout
 
@@ -5504,6 +5007,58 @@ if (a[2] != "for me") e++;
 \begin_layout Plain Layout
 
 if (length(a) != 2) e++;
+\end_layout
+
+\begin_layout Plain Layout
+
+=<
+\backslash
+chunkref{pca-test.awk:summary}>
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Also, the parser must return any spare text at the end that has not been
+ processed.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+rest = parse_chunk_args("", "1, 2, 3) spare", a, "(");
+\end_layout
+
+\begin_layout Plain Layout
+
+if (a[1] != 1) e++;
+\end_layout
+
+\begin_layout Plain Layout
+
+if (a[2] != 2) e++;
+\end_layout
+
+\begin_layout Plain Layout
+
+if (a[3] != 3) e++;
+\end_layout
+
+\begin_layout Plain Layout
+
+if (length(a) != 3) e++;
+\end_layout
+
+\begin_layout Plain Layout
+
+if (rest != " spare") e++;
 \end_layout
 
 \begin_layout Plain Layout
@@ -5782,341 +5337,7 @@ chunkref{pca-test.awk:summary}>
 
 \end_layout
 
-\begin_layout Subsubsection
-A recursive mode tracker
-\end_layout
-
-\begin_layout Chunk
-parse_chunk_args-recursive
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-function parse_chunk_args(language, text, values,
-\end_layout
-
-\begin_layout Plain Layout
-
-  # optional parameters
-\end_layout
-
-\begin_layout Plain Layout
-
-  mode, 
-\end_layout
-
-\begin_layout Plain Layout
-
-  path, # hierarchical precursors
-\end_layout
-
-\begin_layout Plain Layout
-
-  stack, # delimiters to be matched
-\end_layout
-
-\begin_layout Plain Layout
-
-  submodes,
-\end_layout
-
-\begin_layout Plain Layout
-
-  # local vars
-\end_layout
-
-\begin_layout Plain Layout
-
-  c, a, part, item, name, result, new_values, new_mode, delimiters)
-\end_layout
-
-\begin_layout Plain Layout
-
-{
-\end_layout
-
-\begin_layout Plain Layout
-
-#  split(chunklet_parts[2], call_chunk_args, " *, *");
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-The strategy is to parse the name, and then look for a value.
- If the value begins with a brace 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-{
-\end_layout
-
-\end_inset
-
-, then we consume as much of the text as necessary, returning the remaining
- text when we encounter a leading close-brace 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-}
-\end_layout
-
-\end_inset
-
-.
- This being the strategy --- and executed in a loop --- we realise that
- we must first look for the closing brace (perhaps preceded by white space)
- in order to terminate the recursion, and returning remaining text.
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-  submodes=modes[language, mode, "submodes"];
-\end_layout
-
-\begin_layout Plain Layout
-
-  if ((language, mode, "delimiters") in modes) {
-\end_layout
-
-\begin_layout Plain Layout
-
-    delimiters = modes[language, mode, "delimiters"];
-\end_layout
-
-\begin_layout Plain Layout
-
-    submodes=submodes "|" delimiters;
-\end_layout
-
-\begin_layout Plain Layout
-
-  }
-\end_layout
-
-\begin_layout Plain Layout
-
-  if ((language, mode, "terminators") in modes) {
-\end_layout
-
-\begin_layout Plain Layout
-
-    submodes=submodes "|" modes[language, mode, "terminators"];
-\end_layout
-
-\begin_layout Plain Layout
-
-  }
-\end_layout
-
-\begin_layout Plain Layout
-
-  while(length(text)) {
-\end_layout
-
-\begin_layout Plain Layout
-
-    if (match(text, "(" submodes ")", a)) {
-\end_layout
-
-\begin_layout Plain Layout
-
-      if (RLENGTH<1) {
-\end_layout
-
-\begin_layout Plain Layout
-
-        error("Internal error, matched zero length submode, should be impossible
- - likely regex computation error");
-\end_layout
-
-\begin_layout Plain Layout
-
-      }
-\end_layout
-
-\begin_layout Plain Layout
-
-      part = substr(text, 1, RSTART -1);
-\end_layout
-
-\begin_layout Plain Layout
-
-      item = item part;
-\end_layout
-
-\begin_layout Plain Layout
-
-      if (match(a[1], "^" modes[language, mode, "terminators"] "$")) {
-\end_layout
-
-\begin_layout Plain Layout
-
-       values[++c] = item;
-\end_layout
-
-\begin_layout Plain Layout
-
-       return result item a[1];
-\end_layout
-
-\begin_layout Plain Layout
-
-      }
-\end_layout
-
-\begin_layout Plain Layout
-
-      if (match(a[1], "^" delimiters "$")) {
-\end_layout
-
-\begin_layout Plain Layout
-
-        values[++c] = item;
-\end_layout
-
-\begin_layout Plain Layout
-
-        text = substr(text, 1 + length(part) + length(a[1]));
-\end_layout
-
-\begin_layout Plain Layout
-
-        result = result item a[1];
-\end_layout
-
-\begin_layout Plain Layout
-
-        item = "";
-\end_layout
-
-\begin_layout Plain Layout
-
-      } else if ((language, a[1], "terminators") in modes) {
-\end_layout
-
-\begin_layout Plain Layout
-
-        new_mode=a[1];
-\end_layout
-
-\begin_layout Plain Layout
-
-        #check if new_mode is defined
-\end_layout
-
-\begin_layout Plain Layout
-
-        text = substr(text, 1 + length(part) + length(a[1]));
-\end_layout
-
-\begin_layout Plain Layout
-
-        s = parse_chunk_args(language, text,new_values,new_mode);
-\end_layout
-
-\begin_layout Plain Layout
-
-        text = substr(text, length(s) +1);
-\end_layout
-
-\begin_layout Plain Layout
-
-        item = item a[1] s;
-\end_layout
-
-\begin_layout Plain Layout
-
-      } else {
-\end_layout
-
-\begin_layout Plain Layout
-
-        error(sprintf("Submode '%s' set unknown mode in text: %s", new_mode,
- text));
-\end_layout
-
-\begin_layout Plain Layout
-
-        text = substr(text, 1 + length(part) + length(a[1]));
-\end_layout
-
-\begin_layout Plain Layout
-
-      }
-\end_layout
-
-\begin_layout Plain Layout
-
-    } else {
-\end_layout
-
-\begin_layout Plain Layout
-
-      result = result item text;
-\end_layout
-
-\begin_layout Plain Layout
-
-      values[++c] = text;
-\end_layout
-
-\begin_layout Plain Layout
-
-      text = "";
-\end_layout
-
-\begin_layout Plain Layout
-
-      item = "";
-\end_layout
-
-\begin_layout Plain Layout
-
-    }
-\end_layout
-
-\begin_layout Plain Layout
-
-  }
-\end_layout
-
-\begin_layout Plain Layout
-
-  if (length(item)) values[++c] = item;
-\end_layout
-
-\begin_layout Plain Layout
-
-  return result item;
-\end_layout
-
-\begin_layout Plain Layout
-
-}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Subsubsection
+\begin_layout Subsection
 A non-recursive mode tracker
 \end_layout
 
@@ -6128,7 +5349,7 @@ sion using our own stack based on a hash.
 \end_layout
 
 \begin_layout Chunk
-parse_chunk_args
+mode_tracker()
 \end_layout
 
 \begin_layout Standard
@@ -6138,7 +5359,7 @@ status open
 
 \begin_layout Plain Layout
 
-function parse_chunk_args(language, text, values, _mode, context,
+function mode_tracker(context, text, values, 
 \end_layout
 
 \begin_layout Plain Layout
@@ -6153,12 +5374,7 @@ function parse_chunk_args(language, text, values, _mode, context,
 
 \begin_layout Plain Layout
 
-  mode,
-\end_layout
-
-\begin_layout Plain Layout
-
-  submodes,
+  mode, submodes, language,
 \end_layout
 
 \begin_layout Plain Layout
@@ -6193,32 +5409,12 @@ status open
 
 \begin_layout Plain Layout
 
-#  if (language != context[cindex, "language"]) {
-\end_layout
-
-\begin_layout Plain Layout
-
-#    cindex++;
-\end_layout
-
-\begin_layout Plain Layout
-
-#    context[""] = cindex;
-\end_layout
-
-\begin_layout Plain Layout
-
-#  }
-\end_layout
-
-\begin_layout Plain Layout
-
-  if (length(_mode)) context[cindex, "mode"] = _mode;
-\end_layout
-
-\begin_layout Plain Layout
-
   mode = context[cindex, "mode"];
+\end_layout
+
+\begin_layout Plain Layout
+
+  language = context[cindex, "language" ];
 \end_layout
 
 \end_inset
@@ -6286,7 +5482,7 @@ status open
 \end_layout
 
 \begin_layout Chunk
-parse_chunk_args
+mode_tracker()
 \end_layout
 
 \begin_layout Standard
@@ -6318,13 +5514,7 @@ status open
 
 \begin_layout Plain Layout
 
-  while(length(text)) {
-\end_layout
-
-\begin_layout Plain Layout
-
-    if (cindex <0) error("Can't read text, cindex=" cindex " text=[" text
- "]");
+  while((cindex >= 0) && length(text)) {
 \end_layout
 
 \begin_layout Plain Layout
@@ -6727,22 +5917,7 @@ else {
 
 \begin_layout Plain Layout
 
-  # save values
-\end_layout
-
-\begin_layout Plain Layout
-
-  for(c=1; c <= context[0, "values"]; c++) {
-\end_layout
-
-\begin_layout Plain Layout
-
-    values[c] = context[0, "values", c];
-\end_layout
-
-\begin_layout Plain Layout
-
-  }
+  return text;
 \end_layout
 
 \begin_layout Plain Layout
@@ -6755,7 +5930,7 @@ else {
 
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 Tests
 \end_layout
 
@@ -6777,6 +5952,13 @@ status open
 =<
 \backslash
 chunkref{error()}>
+\end_layout
+
+\begin_layout Plain Layout
+
+=<
+\backslash
+chunkref{mode-tracker}>
 \end_layout
 
 \begin_layout Plain Layout
@@ -6931,8 +6113,477 @@ a[name] => freddie
 
 \end_layout
 
+\begin_layout Chapter
+Expanding chunk arguments
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset label
+LatexCommand label
+name "cha:Chunk Arguments"
+
+\end_inset
+
+
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Plain Layout
+Explain this in the documentation section too
+\end_layout
+
+\end_inset
+
+As an extension to many literate-programming styles, newfangle permits code
+ chunks to take parameters and thus operate somewhat like C pre-processor
+ macros, or like C++ templates.
+\end_layout
+
+\begin_layout Standard
+Chunk parameters are declared with a chunk argument called 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+params
+\end_layout
+
+\end_inset
+
+, which holds a semi-colon separated list of parameters, like this:
+\end_layout
+
+\begin_layout LyX-Code
+achunk,language=C,params=name;address
+\end_layout
+
+\begin_layout Standard
+When such a chunk is included, the arguments are expressed in round brackets
+ as a comma separated list of optional arguments:
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Plain Layout
+We ought to support qouting in {} like ({Jones, John}, Jones@example.com)
+\end_layout
+
+\end_inset
+
+:
+\end_layout
+
+\begin_layout LyX-Code
+
+\backslash
+chunkref{achunk}(John Jones, jones@example.com)
+\end_layout
+
+\begin_layout Standard
+Within the body of a chunk, the parameters are referred to with: 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+${name}
+\end_layout
+
+\end_inset
+
+ and 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+${address}
+\end_layout
+
+\end_inset
+
+.
+ There is a strong case that a LaTeX style notation should be used, like
+ 
+\backslash
+param{name} which would be expressed in the listing as =<
+\backslash
+param{name}> and be rendered as 
+\begin_inset listings
+inline true
+status open
+
+\begin_layout Plain Layout
+
+=<
+\backslash
+param{name}>
+\end_layout
+
+\end_inset
+
+.
+ Such notation would make me go blind, but I do intend to adopt it.
+\end_layout
+
+\begin_layout Standard
+We therefore need a function 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+expand_chunk_args
+\end_layout
+
+\end_inset
+
+ which will take a block of text, a list of permitted parameters and the
+ arguments which must substitute for the parameters.
+ 
+\end_layout
+
+\begin_layout Standard
+We also need to be able to parse a parameter list into an array of parameters.
+\end_layout
+
+\begin_layout Section
+Parsing argument lists
+\end_layout
+
+\begin_layout Standard
+An argument list may be as simple as in 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+
+\backslash
+chunkref{pull}(thing, otherthing)
+\end_layout
+
+\end_inset
+
+ or as complex as:
+\end_layout
+
+\begin_layout LyX-Code
+
+\backslash
+chunkref{pull}(things[x, y], get_other_things(a, "(all)")) 
+\end_layout
+
+\begin_layout Standard
+--- which for all it's commas and quotes and parenthesis represents only
+ two parameters: 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+things[x, y]
+\end_layout
+
+\end_inset
+
+ and 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+get_other_things(a, "(all)")
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+If we simply split parameter list on commas, then the comma in 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+things[x,y]
+\end_layout
+
+\end_inset
+
+ would split into two seperate arguments: 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+things[x
+\end_layout
+
+\end_inset
+
+ and 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+y]
+\end_layout
+
+\end_inset
+
+--- neither of which make sense on their own.
+\end_layout
+
+\begin_layout Standard
+One way to prevent this would be by refusing to split text between maching
+ delimiters, such as 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+[
+\end_layout
+
+\end_inset
+
+, 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+]
+\end_layout
+
+\end_inset
+
+, 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+(
+\end_layout
+
+\end_inset
+
+, 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+)
+\end_layout
+
+\end_inset
+
+, 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+{
+\end_layout
+
+\end_inset
+
+, 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+}
+\end_layout
+
+\end_inset
+
+ and most likely also 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+"
+\end_layout
+
+\end_inset
+
+, 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+"
+\end_layout
+
+\end_inset
+
+ and 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+'
+\end_layout
+
+\end_inset
+
+, 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+'
+\end_layout
+
+\end_inset
+
+.
+ Of course this also makes it impossible to pass such mis-matched code fragments
+ as parameters, but I think that it would be hard for readers to cope with
+ authors who would pass such code unbalanced fragments as chunk parameters
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+I know that I couldn't cope with users doing such things, and although the
+ GPL3 license prevents me from actually forbidding anyone from trying, if
+ they want it to work they'll have to write the code themselves and not
+ expect any support from me.
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Unfortunately, the full set of matching delimiters may vary from language
+ to language.
+ In certain C++ template contexts, 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+<
+\end_layout
+
+\end_inset
+
+ and 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+>
+\end_layout
+
+\end_inset
+
+ would count as delimiters, and yet in other contexts they would not.
+\end_layout
+
+\begin_layout Standard
+This puts me in the unfortunate position of having to parse-somewhat all
+ programming languages without knowing what they are!
+\end_layout
+
+\begin_layout Standard
+This is the basis of mode-tracking, by tracking parse-modes for different
+ languages.
+\end_layout
+
+\begin_layout Chunk
+parse_chunk_args
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+function parse_chunk_args(language, text, values, mode,
+\end_layout
+
+\begin_layout Plain Layout
+
+  # local vars
+\end_layout
+
+\begin_layout Plain Layout
+
+  c, context, rest)
+\end_layout
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\begin_layout Plain Layout
+
+  =<
+\backslash
+chunkref{new-mode-tracker}(language, context, mode)>
+\end_layout
+
+\begin_layout Plain Layout
+
+  rest = mode_tracker(context, text, values);
+\end_layout
+
+\begin_layout Plain Layout
+
+  # extract values
+\end_layout
+
+\begin_layout Plain Layout
+
+  for(c=1; c <= context[0, "values"]; c++) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    values[c] = context[0, "values", c];
+\end_layout
+
+\begin_layout Plain Layout
+
+  }
+\end_layout
+
+\begin_layout Plain Layout
+
+  return rest;
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Section
 Expanding parameters
+\end_layout
+
+\begin_layout Chunk
+zog
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+=<
+\backslash
+chunkref{new-mode-tracker}(language, context, "")>
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -7010,6 +6661,10 @@ chunkref{substitute-chunk-args}>
 \begin_layout Plain Layout
 
   }
+\end_layout
+
+\begin_layout Plain Layout
+
 \end_layout
 
 \begin_layout Plain Layout
@@ -9281,7 +8936,7 @@ function write_chunk(chunk_name, indent, tail,
 
 \begin_layout Plain Layout
 
-  chunk_path, chunk_args, 
+  chunk_path, chunk_args, chunk_params,
 \end_layout
 
 \begin_layout Plain Layout
@@ -9391,7 +9046,7 @@ status open
 
 \begin_layout Plain Layout
 
-  new_mode(chunks[chunk_name, "language"], mode);
+  new_mode_tracker(chunks[chunk_name, "language"], mode, "");
 \end_layout
 
 \end_inset
@@ -9402,7 +9057,15 @@ status open
 \begin_layout Standard
 #  =<
 \backslash
-chunkref{new-mode}(chunks[chunk_name, "language"], mode)>
+chunkref{new-mode-tracker}(chunks[chunk_name, "language"], mode, 
+\begin_inset Quotes eld
+\end_inset
+
+
+\begin_inset Quotes erd
+\end_inset
+
+)>
 \end_layout
 
 \begin_layout Standard
@@ -13630,8 +13293,9 @@ status open
 \begin_layout Plain Layout
 Darn it, if I have: =<
 \backslash
-chunkref{new-mode}[{chunks[chunk_name, "language"]},{mode}]> the inner braces
- (inside [ ]) cause _ to signify subscript even though we have lst@ReplaceIn
+chunkref{new-mode-tracker}[{chunks[chunk_name, "language"]},{mode}]> the
+ inner braces (inside [ ]) cause _ to signify subscript even though we have
+ lst@ReplaceIn
 \end_layout
 
 \end_inset
