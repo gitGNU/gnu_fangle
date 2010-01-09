@@ -4236,8 +4236,28 @@ $/'/;"
 \end_layout
 
 \begin_layout Standard
-See that the double quote " as part of the regex has been quoted with a
- back-slash to protect it from shell interpretation.
+See that the double quote 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+"
+\end_layout
+
+\end_inset
+
+, and 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+$
+\end_layout
+
+\end_inset
+
+ in the regex have been quoted with a back-slash to protect them from shell
+ interpretation.
 \end_layout
 
 \begin_layout Standard
@@ -4300,8 +4320,8 @@ $$/'/;"
 In order to make this work, we need to define a mode-tracker supporting
  each language, that can detect the various quoting modes, and provide a
  transformation that must be applied to any included text so that included
- text will be interpreted correctly after the additional interpolation that
- it will be subject to at run-time.
+ text will be interpreted correctly after any interpolation that it may
+ be subject to at run-time.
 \end_layout
 
 \begin_layout Standard
@@ -4373,12 +4393,34 @@ sh
 \end_layout
 
 \begin_layout LyX-Code
-echo "hello `id **`"
+echo "hello `id \SpecialChar \ldots{}
+`"
+\end_layout
+
+\begin_layout LyX-Code
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+noindent
+\backslash
+hphantom{
+\lang english
+echo "hello `id
+}
+\end_layout
+
+\end_inset
+
+↑
 \end_layout
 
 \begin_layout Standard
-Any literal text inserted at the point marked ** would need to be escaped
- in all kinds of ways, including 
+Any characters inserted at the point marked ↑ would need to be escaped,
+ including 
 \begin_inset Flex CharStyle:Code
 status collapsed
 
@@ -4395,18 +4437,7 @@ es ".
 
 \begin_layout Standard
 Escaping need not occur if the format and mode of the included chunk matches
- that of the including chunk, which would suggest that any back-ticks might
- need to be part of the included chunk and not including chunk
-\begin_inset Note Note
-status collapsed
-
-\begin_layout Plain Layout
-or is it the other way around?
-\end_layout
-
-\end_inset
-
-.
+ that of the including chunk.
 \end_layout
 
 \begin_layout Standard
@@ -4444,6 +4475,11 @@ Note chunk parameters should probably also be transformed
 
 \begin_layout Section
 Constructor
+\end_layout
+
+\begin_layout Standard
+The mode tracker holds its state in a stack based on a hash.
+ This function, when passed an empty hash will intialize it.
 \end_layout
 
 \begin_layout Chunk
@@ -4487,7 +4523,7 @@ function new_mode_tracker(language, context, mode) {
 
 \begin_layout Standard
 Because awk functions cannot return an array, we must create the array first
- and pass it in.
+ and pass it in, so we have a newfangle macro to do this:
 \end_layout
 
 \begin_layout Chunk
@@ -4523,34 +4559,6 @@ And for tracking modes, we dispatch to a mode-tracker action based on the
 
 \begin_layout Section
 Processor
-\end_layout
-
-\begin_layout Chunk
-mode-tracker
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-=<
-\backslash
-chunkref{new_mode_tracker()}>
-\end_layout
-
-\begin_layout Plain Layout
-
-=<
-\backslash
-chunkref{mode_tracker()}>
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \begin_layout Standard
@@ -4632,9 +4640,13 @@ Each language has a set of modes, the default mode being the null mode.
  Each mode can lead to other modes.
 \end_layout
 
+\begin_layout Subsection
+Definitions
+\end_layout
+
 \begin_layout Standard
-Modes are stored in a multi-dimensional hash.
- The first index is the language, and the second is the mode-identifier.
+All modes are stored in a single multi-dimensional hash.
+ The first index is the language, and the second index is the mode-identifier.
  The third indexes are terminators, and optionally, submodes, and delimiters.
 \end_layout
 
@@ -4644,6 +4656,79 @@ A useful set of mode definitions for a nameless general C-type language
  (Don't be confused by the double backslash escaping needed in awk.
  One set of escaping is for the string, and the second set of escaping is
  for the regex).
+ TODO: Add =<
+\backslash
+mode{}> command which will allow us to signify that a string is regex and
+ thus newfangle will quote it for us.
+\end_layout
+
+\begin_layout Standard
+Submodes are entered by the characters 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+
+\backslash
+
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Quotes eld
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+{
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+(
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+[
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+/*
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Chunk
@@ -4654,11 +4739,6 @@ mode-definitions
 \begin_inset listings
 inline false
 status open
-
-\begin_layout Plain Layout
-
-modes["", "",  "delimeters"]=" *, *";
-\end_layout
 
 \begin_layout Plain Layout
 
@@ -4694,7 +4774,55 @@ modes["", "",  "submodes" ]="
 
 \begin_layout Standard
 In the default mode, a comma surrounded by un-important white space is a
- delimiter of language items; and should pass this test:
+ delimiter of language items.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+modes["", "",  "delimiters"]=" *, *";
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+and should pass this test:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Why do the tests run in 
+\begin_inset Quotes eld
+\end_inset
+
+(
+\begin_inset Quotes erd
+\end_inset
+
+ mode and not 
+\begin_inset Quotes eld
+\end_inset
+
+
+\begin_inset Quotes erd
+\end_inset
+
+ mode
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Chunk
@@ -4708,7 +4836,7 @@ status open
 
 \begin_layout Plain Layout
 
-parse_chunk_args("", "1,2,3)", a, "(");
+parse_chunk_args("", "1,2,3", a, "");
 \end_layout
 
 \begin_layout Plain Layout
@@ -4744,7 +4872,7 @@ chunkref{pca-test.awk:summary}>
 
 \begin_layout Plain Layout
 
-parse_chunk_args("", "joe, red", a, "(");
+parse_chunk_args("", "joe, red", a, "");
 \end_layout
 
 \begin_layout Plain Layout
@@ -4775,7 +4903,7 @@ chunkref{pca-test.awk:summary}>
 
 \begin_layout Plain Layout
 
-parse_chunk_args("", "${colour}", a, "(");
+parse_chunk_args("", "${colour}", a, "");
 \end_layout
 
 \begin_layout Plain Layout
@@ -4970,7 +5098,7 @@ parse_chunk_args("", "say
 \backslash
 ".
 \backslash
-", for me", a, "(");
+", for me", a, "");
 \end_layout
 
 \begin_layout Plain Layout
@@ -5018,7 +5146,7 @@ chunkref{pca-test.awk:summary}>
 
 \begin_layout Standard
 Also, the parser must return any spare text at the end that has not been
- processed.
+ processed due to a mode terminator being found.
 \end_layout
 
 \begin_layout Standard
@@ -5374,7 +5502,12 @@ function mode_tracker(context, text, values,
 
 \begin_layout Plain Layout
 
-  cindex, c, a, part, item, name, result, new_values, new_mode, delimiters)
+  cindex, c, a, part, item, name, result, new_values, new_mode, 
+\end_layout
+
+\begin_layout Plain Layout
+
+  delimiters, terminators)
 \end_layout
 
 \begin_layout Plain Layout
@@ -5463,7 +5596,12 @@ status open
 
 \begin_layout Plain Layout
 
-    submodes=submodes "|" modes[language, mode, "terminators"];
+    terminators = modes[language, mode, "terminators"];
+\end_layout
+
+\begin_layout Plain Layout
+
+    submodes=submodes "|" terminators;
 \end_layout
 
 \begin_layout Plain Layout
@@ -5619,7 +5757,7 @@ status open
 
 \begin_layout Plain Layout
 
-      if (match(a[1], "^" modes[language, mode, "terminators"] "$")) {
+      if (match(a[1], "^" terminators "$")) {
 \end_layout
 
 \begin_layout Plain Layout
@@ -5918,6 +6056,42 @@ else {
 \begin_layout Plain Layout
 
 }
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+One happy chunk
+\end_layout
+
+\begin_layout Standard
+All the mode tracker chunks are referred to here:
+\end_layout
+
+\begin_layout Chunk
+mode-tracker
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+=<
+\backslash
+chunkref{new_mode_tracker()}>
+\end_layout
+
+\begin_layout Plain Layout
+
+=<
+\backslash
+chunkref{mode_tracker()}>
 \end_layout
 
 \end_inset

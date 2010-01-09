@@ -88,7 +88,8 @@ function mode_tracker(context, text, values,
   # optional parameters
   # local vars
   mode, submodes, language,
-  cindex, c, a, part, item, name, result, new_values, new_mode, delimiters)
+  cindex, c, a, part, item, name, result, new_values, new_mode, 
+  delimiters, terminators)
 {
   cindex = context[""] + 0;
   mode = context[cindex, "mode"];
@@ -99,7 +100,8 @@ function mode_tracker(context, text, values,
     submodes=submodes "|" delimiters;
   }
   if ((language, mode, "terminators") in modes) {
-    submodes=submodes "|" modes[language, mode, "terminators"];
+    terminators = modes[language, mode, "terminators"];
+    submodes=submodes "|" terminators;
   }
   while((cindex >= 0) && length(text)) {
     if (match(text, "(" submodes ")", a)) {
@@ -108,7 +110,7 @@ function mode_tracker(context, text, values,
       }
       part = substr(text, 1, RSTART -1);
       item = item part;
-      if (match(a[1], "^" modes[language, mode, "terminators"] "$")) {
+      if (match(a[1], "^" terminators "$")) {
         context[cindex, "values", ++context[cindex, "values"]] = item;
         delete context[cindex];
         context[""] = --cindex;
@@ -121,7 +123,8 @@ function mode_tracker(context, text, values,
               submodes=submodes "|" delimiters;
             }
             if ((language, mode, "terminators") in modes) {
-              submodes=submodes "|" modes[language, mode, "terminators"];
+              terminators = modes[language, mode, "terminators"];
+              submodes=submodes "|" terminators;
             }
         }
         item = item a[1];
@@ -151,7 +154,8 @@ function mode_tracker(context, text, values,
             submodes=submodes "|" delimiters;
           }
           if ((language, mode, "terminators") in modes) {
-            submodes=submodes "|" modes[language, mode, "terminators"];
+            terminators = modes[language, mode, "terminators"];
+            submodes=submodes "|" terminators;
           }
       } else {
         error(sprintf("Submode '%s' set unknown mode in text: %s", a[1], text));
@@ -369,8 +373,8 @@ function expand_chunk_args(text, params, args,
 BEGIN {
   part_type_chunk=1;
   SUBSEP=",";
-  modes["", "",  "delimeters"]=" *, *";
   modes["", "",  "submodes" ]="\\\\|\"|'|{|\\(|\\[|/\\*";
+  modes["", "",  "delimiters"]=" *, *";
   modes["", "\\", "terminators"]=".";
   modes["", "\"", "submodes" ]="\\\\";
   modes["", "\"", "terminators"]="\"";
