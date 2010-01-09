@@ -83,16 +83,20 @@ function new_mode(language, mode) {
   mode["language"] = language;
   mode["state"]="";
 }
-function parse_chunk_args(language, text, values,
+function parse_chunk_args(language, text, values, _mode, context,
   # optional parameters
-  mode, 
-  path, # hierarchical precursors
-  stack, # delimiters to be matched
-  submodes,
   # local vars
-  c, a, part, item, name, result, new_values, new_mode, delimiters)
+  mode,
+  submodes,
+  cindex, c, a, part, item, name, result, new_values, new_mode, delimiters)
 {
-#  split(chunklet_parts[2], call_chunk_args, " *, *");
+  cindex = context[""] + 0;
+#  if (language != context[cindex, "language"]) {
+#    cindex++;
+#    context[""] = cindex;
+#  }
+  if (length(_mode)) context[cindex, "mode"] = _mode;
+  mode = context[cindex, "mode"];
   submodes=modes[language, mode, "submodes"];
   if ((language, mode, "delimiters") in modes) {
     delimiters = modes[language, mode, "delimiters"];
@@ -102,6 +106,7 @@ function parse_chunk_args(language, text, values,
     submodes=submodes "|" modes[language, mode, "terminators"];
   }
   while(length(text)) {
+    if (cindex <0) error("Can't read text, cindex=" cindex " text=[" text "]");
     if (match(text, "(" submodes ")", a)) {
       if (RLENGTH<1) {
         error("Internal error, matched zero length submode, should be impossible - likely regex computation error");
@@ -109,34 +114,69 @@ function parse_chunk_args(language, text, values,
       part = substr(text, 1, RSTART -1);
       item = item part;
       if (match(a[1], "^" modes[language, mode, "terminators"] "$")) {
-       values[++c] = item;
-       return result item a[1];
-      }
-      if (match(a[1], "^" delimiters "$")) {
-        values[++c] = item;
+        context[cindex, "values", ++context[cindex, "values"]] = item;
+        delete context[cindex];
+        context[""] = --cindex;
+        if (cindex>=0) {
+          mode = context[cindex, "mode"];
+          language = context[cindex, "language"];
+            submodes=modes[language, mode, "submodes"];
+            if ((language, mode, "delimiters") in modes) {
+              delimiters = modes[language, mode, "delimiters"];
+              submodes=submodes "|" delimiters;
+            }
+            if ((language, mode, "terminators") in modes) {
+              submodes=submodes "|" modes[language, mode, "terminators"];
+            }
+        }
+        item = item a[1];
         text = substr(text, 1 + length(part) + length(a[1]));
-        result = result item a[1];
-        item = "";
-      } else if ((language, a[1], "terminators") in modes) {
-        new_mode=a[1];
+      }
+      else if (match(a[1], "^" delimiters "$")) {
+        if (cindex==0) {
+          context[cindex, "values", ++context[cindex, "values"]] = item;
+          item = "";
+        } else {
+          item = item a[1];
+        }
+        text = substr(text, 1 + length(part) + length(a[1]));
+      }
+ else if ((language, a[1], "terminators") in modes) {
         #check if new_mode is defined
+        item = item a[1];
         text = substr(text, 1 + length(part) + length(a[1]));
-        s = parse_chunk_args(language, text,new_values,new_mode);
-        text = substr(text, length(s) +1);
-        item = item a[1] s;
+
+        context[""] = ++cindex;
+        context[cindex, "mode"] = a[1];
+        context[cindex, "language"] = language;
+        mode = a[1];
+          submodes=modes[language, mode, "submodes"];
+          if ((language, mode, "delimiters") in modes) {
+            delimiters = modes[language, mode, "delimiters"];
+            submodes=submodes "|" delimiters;
+          }
+          if ((language, mode, "terminators") in modes) {
+            submodes=submodes "|" modes[language, mode, "terminators"];
+          }
       } else {
-        error(sprintf("Submode '%s' set unknown mode in text: %s", new_mode, text));
+        error(sprintf("Submode '%s' set unknown mode in text: %s", a[1], text));
         text = substr(text, 1 + length(part) + length(a[1]));
       }
-    } else {
-      result = result item text;
-      values[++c] = text;
+    }
+else {
+      context[cindex, "values", ++context[cindex, "values"]] = item text;
       text = "";
       item = "";
     }
   }
-  if (length(item)) values[++c] = item;
-  return result item;
+
+  context["item"] = item;
+
+  if (length(item)) context[cindex, "values", ++context[cindex, "values"]] = item;
+  # save values
+  for(c=1; c <= context[0, "values"]; c++) {
+    values[c] = context[0, "values", c];
+  }
 }
 function new_chunk(chunk_name, params,
   # local vars

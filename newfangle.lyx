@@ -4090,6 +4090,596 @@ a[name] => freddie
 \end_layout
 
 \begin_layout Chapter
+Chunk Language Modes
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset label
+LatexCommand label
+name "cha:modes"
+
+\end_inset
+
+
+\begin_inset Note Greyedout
+status open
+
+\begin_layout Plain Layout
+This feature is in-development and does not work yet
+\end_layout
+
+\end_inset
+
+
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+In Progress!
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+lstlistings and newfangle both recognize source languages, and perform some
+ basic parsing.
+ lstlistings can detect strings and comments within a language definition
+ and perform suitable rendering, such as italics for comments, and visible-space
+s within strings.
+\end_layout
+
+\begin_layout Standard
+Newfangle similarly can recognize strings, and comments, etc, within a language,
+ so that any chunks included with 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+
+\backslash
+chunkref
+\end_layout
+
+\end_inset
+
+ can be suitably quoted.
+\end_layout
+
+\begin_layout Standard
+For instance, consider this chunk with 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+language=perl
+\end_layout
+
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Chunk
+example-perl,language=perl
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+s/"$/'/;
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+If it were included in a chunk with 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+language=sh
+\end_layout
+
+\end_inset
+
+, like this:
+\end_layout
+
+\begin_layout Chunk
+example-sh,language=sh
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+perl -pe "=<
+\backslash
+chunkref{example-perl}>"
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+would need to generate output like this if it were to work: 
+\end_layout
+
+\begin_layout LyX-Code
+perl -pe "s/
+\backslash
+"
+\backslash
+$/'/;"
+\end_layout
+
+\begin_layout Standard
+See that the double quote " as part of the regex has been quoted with a
+ slash to protect it from shell interpretation.
+\end_layout
+
+\begin_layout Standard
+If that were then included in a chunk with 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+language=make
+\end_layout
+
+\end_inset
+
+, like this:
+\end_layout
+
+\begin_layout Chunk
+example-makefile,language=make
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+target: pre-req
+\end_layout
+
+\begin_layout Plain Layout
+
+		=<
+\backslash
+chunkref{example-sh}>
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+We would need the output to look like this --- note the $$:
+\end_layout
+
+\begin_layout LyX-Code
+target: pre-req
+\end_layout
+
+\begin_layout LyX-Code
+        perl -pe "s/
+\backslash
+"
+\backslash
+$$/'/;"
+\end_layout
+
+\begin_layout Standard
+In order to make this work, we need to define a mode-tracker for each supported
+ language, that can detect the various quoting modes, and provide a transformati
+on that must be applied to any included text so that included text will
+ be interpreted correctly after the additional interpolation that it will
+ be subject to at run-time.
+\end_layout
+
+\begin_layout Standard
+For example, the transformation for text to be inserted into sh double-quoted
+ strings would be something like:
+\end_layout
+
+\begin_layout LyX-Code
+s/
+\backslash
+
+\backslash
+/
+\backslash
+
+\backslash
+
+\backslash
+
+\backslash
+/g;s/$/
+\backslash
+
+\backslash
+$/g;s/"/
+\backslash
+
+\backslash
+"/g;
+\end_layout
+
+\begin_layout Standard
+which protects 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+
+\backslash
+ $ "
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Plain Layout
+I don't think this example is true
+\end_layout
+
+\end_inset
+
+The mode tracker must also track nested mode-changes, as in this 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+sh
+\end_layout
+
+\end_inset
+
+ example.
+\end_layout
+
+\begin_layout LyX-Code
+echo "hello `id **`"
+\end_layout
+
+\begin_layout Standard
+Any literal text inserted at the point marked ** would need to be escaped
+ in all kinds of ways, including 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+` | *
+\end_layout
+
+\end_inset
+
+ among others.
+ First it would need escaping for the back-ticks `, and then for the double-quot
+es ".
+\end_layout
+
+\begin_layout Standard
+Escaping need not occur if the format and mode of the included chunk matches
+ that of the including chunk, which would suggest that any back-ticks might
+ need to be part of the included chunk and not including chunk
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Plain Layout
+or is it the other way around?
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+As each chunk is output a new mode tracker for that language is initialized
+ in it's normal state.
+ As text is output for that chunk the output mode is tracked.
+ When a new chunk is included, a transformation appropriate to that mode
+ is selected and pushed onto a stack of transformations.
+ Any text to be output is first passed through this stack of transformations.
+\end_layout
+
+\begin_layout Standard
+It remains to consider if the chunk-include function should return it's
+ generated text so that the caller can apply any transformations (and formatting
+), or if it should apply the stack of transformations itself.
+\end_layout
+
+\begin_layout Standard
+Note that the transformed text should have the property of not being able
+ to change the mode in the current chunk.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Note chunk parameters should probably also be transformed
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chunk
+new_mode()
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+function new_mode(language, mode) {
+\end_layout
+
+\begin_layout Plain Layout
+
+  mode["language"] = language;
+\end_layout
+
+\begin_layout Plain Layout
+
+  mode["state"]="";
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Because awk functions cannot return an array, we must create the array first
+ and pass it in.
+\end_layout
+
+\begin_layout Chunk
+new-mode,params=language;mode
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+=<
+\backslash
+chunkref{awk-delete-array}(${mode})>
+\end_layout
+
+\begin_layout Plain Layout
+
+new_mode(${language}, ${mode});
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+And for tracking modes, we dispatch to a mode-tracker action based on the
+ current language
+\end_layout
+
+\begin_layout Chunk
+track_mode()
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+function track_mode(mode, text) {
+\end_layout
+
+\begin_layout Plain Layout
+
+  if (mode["language"] == "C") {
+\end_layout
+
+\begin_layout Plain Layout
+
+    =<
+\backslash
+chunkref{track-mode-C}>
+\end_layout
+
+\begin_layout Plain Layout
+
+    return;
+\end_layout
+
+\begin_layout Plain Layout
+
+  }
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+For each mode, we look for a character that has the power to change the
+ mode.
+\end_layout
+
+\begin_layout Standard
+In plain mode:
+\end_layout
+
+\begin_layout List
+\labelwidthstring 00.00.0000
+\begin_inset Quotes eld
+\end_inset
+
+ enters double-quote mode
+\end_layout
+
+\begin_layout List
+\labelwidthstring 00.00.0000
+' enters single-quote mode
+\end_layout
+
+\begin_layout List
+\labelwidthstring 00.00.0000
+trailing-
+\backslash
+ enters multi-line mode
+\end_layout
+
+\begin_layout List
+\labelwidthstring 00.00.0000
+# enters #define sub-mode, needs 
+\backslash
+ escaping end of line too
+\end_layout
+
+\begin_layout List
+\labelwidthstring 00.00.0000
+/* enters comment mode
+\end_layout
+
+\begin_layout Standard
+In double-quote mode, escape 
+\backslash
+ and 
+\begin_inset Quotes eld
+\end_inset
+
+ and newline
+\end_layout
+
+\begin_layout Standard
+
+\backslash
+ escapes prevents 
+\begin_inset Quotes eld
+\end_inset
+
+ from leaving mode
+\end_layout
+
+\begin_layout Standard
+\begin_inset Quotes eld
+\end_inset
+
+ leaves mode
+\end_layout
+
+\begin_layout Standard
+newline needs to close and re-open string or something
+\end_layout
+
+\begin_layout Standard
+in single-quote mode escape 
+\backslash
+ and 
+\begin_inset Quotes eld
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chunk
+track-mode-C
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chunk
+mode-tracker
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+=<
+\backslash
+chunkref{new_mode()}>
+\end_layout
+
+\begin_layout Plain Layout
+
+=<
+\backslash
+chunkref{parse_chunk_args}>
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chapter
 Expanding chunk arguments
 \end_layout
 
@@ -4552,7 +5142,7 @@ Modes are stored in a multi-dimensional hash.
 
 \begin_layout Standard
 A useful set of mode definitions for a nameless general C-type language
- is show here.
+ is shown here.
  (Don't be confused by the double backslash escaping needed in awk.
  One set of escaping is for the string, and the second set of escaping is
  for the regex).
@@ -5192,8 +5782,12 @@ chunkref{pca-test.awk:summary}>
 
 \end_layout
 
+\begin_layout Subsubsection
+A recursive mode tracker
+\end_layout
+
 \begin_layout Chunk
-parse_chunk_args
+parse_chunk_args-recursive
 \end_layout
 
 \begin_layout Standard
@@ -5268,8 +5862,8 @@ status collapsed
 
 \end_inset
 
-, then we recurse and consume as much of the text as necessary, returning
- the remaining text when we encounter a leading close-brace 
+, then we consume as much of the text as necessary, returning the remaining
+ text when we encounter a leading close-brace 
 \begin_inset Flex CharStyle:Code
 status collapsed
 
@@ -5520,6 +6114,649 @@ status open
 \end_inset
 
 
+\end_layout
+
+\begin_layout Subsubsection
+A non-recursive mode tracker
+\end_layout
+
+\begin_layout Standard
+We must avoid recursion as a language construct because we intend to employ
+ mode-tracking to track language mode of emitted code, and the code is emitted
+ from a function which is itself recursive, so instead we implement psuedo-recur
+sion using our own stack based on a hash.
+\end_layout
+
+\begin_layout Chunk
+parse_chunk_args
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+function parse_chunk_args(language, text, values, _mode, context,
+\end_layout
+
+\begin_layout Plain Layout
+
+  # optional parameters
+\end_layout
+
+\begin_layout Plain Layout
+
+  # local vars
+\end_layout
+
+\begin_layout Plain Layout
+
+  mode,
+\end_layout
+
+\begin_layout Plain Layout
+
+  submodes,
+\end_layout
+
+\begin_layout Plain Layout
+
+  cindex, c, a, part, item, name, result, new_values, new_mode, delimiters)
+\end_layout
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+We could be re-commencing with a valid context, so we need to setup the
+ state according to the last context.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+  cindex = context[""] + 0;
+\end_layout
+
+\begin_layout Plain Layout
+
+#  if (language != context[cindex, "language"]) {
+\end_layout
+
+\begin_layout Plain Layout
+
+#    cindex++;
+\end_layout
+
+\begin_layout Plain Layout
+
+#    context[""] = cindex;
+\end_layout
+
+\begin_layout Plain Layout
+
+#  }
+\end_layout
+
+\begin_layout Plain Layout
+
+  if (length(_mode)) context[cindex, "mode"] = _mode;
+\end_layout
+
+\begin_layout Plain Layout
+
+  mode = context[cindex, "mode"];
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+First we construct a single large regex combining the possile sub-modes
+ for the current mode along with the terminators for the current mode.
+\end_layout
+
+\begin_layout Chunk
+parse_chunk_args-reset-modes
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+  submodes=modes[language, mode, "submodes"];
+\end_layout
+
+\begin_layout Plain Layout
+
+  if ((language, mode, "delimiters") in modes) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    delimiters = modes[language, mode, "delimiters"];
+\end_layout
+
+\begin_layout Plain Layout
+
+    submodes=submodes "|" delimiters;
+\end_layout
+
+\begin_layout Plain Layout
+
+  }
+\end_layout
+
+\begin_layout Plain Layout
+
+  if ((language, mode, "terminators") in modes) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    submodes=submodes "|" modes[language, mode, "terminators"];
+\end_layout
+
+\begin_layout Plain Layout
+
+  }
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chunk
+parse_chunk_args
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+=<
+\backslash
+chunkref{parse_chunk_args-reset-modes}>
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+We then iterate the text (until there is none left) looking for sub-modes
+ or terminators in the regex.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+  while(length(text)) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    if (cindex <0) error("Can't read text, cindex=" cindex " text=[" text
+ "]");
+\end_layout
+
+\begin_layout Plain Layout
+
+    if (match(text, "(" submodes ")", a)) {
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+A bug that creeps in regularly during development is bad regexes of zero
+ length which result in an infinite loop (as no text is consumed), so I
+ catch that right away with this test.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+      if (RLENGTH<1) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        error("Internal error, matched zero length submode, should be impossible
+ - likely regex computation error");
+\end_layout
+
+\begin_layout Plain Layout
+
+      }
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+part
+\end_layout
+
+\end_inset
+
+ is defined as the text up to the sub-mode or terminator, and this is appended
+ to 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+item
+\end_layout
+
+\end_inset
+
+ --- which is the current text being gathered.
+ If a mode has a delimiter, then item is reset each time a delimiter is
+ found.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\mathtt{\overbrace{"\overbrace{hello}^{item},\ \overbrace{there}^{item}"}^{item},\ \overbrace{he\ said.}^{item}}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+      part = substr(text, 1, RSTART -1);
+\end_layout
+
+\begin_layout Plain Layout
+
+      item = item part;
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+We must now determine what was matched.
+ If it was a terminator, then we must restore the previous mode.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+      if (match(a[1], "^" modes[language, mode, "terminators"] "$")) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        context[cindex, "values", ++context[cindex, "values"]] = item;
+\end_layout
+
+\begin_layout Plain Layout
+
+        delete context[cindex];
+\end_layout
+
+\begin_layout Plain Layout
+
+        context[""] = --cindex;
+\end_layout
+
+\begin_layout Plain Layout
+
+        if (cindex>=0) {
+\end_layout
+
+\begin_layout Plain Layout
+
+          mode = context[cindex, "mode"];
+\end_layout
+
+\begin_layout Plain Layout
+
+          language = context[cindex, "language"];
+\end_layout
+
+\begin_layout Plain Layout
+
+          =<
+\backslash
+chunkref{parse_chunk_args-reset-modes}>
+\end_layout
+
+\begin_layout Plain Layout
+
+        }
+\end_layout
+
+\begin_layout Plain Layout
+
+        item = item a[1];
+\end_layout
+
+\begin_layout Plain Layout
+
+        text = substr(text, 1 + length(part) + length(a[1]));
+\end_layout
+
+\begin_layout Plain Layout
+
+      }
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+If a delimiter was matched, then we must store the current item in the parsed
+ values array, and reset the item.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+      else if (match(a[1], "^" delimiters "$")) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        if (cindex==0) {
+\end_layout
+
+\begin_layout Plain Layout
+
+          context[cindex, "values", ++context[cindex, "values"]] = item;
+\end_layout
+
+\begin_layout Plain Layout
+
+          item = "";
+\end_layout
+
+\begin_layout Plain Layout
+
+        } else {
+\end_layout
+
+\begin_layout Plain Layout
+
+          item = item a[1];
+\end_layout
+
+\begin_layout Plain Layout
+
+        }
+\end_layout
+
+\begin_layout Plain Layout
+
+        text = substr(text, 1 + length(part) + length(a[1]));
+\end_layout
+
+\begin_layout Plain Layout
+
+      }
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+otherwise, if a new submode is detected (all submodes have terminators),
+ we must create a nested parse context until we find the terminator for
+ this mode.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+ else if ((language, a[1], "terminators") in modes) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        #check if new_mode is defined
+\end_layout
+
+\begin_layout Plain Layout
+
+        item = item a[1];
+\end_layout
+
+\begin_layout Plain Layout
+
+        text = substr(text, 1 + length(part) + length(a[1]));
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+        context[""] = ++cindex;
+\end_layout
+
+\begin_layout Plain Layout
+
+        context[cindex, "mode"] = a[1];
+\end_layout
+
+\begin_layout Plain Layout
+
+        context[cindex, "language"] = language;
+\end_layout
+
+\begin_layout Plain Layout
+
+        mode = a[1];
+\end_layout
+
+\begin_layout Plain Layout
+
+        =<
+\backslash
+chunkref{parse_chunk_args-reset-modes}>
+\end_layout
+
+\begin_layout Plain Layout
+
+      } else {
+\end_layout
+
+\begin_layout Plain Layout
+
+        error(sprintf("Submode '%s' set unknown mode in text: %s", a[1],
+ text));
+\end_layout
+
+\begin_layout Plain Layout
+
+        text = substr(text, 1 + length(part) + length(a[1]));
+\end_layout
+
+\begin_layout Plain Layout
+
+      }
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In the final case, we parsed to the end of the string.
+ If the string was entire, then we should have no nested mode context, but
+ if the string was just a fragment we may have a mode context which must
+ be preserved for the next fragment.
+ Todo: Consideration ought to be given if sub-mode strings are split over
+ two fragments.
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Plain Layout
+Consideration ought to be given if sub-mode strings are split over two fragments.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+else {
+\end_layout
+
+\begin_layout Plain Layout
+
+      context[cindex, "values", ++context[cindex, "values"]] = item text;
+\end_layout
+
+\begin_layout Plain Layout
+
+      text = "";
+\end_layout
+
+\begin_layout Plain Layout
+
+      item = "";
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+  }
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+  context["item"] = item;
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+  if (length(item)) context[cindex, "values", ++context[cindex, "values"]]
+ = item;
+\end_layout
+
+\begin_layout Plain Layout
+
+  # save values
+\end_layout
+
+\begin_layout Plain Layout
+
+  for(c=1; c <= context[0, "values"]; c++) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    values[c] = context[0, "values", c];
+\end_layout
+
+\begin_layout Plain Layout
+
+  }
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Tests
 \end_layout
 
 \begin_layout Standard
@@ -7642,596 +8879,6 @@ function help() {
 \begin_layout Plain Layout
 
 }
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Chapter
-Chunk Language Modes
-\end_layout
-
-\begin_layout Standard
-\begin_inset CommandInset label
-LatexCommand label
-name "cha:modes"
-
-\end_inset
-
-
-\begin_inset Note Greyedout
-status open
-
-\begin_layout Plain Layout
-This feature is in-development and does not work yet
-\end_layout
-
-\end_inset
-
-
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-In Progress!
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-lstlistings and newfangle both recognize source languages, and perform some
- basic parsing.
- lstlistings can detect strings and comments within a language definition
- and perform suitable rendering, such as italics for comments, and visible-space
-s within strings.
-\end_layout
-
-\begin_layout Standard
-Newfangle similarly can recognize strings, and comments, etc, within a language,
- so that any chunks included with 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-
-\backslash
-chunkref
-\end_layout
-
-\end_inset
-
- can be suitably quoted.
-\end_layout
-
-\begin_layout Standard
-For instance, consider this chunk with 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-language=perl
-\end_layout
-
-\end_inset
-
-:
-\end_layout
-
-\begin_layout Chunk
-example-perl,language=perl
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-s/"$/'/;
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-If it were included in a chunk with 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-language=sh
-\end_layout
-
-\end_inset
-
-, like this:
-\end_layout
-
-\begin_layout Chunk
-example-sh,language=sh
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-perl -pe "=<
-\backslash
-chunkref{example-perl}>"
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-would need to generate output like this if it were to work: 
-\end_layout
-
-\begin_layout LyX-Code
-perl -pe "s/
-\backslash
-"
-\backslash
-$/'/;"
-\end_layout
-
-\begin_layout Standard
-See that the double quote " as part of the regex has been quoted with a
- slash to protect it from shell interpretation.
-\end_layout
-
-\begin_layout Standard
-If that were then included in a chunk with 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-language=make
-\end_layout
-
-\end_inset
-
-, like this:
-\end_layout
-
-\begin_layout Chunk
-example-makefile,language=make
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-target: pre-req
-\end_layout
-
-\begin_layout Plain Layout
-
-		=<
-\backslash
-chunkref{example-sh}>
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-We would need the output to look like this --- note the $$:
-\end_layout
-
-\begin_layout LyX-Code
-target: pre-req
-\end_layout
-
-\begin_layout LyX-Code
-        perl -pe "s/
-\backslash
-"
-\backslash
-$$/'/;"
-\end_layout
-
-\begin_layout Standard
-In order to make this work, we need to define a mode-tracker for each supported
- language, that can detect the various quoting modes, and provide a transformati
-on that must be applied to any included text so that included text will
- be interpreted correctly after the additional interpolation that it will
- be subject to at run-time.
-\end_layout
-
-\begin_layout Standard
-For example, the transformation for text to be inserted into sh double-quoted
- strings would be something like:
-\end_layout
-
-\begin_layout LyX-Code
-s/
-\backslash
-
-\backslash
-/
-\backslash
-
-\backslash
-
-\backslash
-
-\backslash
-/g;s/$/
-\backslash
-
-\backslash
-$/g;s/"/
-\backslash
-
-\backslash
-"/g;
-\end_layout
-
-\begin_layout Standard
-which protects 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-
-\backslash
- $ "
-\end_layout
-
-\end_inset
-
-.
-\end_layout
-
-\begin_layout Standard
-\begin_inset Note Note
-status collapsed
-
-\begin_layout Plain Layout
-I don't think this example is true
-\end_layout
-
-\end_inset
-
-The mode tracker must also track nested mode-changes, as in this 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-sh
-\end_layout
-
-\end_inset
-
- example.
-\end_layout
-
-\begin_layout LyX-Code
-echo "hello `id **`"
-\end_layout
-
-\begin_layout Standard
-Any literal text inserted at the point marked ** would need to be escaped
- in all kinds of ways, including 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-` | *
-\end_layout
-
-\end_inset
-
- among others.
- First it would need escaping for the back-ticks `, and then for the double-quot
-es ".
-\end_layout
-
-\begin_layout Standard
-Escaping need not occur if the format and mode of the included chunk matches
- that of the including chunk, which would suggest that any back-ticks might
- need to be part of the included chunk and not including chunk
-\begin_inset Note Note
-status collapsed
-
-\begin_layout Plain Layout
-or is it the other way around?
-\end_layout
-
-\end_inset
-
-.
-\end_layout
-
-\begin_layout Standard
-As each chunk is output a new mode tracker for that language is initialized
- in it's normal state.
- As text is output for that chunk the output mode is tracked.
- When a new chunk is included, a transformation appropriate to that mode
- is selected and pushed onto a stack of transformations.
- Any text to be output is first passed through this stack of transformations.
-\end_layout
-
-\begin_layout Standard
-It remains to consider if the chunk-include function should return it's
- generated text so that the caller can apply any transformations (and formatting
-), or if it should apply the stack of transformations itself.
-\end_layout
-
-\begin_layout Standard
-Note that the transformed text should have the property of not being able
- to change the mode in the current chunk.
-\end_layout
-
-\begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-Note chunk parameters should probably also be transformed
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Chunk
-new_mode()
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-function new_mode(language, mode) {
-\end_layout
-
-\begin_layout Plain Layout
-
-  mode["language"] = language;
-\end_layout
-
-\begin_layout Plain Layout
-
-  mode["state"]="";
-\end_layout
-
-\begin_layout Plain Layout
-
-}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Because awk functions cannot return an array, we must create the array first
- and pass it in.
-\end_layout
-
-\begin_layout Chunk
-new-mode,params=language;mode
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-=<
-\backslash
-chunkref{awk-delete-array}(${mode})>
-\end_layout
-
-\begin_layout Plain Layout
-
-new_mode(${language}, ${mode});
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-And for tracking modes, we dispatch to a mode-tracker action based on the
- current language
-\end_layout
-
-\begin_layout Chunk
-track_mode()
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-function track_mode(mode, text) {
-\end_layout
-
-\begin_layout Plain Layout
-
-  if (mode["language"] == "C") {
-\end_layout
-
-\begin_layout Plain Layout
-
-    =<
-\backslash
-chunkref{track-mode-C}>
-\end_layout
-
-\begin_layout Plain Layout
-
-    return;
-\end_layout
-
-\begin_layout Plain Layout
-
-  }
-\end_layout
-
-\begin_layout Plain Layout
-
-}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-For each mode, we look for a character that has the power to change the
- mode.
-\end_layout
-
-\begin_layout Standard
-In plain mode:
-\end_layout
-
-\begin_layout List
-\labelwidthstring 00.00.0000
-\begin_inset Quotes eld
-\end_inset
-
- enters double-quote mode
-\end_layout
-
-\begin_layout List
-\labelwidthstring 00.00.0000
-' enters single-quote mode
-\end_layout
-
-\begin_layout List
-\labelwidthstring 00.00.0000
-trailing-
-\backslash
- enters multi-line mode
-\end_layout
-
-\begin_layout List
-\labelwidthstring 00.00.0000
-# enters #define sub-mode, needs 
-\backslash
- escaping end of line too
-\end_layout
-
-\begin_layout List
-\labelwidthstring 00.00.0000
-/* enters comment mode
-\end_layout
-
-\begin_layout Standard
-In double-quote mode, escape 
-\backslash
- and 
-\begin_inset Quotes eld
-\end_inset
-
- and newline
-\end_layout
-
-\begin_layout Standard
-
-\backslash
- escapes prevents 
-\begin_inset Quotes eld
-\end_inset
-
- from leaving mode
-\end_layout
-
-\begin_layout Standard
-\begin_inset Quotes eld
-\end_inset
-
- leaves mode
-\end_layout
-
-\begin_layout Standard
-newline needs to close and re-open string or something
-\end_layout
-
-\begin_layout Standard
-in single-quote mode escape 
-\backslash
- and 
-\begin_inset Quotes eld
-\end_inset
-
-
-\end_layout
-
-\begin_layout Chunk
-track-mode-C
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Chunk
-mode-tracker
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-=<
-\backslash
-chunkref{new_mode()}>
-\end_layout
-
-\begin_layout Plain Layout
-
-=<
-\backslash
-chunkref{parse_chunk_args}>
 \end_layout
 
 \end_inset
