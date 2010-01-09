@@ -4508,12 +4508,7 @@ chunkref{awk-delete-array}(${context})>
 
 \begin_layout Plain Layout
 
-new_mode_tracker(${language}, ${context},
-\end_layout
-
-\begin_layout Plain Layout
-
-${mode});
+new_mode_tracker(${language}, ${context}, ${mode});
 \end_layout
 
 \end_inset
@@ -6797,7 +6792,7 @@ status open
 
 \begin_layout Plain Layout
 
-for(t in text_array) if (t>1) {
+for(t=2; t in text_array; t++) {
 \end_layout
 
 \begin_layout Plain Layout

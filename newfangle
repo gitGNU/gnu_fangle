@@ -175,8 +175,7 @@ function parse_chunk_args(language, text, values, mode,
   c, context, rest)
 {
   split("", context);
-  new_mode_tracker(language, context,
-  mode);
+  new_mode_tracker(language, context, mode);
   rest = mode_tracker(context, text, values);
   # extract values
   for(c=1; c <= context[0, "values"]; c++) {
@@ -354,7 +353,7 @@ function expand_chunk_args(text, params, args,
       v[params[p]]=args[p];
     }
     text=text_array[1];
-    for(t in text_array) if (t>1) {
+    for(t=2; t in text_array; t++) {
       if (match(text_array[t], "^([a-zA-Z_][a-zA-Z0-9_]*)}", l) &&
           l[1] in v) 
       {
