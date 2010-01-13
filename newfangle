@@ -79,10 +79,33 @@ function warning(message)
   print "WARNING: " FILENAME ":" FNR " " message > "/dev/stderr";
   warnings++;
 }
-function new_mode_tracker(language, context, mode) {
+function new_mode_tracker(context, language, mode) {
   context[""] = 0;
   context[0, "language"] = language;
   context[0, "mode"] = mode;
+}
+function push_mode_tracker(context, language, mode,
+  # local vars
+  top)
+{
+  if (! ("" in context)) {
+    split("", context);
+    new_mode_tracker(context, language, mode);
+  } else {
+    top = context[""];
+    if (context[top, "language"] == language && mode=="") mode = context[top, "mode"];
+    top++;
+    context[top, "language"] = language;
+    context[top, "mode"] = mode;
+    context[""] = top;
+  }
+}
+function finalize_mode_tracker(context,
+  # local vars
+  top)
+{
+  if ( ("" in context) && context[""] != 0) return 0;
+  return 1;
 }
 function mode_tracker(context, text, values, 
   # optional parameters
@@ -179,7 +202,7 @@ function parse_chunk_args(language, text, values, mode,
   c, context, rest)
 {
   split("", context);
-  new_mode_tracker(language, context, mode);
+  new_mode_tracker(context, language, mode);
   rest = mode_tracker(context, text, values);
   # extract values
   for(c=1; c <= context[0, "values"]; c++) {
@@ -262,19 +285,23 @@ function output_chunk(chunk) {
   write_chunk(chunk);
 }
 
-function write_chunk(chunk_name, indent, tail,
+function write_chunk(chunk_name) {
+  split("", context);
+  return write_chunk_r(chunk_name, context);
+}
+function write_chunk_r(chunk_name, context, indent, tail,
   # optional vars
-  chunk_path, chunk_args, chunk_params,
+  chunk_path, chunk_args, 
   # local vars
-  part, max_part, part_line, frag, max_frag, text, 
-  chunklet, only_part, call_chunk_args, mode)
+  chunk_params, part, max_part, part_line, frag, max_frag, text, 
+  chunklet, only_part, call_chunk_args)
 {
   if (match(chunk_name, "^(.*)\\[([0-9]*)\\]$", chunk_name_parts)) {
     chunk_name = chunk_name_parts[1];
     only_part = chunk_name_parts[2];
   }
-  split("", mode);
-  new_mode_tracker(chunks[chunk_name, "language"], mode, "");
+  split("", context);
+  new_mode_tracker(context, chunks[chunk_name, "language"], "");
   split(chunks[chunk_name, "params"], chunk_params, " *; *");
   if (! (chunk_name in chunk_names)) {
     error(sprintf(_"The root module <<%s>> was not defined.\nUsed by: %s",\
@@ -303,7 +330,7 @@ function write_chunk(chunk_name, indent, tail,
         } else {
           split("", call_chunk_args);
         }
-        write_chunk(chunklet,
+        write_chunk_r(chunklet, context,
                     chunks[chunk_name, "part", part, "indent"] indent,
                     chunks[chunk_name, "part", part, "tail"],
                     chunk_path "\n         " chunk_name,
@@ -337,7 +364,7 @@ function write_chunk(chunk_name, indent, tail,
           }
 
           text = text tail;
-        #  track_mode(mode, text);
+          mode_tracker(context, text);
           print text;
           if (linenos) {
             lineno_suppressed = substr(lastline, length(lastline)) == "\\";
@@ -347,6 +374,9 @@ function write_chunk(chunk_name, indent, tail,
         # empty last chunklet
       }
     }
+  }
+  if (! finalize_mode_tracker(context)) {
+    error(sprintf(_"Module %s did not close context properly.\nUsed by: %s\n", chunk_name, chunk_path));
   }
 }
 function expand_chunk_args(text, params, args,  

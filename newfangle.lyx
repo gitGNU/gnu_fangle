@@ -115,8 +115,8 @@ Literate Programming
 \noun on
 Donald Knuth
 \noun default
- whose literate programming tools seem to make use of as many escaped abbreviati
-ons for semantic markup as TeX itself.
+ himself, whose literate programming tools seem to make use of as many escaped
+ abbreviations for semantic markup as TeX itself.
 \end_layout
 
 \begin_layout Standard
@@ -154,9 +154,9 @@ status collapsed
 \end_layout
 
 \begin_layout Standard
-Using LyX for LaTeX editing, I had various troubles with the noweb tools,
- some of which were my fault, some of which were noweb's fault and some
- of which were LyX's fault.
+While using the LyX editor for LaTeX editing I had various troubles with
+ the noweb tools, some of which were my fault, some of which were noweb's
+ fault and some of which were LyX's fault.
 \end_layout
 
 \begin_layout Standard
@@ -4097,7 +4097,7 @@ a[name] => freddie
 \end_layout
 
 \begin_layout Chapter
-Chunk Language Modes
+Language Modes
 \end_layout
 
 \begin_layout Standard
@@ -4407,10 +4407,7 @@ status open
 \backslash
 noindent
 \backslash
-hphantom{
-\lang english
-echo "hello `id
-}
+hphantom{echo "hello `id}
 \end_layout
 
 \end_inset
@@ -4493,7 +4490,7 @@ status open
 
 \begin_layout Plain Layout
 
-function new_mode_tracker(language, context, mode) {
+function new_mode_tracker(context, language, mode) {
 \end_layout
 
 \begin_layout Plain Layout
@@ -4527,7 +4524,7 @@ Because awk functions cannot return an array, we must create the array first
 \end_layout
 
 \begin_layout Chunk
-new-mode-tracker,params=language;context;mode
+new-mode-tracker,params=context;language;mode
 \end_layout
 
 \begin_layout Standard
@@ -4544,7 +4541,7 @@ chunkref{awk-delete-array}(${context})>
 
 \begin_layout Plain Layout
 
-new_mode_tracker(${language}, ${context}, ${mode});
+new_mode_tracker(${context}, ${language}, ${mode});
 \end_layout
 
 \end_inset
@@ -4555,6 +4552,307 @@ new_mode_tracker(${language}, ${context}, ${mode});
 \begin_layout Standard
 And for tracking modes, we dispatch to a mode-tracker action based on the
  current language
+\end_layout
+
+\begin_layout Chunk
+mode_tracker
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+function push_mode_tracker(context, language, mode,
+\end_layout
+
+\begin_layout Plain Layout
+
+  # local vars
+\end_layout
+
+\begin_layout Plain Layout
+
+  top)
+\end_layout
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\begin_layout Plain Layout
+
+  if (! ("" in context)) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    =<
+\backslash
+chunkref{new-mode-tracker}(context, language, mode)>
+\end_layout
+
+\begin_layout Plain Layout
+
+  } else {
+\end_layout
+
+\begin_layout Plain Layout
+
+    top = context[""];
+\end_layout
+
+\begin_layout Plain Layout
+
+    if (context[top, "language"] == language && mode=="") mode = context[top,
+ "mode"];
+\end_layout
+
+\begin_layout Plain Layout
+
+    top++;
+\end_layout
+
+\begin_layout Plain Layout
+
+    context[top, "language"] = language;
+\end_layout
+
+\begin_layout Plain Layout
+
+    context[top, "mode"] = mode;
+\end_layout
+
+\begin_layout Plain Layout
+
+    context[""] = top;
+\end_layout
+
+\begin_layout Plain Layout
+
+  }
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+function finalize_mode_tracker(context,
+\end_layout
+
+\begin_layout Plain Layout
+
+  # local vars
+\end_layout
+
+\begin_layout Plain Layout
+
+  top)
+\end_layout
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\begin_layout Plain Layout
+
+  if ( ("" in context) && context[""] != 0) return 0;
+\end_layout
+
+\begin_layout Plain Layout
+
+  return 1;
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+This implies that any chunk must be syntactically whole; for instance, this
+ is fine:
+\end_layout
+
+\begin_layout Chunk
+test:whole-chunk
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+if (1) {
+\end_layout
+
+\begin_layout Plain Layout
+
+  =<
+\backslash
+chunkref{test:say-hello}>
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chunk
+test:say-hello
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+print "hello";
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+But this is not fine; the chunk 
+\begin_inset Flex Chunkref
+status collapsed
+
+\begin_layout Plain Layout
+test:hidden-else
+\end_layout
+
+\end_inset
+
+ is not properly cromulent.
+\end_layout
+
+\begin_layout Chunk
+test:partial-chunk
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+if (1) {
+\end_layout
+
+\begin_layout Plain Layout
+
+  =<
+\backslash
+chunkref{test:hidden-else}>
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chunk
+test:hidden-else
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+  print "I'm fine";
+\end_layout
+
+\begin_layout Plain Layout
+
+} else {
+\end_layout
+
+\begin_layout Plain Layout
+
+  print "I'm not";
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+These tests will check for correct behaviour:
+\end_layout
+
+\begin_layout Chunk
+test:cromulence
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+echo Cromulence test
+\end_layout
+
+\begin_layout Plain Layout
+
+passtest ./newfangle -Rtest:whole-chunk $TEX_SRC &>/dev/null || ( echo "Whole
+ chunk failed" && exit 1 )
+\end_layout
+
+\begin_layout Plain Layout
+
+failtest ./newfangle -Rtest:partial-chunk $TEX_SRC &>/dev/null || ( echo
+ "Partial chunk failed" && exit 1 )
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section
@@ -6687,7 +6985,7 @@ function parse_chunk_args(language, text, values, mode,
 
   =<
 \backslash
-chunkref{new-mode-tracker}(language, context, mode)>
+chunkref{new-mode-tracker}(context, language, mode)>
 \end_layout
 
 \begin_layout Plain Layout
@@ -6732,27 +7030,6 @@ chunkref{new-mode-tracker}(language, context, mode)>
 
 \begin_layout Section
 Expanding parameters
-\end_layout
-
-\begin_layout Chunk
-zog
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-=<
-\backslash
-chunkref{new-mode-tracker}(language, context, "")>
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \begin_layout Standard
@@ -9085,6 +9362,46 @@ It should probably also contain the source line numbers at which each inclusion
 \end_layout
 
 \begin_layout Chunk
+write_chunk()
+\end_layout
+
+\begin_layout Standard
+We first initialize the mode tracker for this chunk.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+function write_chunk(chunk_name) {
+\end_layout
+
+\begin_layout Plain Layout
+
+  =<
+\backslash
+chunkref{awk-delete-array}(context)>
+\end_layout
+
+\begin_layout Plain Layout
+
+  return write_chunk_r(chunk_name, context);
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chunk
 write_chunk(),emph={chunk_path}
 \end_layout
 
@@ -9095,7 +9412,7 @@ status open
 
 \begin_layout Plain Layout
 
-function write_chunk(chunk_name, indent, tail,
+function write_chunk_r(chunk_name, context, indent, tail,
 \end_layout
 
 \begin_layout Plain Layout
@@ -9105,7 +9422,7 @@ function write_chunk(chunk_name, indent, tail,
 
 \begin_layout Plain Layout
 
-  chunk_path, chunk_args, chunk_params,
+  chunk_path, chunk_args, 
 \end_layout
 
 \begin_layout Plain Layout
@@ -9115,12 +9432,12 @@ function write_chunk(chunk_name, indent, tail,
 
 \begin_layout Plain Layout
 
-  part, max_part, part_line, frag, max_frag, text, 
+  chunk_params, part, max_part, part_line, frag, max_frag, text, 
 \end_layout
 
 \begin_layout Plain Layout
 
-  chunklet, only_part, call_chunk_args, mode)
+  chunklet, only_part, call_chunk_args)
 \end_layout
 
 \begin_layout Plain Layout
@@ -9194,13 +9511,7 @@ status open
 \end_layout
 
 \begin_layout Standard
-We first create the mode tracker for this chunk.
-\end_layout
-
-\begin_layout Standard
-#  =<
-\backslash
-chunkref{awk-delete-array}(mode)>
+We then create a mode tracker 
 \end_layout
 
 \begin_layout Standard
@@ -9210,31 +9521,14 @@ status open
 
 \begin_layout Plain Layout
 
-  split("", mode);
-\end_layout
-
-\begin_layout Plain Layout
-
-  new_mode_tracker(chunks[chunk_name, "language"], mode, "");
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-#  =<
+  =<
 \backslash
-chunkref{new-mode-tracker}(chunks[chunk_name, "language"], mode, 
-\begin_inset Quotes eld
+chunkref{new-mode-tracker}(context, chunks[chunk_name, "language"], "")>
+\end_layout
+
 \end_inset
 
 
-\begin_inset Quotes erd
-\end_inset
-
-)>
 \end_layout
 
 \begin_layout Standard
@@ -9343,6 +9637,25 @@ chunkref{write-part}>
 \begin_layout Plain Layout
 
     }
+\end_layout
+
+\begin_layout Plain Layout
+
+  }
+\end_layout
+
+\begin_layout Plain Layout
+
+  if (! finalize_mode_tracker(context)) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    error(sprintf(_"Module %s did not close context properly.
+\backslash
+nUsed by: %s
+\backslash
+n", chunk_name, chunk_path));
 \end_layout
 
 \begin_layout Plain Layout
@@ -9552,7 +9865,7 @@ if (match(chunklet, "^([^
 
 \begin_layout Plain Layout
 
-write_chunk(chunklet,
+write_chunk_r(chunklet, context,
 \end_layout
 
 \begin_layout Plain Layout
@@ -9842,7 +10155,7 @@ status open
 
 \begin_layout Plain Layout
 
-#  track_mode(mode, text);
+  mode_tracker(context, text);
 \end_layout
 
 \begin_layout Plain Layout
@@ -13909,12 +14222,26 @@ cd $PROJECT_DIR || exit 1
 
 \begin_layout Plain Layout
 
+=<
+\backslash
+chunkref{test:helpers}>
+\end_layout
+
+\begin_layout Plain Layout
+
 # run tests
 \end_layout
 
 \begin_layout Plain Layout
 
-./newfangle -Rpca-test.awk $TEX_SRC | awk -f -
+./newfangle -Rpca-test.awk $TEX_SRC | awk -f - || exit 1
+\end_layout
+
+\begin_layout Plain Layout
+
+=<
+\backslash
+chunkref{test:cromulence}>
 \end_layout
 
 \end_inset
@@ -13990,6 +14317,98 @@ newfangle -R./newfangle newfangle.tex > ./newfangle
 \begin_layout Plain Layout
 
 newfangle -R./newfangle.module newfangle.tex > ./newfangle.module
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Testing
+\end_layout
+
+\begin_layout Chunk
+test:helpers
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+passtest() {
+\end_layout
+
+\begin_layout Plain Layout
+
+  if "$@"
+\end_layout
+
+\begin_layout Plain Layout
+
+  then echo "Passed"
+\end_layout
+
+\begin_layout Plain Layout
+
+  else echo "Failed"
+\end_layout
+
+\begin_layout Plain Layout
+
+       return 1
+\end_layout
+
+\begin_layout Plain Layout
+
+  fi
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+failtest() {
+\end_layout
+
+\begin_layout Plain Layout
+
+  if ! "$@"
+\end_layout
+
+\begin_layout Plain Layout
+
+  then echo "Passed"
+\end_layout
+
+\begin_layout Plain Layout
+
+  else echo "Failed"
+\end_layout
+
+\begin_layout Plain Layout
+
+       return 1
+\end_layout
+
+\begin_layout Plain Layout
+
+  fi
+\end_layout
+
+\begin_layout Plain Layout
+
+}
 \end_layout
 
 \end_inset
