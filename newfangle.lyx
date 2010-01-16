@@ -310,7 +310,7 @@ key "gpl-licenses"
 \end_layout
 
 \begin_layout Chunk
-gpl3-copyright,language=awk
+gpl3-copyright,language=
 \end_layout
 
 \begin_layout Standard
@@ -320,84 +320,84 @@ status open
 
 \begin_layout Plain Layout
 
-#newfangle - fully featured notangle replacement in awk
+newfangle - fully featured notangle replacement in awk
 \end_layout
 
 \begin_layout Plain Layout
 
-#
 \end_layout
 
 \begin_layout Plain Layout
 
-#Copyright (C) Sam Liddicott 2009
+Copyright (C) Sam Liddicott 2009
 \end_layout
 
 \begin_layout Plain Layout
 
-#
 \end_layout
 
 \begin_layout Plain Layout
 
-#This program is free software: you can redistribute it and/or modify
+This program is free software: you can redistribute it and/or modify
 \end_layout
 
 \begin_layout Plain Layout
 
-#it under the terms of the GNU General Public License as published by
+it under the terms of the GNU General Public License as published by
 \end_layout
 
 \begin_layout Plain Layout
 
-#the Free Software Foundation, either version 3 of the License, or
+the Free Software Foundation, either version 3 of the License, or
 \end_layout
 
 \begin_layout Plain Layout
 
-#(at your option) any later version.
+(at your option) any later version.
 \end_layout
 
 \begin_layout Plain Layout
 
-#
 \end_layout
 
 \begin_layout Plain Layout
 
-#This program is distributed in the hope that it will be useful,
+This program is distributed in the hope that it will be useful,
 \end_layout
 
 \begin_layout Plain Layout
 
-#but WITHOUT ANY WARRANTY; without even the implied warranty of
+but WITHOUT ANY WARRANTY; without even the implied warranty of
 \end_layout
 
 \begin_layout Plain Layout
 
-#MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
   See the
 \end_layout
 
 \begin_layout Plain Layout
 
-#GNU General Public License for more details.
+GNU General Public License for more details.
 \end_layout
 
 \begin_layout Plain Layout
 
-#
 \end_layout
 
 \begin_layout Plain Layout
 
-#You should have received a copy of the GNU General Public License
+You should have received a copy of the GNU General Public License
 \end_layout
 
 \begin_layout Plain Layout
 
-#along with this program.
+along with this program.
   If not, see <http://www.gnu.org/licenses/>.
+\end_layout
+
+\begin_layout Plain Layout
+
 \end_layout
 
 \end_inset
@@ -2912,9 +2912,13 @@ status open
 
 \begin_layout Plain Layout
 
-=<
+# =<
 \backslash
 chunkref{gpl3-copyright}>
+\end_layout
+
+\begin_layout Plain Layout
+
 \end_layout
 
 \end_inset
@@ -4983,6 +4987,10 @@ name "cha:modes"
 
 \end_layout
 
+\begin_layout Section
+Modes
+\end_layout
+
 \begin_layout Standard
 lstlistings and newfangle both recognize source languages, and perform some
  basic parsing.
@@ -5006,6 +5014,93 @@ chunkref
 \end_inset
 
  can be suitably escape or quoted.
+\end_layout
+
+\begin_layout Subsection
+Modes to keep code together
+\end_layout
+
+\begin_layout Standard
+As an example, in the C language there are a few parse modes, affecting
+ the interpretation of characters.
+\end_layout
+
+\begin_layout Standard
+One parse mode is the strings mode.
+ The string mode is commenced by an un-escaped quotation mark 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+"
+\end_layout
+
+\end_inset
+
+ and terminated by the same.
+ Within the string mode, only one additional mode can be commenced, it is
+ the backslash mode 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+
+\backslash
+
+\end_layout
+
+\end_inset
+
+, which is always terminated by the folloing character.
+\end_layout
+
+\begin_layout Standard
+Other modes are 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+[
+\end_layout
+
+\end_inset
+
+ which is terminated by a 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+]
+\end_layout
+
+\end_inset
+
+ (unless it occurs in a string).
+\end_layout
+
+\begin_layout Standard
+Consider this line of C code:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\mathtt{things\underbrace{[\mathtt{x,\ y}]}_{1.\ [\ mode},\ get\_other\_things\underbrace{(\mathtt{a,\overbrace{"\mathtt{(all)}"}})}_{2.\ (\ mode}^{3.\ "\ mode}}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Mode nesting prevents the close parenthesis in quote mode (part 3) from
+ terminating the parenthesis mode (part 2).
+\end_layout
+
+\begin_layout Standard
+Each language has a set of modes, the default mode being the null mode.
+ Each mode can lead to other modes.
+\end_layout
+
+\begin_layout Subsection
+Modes to included chunks
 \end_layout
 
 \begin_layout Standard
@@ -5321,85 +5416,6 @@ Note chunk parameters should probably also be transformed
 \end_inset
 
 
-\end_layout
-
-\begin_layout Standard
-As an example, in the C language there are a few parse modes, affecting
- the interpretation of characters.
-\end_layout
-
-\begin_layout Standard
-One parse mode is the strings mode.
- The string mode is commenced by an un-escaped quotation mark 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-"
-\end_layout
-
-\end_inset
-
- and terminated by the same.
- Within the string mode, only one additional mode can be commenced, it is
- the backslash mode 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-
-\backslash
-
-\end_layout
-
-\end_inset
-
-, which is always terminated by the folloing character.
-\end_layout
-
-\begin_layout Standard
-Other modes are 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-[
-\end_layout
-
-\end_inset
-
- which is terminated by a 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-]
-\end_layout
-
-\end_inset
-
- (unless it occurs in a string).
-\end_layout
-
-\begin_layout Standard
-Consider this line of C code:
-\end_layout
-
-\begin_layout Standard
-\begin_inset Formula $\mathtt{things\underbrace{[\mathtt{x,\ y}]}_{1.\ [\ mode},\ get\_other\_things\underbrace{(\mathtt{a,\overbrace{"\mathtt{(all)}"}})}_{2.\ (\ mode}^{3.\ "\ mode}}$
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Mode nesting prevents the close parenthesis in quote mode (part 3) from
- terminating the parenthesis mode (part 2).
-\end_layout
-
-\begin_layout Standard
-Each language has a set of modes, the default mode being the null mode.
- Each mode can lead to other modes.
 \end_layout
 
 \begin_layout Section
@@ -8082,6 +8098,215 @@ a[name] => freddie
 
 \end_layout
 
+\begin_layout Section
+Escaping and Quoting
+\end_layout
+
+\begin_layout Standard
+Each nested mode can optionally define a set of transforms to be applied
+ to any text that is included from another language.
+\end_layout
+
+\begin_layout Standard
+This code can perform transforms
+\end_layout
+
+\begin_layout Chunk
+mode_tracker
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+function transform_escape(s, r, text,
+\end_layout
+
+\begin_layout Plain Layout
+
+    # optional
+\end_layout
+
+\begin_layout Plain Layout
+
+    max, 
+\end_layout
+
+\begin_layout Plain Layout
+
+	# local vars
+\end_layout
+
+\begin_layout Plain Layout
+
+	c)
+\end_layout
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\begin_layout Plain Layout
+
+  for(c=1; c <= max && (c in s); c++) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    gsub(s[c], r[c], text);
+\end_layout
+
+\begin_layout Plain Layout
+
+  }
+\end_layout
+
+\begin_layout Plain Layout
+
+  return text;
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+This function must append from index 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+
+c
+\end_layout
+
+\end_inset
+
+ onwards, and escape transforms from the supplied context, and return c
+ + number of new transforms.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+function mode_escaper(context, s, r, src,
+\end_layout
+
+\begin_layout Plain Layout
+
+  c, cp, cpl)
+\end_layout
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\begin_layout Plain Layout
+
+	for(c = context[""]; c >= 0; c--) {
+\end_layout
+
+\begin_layout Plain Layout
+
+		if ( (context[c, "language"], context[c, "mode"]) in escapes) {
+\end_layout
+
+\begin_layout Plain Layout
+
+			cpl = escapes[context[c, "language"], context[c, "mode"]];
+\end_layout
+
+\begin_layout Plain Layout
+
+			for (cp = 1; cp <= cpl; cp ++) {
+\end_layout
+
+\begin_layout Plain Layout
+
+				++src;
+\end_layout
+
+\begin_layout Plain Layout
+
+				s[src] = escapes[context[c, "language"], context[c, "mode"], c, "s"];
+\end_layout
+
+\begin_layout Plain Layout
+
+				r[src] = escapes[context[c, "language"], context[c, "mode"], c, "r"];
+\end_layout
+
+\begin_layout Plain Layout
+
+			}
+\end_layout
+
+\begin_layout Plain Layout
+
+		}
+\end_layout
+
+\begin_layout Plain Layout
+
+	}
+\end_layout
+
+\begin_layout Plain Layout
+
+	return src;
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chunk
+test:escapes
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+echo escapes test
+\end_layout
+
+\begin_layout Plain Layout
+
+passtest ./newfangle -Rtest:comment-quote $TEX_SRC &>/dev/null || ( echo
+ "Comment-quote failed" && exit 1 )
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Chapter
 Recognizing Chunks
 \end_layout
@@ -10316,6 +10541,11 @@ function write_chunk_r(chunk_name, context, indent, tail,
 
 \begin_layout Plain Layout
 
+  s, r, src, new_src, 
+\end_layout
+
+\begin_layout Plain Layout
+
   # local vars
 \end_layout
 
@@ -10758,6 +10988,16 @@ if (match(chunklet, "^([^
 
 \begin_layout Plain Layout
 
+# update the transforms arrays
+\end_layout
+
+\begin_layout Plain Layout
+
+new_src = mode_escaper(context, s, r, src);
+\end_layout
+
+\begin_layout Plain Layout
+
 write_chunk_r(chunklet, context,
 \end_layout
 
@@ -10780,7 +11020,12 @@ n         " chunk_name,
 
 \begin_layout Plain Layout
 
-            call_chunk_args);
+            call_chunk_args,
+\end_layout
+
+\begin_layout Plain Layout
+
+			s, r, new_src);
 \end_layout
 
 \end_inset
@@ -11053,7 +11298,7 @@ status open
 
 \begin_layout Plain Layout
 
-  print text;
+  print transform_escape(s, r, text, src);
 \end_layout
 
 \end_inset
@@ -11731,6 +11976,10 @@ status open
 # Revised: May, 1993
 \end_layout
 
+\begin_layout Plain Layout
+
+\end_layout
+
 \end_inset
 
 
@@ -11810,6 +12059,10 @@ status open
 \begin_layout Plain Layout
 
 #    _opti  -- index in multi-flag option, e.g., -abc
+\end_layout
+
+\begin_layout Plain Layout
+
 \end_layout
 
 \end_inset
@@ -15135,6 +15388,13 @@ chunkref{test:helpers}>
 =<
 \backslash
 chunkref{test:cromulence}>
+\end_layout
+
+\begin_layout Plain Layout
+
+=<
+\backslash
+chunkref{test:escapes}>
 \end_layout
 
 \end_inset

@@ -1,20 +1,22 @@
 #! /usr/bin/awk -f
-#newfangle - fully featured notangle replacement in awk
+# newfangle - fully featured notangle replacement in awk
 #
-#Copyright (C) Sam Liddicott 2009
+#  Copyright (C) Sam Liddicott 2009
 #
-#This program is free software: you can redistribute it and/or modify
-#it under the terms of the GNU General Public License as published by
-#the Free Software Foundation, either version 3 of the License, or
-#(at your option) any later version.
+#  This program is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or
+#  (at your option) any later version.
 #
-#This program is distributed in the hope that it will be useful,
-#but WITHOUT ANY WARRANTY; without even the implied warranty of
-#MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#GNU General Public License for more details.
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
 #
-#You should have received a copy of the GNU General Public License
-#along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#  You should have received a copy of the GNU General Public License
+#  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+
 
 # NOTE: Arnold Robbins public domain getopt for awk is also used:
 # getopt.awk --- do C library getopt(3) function in awk
@@ -23,6 +25,7 @@
 #
 # Initial version: March, 1991
 # Revised: May, 1993
+
 
 function getopt(argc, argv, options,    thisopt, i)
 {
@@ -208,6 +211,32 @@ else {
   if (length(item)) context[cindex, "values", ++context[cindex, "values"]] = item;
   return text;
 }
+function transform_escape(s, r, text,
+    # optional
+    max, 
+	# local vars
+	c)
+{
+  for(c=1; c <= max && (c in s); c++) {
+    gsub(s[c], r[c], text);
+  }
+  return text;
+}
+function mode_escaper(context, s, r, src,
+  c, cp, cpl)
+{
+	for(c = context[""]; c >= 0; c--) {
+		if ( (context[c, "language"], context[c, "mode"]) in escapes) {
+			cpl = escapes[context[c, "language"], context[c, "mode"]];
+			for (cp = 1; cp <= cpl; cp ++) {
+				++src;
+				s[src] = escapes[context[c, "language"], context[c, "mode"], c, "s"];
+				r[src] = escapes[context[c, "language"], context[c, "mode"], c, "r"];
+			}
+		}
+	}
+	return src;
+}
 function parse_chunk_args(language, text, values, mode,
   # local vars
   c, context, rest)
@@ -303,6 +332,7 @@ function write_chunk(chunk_name) {
 function write_chunk_r(chunk_name, context, indent, tail,
   # optional vars
   chunk_path, chunk_args, 
+  s, r, src, new_src, 
   # local vars
   chunk_params, part, max_part, part_line, frag, max_frag, text, 
   chunklet, only_part, call_chunk_args)
@@ -341,11 +371,14 @@ function write_chunk_r(chunk_name, context, indent, tail,
         } else {
           split("", call_chunk_args);
         }
+        # update the transforms arrays
+        new_src = mode_escaper(context, s, r, src);
         write_chunk_r(chunklet, context,
                     chunks[chunk_name, "part", part, "indent"] indent,
                     chunks[chunk_name, "part", part, "tail"],
                     chunk_path "\n         " chunk_name,
-                    call_chunk_args);
+                    call_chunk_args,
+        			s, r, new_src);
       } else if (chunklet SUBSEP "line" in chunks) {
         max_frag = chunks[chunklet, "line"];
         for(frag = 1; frag <= max_frag; frag++) {
@@ -376,7 +409,7 @@ function write_chunk_r(chunk_name, context, indent, tail,
 
           text = text tail;
           mode_tracker(context, text);
-          print text;
+          print transform_escape(s, r, text, src);
           if (linenos) {
             lineno_suppressed = substr(lastline, length(lastline)) == "\\";
           }
