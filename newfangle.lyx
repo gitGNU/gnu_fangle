@@ -304,7 +304,7 @@ key "gpl-licenses"
 \end_layout
 
 \begin_layout Chunk
-gpl3-copyright,language=
+gpl3-copyright,language=awk
 \end_layout
 
 \begin_layout Standard
@@ -4108,26 +4108,6 @@ name "cha:modes"
 \end_inset
 
 
-\begin_inset Note Greyedout
-status open
-
-\begin_layout Plain Layout
-This feature is in-development and does not work yet
-\end_layout
-
-\end_inset
-
-
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-In Progress!
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \begin_layout Standard
@@ -5030,7 +5010,7 @@ status collapsed
 \end_layout
 
 \begin_layout Chunk
-mode-definitions
+common-mode-definitions,params=language
 \end_layout
 
 \begin_layout Standard
@@ -5040,7 +5020,7 @@ status open
 
 \begin_layout Plain Layout
 
-modes["", "",  "submodes" ]="
+modes[${language}, "",  "submodes" ]="
 \backslash
 
 \backslash
@@ -5082,7 +5062,7 @@ status open
 
 \begin_layout Plain Layout
 
-modes["", "",  "delimiters"]=" *, *";
+modes[${language}, "",  "delimiters"]=" *, *";
 \end_layout
 
 \end_inset
@@ -5298,7 +5278,7 @@ status collapsed
 \end_layout
 
 \begin_layout Chunk
-mode-definitions
+common-mode-definitions
 \end_layout
 
 \begin_layout Standard
@@ -5308,7 +5288,7 @@ status open
 
 \begin_layout Plain Layout
 
-modes["", "
+modes[${language}, "
 \backslash
 
 \backslash
@@ -5322,6 +5302,10 @@ modes["", "
 
 \begin_layout Subsection
 Strings
+\end_layout
+
+\begin_layout Chunk
+common-mode-definitions
 \end_layout
 
 \begin_layout Standard
@@ -5338,7 +5322,7 @@ status open
 
 \begin_layout Plain Layout
 
-modes["", "
+modes[${language}, "
 \backslash
 "", "submodes" ]="
 \backslash
@@ -5353,11 +5337,93 @@ modes["", "
 
 \begin_layout Plain Layout
 
-modes["", "
+modes[${language}, "
 \backslash
 "", "terminators"]="
 \backslash
 "";
+\end_layout
+
+\begin_layout Plain Layout
+
+escapes[${language}, "
+\backslash
+"", ++escapes[${language}, "
+\backslash
+""], "s"]="
+\backslash
+"";
+\end_layout
+
+\begin_layout Plain Layout
+
+escapes[${language}, "
+\backslash
+"", escapes[${language}, "
+\backslash
+""], "r"]="
+\backslash
+
+\backslash
+
+\backslash
+"";
+\end_layout
+
+\begin_layout Plain Layout
+
+escapes[${language}, "
+\backslash
+"", escapes[${language}, "
+\backslash
+""], "s"]="
+\backslash
+n";
+\end_layout
+
+\begin_layout Plain Layout
+
+escapes[${language}, "
+\backslash
+"", ++escapes[${language}, "
+\backslash
+""], "r"]="
+\backslash
+
+\backslash
+
+\backslash
+n";
+\end_layout
+
+\begin_layout Plain Layout
+
+escapes[${language}, "
+\backslash
+"", escapes[${language}, "
+\backslash
+""], "s"]="
+\backslash
+
+\backslash
+";
+\end_layout
+
+\begin_layout Plain Layout
+
+escapes[${language}, "
+\backslash
+"", ++escapes[${language}, "
+\backslash
+""], "r"]="
+\backslash
+
+\backslash
+
+\backslash
+
+\backslash
+";
 \end_layout
 
 \end_inset
@@ -5495,7 +5561,7 @@ chunkref{pca-test.awk:summary}>
 \end_layout
 
 \begin_layout Chunk
-mode-definitions
+common-mode-definitions
 \end_layout
 
 \begin_layout Standard
@@ -5505,7 +5571,7 @@ status open
 
 \begin_layout Plain Layout
 
-modes["", "{",  "submodes" ]="
+modes[${language}, "{",  "submodes" ]="
 \backslash
 
 \backslash
@@ -5532,17 +5598,17 @@ modes["", "{",  "submodes" ]="
 
 \begin_layout Plain Layout
 
-modes["", "{",  "delimeters"]=" *, *";
+modes[${language}, "{",  "delimeters"]=" *, *";
 \end_layout
 
 \begin_layout Plain Layout
 
-modes["", "{",  "terminators"]="}";
+modes[${language}, "{",  "terminators"]="}";
 \end_layout
 
 \begin_layout Plain Layout
 
-modes["", "[",  "submodes" ]="
+modes[${language}, "[",  "submodes" ]="
 \backslash
 
 \backslash
@@ -5569,12 +5635,12 @@ modes["", "[",  "submodes" ]="
 
 \begin_layout Plain Layout
 
-modes["", "[",  "delimiters"]=" *, *";
+modes[${language}, "[",  "delimiters"]=" *, *";
 \end_layout
 
 \begin_layout Plain Layout
 
-modes["", "[",  "terminators"]="
+modes[${language}, "[",  "terminators"]="
 \backslash
 
 \backslash
@@ -5583,7 +5649,7 @@ modes["", "[",  "terminators"]="
 
 \begin_layout Plain Layout
 
-modes["", "(",  "submodes" ]="
+modes[${language}, "(",  "submodes" ]="
 \backslash
 
 \backslash
@@ -5610,12 +5676,12 @@ modes["", "(",  "submodes" ]="
 
 \begin_layout Plain Layout
 
-modes["", "(",  "delimiters"]=" *, *";
+modes[${language}, "(",  "delimiters"]=" *, *";
 \end_layout
 
 \begin_layout Plain Layout
 
-modes["", "(",  "terminators"]="
+modes[${language}, "(",  "terminators"]="
 \backslash
 
 \backslash
@@ -5624,7 +5690,7 @@ modes["", "(",  "terminators"]="
 
 \begin_layout Plain Layout
 
-modes["", "'",  "submodes" ]="
+modes[${language}, "'",  "submodes" ]="
 \backslash
 
 \backslash
@@ -5637,12 +5703,12 @@ modes["", "'",  "submodes" ]="
 
 \begin_layout Plain Layout
 
-modes["", "'",  "terminators"]="'";
+modes[${language}, "'",  "terminators"]="'";
 \end_layout
 
 \begin_layout Plain Layout
 
-modes["", "/*", "submodes"]="
+modes[${language}, "/*", "submodes"]="
 \backslash
 
 \backslash
@@ -5651,48 +5717,21 @@ modes["", "/*", "submodes"]="
 
 \begin_layout Plain Layout
 
-modes["", "/*", "terminators"]="*/";
+modes[${language}, "/*", "terminators"]="*/";
 \end_layout
 
 \begin_layout Plain Layout
 
-modes["", "//", "submodes"]="
+modes[${language}, "//", "submodes"]="
 \backslash
 n";
 \end_layout
 
 \begin_layout Plain Layout
 
-modes["", "//", "terminators"]="
+modes[${language}, "//", "terminators"]="
 \backslash
 n";
-\end_layout
-
-\begin_layout Plain Layout
-
-modes["", "",   "submodes" ]="
-\backslash
-
-\backslash
-
-\backslash
-
-\backslash
-|
-\backslash
-"|{|
-\backslash
-
-\backslash
-(|
-\backslash
-
-\backslash
-[|'|/
-\backslash
-
-\backslash
-*";
 \end_layout
 
 \end_inset
@@ -5751,6 +5790,319 @@ if (length(a) != 3) e++;
 =<
 \backslash
 chunkref{pca-test.awk:summary}>
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chunk
+mode:add-submode,params=language;mode;submode
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+modes[${language}, ${mode}, "submodes"] = modes[${language}, ${mode}, "submodes"
+] "|" ${submode};
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chunk
+mode:add-escapes,params=language;mode;search;replace
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+escapes[${language}, ${mode}, ++escapes[${language}, ${mode}], "s"]=${search};
+\end_layout
+
+\begin_layout Plain Layout
+
+escapes[${language}, ${mode},   escapes[${language}, ${mode}], "r"]=${replace};
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chunk
+mode:add-hash-comments,params=language
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+I'm having to use 
+\backslash
+# for hash and 
+\backslash
+textbackslash{} for 
+\backslash
+ and have hacky work-arounds in the parser for now
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+=<
+\backslash
+chunkref{mode:add-submode}(${language}, "", "
+\backslash
+#")>
+\end_layout
+
+\begin_layout Plain Layout
+
+modes[${language}, "#", "terminators"]="
+\backslash
+n";
+\end_layout
+
+\begin_layout Plain Layout
+
+=<
+\backslash
+chunkref{mode:add-escapes}(${language}, "
+\backslash
+#", "
+\backslash
+textbackslash{}n", "
+\backslash
+textbackslash{}n
+\backslash
+#")>
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chunk
+mode:add-hash-defines,params=language
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+=<
+\backslash
+chunkref{mode:add-submode}(${language}, "", "
+\backslash
+#")>
+\end_layout
+
+\begin_layout Plain Layout
+
+modes[${language}, "#", "submodes" ]="
+\backslash
+
+\backslash
+
+\backslash
+
+\backslash
+";
+\end_layout
+
+\begin_layout Plain Layout
+
+modes[${language}, "#", "terminators"]="
+\backslash
+n";
+\end_layout
+
+\begin_layout Plain Layout
+
+=<
+\backslash
+chunkref{mode:add-escapes}(${language}, "
+\backslash
+#", "
+\backslash
+textbackslash{}n", "
+\backslash
+textbackslash{}
+\backslash
+textbackslash{}
+\backslash
+textbackslash{}
+\backslash
+textbackslash{}
+\backslash
+textbackslash{}n")>
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chunk
+mode-definitions
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+=<
+\backslash
+chunkref{common-mode-definitions}("")>
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+=<
+\backslash
+chunkref{common-mode-definitions}("c")>
+\end_layout
+
+\begin_layout Plain Layout
+
+=<
+\backslash
+chunkref{mode:add-hash-defines}("c")>
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+=<
+\backslash
+chunkref{common-mode-definitions}("awk")>
+\end_layout
+
+\begin_layout Plain Layout
+
+=<
+\backslash
+chunkref{mode:add-hash-comments}("awk")>
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The awk definitions should allow a comment block like this:
+\end_layout
+
+\begin_layout Chunk
+test:comment-quote,language=awk
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# Comment: =<
+\backslash
+chunkref{test:comment-text}>
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chunk
+test:comment-text,language=
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+Now is the time for
+\end_layout
+
+\begin_layout Plain Layout
+
+the quick brown fox to bring lemonade
+\end_layout
+
+\begin_layout Plain Layout
+
+to the party
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+to come out like this:
+\end_layout
+
+\begin_layout Chunk
+test:comment-quote:result
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# Comment: Now is the time for
+\end_layout
+
+\begin_layout Plain Layout
+
+#the quick brown fox to bring lemondae
+\end_layout
+
+\begin_layout Plain Layout
+
+#to the party
 \end_layout
 
 \end_inset
@@ -5849,7 +6201,7 @@ status open
 \end_layout
 
 \begin_layout Standard
-First we construct a single large regex combining the possile sub-modes
+First we construct a single large regex combining the possible sub-modes
  for the current mode along with the terminators for the current mode.
 \end_layout
 
@@ -5869,6 +6221,10 @@ status open
 
 \begin_layout Plain Layout
 
+\end_layout
+
+\begin_layout Plain Layout
+
   if ((language, mode, "delimiters") in modes) {
 \end_layout
 
@@ -5879,12 +6235,17 @@ status open
 
 \begin_layout Plain Layout
 
-    submodes=submodes "|" delimiters;
+    if (length(submodes)>0) submodes = submodes "|";
 \end_layout
 
 \begin_layout Plain Layout
 
-  }
+    submodes=submodes delimiters;
+\end_layout
+
+\begin_layout Plain Layout
+
+  } else delimiters="";
 \end_layout
 
 \begin_layout Plain Layout
@@ -5899,12 +6260,17 @@ status open
 
 \begin_layout Plain Layout
 
-    submodes=submodes "|" terminators;
+    if (length(submodes)>0) submodes = submodes "|";
 \end_layout
 
 \begin_layout Plain Layout
 
-  }
+    submodes=submodes terminators;
+\end_layout
+
+\begin_layout Plain Layout
+
+  } else terminators="";
 \end_layout
 
 \end_inset
@@ -5976,8 +6342,23 @@ status open
 
 \begin_layout Plain Layout
 
-        error("Internal error, matched zero length submode, should be impossible
- - likely regex computation error");
+        error(sprintf("Internal error, matched zero length submode, should
+ be impossible - likely regex computation error
+\backslash
+n" 
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+		"Language=%s
+\backslash
+nmode=%s
+\backslash
+nmatch=%s
+\backslash
+n", language, mode, submodes));
 \end_layout
 
 \begin_layout Plain Layout
@@ -6056,6 +6437,13 @@ status open
 \begin_layout Plain Layout
 
       if (match(a[1], "^" terminators "$")) {
+\end_layout
+
+\begin_layout Plain Layout
+
+#printf("%2d EXIT  MODE [%s] by [%s] [%s]
+\backslash
+n", cindex, mode, a[1], text) > "/dev/stderr"
 \end_layout
 
 \begin_layout Plain Layout
@@ -6208,11 +6596,14 @@ status open
 
 \begin_layout Plain Layout
 
-        text = substr(text, 1 + length(part) + length(a[1]));
+#printf("%2d ENTER MODE [%s] in [%s]
+\backslash
+n", cindex, a[1], text) > "/dev/stderr"
 \end_layout
 
 \begin_layout Plain Layout
 
+        text = substr(text, 1 + length(part) + length(a[1]));
 \end_layout
 
 \begin_layout Plain Layout
@@ -6249,8 +6640,11 @@ chunkref{parse_chunk_args-reset-modes}>
 
 \begin_layout Plain Layout
 
-        error(sprintf("Submode '%s' set unknown mode in text: %s", a[1],
- text));
+        error(sprintf("Submode '%s' set unknown mode in text: %s
+\backslash
+nLanguage %s Mode %s
+\backslash
+n", a[1], text, language, mode));
 \end_layout
 
 \begin_layout Plain Layout
@@ -7021,6 +7415,147 @@ chunkref{new-mode-tracker}(context, language, mode)>
 \begin_layout Plain Layout
 
 }
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+LaTeX Compatibility
+\end_layout
+
+\begin_layout Standard
+Unfortunately 
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+fix this then
+\end_layout
+
+\end_inset
+
+ the 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+=<\SpecialChar \ldots{}
+>
+\end_layout
+
+\end_inset
+
+ that we use to invoke LaTeX commans like 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+
+\backslash
+chunkref{\SpecialChar \ldots{}
+}
+\end_layout
+
+\end_inset
+
+ re-enters a LaTeX parsing mode in which some characters are special, e.g.
+ 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+# 
+\backslash
+
+\end_layout
+
+\end_inset
+
+, and so until I can hack about the LaTeX command 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+
+\backslash
+chunkref
+\end_layout
+
+\end_inset
+
+ so that it can accept these literally, I must use the forms 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+
+\backslash
+textbackslash{}
+\end_layout
+
+\end_inset
+
+ and 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+
+\backslash
+#
+\end_layout
+
+\end_inset
+
+; so I also define a hacky chunk here whose purpose it is to remove these
+ from any arguments parsed by newfangle.
+\end_layout
+
+\begin_layout Chunk
+delatex,params=text
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# FILTHY HACK
+\end_layout
+
+\begin_layout Plain Layout
+
+gsub("
+\backslash
+
+\backslash
+
+\backslash
+
+\backslash
+#", "#", ${text});
+\end_layout
+
+\begin_layout Plain Layout
+
+gsub("
+\backslash
+
+\backslash
+
+\backslash
+
+\backslash
+textbackslash{}", "
+\backslash
+
+\backslash
+", ${text});
 \end_layout
 
 \end_inset
@@ -8539,6 +9074,13 @@ status open
 \begin_layout Plain Layout
 
     # chunk name up to }
+\end_layout
+
+\begin_layout Plain Layout
+
+	=<
+\backslash
+chunkref{delatex}(line[3])>
 \end_layout
 
 \begin_layout Plain Layout
@@ -14425,7 +14967,7 @@ Chunk Parameters
 \end_layout
 
 \begin_layout Chunk
-tests-sub,params=THING;colour
+tests-sub,language=,params=THING;colour
 \end_layout
 
 \begin_layout Standard

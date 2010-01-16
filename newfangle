@@ -118,22 +118,27 @@ function mode_tracker(context, text, values,
   mode = context[cindex, "mode"];
   language = context[cindex, "language" ];
   submodes=modes[language, mode, "submodes"];
+
   if ((language, mode, "delimiters") in modes) {
     delimiters = modes[language, mode, "delimiters"];
-    submodes=submodes "|" delimiters;
-  }
+    if (length(submodes)>0) submodes = submodes "|";
+    submodes=submodes delimiters;
+  } else delimiters="";
   if ((language, mode, "terminators") in modes) {
     terminators = modes[language, mode, "terminators"];
-    submodes=submodes "|" terminators;
-  }
+    if (length(submodes)>0) submodes = submodes "|";
+    submodes=submodes terminators;
+  } else terminators="";
   while((cindex >= 0) && length(text)) {
     if (match(text, "(" submodes ")", a)) {
       if (RLENGTH<1) {
-        error("Internal error, matched zero length submode, should be impossible - likely regex computation error");
+        error(sprintf("Internal error, matched zero length submode, should be impossible - likely regex computation error\n" \
+		"Language=%s\nmode=%s\nmatch=%s\n", language, mode, submodes));
       }
       part = substr(text, 1, RSTART -1);
       item = item part;
       if (match(a[1], "^" terminators "$")) {
+#printf("%2d EXIT  MODE [%s] by [%s] [%s]\n", cindex, mode, a[1], text) > "/dev/stderr"
         context[cindex, "values", ++context[cindex, "values"]] = item;
         delete context[cindex];
         context[""] = --cindex;
@@ -141,14 +146,17 @@ function mode_tracker(context, text, values,
           mode = context[cindex, "mode"];
           language = context[cindex, "language"];
             submodes=modes[language, mode, "submodes"];
+
             if ((language, mode, "delimiters") in modes) {
               delimiters = modes[language, mode, "delimiters"];
-              submodes=submodes "|" delimiters;
-            }
+              if (length(submodes)>0) submodes = submodes "|";
+              submodes=submodes delimiters;
+            } else delimiters="";
             if ((language, mode, "terminators") in modes) {
               terminators = modes[language, mode, "terminators"];
-              submodes=submodes "|" terminators;
-            }
+              if (length(submodes)>0) submodes = submodes "|";
+              submodes=submodes terminators;
+            } else terminators="";
         }
         item = item a[1];
         text = substr(text, 1 + length(part) + length(a[1]));
@@ -165,23 +173,26 @@ function mode_tracker(context, text, values,
  else if ((language, a[1], "terminators") in modes) {
         #check if new_mode is defined
         item = item a[1];
+#printf("%2d ENTER MODE [%s] in [%s]\n", cindex, a[1], text) > "/dev/stderr"
         text = substr(text, 1 + length(part) + length(a[1]));
-
         context[""] = ++cindex;
         context[cindex, "mode"] = a[1];
         context[cindex, "language"] = language;
         mode = a[1];
           submodes=modes[language, mode, "submodes"];
+
           if ((language, mode, "delimiters") in modes) {
             delimiters = modes[language, mode, "delimiters"];
-            submodes=submodes "|" delimiters;
-          }
+            if (length(submodes)>0) submodes = submodes "|";
+            submodes=submodes delimiters;
+          } else delimiters="";
           if ((language, mode, "terminators") in modes) {
             terminators = modes[language, mode, "terminators"];
-            submodes=submodes "|" terminators;
-          }
+            if (length(submodes)>0) submodes = submodes "|";
+            submodes=submodes terminators;
+          } else terminators="";
       } else {
-        error(sprintf("Submode '%s' set unknown mode in text: %s", a[1], text));
+        error(sprintf("Submode '%s' set unknown mode in text: %s\nLanguage %s Mode %s\n", a[1], text, language, mode));
         text = substr(text, 1 + length(part) + length(a[1]));
       }
     }
@@ -408,6 +419,12 @@ BEGIN {
   modes["", "\\", "terminators"]=".";
   modes["", "\"", "submodes" ]="\\\\";
   modes["", "\"", "terminators"]="\"";
+  escapes["", "\"", ++escapes["", "\""], "s"]="\"";
+  escapes["", "\"", escapes["", "\""], "r"]="\\\"";
+  escapes["", "\"", escapes["", "\""], "s"]="\n";
+  escapes["", "\"", ++escapes["", "\""], "r"]="\\\n";
+  escapes["", "\"", escapes["", "\""], "s"]="\\";
+  escapes["", "\"", ++escapes["", "\""], "r"]="\\\\";
   modes["", "{",  "submodes" ]="\\\\|\"|{|\\(|\\[|'|/\\*";
   modes["", "{",  "delimeters"]=" *, *";
   modes["", "{",  "terminators"]="}";
@@ -423,7 +440,69 @@ BEGIN {
   modes["", "/*", "terminators"]="*/";
   modes["", "//", "submodes"]="\n";
   modes["", "//", "terminators"]="\n";
-  modes["", "",   "submodes" ]="\\\\|\"|{|\\(|\\[|'|/\\*";
+
+  modes["c", "",  "submodes" ]="\\\\|\"|'|{|\\(|\\[|/\\*";
+  modes["c", "",  "delimiters"]=" *, *";
+  modes["c", "\\", "terminators"]=".";
+  modes["c", "\"", "submodes" ]="\\\\";
+  modes["c", "\"", "terminators"]="\"";
+  escapes["c", "\"", ++escapes["c", "\""], "s"]="\"";
+  escapes["c", "\"", escapes["c", "\""], "r"]="\\\"";
+  escapes["c", "\"", escapes["c", "\""], "s"]="\n";
+  escapes["c", "\"", ++escapes["c", "\""], "r"]="\\\n";
+  escapes["c", "\"", escapes["c", "\""], "s"]="\\";
+  escapes["c", "\"", ++escapes["c", "\""], "r"]="\\\\";
+  modes["c", "{",  "submodes" ]="\\\\|\"|{|\\(|\\[|'|/\\*";
+  modes["c", "{",  "delimeters"]=" *, *";
+  modes["c", "{",  "terminators"]="}";
+  modes["c", "[",  "submodes" ]="\\\\|\"|{|\\(|\\[|'|/\\*";
+  modes["c", "[",  "delimiters"]=" *, *";
+  modes["c", "[",  "terminators"]="\\]";
+  modes["c", "(",  "submodes" ]="\\\\|\"|{|\\(|\\[|'|/\\*";
+  modes["c", "(",  "delimiters"]=" *, *";
+  modes["c", "(",  "terminators"]="\\)";
+  modes["c", "'",  "submodes" ]="\\\\";
+  modes["c", "'",  "terminators"]="'";
+  modes["c", "/*", "submodes"]="\\*/";
+  modes["c", "/*", "terminators"]="*/";
+  modes["c", "//", "submodes"]="\n";
+  modes["c", "//", "terminators"]="\n";
+  modes["c", "", "submodes"] = modes["c", "", "submodes"] "|" "#";
+  modes["c", "#", "submodes" ]="\\\\";
+  modes["c", "#", "terminators"]="\n";
+  escapes["c", "#", ++escapes["c", "#"], "s"]="\n";
+  escapes["c", "#",   escapes["c", "#"], "r"]="\\\\\n";
+
+  modes["awk", "",  "submodes" ]="\\\\|\"|'|{|\\(|\\[|/\\*";
+  modes["awk", "",  "delimiters"]=" *, *";
+  modes["awk", "\\", "terminators"]=".";
+  modes["awk", "\"", "submodes" ]="\\\\";
+  modes["awk", "\"", "terminators"]="\"";
+  escapes["awk", "\"", ++escapes["awk", "\""], "s"]="\"";
+  escapes["awk", "\"", escapes["awk", "\""], "r"]="\\\"";
+  escapes["awk", "\"", escapes["awk", "\""], "s"]="\n";
+  escapes["awk", "\"", ++escapes["awk", "\""], "r"]="\\\n";
+  escapes["awk", "\"", escapes["awk", "\""], "s"]="\\";
+  escapes["awk", "\"", ++escapes["awk", "\""], "r"]="\\\\";
+  modes["awk", "{",  "submodes" ]="\\\\|\"|{|\\(|\\[|'|/\\*";
+  modes["awk", "{",  "delimeters"]=" *, *";
+  modes["awk", "{",  "terminators"]="}";
+  modes["awk", "[",  "submodes" ]="\\\\|\"|{|\\(|\\[|'|/\\*";
+  modes["awk", "[",  "delimiters"]=" *, *";
+  modes["awk", "[",  "terminators"]="\\]";
+  modes["awk", "(",  "submodes" ]="\\\\|\"|{|\\(|\\[|'|/\\*";
+  modes["awk", "(",  "delimiters"]=" *, *";
+  modes["awk", "(",  "terminators"]="\\)";
+  modes["awk", "'",  "submodes" ]="\\\\";
+  modes["awk", "'",  "terminators"]="'";
+  modes["awk", "/*", "submodes"]="\\*/";
+  modes["awk", "/*", "terminators"]="*/";
+  modes["awk", "//", "submodes"]="\n";
+  modes["awk", "//", "terminators"]="\n";
+  modes["awk", "", "submodes"] = modes["awk", "", "submodes"] "|" "#";
+  modes["awk", "#", "terminators"]="\n";
+  escapes["awk", "#", ++escapes["awk", "#"], "s"]="\n";
+  escapes["awk", "#",   escapes["awk", "#"], "r"]="\n#";
   debug=0;
   linenos=0;
   notangle_mode=0;
@@ -492,6 +571,9 @@ length(active_chunk) {
     chunk = substr(chunk, RSTART + RLENGTH);
     if (substr(line[1], 1, 1) == "=") {
       # chunk name up to }
+  	# FILTHY HACK
+   gsub("\\\\#", "#", line[3]);
+   gsub("\\\\textbackslash{}", "\\", line[3]);
       chunk_include(active_chunk, line[2] line[3], indent);
     } else if (substr(line[1], 1, 1) == "<") {
       chunk_include(active_chunk, line[4], indent);
