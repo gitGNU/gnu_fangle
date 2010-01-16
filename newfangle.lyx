@@ -199,6 +199,12 @@ Newfangle is written in awk for portability reasons, awk being available
  (Hasn't anyone implemented awk in python yet?)
 \end_layout
 
+\begin_layout Standard
+As an extension to many literate-programming styles, Newfangle permits code
+ chunks to take parameters and thus operate somewhat like C pre-processor
+ macros, or like C++ templates.
+\end_layout
+
 \begin_layout Section*
 Todo
 \end_layout
@@ -3234,16 +3240,27 @@ lstlistings
 \begin_layout Standard
 LaTeX arguments to lstlistings macros are a comma seperated list of key-value
  pairs.
- Values containing commas are enclosed in { braces }.
+ Values containing commas are enclosed in 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+{
 \end_layout
 
-\begin_layout Standard
-We need a function that can parse such an expression and assign the values
- to an 
-\noun on
-AWK
-\noun default
- associated array.
+\end_inset
+
+ braces 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+}
+\end_layout
+
+\end_inset
+
+, which is to be expected for LaTeX.
 \end_layout
 
 \begin_layout Standard
@@ -3263,8 +3280,13 @@ name=freddie, foo={bar=baz, quux={quirk, a=fleeg}}, etc
 \end_layout
 
 \begin_layout Standard
-And that it would be a good idea to use a recursive parser into a multi-dimensio
-nal hash
+We may consider that we need a function that can parse such LaTeX expressions
+ and assign the values to an 
+\noun on
+AWK
+\noun default
+ associated array, perhaps using a recursive parser into a multi-dimensional
+ hash
 \begin_inset Foot
 status collapsed
 
@@ -3411,7 +3433,7 @@ a[etc]
 \end_layout
 
 \begin_layout Standard
-On reflection it seems that sometimes such nesting is not desirable, as
+Oon reflection it seems that sometimes such nesting is not desirable, as
  the braces are also used to delimit values that contain commas --- we may
  consider that
 \end_layout
@@ -3441,17 +3463,104 @@ name
 
 \end_inset
 
- --- so I may change this behaviour.
-\begin_inset Note Note
+.
+\end_layout
+
+\begin_layout Standard
+In fact we are not so interested in the detail so as to be bothered by this,
+ which turns out to be a good thing for two reasons.
+ Firstly LaTeX has a malleable parser with no strict syntax, and secondly
+ whether or not 
+\begin_inset Flex CharStyle:Code
 status collapsed
 
 \begin_layout Plain Layout
-So change it
+williamson
 \end_layout
 
 \end_inset
 
+ and 
+\begin_inset Flex CharStyle:Code
+status collapsed
 
+\begin_layout Plain Layout
+freddie
+\end_layout
+
+\end_inset
+
+ should count as two items will be context dependant anyway.
+\end_layout
+
+\begin_layout Standard
+We need to parse this latex for only one reason; which is that we are extending
+ lstlistings to add some additional arguments which will be used to express
+ chunk parameters and other chunk options.
+\end_layout
+
+\begin_layout Section
+Additional lstlstings parameters
+\end_layout
+
+\begin_layout Standard
+Further on we define a 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+
+\backslash
+Chunk
+\end_layout
+
+\end_inset
+
+ LaTeX macro whose arguments will consist of a the chunk name, optionally
+ followed by a comma and then a comma separated list of arguments.
+ In fact we will just need to prefix 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+name=
+\end_layout
+
+\end_inset
+
+ to the arguments to in order to create valid lstlistings arguments.
+ 
+\end_layout
+
+\begin_layout Standard
+There will be other arguments supported too; 
+\end_layout
+
+\begin_layout Description
+params As an extension to many literate-programming styles, newfangle permits
+ code chunks to take parameters and thus operate somewhat like C pre-processor
+ macros, or like C++ templates.
+ Chunk parameters are declared with a chunk argument called 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+params
+\end_layout
+
+\end_inset
+
+, which holds a semi-colon separated list of parameters, like this:
+\end_layout
+
+\begin_layout LyX-Code
+achunk,language=C,params=name;address
+\end_layout
+
+\begin_layout Description
+addto a named chunk that this chunk is to be included into.
+ This saves the effort of having to declare another listing of the named
+ chunk merely to include this one.
 \end_layout
 
 \begin_layout Standard
@@ -4089,6 +4198,770 @@ a[etc] =>
 \begin_layout Plain Layout
 
 a[name] => freddie
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Parsing chunk arguments
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset label
+LatexCommand label
+name "cha:Chunk Arguments"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Arguments to paramterized chunks are expressed in round brackets as a comma
+ separated list of optional arguments.
+ For example, a chunk that is defined with:
+\end_layout
+
+\begin_layout LyX-Code
+
+\backslash
+Chunk{achunk, params=name ; address}
+\end_layout
+
+\begin_layout Standard
+could be invoked as:
+\end_layout
+
+\begin_layout LyX-Code
+
+\backslash
+chunkref{achunk}(John Jones, jones@example.com)
+\end_layout
+
+\begin_layout Standard
+An argument list may be as simple as in 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+
+\backslash
+chunkref{pull}(thing, otherthing)
+\end_layout
+
+\end_inset
+
+ or as complex as:
+\end_layout
+
+\begin_layout LyX-Code
+
+\backslash
+chunkref{pull}(things[x, y], get_other_things(a, "(all)")) 
+\end_layout
+
+\begin_layout Standard
+--- which for all it's commas and quotes and parenthesis represents only
+ two parameters: 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+things[x, y]
+\end_layout
+
+\end_inset
+
+ and 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+get_other_things(a, "(all)")
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+If we simply split parameter list on commas, then the comma in 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+things[x,y]
+\end_layout
+
+\end_inset
+
+ would split into two seperate arguments: 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+things[x
+\end_layout
+
+\end_inset
+
+ and 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+y]
+\end_layout
+
+\end_inset
+
+--- neither of which make sense on their own.
+\end_layout
+
+\begin_layout Standard
+One way to prevent this would be by refusing to split text between matching
+ delimiters, such as 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+[
+\end_layout
+
+\end_inset
+
+, 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+]
+\end_layout
+
+\end_inset
+
+, 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+(
+\end_layout
+
+\end_inset
+
+, 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+)
+\end_layout
+
+\end_inset
+
+, 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+{
+\end_layout
+
+\end_inset
+
+, 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+}
+\end_layout
+
+\end_inset
+
+ and most likely also 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+"
+\end_layout
+
+\end_inset
+
+, 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+"
+\end_layout
+
+\end_inset
+
+ and 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+'
+\end_layout
+
+\end_inset
+
+, 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+'
+\end_layout
+
+\end_inset
+
+.
+ Of course this also makes it impossible to pass such mis-matched code fragments
+ as parameters, but I think that it would be hard for readers to cope with
+ authors who would pass such code unbalanced fragments as chunk parameters
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+I know that I couldn't cope with users doing such things, and although the
+ GPL3 license prevents me from actually forbidding anyone from trying, if
+ they want it to work they'll have to write the code themselves and not
+ expect any support from me.
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Unfortunately, the full set of matching delimiters may vary from language
+ to language.
+ In certain C++ template contexts, 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+<
+\end_layout
+
+\end_inset
+
+ and 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+>
+\end_layout
+
+\end_inset
+
+ would count as delimiters, and yet in other contexts they would not.
+\end_layout
+
+\begin_layout Standard
+This puts me in the unfortunate position of having to parse-somewhat all
+ programming languages without knowing what they are!
+\end_layout
+
+\begin_layout Standard
+However, if this universal mode-tracking is possible, then parsing the arguments
+ would be trivial.
+ Such a mode tracker is described in chapter 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "cha:modes"
+
+\end_inset
+
+ and used here with simplicity.
+\end_layout
+
+\begin_layout Chunk
+parse_chunk_args
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+function parse_chunk_args(language, text, values, mode,
+\end_layout
+
+\begin_layout Plain Layout
+
+  # local vars
+\end_layout
+
+\begin_layout Plain Layout
+
+  c, context, rest)
+\end_layout
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\begin_layout Plain Layout
+
+  =<
+\backslash
+chunkref{new-mode-tracker}(context, language, mode)>
+\end_layout
+
+\begin_layout Plain Layout
+
+  rest = mode_tracker(context, text, values);
+\end_layout
+
+\begin_layout Plain Layout
+
+  # extract values
+\end_layout
+
+\begin_layout Plain Layout
+
+  for(c=1; c <= context[0, "values"]; c++) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    values[c] = context[0, "values", c];
+\end_layout
+
+\begin_layout Plain Layout
+
+  }
+\end_layout
+
+\begin_layout Plain Layout
+
+  return rest;
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Expanding parameters in the text
+\end_layout
+
+\begin_layout Standard
+Within the body of the chunk, the parameters are referred to with: 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+${name}
+\end_layout
+
+\end_inset
+
+ and 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+${address}
+\end_layout
+
+\end_inset
+
+.
+ There is a strong case that a LaTeX style notation should be used, like
+ 
+\backslash
+param{name} which would be expressed in the listing as =<
+\backslash
+param{name}> and be rendered as 
+\begin_inset listings
+inline true
+status open
+
+\begin_layout Plain Layout
+
+=<
+\backslash
+param{name}>
+\end_layout
+
+\end_inset
+
+.
+ Such notation would make me go blind, but I do intend to adopt it
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Probably when LyX's listings inset can recognize and render it, so that
+ I no longer have to type =<\SpecialChar \ldots{}
+>
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+We therefore need a function 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+expand_chunk_args
+\end_layout
+
+\end_inset
+
+ which will take a block of text, a list of permitted parameters, and the
+ arguments which must substitute for the parameters.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset label
+LatexCommand label
+name "Here-we-split"
+
+\end_inset
+
+Here we split the text on 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+${
+\end_layout
+
+\end_inset
+
+ which means that all parts except the first will begin with a parameter
+ name which will be terminated by 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+}
+\end_layout
+
+\end_inset
+
+.
+ The split function will consume the literal 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+${
+\end_layout
+
+\end_inset
+
+ in each case.
+\end_layout
+
+\begin_layout Chunk
+expand_chunk_args()
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+function expand_chunk_args(text, params, args,  
+\end_layout
+
+\begin_layout Plain Layout
+
+  p, text_array, next_text, v, t, l)
+\end_layout
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\begin_layout Plain Layout
+
+  if (split(text, text_array, "
+\backslash
+
+\backslash
+${")) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    =<
+\backslash
+chunkref{substitute-chunk-args}>
+\end_layout
+
+\begin_layout Plain Layout
+
+  }
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+  return text;
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+First, we produce an associative array of substitution values indexed by
+ parameter names.
+ This will serve as a cache, allowing us to look up the replacement values
+ as we extract each name.
+\end_layout
+
+\begin_layout Chunk
+substitute-chunk-args
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+for(p in params) {
+\end_layout
+
+\begin_layout Plain Layout
+
+  v[params[p]]=args[p];
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+We accumulate substituted text in the variable 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+text
+\end_layout
+
+\end_inset
+
+.
+ As the first part of the split function is the part before the delimiter
+ --- which is 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+${
+\end_layout
+
+\end_inset
+
+ in our case --- this part will never contain a parameter reference, so
+ we assign this directly to the result kept in 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+$text
+\end_layout
+
+\end_inset
+
+.
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+text=text_array[1];
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+We then iterate over the remaining values in the array
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+I don't know why I think that it will enumerate the array in order, but
+ it seems to work
+\end_layout
+
+\end_inset
+
+
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Plain Layout
+So fix it or porve it
+\end_layout
+
+\end_inset
+
+, and substitute each reference for it's argument.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+for(t=2; t in text_array; t++) {
+\end_layout
+
+\begin_layout Plain Layout
+
+  =<
+\backslash
+chunkref{substitute-chunk-arg}>
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+After the split on 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+${
+\end_layout
+
+\end_inset
+
+ a valid parameter reference will consist of valid parameter name terminated
+ by a close-brace 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+}
+\end_layout
+
+\end_inset
+
+.
+ A valid character name begins with the underscore or a letter, and may
+ contain letters, digits or underscores.
+\end_layout
+
+\begin_layout Standard
+A valid looking reference that is not actually the name of a parameter will
+ be and not substituted.
+ This is good because there is nothing to substitute anyway, and it avoids
+ clashes when writing code for languages where ${\SpecialChar \ldots{}
+} is a valid construct
+ --- such constructs will not be interfered with unless the parameter name
+ also matches.
+\end_layout
+
+\begin_layout Chunk
+substitute-chunk-arg
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+if (match(text_array[t], "^([a-zA-Z_][a-zA-Z0-9_]*)}", l) &&
+\end_layout
+
+\begin_layout Plain Layout
+
+    l[1] in v) 
+\end_layout
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\begin_layout Plain Layout
+
+  text = text v[l[1]] substr(text_array[t], length(l[1])+2);
+\end_layout
+
+\begin_layout Plain Layout
+
+} else {
+\end_layout
+
+\begin_layout Plain Layout
+
+  text = text "${" text_array[t];
+\end_layout
+
+\begin_layout Plain Layout
+
+}
 \end_layout
 
 \end_inset
@@ -6097,12 +6970,49 @@ status open
 
 \begin_layout Plain Layout
 
-#the quick brown fox to bring lemondae
+#the quick brown fox to bring lemonade
 \end_layout
 
 \begin_layout Plain Layout
 
 #to the party
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The C definition for such a block should have it come out like this:
+\end_layout
+
+\begin_layout Chunk
+test:comment-quote:C-result
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# Comment: Now is the time for
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+the quick brown fox to bring lemonade
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+to the party
 \end_layout
 
 \end_inset
@@ -6967,916 +7877,6 @@ a[etc] =>
 \begin_layout Plain Layout
 
 a[name] => freddie
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Chapter
-Expanding chunk arguments
-\end_layout
-
-\begin_layout Standard
-\begin_inset CommandInset label
-LatexCommand label
-name "cha:Chunk Arguments"
-
-\end_inset
-
-
-\begin_inset Note Note
-status collapsed
-
-\begin_layout Plain Layout
-Explain this in the documentation section too
-\end_layout
-
-\end_inset
-
-As an extension to many literate-programming styles, newfangle permits code
- chunks to take parameters and thus operate somewhat like C pre-processor
- macros, or like C++ templates.
-\end_layout
-
-\begin_layout Standard
-Chunk parameters are declared with a chunk argument called 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-params
-\end_layout
-
-\end_inset
-
-, which holds a semi-colon separated list of parameters, like this:
-\end_layout
-
-\begin_layout LyX-Code
-achunk,language=C,params=name;address
-\end_layout
-
-\begin_layout Standard
-When such a chunk is included, the arguments are expressed in round brackets
- as a comma separated list of optional arguments:
-\begin_inset Note Note
-status collapsed
-
-\begin_layout Plain Layout
-We ought to support qouting in {} like ({Jones, John}, Jones@example.com)
-\end_layout
-
-\end_inset
-
-:
-\end_layout
-
-\begin_layout LyX-Code
-
-\backslash
-chunkref{achunk}(John Jones, jones@example.com)
-\end_layout
-
-\begin_layout Standard
-Within the body of a chunk, the parameters are referred to with: 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-${name}
-\end_layout
-
-\end_inset
-
- and 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-${address}
-\end_layout
-
-\end_inset
-
-.
- There is a strong case that a LaTeX style notation should be used, like
- 
-\backslash
-param{name} which would be expressed in the listing as =<
-\backslash
-param{name}> and be rendered as 
-\begin_inset listings
-inline true
-status open
-
-\begin_layout Plain Layout
-
-=<
-\backslash
-param{name}>
-\end_layout
-
-\end_inset
-
-.
- Such notation would make me go blind, but I do intend to adopt it.
-\end_layout
-
-\begin_layout Standard
-We therefore need a function 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-expand_chunk_args
-\end_layout
-
-\end_inset
-
- which will take a block of text, a list of permitted parameters and the
- arguments which must substitute for the parameters.
- 
-\end_layout
-
-\begin_layout Standard
-We also need to be able to parse a parameter list into an array of parameters.
-\end_layout
-
-\begin_layout Section
-Parsing argument lists
-\end_layout
-
-\begin_layout Standard
-An argument list may be as simple as in 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-
-\backslash
-chunkref{pull}(thing, otherthing)
-\end_layout
-
-\end_inset
-
- or as complex as:
-\end_layout
-
-\begin_layout LyX-Code
-
-\backslash
-chunkref{pull}(things[x, y], get_other_things(a, "(all)")) 
-\end_layout
-
-\begin_layout Standard
---- which for all it's commas and quotes and parenthesis represents only
- two parameters: 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-things[x, y]
-\end_layout
-
-\end_inset
-
- and 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-get_other_things(a, "(all)")
-\end_layout
-
-\end_inset
-
-.
-\end_layout
-
-\begin_layout Standard
-If we simply split parameter list on commas, then the comma in 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-things[x,y]
-\end_layout
-
-\end_inset
-
- would split into two seperate arguments: 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-things[x
-\end_layout
-
-\end_inset
-
- and 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-y]
-\end_layout
-
-\end_inset
-
---- neither of which make sense on their own.
-\end_layout
-
-\begin_layout Standard
-One way to prevent this would be by refusing to split text between maching
- delimiters, such as 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-[
-\end_layout
-
-\end_inset
-
-, 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-]
-\end_layout
-
-\end_inset
-
-, 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-(
-\end_layout
-
-\end_inset
-
-, 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-)
-\end_layout
-
-\end_inset
-
-, 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-{
-\end_layout
-
-\end_inset
-
-, 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-}
-\end_layout
-
-\end_inset
-
- and most likely also 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-"
-\end_layout
-
-\end_inset
-
-, 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-"
-\end_layout
-
-\end_inset
-
- and 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-'
-\end_layout
-
-\end_inset
-
-, 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-'
-\end_layout
-
-\end_inset
-
-.
- Of course this also makes it impossible to pass such mis-matched code fragments
- as parameters, but I think that it would be hard for readers to cope with
- authors who would pass such code unbalanced fragments as chunk parameters
-\begin_inset Foot
-status collapsed
-
-\begin_layout Plain Layout
-I know that I couldn't cope with users doing such things, and although the
- GPL3 license prevents me from actually forbidding anyone from trying, if
- they want it to work they'll have to write the code themselves and not
- expect any support from me.
-\end_layout
-
-\end_inset
-
-.
-\end_layout
-
-\begin_layout Standard
-Unfortunately, the full set of matching delimiters may vary from language
- to language.
- In certain C++ template contexts, 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-<
-\end_layout
-
-\end_inset
-
- and 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
->
-\end_layout
-
-\end_inset
-
- would count as delimiters, and yet in other contexts they would not.
-\end_layout
-
-\begin_layout Standard
-This puts me in the unfortunate position of having to parse-somewhat all
- programming languages without knowing what they are!
-\end_layout
-
-\begin_layout Standard
-This is the basis of mode-tracking, by tracking parse-modes for different
- languages.
-\end_layout
-
-\begin_layout Chunk
-parse_chunk_args
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-function parse_chunk_args(language, text, values, mode,
-\end_layout
-
-\begin_layout Plain Layout
-
-  # local vars
-\end_layout
-
-\begin_layout Plain Layout
-
-  c, context, rest)
-\end_layout
-
-\begin_layout Plain Layout
-
-{
-\end_layout
-
-\begin_layout Plain Layout
-
-  =<
-\backslash
-chunkref{new-mode-tracker}(context, language, mode)>
-\end_layout
-
-\begin_layout Plain Layout
-
-  rest = mode_tracker(context, text, values);
-\end_layout
-
-\begin_layout Plain Layout
-
-  # extract values
-\end_layout
-
-\begin_layout Plain Layout
-
-  for(c=1; c <= context[0, "values"]; c++) {
-\end_layout
-
-\begin_layout Plain Layout
-
-    values[c] = context[0, "values", c];
-\end_layout
-
-\begin_layout Plain Layout
-
-  }
-\end_layout
-
-\begin_layout Plain Layout
-
-  return rest;
-\end_layout
-
-\begin_layout Plain Layout
-
-}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Section
-LaTeX Compatibility
-\end_layout
-
-\begin_layout Standard
-Unfortunately 
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-fix this then
-\end_layout
-
-\end_inset
-
- the 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-=<\SpecialChar \ldots{}
->
-\end_layout
-
-\end_inset
-
- that we use to invoke LaTeX commans like 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-
-\backslash
-chunkref{\SpecialChar \ldots{}
-}
-\end_layout
-
-\end_inset
-
- re-enters a LaTeX parsing mode in which some characters are special, e.g.
- 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-# 
-\backslash
-
-\end_layout
-
-\end_inset
-
-, and so until I can hack about the LaTeX command 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-
-\backslash
-chunkref
-\end_layout
-
-\end_inset
-
- so that it can accept these literally, I must use the forms 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-
-\backslash
-textbackslash{}
-\end_layout
-
-\end_inset
-
- and 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-
-\backslash
-#
-\end_layout
-
-\end_inset
-
-; so I also define a hacky chunk here whose purpose it is to remove these
- from any arguments parsed by newfangle.
-\end_layout
-
-\begin_layout Chunk
-delatex,params=text
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-# FILTHY HACK
-\end_layout
-
-\begin_layout Plain Layout
-
-gsub("
-\backslash
-
-\backslash
-
-\backslash
-
-\backslash
-#", "#", ${text});
-\end_layout
-
-\begin_layout Plain Layout
-
-gsub("
-\backslash
-
-\backslash
-
-\backslash
-
-\backslash
-textbackslash{}", "
-\backslash
-
-\backslash
-", ${text});
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Section
-Expanding parameters
-\end_layout
-
-\begin_layout Standard
-\begin_inset CommandInset label
-LatexCommand label
-name "Here-we-split"
-
-\end_inset
-
-Here we split the text on 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-${
-\end_layout
-
-\end_inset
-
- which means that all parts except the first will begin with a parameter
- name.
- The split function will consume the literal 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-${
-\end_layout
-
-\end_inset
-
- in each case.
-\end_layout
-
-\begin_layout Chunk
-expand_chunk_args()
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-function expand_chunk_args(text, params, args,  
-\end_layout
-
-\begin_layout Plain Layout
-
-  p, text_array, next_text, v, t, l)
-\end_layout
-
-\begin_layout Plain Layout
-
-{
-\end_layout
-
-\begin_layout Plain Layout
-
-  if (split(text, text_array, "
-\backslash
-
-\backslash
-${")) {
-\end_layout
-
-\begin_layout Plain Layout
-
-    =<
-\backslash
-chunkref{substitute-chunk-args}>
-\end_layout
-
-\begin_layout Plain Layout
-
-  }
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-  return text;
-\end_layout
-
-\begin_layout Plain Layout
-
-}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-First, we produce an associative array of substitution values indexed by
- parameter names
-\end_layout
-
-\begin_layout Chunk
-substitute-chunk-args
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-for(p in params) {
-\end_layout
-
-\begin_layout Plain Layout
-
-  v[params[p]]=args[p];
-\end_layout
-
-\begin_layout Plain Layout
-
-}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-We accumulate substituted text in the variable 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-text
-\end_layout
-
-\end_inset
-
-.
- As the first part of the split function is the part before the delimiter
- --- which is 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-${
-\end_layout
-
-\end_inset
-
- in our case --- this part will never contain a parameter reference, so
- we assign this directly to the result kept in 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-$text
-\end_layout
-
-\end_inset
-
-.
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-text=text_array[1];
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-We then iterate over the remaining values in the array
-\begin_inset Foot
-status collapsed
-
-\begin_layout Plain Layout
-I don't know why I think that it will enumerate the array in order, but
- it seems to work
-\end_layout
-
-\end_inset
-
-
-\begin_inset Note Note
-status collapsed
-
-\begin_layout Plain Layout
-So fix it or porve it
-\end_layout
-
-\end_inset
-
-, and substitute each reference for it's argument.
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-for(t=2; t in text_array; t++) {
-\end_layout
-
-\begin_layout Plain Layout
-
-  =<
-\backslash
-chunkref{substitute-chunk-arg}>
-\end_layout
-
-\begin_layout Plain Layout
-
-}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-After the split on 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-${
-\end_layout
-
-\end_inset
-
- a valid parameter reference will consist of valid parameter name terminated
- by a close-brace 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-}
-\end_layout
-
-\end_inset
-
-.
- A valid character name begins with the underscore or a letter, and may
- contain letters, digits or underscores.
-\end_layout
-
-\begin_layout Standard
-A valid looking reference that is not actually the name of a parameter will
- be and not substituted.
- This is good because there is nothing to substitute anyway, and it avoids
- clashes when writing code for languages where ${\SpecialChar \ldots{}
-} is a valid construct
- --- such constructs will not be interfered with unless the parameter name
- also matches.
-\end_layout
-
-\begin_layout Chunk
-substitute-chunk-arg
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-if (match(text_array[t], "^([a-zA-Z_][a-zA-Z0-9_]*)}", l) &&
-\end_layout
-
-\begin_layout Plain Layout
-
-    l[1] in v) 
-\end_layout
-
-\begin_layout Plain Layout
-
-{
-\end_layout
-
-\begin_layout Plain Layout
-
-  text = text v[l[1]] substr(text_array[t], length(l[1])+2);
-\end_layout
-
-\begin_layout Plain Layout
-
-} else {
-\end_layout
-
-\begin_layout Plain Layout
-
-  text = text "${" text_array[t];
-\end_layout
-
-\begin_layout Plain Layout
-
-}
 \end_layout
 
 \end_inset
@@ -8844,10 +8844,159 @@ status collapsed
 \end_layout
 
 \begin_layout Standard
+Unfortunately 
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+fix this then
+\end_layout
+
+\end_inset
+
+ the 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+=<\SpecialChar \ldots{}
+>
+\end_layout
+
+\end_inset
+
+ that we use re-enters a LaTeX parsing mode in which some characters are
+ special, e.g.
+ 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+# 
+\backslash
+
+\end_layout
+
+\end_inset
+
+, and so these cause trouble if used in arguments to 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+
+\backslash
+chunkref
+\end_layout
+
+\end_inset
+
+.
+ At some point I must fix the LaTeX command 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+
+\backslash
+chunkref
+\end_layout
+
+\end_inset
+
+ so that it can accept these literally, but until then, when writing chunkref
+ argumemts that need these characters, I must use the forms 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+
+\backslash
+textbackslash{}
+\end_layout
+
+\end_inset
+
+ and 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+
+\backslash
+#
+\end_layout
+
+\end_inset
+
+; so I also define a hacky chunk 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+delatex
+\end_layout
+
+\end_inset
+
+ whose purpose it is to remove these from any arguments parsed by newfangle,
+ and used further on.
+\end_layout
+
+\begin_layout Chunk
+delatex,params=text
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# FILTHY HACK
+\end_layout
+
+\begin_layout Plain Layout
+
+gsub("
+\backslash
+
+\backslash
+
+\backslash
+
+\backslash
+#", "#", ${text});
+\end_layout
+
+\begin_layout Plain Layout
+
+gsub("
+\backslash
+
+\backslash
+
+\backslash
+
+\backslash
+textbackslash{}", "
+\backslash
+
+\backslash
+", ${text});
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 As each chunk line may contain more than one chunk include, we will split
  out chunk includes in an iterative fashion
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Contrary to our use of 
