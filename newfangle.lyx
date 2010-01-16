@@ -5323,7 +5323,1513 @@ Note chunk parameters should probably also be transformed
 
 \end_layout
 
+\begin_layout Standard
+As an example, in the C language there are a few parse modes, affecting
+ the interpretation of characters.
+\end_layout
+
+\begin_layout Standard
+One parse mode is the strings mode.
+ The string mode is commenced by an un-escaped quotation mark 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+"
+\end_layout
+
+\end_inset
+
+ and terminated by the same.
+ Within the string mode, only one additional mode can be commenced, it is
+ the backslash mode 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+
+\backslash
+
+\end_layout
+
+\end_inset
+
+, which is always terminated by the folloing character.
+\end_layout
+
+\begin_layout Standard
+Other modes are 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+[
+\end_layout
+
+\end_inset
+
+ which is terminated by a 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+]
+\end_layout
+
+\end_inset
+
+ (unless it occurs in a string).
+\end_layout
+
+\begin_layout Standard
+Consider this line of C code:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\mathtt{things\underbrace{[\mathtt{x,\ y}]}_{1.\ [\ mode},\ get\_other\_things\underbrace{(\mathtt{a,\overbrace{"\mathtt{(all)}"}})}_{2.\ (\ mode}^{3.\ "\ mode}}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Mode nesting prevents the close parenthesis in quote mode (part 3) from
+ terminating the parenthesis mode (part 2).
+\end_layout
+
+\begin_layout Standard
+Each language has a set of modes, the default mode being the null mode.
+ Each mode can lead to other modes.
+\end_layout
+
 \begin_layout Section
+Language Mode Definitions
+\end_layout
+
+\begin_layout Standard
+All modes are stored in a single multi-dimensional hash.
+ The first index is the language, and the second index is the mode-identifier.
+ The third indexes are terminators, and optionally, submodes, and delimiters.
+\end_layout
+
+\begin_layout Standard
+A useful set of mode definitions for a nameless general C-type language
+ is shown here.
+ (Don't be confused by the double backslash escaping needed in awk.
+ One set of escaping is for the string, and the second set of escaping is
+ for the regex).
+ 
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+TODO: Add =<
+\backslash
+mode{}> command which will allow us to signify that a string is regex and
+ thus newfangle will quote it for us.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Submodes are entered by the characters 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+
+\backslash
+
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+"
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+'
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+{
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+(
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+[
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+/*
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chunk
+common-mode-definitions,params=language
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+modes[${language}, "",  "submodes" ]="
+\backslash
+
+\backslash
+
+\backslash
+
+\backslash
+|
+\backslash
+"|'|{|
+\backslash
+
+\backslash
+(|
+\backslash
+
+\backslash
+[";
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In the default mode, a comma surrounded by un-important white space is a
+ delimiter of language items.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+modes[${language}, "",  "delimiters"]=" *, *";
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+and should pass this test:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Why do the tests run in 
+\begin_inset Quotes eld
+\end_inset
+
+(
+\begin_inset Quotes erd
+\end_inset
+
+ mode and not 
+\begin_inset Quotes eld
+\end_inset
+
+
+\begin_inset Quotes erd
+\end_inset
+
+ mode
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chunk
+test:mode-definitions
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+parse_chunk_args("", "1,2,3", a, "");
+\end_layout
+
+\begin_layout Plain Layout
+
+if (a[1] != "1") e++;
+\end_layout
+
+\begin_layout Plain Layout
+
+if (a[2] != "2") e++;
+\end_layout
+
+\begin_layout Plain Layout
+
+if (a[3] != "3") e++;
+\end_layout
+
+\begin_layout Plain Layout
+
+if (length(a) != 3) e++;
+\end_layout
+
+\begin_layout Plain Layout
+
+=<
+\backslash
+chunkref{pca-test.awk:summary}>
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+parse_chunk_args("", "joe, red", a, "");
+\end_layout
+
+\begin_layout Plain Layout
+
+if (a[1] != "joe") e++;
+\end_layout
+
+\begin_layout Plain Layout
+
+if (a[2] != "red") e++;
+\end_layout
+
+\begin_layout Plain Layout
+
+if (length(a) != 2) e++;
+\end_layout
+
+\begin_layout Plain Layout
+
+=<
+\backslash
+chunkref{pca-test.awk:summary}>
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+parse_chunk_args("", "${colour}", a, "");
+\end_layout
+
+\begin_layout Plain Layout
+
+if (a[1] != "${colour}") e++;
+\end_layout
+
+\begin_layout Plain Layout
+
+if (length(a) != 1) e++;
+\end_layout
+
+\begin_layout Plain Layout
+
+=<
+\backslash
+chunkref{pca-test.awk:summary}>
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Nested modes are identified by a backslash, a double or single quote, various
+ bracket styles or a /* comment.
+\end_layout
+
+\begin_layout Standard
+For each of these sub-modes modes we must also identify at a mode terminator,
+ and any sub-modes or delimiters that may be entered
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Because we are using the sub-mode characters as the mode identifier it means
+ we can't currently have a mode character dependant on it's context; i.e.
+ 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+{
+\end_layout
+
+\end_inset
+
+ can't behave differently when it is inside 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+[
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsection
+Backslash
+\end_layout
+
+\begin_layout Standard
+The backslash mode has no submodes or delimiters, and is terminated by any
+ character.
+ Note that we are not so much interested in evaluating or interpolating
+ content as we are in delineating content.
+ It is no matter that a double backslash (
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+
+\backslash
+
+\backslash
+
+\end_layout
+
+\end_inset
+
+) may represent a single backslash while a backslash-newline may represent
+ white space, but it does matter that the newline in a backslash newline
+ should not be able to terminate a C pre-processor statement; and so the
+ newline will be consumed by the backslash however it is to be interpreted.
+\end_layout
+
+\begin_layout Chunk
+common-mode-definitions
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+modes[${language}, "
+\backslash
+
+\backslash
+", "terminators"]=".";
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Strings
+\end_layout
+
+\begin_layout Standard
+Common languages support two kinds of strings quoting, double quotes and
+ single quotes.
+\end_layout
+
+\begin_layout Chunk
+mode:common-string,params=language;quote
+\end_layout
+
+\begin_layout Standard
+In a string we have one special mode, which is the backslash.
+ This may escape an embedded quote and prevent us thinking that it should
+ terminate the string.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+modes[${language}, ${quote}, "submodes" ]="
+\backslash
+
+\backslash
+
+\backslash
+
+\backslash
+";
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Otherwise, the string will be terminated by the same character that commenced
+ it.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+modes[${language}, ${quote}, "terminators"]=${quote};
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In C type languages, certain escape sequences exist in strings.
+ We need to define mechanism to enclode any chunks included in this mode
+ using those escape sequences.
+ These are expressed in two parts, s meaning search, and r meaning replace.
+\end_layout
+
+\begin_layout Standard
+The first substitution is to replace a backslash with a double backslash.
+ We do this first as other substitutions may introduce a backslash which
+ we would not then want to escape again here.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+escapes[${language}, ${quote}, ++escapes[${language}, ${quote}], "s"]="
+\backslash
+
+\backslash
+";
+\end_layout
+
+\begin_layout Plain Layout
+
+escapes[${language}, ${quote},   escapes[${language}, ${quote}], "r"]="
+\backslash
+
+\backslash
+
+\backslash
+
+\backslash
+";
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+If the quote character occurs in the text, it should be preceded by a backslash,
+ otherwise it would terminate the string unexpectedly.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+escapes[${language}, ${quote}, ++escapes[${language}, ${quote}], "s"]=${quote};
+\end_layout
+
+\begin_layout Plain Layout
+
+escapes[${language}, ${quote},   escapes[${language}, ${quote}], "r"]="
+\backslash
+
+\backslash
+" ${quote};
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Any newlines in the string, must be replaced by 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+
+\backslash
+n
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+escapes[${language}, ${quote}, ++escapes[${language}, ${quote}], "s"]="
+\backslash
+n";
+\end_layout
+
+\begin_layout Plain Layout
+
+escapes[${language}, ${quote},   escapes[${language}, ${quote}], "r"]="
+\backslash
+
+\backslash
+n";
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+For the common modes, we define this string handling for double and single
+ quotes.
+\end_layout
+
+\begin_layout Chunk
+common-mode-definitions,params=language
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+=<
+\backslash
+chunkref{mode:common-string}(${language}, "
+\backslash
+textbackslash{}"")>
+\end_layout
+
+\begin_layout Plain Layout
+
+=<
+\backslash
+chunkref{mode:common-string}(${language}, "'")>
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Working strings should pass this test:
+\end_layout
+
+\begin_layout Chunk
+test:mode-definitions
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+parse_chunk_args("", "say 
+\backslash
+"I said, 
+\backslash
+
+\backslash
+
+\backslash
+"Hello, how are you
+\backslash
+
+\backslash
+
+\backslash
+".
+\backslash
+", for me", a, "");
+\end_layout
+
+\begin_layout Plain Layout
+
+if (a[1] != "say 
+\backslash
+"I said, 
+\backslash
+
+\backslash
+
+\backslash
+"Hello, how are you
+\backslash
+
+\backslash
+
+\backslash
+".
+\backslash
+"") e++;
+\end_layout
+
+\begin_layout Plain Layout
+
+if (a[2] != "for me") e++;
+\end_layout
+
+\begin_layout Plain Layout
+
+if (length(a) != 2) e++;
+\end_layout
+
+\begin_layout Plain Layout
+
+=<
+\backslash
+chunkref{pca-test.awk:summary}>
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Parentheses, Braces and Brackets
+\end_layout
+
+\begin_layout Standard
+Where quotes are closed by the same character, parentheses, brackets and
+ braces are closed by an alternate character.
+\end_layout
+
+\begin_layout Chunk
+mode:common-brackets,params=language;open;close
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+modes[${language}, ${open},  "submodes" ]="
+\backslash
+
+\backslash
+
+\backslash
+
+\backslash
+|
+\backslash
+"|{|
+\backslash
+
+\backslash
+(|
+\backslash
+
+\backslash
+[|'|/
+\backslash
+
+\backslash
+*";
+\end_layout
+
+\begin_layout Plain Layout
+
+modes[${language}, ${open},  "delimiters"]=" *, *";
+\end_layout
+
+\begin_layout Plain Layout
+
+modes[${language}, ${open},  "terminators"]=${close};
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Note that the open is NOT a regex but the close token IS.
+ 
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+WHen we can quote regex we won't have to put the slashes in here
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chunk
+common-mode-definitions,params=language
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+=<
+\backslash
+chunkref{mode:common-brackets}(${language}, "{", "}")>
+\end_layout
+
+\begin_layout Plain Layout
+
+=<
+\backslash
+chunkref{mode:common-brackets}(${language}, "[", "
+\backslash
+textbackslash{}
+\backslash
+textbackslash{}]")>
+\end_layout
+
+\begin_layout Plain Layout
+
+=<
+\backslash
+chunkref{mode:common-brackets}(${language}, "(", "
+\backslash
+textbackslash{}
+\backslash
+textbackslash{})")>
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Customizing Standard Modes
+\end_layout
+
+\begin_layout Chunk
+mode:add-submode,params=language;mode;submode
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+modes[${language}, ${mode}, "submodes"] = modes[${language}, ${mode}, "submodes"
+] "|" ${submode};
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chunk
+mode:add-escapes,params=language;mode;search;replace
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+escapes[${language}, ${mode}, ++escapes[${language}, ${mode}], "s"]=${search};
+\end_layout
+
+\begin_layout Plain Layout
+
+escapes[${language}, ${mode},   escapes[${language}, ${mode}], "r"]=${replace};
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Comments
+\end_layout
+
+\begin_layout Standard
+We can define 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+/* comment */
+\end_layout
+
+\end_inset
+
+ style comments and 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+//comment
+\end_layout
+
+\end_inset
+
+ style comments to be added to any language:
+\end_layout
+
+\begin_layout Chunk
+mode:multi-line-comments,params=language
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+=<
+\backslash
+chunkref{mode:add-submode}(${language}, "", "/
+\backslash
+textbackslash{}
+\backslash
+textbackslash{}*")>
+\end_layout
+
+\begin_layout Plain Layout
+
+modes[${language}, "/*", "terminators"]="
+\backslash
+
+\backslash
+*/";
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chunk
+mode:single-line-slash-comments,params=language
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+=<
+\backslash
+chunkref{mode:add-submode}(${language}, "", "//")>
+\end_layout
+
+\begin_layout Plain Layout
+
+modes[${language}, "//", "terminators"]="
+\backslash
+n";
+\end_layout
+
+\begin_layout Plain Layout
+
+=<
+\backslash
+chunkref{mode:add-escapes}(${language}, "//", "
+\backslash
+textbackslash{}n", "
+\backslash
+textbackslash{}n//")>
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+We can also define 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+# comment
+\end_layout
+
+\end_inset
+
+ style comments (as used in awk and shell scripts) in a similar manner.
+\end_layout
+
+\begin_layout Chunk
+mode:add-hash-comments,params=language
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+I'm having to use 
+\backslash
+# for hash and 
+\backslash
+textbackslash{} for 
+\backslash
+ and have hacky work-arounds in the parser for now
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+=<
+\backslash
+chunkref{mode:add-submode}(${language}, "", "
+\backslash
+#")>
+\end_layout
+
+\begin_layout Plain Layout
+
+modes[${language}, "#", "terminators"]="
+\backslash
+n";
+\end_layout
+
+\begin_layout Plain Layout
+
+=<
+\backslash
+chunkref{mode:add-escapes}(${language}, "
+\backslash
+#", "
+\backslash
+textbackslash{}n", "
+\backslash
+textbackslash{}n
+\backslash
+#")>
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In C, the 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+#
+\end_layout
+
+\end_inset
+
+ denotes pre-processor directives which can be multi-line 
+\end_layout
+
+\begin_layout Chunk
+mode:add-hash-defines,params=language
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+=<
+\backslash
+chunkref{mode:add-submode}(${language}, "", "
+\backslash
+#")>
+\end_layout
+
+\begin_layout Plain Layout
+
+modes[${language}, "#", "submodes" ]="
+\backslash
+
+\backslash
+
+\backslash
+
+\backslash
+";
+\end_layout
+
+\begin_layout Plain Layout
+
+modes[${language}, "#", "terminators"]="
+\backslash
+n";
+\end_layout
+
+\begin_layout Plain Layout
+
+=<
+\backslash
+chunkref{mode:add-escapes}(${language}, "
+\backslash
+#", "
+\backslash
+textbackslash{}n", "
+\backslash
+textbackslash{}
+\backslash
+textbackslash{}
+\backslash
+textbackslash{}
+\backslash
+textbackslash{}
+\backslash
+textbackslash{}n")>
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+We can add these definitions to various languages
+\end_layout
+
+\begin_layout Chunk
+mode-definitions
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+=<
+\backslash
+chunkref{common-mode-definitions}("")>
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+=<
+\backslash
+chunkref{common-mode-definitions}("c")>
+\end_layout
+
+\begin_layout Plain Layout
+
+=<
+\backslash
+chunkref{mode:multi-line-comments}("c")>
+\end_layout
+
+\begin_layout Plain Layout
+
+=<
+\backslash
+chunkref{mode:single-line-slash-comments}("c")>
+\end_layout
+
+\begin_layout Plain Layout
+
+=<
+\backslash
+chunkref{mode:add-hash-defines}("c")>
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+=<
+\backslash
+chunkref{common-mode-definitions}("awk")>
+\end_layout
+
+\begin_layout Plain Layout
+
+=<
+\backslash
+chunkref{mode:add-hash-comments}("awk")>
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The awk definitions should allow a comment block like this:
+\end_layout
+
+\begin_layout Chunk
+test:comment-quote,language=awk
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# Comment: =<
+\backslash
+chunkref{test:comment-text}>
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chunk
+test:comment-text,language=
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+Now is the time for
+\end_layout
+
+\begin_layout Plain Layout
+
+the quick brown fox to bring lemonade
+\end_layout
+
+\begin_layout Plain Layout
+
+to the party
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+to come out like this:
+\end_layout
+
+\begin_layout Chunk
+test:comment-quote:result
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# Comment: Now is the time for
+\end_layout
+
+\begin_layout Plain Layout
+
+#the quick brown fox to bring lemonade
+\end_layout
+
+\begin_layout Plain Layout
+
+#to the party
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The C definition for such a block should have it come out like this:
+\end_layout
+
+\begin_layout Chunk
+test:comment-quote:C-result
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# Comment: Now is the time for
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+the quick brown fox to bring lemonade
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+to the party
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Some tests
+\end_layout
+
+\begin_layout Standard
+Also, the parser must return any spare text at the end that has not been
+ processed due to a mode terminator being found.
+\end_layout
+
+\begin_layout Chunk
+test:mode-definitions
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+rest = parse_chunk_args("", "1, 2, 3) spare", a, "(");
+\end_layout
+
+\begin_layout Plain Layout
+
+if (a[1] != 1) e++;
+\end_layout
+
+\begin_layout Plain Layout
+
+if (a[2] != 2) e++;
+\end_layout
+
+\begin_layout Plain Layout
+
+if (a[3] != 3) e++;
+\end_layout
+
+\begin_layout Plain Layout
+
+if (length(a) != 3) e++;
+\end_layout
+
+\begin_layout Plain Layout
+
+if (rest != " spare") e++;
+\end_layout
+
+\begin_layout Plain Layout
+
+=<
+\backslash
+chunkref{pca-test.awk:summary}>
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+We must also be able to parse the example given earlier.
+\end_layout
+
+\begin_layout Chunk
+test:mode-definitions
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+parse_chunk_args("", "things[x, y], get_other_things(a, 
+\backslash
+"(all)
+\backslash
+"), 99", a, "(");
+\end_layout
+
+\begin_layout Plain Layout
+
+if (a[1] != "things[x, y]") e++;
+\end_layout
+
+\begin_layout Plain Layout
+
+if (a[2] != "get_other_things(a, 
+\backslash
+"(all)
+\backslash
+")") e++;
+\end_layout
+
+\begin_layout Plain Layout
+
+if (a[3] != "99") e++;
+\end_layout
+
+\begin_layout Plain Layout
+
+if (length(a) != 3) e++;
+\end_layout
+
+\begin_layout Plain Layout
+
+=<
+\backslash
+chunkref{pca-test.awk:summary}>
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+A non-recursive mode tracker
+\end_layout
+
+\begin_layout Subsection
 Constructor
 \end_layout
 
@@ -5400,6 +6906,10 @@ new_mode_tracker(${context}, ${language}, ${mode});
 \end_inset
 
 
+\end_layout
+
+\begin_layout Subsection
+Management
 \end_layout
 
 \begin_layout Standard
@@ -5708,1320 +7218,8 @@ failtest ./newfangle -Rtest:partial-chunk $TEX_SRC &>/dev/null || ( echo
 
 \end_layout
 
-\begin_layout Section
-Processor
-\end_layout
-
-\begin_layout Standard
-In the C language there are a few parse modes, affecting the interpretation
- of characters.
-\end_layout
-
-\begin_layout Standard
-One parse mode is the strings mode.
- The string mode is commenced by an un-escaped quotation mark 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-"
-\end_layout
-
-\end_inset
-
- and terminated by the same.
- Within the string mode, only one additional mode can be commenced, it is
- the backslash mode 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-
-\backslash
-
-\end_layout
-
-\end_inset
-
-, which is always terminated by the folloing character.
-\end_layout
-
-\begin_layout Standard
-Other modes are 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-[
-\end_layout
-
-\end_inset
-
- which is terminated by a 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-]
-\end_layout
-
-\end_inset
-
- (unless it occurs in a string).
-\end_layout
-
-\begin_layout Standard
-Consider this line of C code:
-\end_layout
-
-\begin_layout Standard
-\begin_inset Formula $\mathtt{things\underbrace{[\mathtt{x,\ y}]}_{1.\ [\ mode},\ get\_other\_things\underbrace{(\mathtt{a,\overbrace{"\mathtt{(all)}"}})}_{2.\ (\ mode}^{3.\ "\ mode}}$
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Mode nesting prevents the close parenthesis in quote mode (part 3) from
- terminating the parenthesis mode (part 2).
-\end_layout
-
-\begin_layout Standard
-Each language has a set of modes, the default mode being the null mode.
- Each mode can lead to other modes.
-\end_layout
-
 \begin_layout Subsection
-Definitions
-\end_layout
-
-\begin_layout Standard
-All modes are stored in a single multi-dimensional hash.
- The first index is the language, and the second index is the mode-identifier.
- The third indexes are terminators, and optionally, submodes, and delimiters.
-\end_layout
-
-\begin_layout Standard
-A useful set of mode definitions for a nameless general C-type language
- is shown here.
- (Don't be confused by the double backslash escaping needed in awk.
- One set of escaping is for the string, and the second set of escaping is
- for the regex).
- TODO: Add =<
-\backslash
-mode{}> command which will allow us to signify that a string is regex and
- thus newfangle will quote it for us.
-\end_layout
-
-\begin_layout Standard
-Submodes are entered by the characters 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-
-\backslash
-
-\end_layout
-
-\end_inset
-
- 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-\begin_inset Quotes eld
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
- 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-{
-\end_layout
-
-\end_inset
-
- 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-(
-\end_layout
-
-\end_inset
-
- 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-[
-\end_layout
-
-\end_inset
-
- 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-/*
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Chunk
-common-mode-definitions,params=language
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-modes[${language}, "",  "submodes" ]="
-\backslash
-
-\backslash
-
-\backslash
-
-\backslash
-|
-\backslash
-"|'|{|
-\backslash
-
-\backslash
-(|
-\backslash
-
-\backslash
-[|/
-\backslash
-
-\backslash
-*";
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-In the default mode, a comma surrounded by un-important white space is a
- delimiter of language items.
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-modes[${language}, "",  "delimiters"]=" *, *";
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-and should pass this test:
-\end_layout
-
-\begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-Why do the tests run in 
-\begin_inset Quotes eld
-\end_inset
-
-(
-\begin_inset Quotes erd
-\end_inset
-
- mode and not 
-\begin_inset Quotes eld
-\end_inset
-
-
-\begin_inset Quotes erd
-\end_inset
-
- mode
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Chunk
-test:mode-definitions
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-parse_chunk_args("", "1,2,3", a, "");
-\end_layout
-
-\begin_layout Plain Layout
-
-if (a[1] != "1") e++;
-\end_layout
-
-\begin_layout Plain Layout
-
-if (a[2] != "2") e++;
-\end_layout
-
-\begin_layout Plain Layout
-
-if (a[3] != "3") e++;
-\end_layout
-
-\begin_layout Plain Layout
-
-if (length(a) != 3) e++;
-\end_layout
-
-\begin_layout Plain Layout
-
-=<
-\backslash
-chunkref{pca-test.awk:summary}>
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-parse_chunk_args("", "joe, red", a, "");
-\end_layout
-
-\begin_layout Plain Layout
-
-if (a[1] != "joe") e++;
-\end_layout
-
-\begin_layout Plain Layout
-
-if (a[2] != "red") e++;
-\end_layout
-
-\begin_layout Plain Layout
-
-if (length(a) != 2) e++;
-\end_layout
-
-\begin_layout Plain Layout
-
-=<
-\backslash
-chunkref{pca-test.awk:summary}>
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-parse_chunk_args("", "${colour}", a, "");
-\end_layout
-
-\begin_layout Plain Layout
-
-if (a[1] != "${colour}") e++;
-\end_layout
-
-\begin_layout Plain Layout
-
-if (length(a) != 1) e++;
-\end_layout
-
-\begin_layout Plain Layout
-
-=<
-\backslash
-chunkref{pca-test.awk:summary}>
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Nested modes are identified by a backslash, a double or single quote, various
- bracket styles or a /* comment.
-\end_layout
-
-\begin_layout Standard
-For each of these sub-modes modes we must also identify at a mode terminator,
- and any sub-modes or delimiters that may be entered
-\begin_inset Foot
-status collapsed
-
-\begin_layout Plain Layout
-Because we are using the sub-mode characters as the mode identifier it means
- we can't currently have a mode character dependant on it's context; i.e.
- 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-{
-\end_layout
-
-\end_inset
-
- can't behave differently when it is inside 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-[
-\end_layout
-
-\end_inset
-
-.
-\end_layout
-
-\end_inset
-
-.
-\end_layout
-
-\begin_layout Subsection
-Backslash
-\end_layout
-
-\begin_layout Standard
-The backslash mode has no submodes or delimiters, and is terminated by any
- character.
- Note that we are not so much interested in evaluating or interpolating
- content as we are in delineating content.
- It is no matter that a double backslash (
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-
-\backslash
-
-\backslash
-
-\end_layout
-
-\end_inset
-
-) may represent a single backslash while a backslash-newline may represent
- white space, but it does matter that the newline in a backslash newline
- should not be able to terminate a C pre-processor statement; and so the
- newline will be consumed by the backslash however it is to be interpreted.
-\end_layout
-
-\begin_layout Chunk
-common-mode-definitions
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-modes[${language}, "
-\backslash
-
-\backslash
-", "terminators"]=".";
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Subsection
-Strings
-\end_layout
-
-\begin_layout Chunk
-common-mode-definitions
-\end_layout
-
-\begin_layout Standard
-In a string we have one special mode, which is the backslash.
- This may escape an embedded quote and prevent us thinking that it should
- terminate the string.
- Otherwise, the string will be terminated by a double-quote.
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-modes[${language}, "
-\backslash
-"", "submodes" ]="
-\backslash
-
-\backslash
-
-\backslash
-
-\backslash
-";
-\end_layout
-
-\begin_layout Plain Layout
-
-modes[${language}, "
-\backslash
-"", "terminators"]="
-\backslash
-"";
-\end_layout
-
-\begin_layout Plain Layout
-
-escapes[${language}, "
-\backslash
-"", ++escapes[${language}, "
-\backslash
-""], "s"]="
-\backslash
-"";
-\end_layout
-
-\begin_layout Plain Layout
-
-escapes[${language}, "
-\backslash
-"", escapes[${language}, "
-\backslash
-""], "r"]="
-\backslash
-
-\backslash
-
-\backslash
-"";
-\end_layout
-
-\begin_layout Plain Layout
-
-escapes[${language}, "
-\backslash
-"", escapes[${language}, "
-\backslash
-""], "s"]="
-\backslash
-n";
-\end_layout
-
-\begin_layout Plain Layout
-
-escapes[${language}, "
-\backslash
-"", ++escapes[${language}, "
-\backslash
-""], "r"]="
-\backslash
-
-\backslash
-
-\backslash
-n";
-\end_layout
-
-\begin_layout Plain Layout
-
-escapes[${language}, "
-\backslash
-"", escapes[${language}, "
-\backslash
-""], "s"]="
-\backslash
-
-\backslash
-";
-\end_layout
-
-\begin_layout Plain Layout
-
-escapes[${language}, "
-\backslash
-"", ++escapes[${language}, "
-\backslash
-""], "r"]="
-\backslash
-
-\backslash
-
-\backslash
-
-\backslash
-";
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Working strings should pass this test:
-\end_layout
-
-\begin_layout Chunk
-test:mode-definitions
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-parse_chunk_args("", "say 
-\backslash
-"I said, 
-\backslash
-
-\backslash
-
-\backslash
-"Hello, how are you
-\backslash
-
-\backslash
-
-\backslash
-".
-\backslash
-", for me", a, "");
-\end_layout
-
-\begin_layout Plain Layout
-
-if (a[1] != "say 
-\backslash
-"I said, 
-\backslash
-
-\backslash
-
-\backslash
-"Hello, how are you
-\backslash
-
-\backslash
-
-\backslash
-".
-\backslash
-"") e++;
-\end_layout
-
-\begin_layout Plain Layout
-
-if (a[2] != "for me") e++;
-\end_layout
-
-\begin_layout Plain Layout
-
-if (length(a) != 2) e++;
-\end_layout
-
-\begin_layout Plain Layout
-
-=<
-\backslash
-chunkref{pca-test.awk:summary}>
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Also, the parser must return any spare text at the end that has not been
- processed due to a mode terminator being found.
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-rest = parse_chunk_args("", "1, 2, 3) spare", a, "(");
-\end_layout
-
-\begin_layout Plain Layout
-
-if (a[1] != 1) e++;
-\end_layout
-
-\begin_layout Plain Layout
-
-if (a[2] != 2) e++;
-\end_layout
-
-\begin_layout Plain Layout
-
-if (a[3] != 3) e++;
-\end_layout
-
-\begin_layout Plain Layout
-
-if (length(a) != 3) e++;
-\end_layout
-
-\begin_layout Plain Layout
-
-if (rest != " spare") e++;
-\end_layout
-
-\begin_layout Plain Layout
-
-=<
-\backslash
-chunkref{pca-test.awk:summary}>
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Chunk
-common-mode-definitions
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-modes[${language}, "{",  "submodes" ]="
-\backslash
-
-\backslash
-
-\backslash
-
-\backslash
-|
-\backslash
-"|{|
-\backslash
-
-\backslash
-(|
-\backslash
-
-\backslash
-[|'|/
-\backslash
-
-\backslash
-*";
-\end_layout
-
-\begin_layout Plain Layout
-
-modes[${language}, "{",  "delimeters"]=" *, *";
-\end_layout
-
-\begin_layout Plain Layout
-
-modes[${language}, "{",  "terminators"]="}";
-\end_layout
-
-\begin_layout Plain Layout
-
-modes[${language}, "[",  "submodes" ]="
-\backslash
-
-\backslash
-
-\backslash
-
-\backslash
-|
-\backslash
-"|{|
-\backslash
-
-\backslash
-(|
-\backslash
-
-\backslash
-[|'|/
-\backslash
-
-\backslash
-*";
-\end_layout
-
-\begin_layout Plain Layout
-
-modes[${language}, "[",  "delimiters"]=" *, *";
-\end_layout
-
-\begin_layout Plain Layout
-
-modes[${language}, "[",  "terminators"]="
-\backslash
-
-\backslash
-]";
-\end_layout
-
-\begin_layout Plain Layout
-
-modes[${language}, "(",  "submodes" ]="
-\backslash
-
-\backslash
-
-\backslash
-
-\backslash
-|
-\backslash
-"|{|
-\backslash
-
-\backslash
-(|
-\backslash
-
-\backslash
-[|'|/
-\backslash
-
-\backslash
-*";
-\end_layout
-
-\begin_layout Plain Layout
-
-modes[${language}, "(",  "delimiters"]=" *, *";
-\end_layout
-
-\begin_layout Plain Layout
-
-modes[${language}, "(",  "terminators"]="
-\backslash
-
-\backslash
-)";
-\end_layout
-
-\begin_layout Plain Layout
-
-modes[${language}, "'",  "submodes" ]="
-\backslash
-
-\backslash
-
-\backslash
-
-\backslash
-";
-\end_layout
-
-\begin_layout Plain Layout
-
-modes[${language}, "'",  "terminators"]="'";
-\end_layout
-
-\begin_layout Plain Layout
-
-modes[${language}, "/*", "submodes"]="
-\backslash
-
-\backslash
-*/";
-\end_layout
-
-\begin_layout Plain Layout
-
-modes[${language}, "/*", "terminators"]="*/";
-\end_layout
-
-\begin_layout Plain Layout
-
-modes[${language}, "//", "submodes"]="
-\backslash
-n";
-\end_layout
-
-\begin_layout Plain Layout
-
-modes[${language}, "//", "terminators"]="
-\backslash
-n";
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-This test should also pass.
-\end_layout
-
-\begin_layout Chunk
-test:mode-definitions
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-parse_chunk_args("", "things[x, y], get_other_things(a, 
-\backslash
-"(all)
-\backslash
-"), 99", a, "(");
-\end_layout
-
-\begin_layout Plain Layout
-
-if (a[1] != "things[x, y]") e++;
-\end_layout
-
-\begin_layout Plain Layout
-
-if (a[2] != "get_other_things(a, 
-\backslash
-"(all)
-\backslash
-")") e++;
-\end_layout
-
-\begin_layout Plain Layout
-
-if (a[3] != "99") e++;
-\end_layout
-
-\begin_layout Plain Layout
-
-if (length(a) != 3) e++;
-\end_layout
-
-\begin_layout Plain Layout
-
-=<
-\backslash
-chunkref{pca-test.awk:summary}>
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Chunk
-mode:add-submode,params=language;mode;submode
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-modes[${language}, ${mode}, "submodes"] = modes[${language}, ${mode}, "submodes"
-] "|" ${submode};
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Chunk
-mode:add-escapes,params=language;mode;search;replace
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-escapes[${language}, ${mode}, ++escapes[${language}, ${mode}], "s"]=${search};
-\end_layout
-
-\begin_layout Plain Layout
-
-escapes[${language}, ${mode},   escapes[${language}, ${mode}], "r"]=${replace};
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Chunk
-mode:add-hash-comments,params=language
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-I'm having to use 
-\backslash
-# for hash and 
-\backslash
-textbackslash{} for 
-\backslash
- and have hacky work-arounds in the parser for now
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-=<
-\backslash
-chunkref{mode:add-submode}(${language}, "", "
-\backslash
-#")>
-\end_layout
-
-\begin_layout Plain Layout
-
-modes[${language}, "#", "terminators"]="
-\backslash
-n";
-\end_layout
-
-\begin_layout Plain Layout
-
-=<
-\backslash
-chunkref{mode:add-escapes}(${language}, "
-\backslash
-#", "
-\backslash
-textbackslash{}n", "
-\backslash
-textbackslash{}n
-\backslash
-#")>
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Chunk
-mode:add-hash-defines,params=language
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-=<
-\backslash
-chunkref{mode:add-submode}(${language}, "", "
-\backslash
-#")>
-\end_layout
-
-\begin_layout Plain Layout
-
-modes[${language}, "#", "submodes" ]="
-\backslash
-
-\backslash
-
-\backslash
-
-\backslash
-";
-\end_layout
-
-\begin_layout Plain Layout
-
-modes[${language}, "#", "terminators"]="
-\backslash
-n";
-\end_layout
-
-\begin_layout Plain Layout
-
-=<
-\backslash
-chunkref{mode:add-escapes}(${language}, "
-\backslash
-#", "
-\backslash
-textbackslash{}n", "
-\backslash
-textbackslash{}
-\backslash
-textbackslash{}
-\backslash
-textbackslash{}
-\backslash
-textbackslash{}
-\backslash
-textbackslash{}n")>
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Chunk
-mode-definitions
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-=<
-\backslash
-chunkref{common-mode-definitions}("")>
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-=<
-\backslash
-chunkref{common-mode-definitions}("c")>
-\end_layout
-
-\begin_layout Plain Layout
-
-=<
-\backslash
-chunkref{mode:add-hash-defines}("c")>
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-=<
-\backslash
-chunkref{common-mode-definitions}("awk")>
-\end_layout
-
-\begin_layout Plain Layout
-
-=<
-\backslash
-chunkref{mode:add-hash-comments}("awk")>
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-The awk definitions should allow a comment block like this:
-\end_layout
-
-\begin_layout Chunk
-test:comment-quote,language=awk
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-# Comment: =<
-\backslash
-chunkref{test:comment-text}>
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Chunk
-test:comment-text,language=
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-Now is the time for
-\end_layout
-
-\begin_layout Plain Layout
-
-the quick brown fox to bring lemonade
-\end_layout
-
-\begin_layout Plain Layout
-
-to the party
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-to come out like this:
-\end_layout
-
-\begin_layout Chunk
-test:comment-quote:result
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-# Comment: Now is the time for
-\end_layout
-
-\begin_layout Plain Layout
-
-#the quick brown fox to bring lemonade
-\end_layout
-
-\begin_layout Plain Layout
-
-#to the party
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-The C definition for such a block should have it come out like this:
-\end_layout
-
-\begin_layout Chunk
-test:comment-quote:C-result
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-# Comment: Now is the time for
-\backslash
-
-\end_layout
-
-\begin_layout Plain Layout
-
-the quick brown fox to bring lemonade
-\backslash
-
-\end_layout
-
-\begin_layout Plain Layout
-
-to the party
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Subsection
-A non-recursive mode tracker
+Tracker
 \end_layout
 
 \begin_layout Standard
@@ -7665,7 +7863,7 @@ else {
 
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Subsubsection
 One happy chunk
 \end_layout
 
@@ -7701,7 +7899,7 @@ chunkref{mode_tracker()}>
 
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Subsubsection
 Tests
 \end_layout
 
@@ -10502,7 +10700,11 @@ if (match(chunklet, "^([^
 \backslash
 
 \backslash
-[]*)
+[
+\backslash
+
+\backslash
+(]*)
 \backslash
 
 \backslash
