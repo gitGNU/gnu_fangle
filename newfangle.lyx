@@ -5612,7 +5612,7 @@ status open
 
 \begin_layout Plain Layout
 
-parse_chunk_args("", "1,2,3", a, "");
+parse_chunk_args("c-like", "1,2,3", a, "");
 \end_layout
 
 \begin_layout Plain Layout
@@ -5648,7 +5648,7 @@ chunkref{pca-test.awk:summary}>
 
 \begin_layout Plain Layout
 
-parse_chunk_args("", "joe, red", a, "");
+parse_chunk_args("c-like", "joe, red", a, "");
 \end_layout
 
 \begin_layout Plain Layout
@@ -5679,7 +5679,7 @@ chunkref{pca-test.awk:summary}>
 
 \begin_layout Plain Layout
 
-parse_chunk_args("", "${colour}", a, "");
+parse_chunk_args("c-like", "${colour}", a, "");
 \end_layout
 
 \begin_layout Plain Layout
@@ -6027,7 +6027,7 @@ status open
 
 \begin_layout Plain Layout
 
-parse_chunk_args("", "say 
+parse_chunk_args("c-like", "say 
 \backslash
 "I said, 
 \backslash
@@ -6526,7 +6526,7 @@ status open
 
 =<
 \backslash
-chunkref{common-mode-definitions}("")>
+chunkref{common-mode-definitions}("c-like")>
 \end_layout
 
 \begin_layout Plain Layout
@@ -6728,7 +6728,7 @@ status open
 
 \begin_layout Plain Layout
 
-rest = parse_chunk_args("", "1, 2, 3) spare", a, "(");
+rest = parse_chunk_args("c-like", "1, 2, 3) spare", a, "(");
 \end_layout
 
 \begin_layout Plain Layout
@@ -6783,7 +6783,7 @@ status open
 
 \begin_layout Plain Layout
 
-parse_chunk_args("", "things[x, y], get_other_things(a, 
+parse_chunk_args("c-like", "things[x, y], get_other_things(a, 
 \backslash
 "(all)
 \backslash
@@ -6884,7 +6884,7 @@ Because awk functions cannot return an array, we must create the array first
 \end_layout
 
 \begin_layout Chunk
-new-mode-tracker,params=context;language;mode
+new-mode-tracker,language=awk,params=context;language;mode
 \end_layout
 
 \begin_layout Standard
@@ -6919,7 +6919,7 @@ And for tracking modes, we dispatch to a mode-tracker action based on the
 \end_layout
 
 \begin_layout Chunk
-mode_tracker
+mode_tracker,language=awk
 \end_layout
 
 \begin_layout Standard
@@ -7017,17 +7017,7 @@ status open
 
 \begin_layout Plain Layout
 
-function finalize_mode_tracker(context,
-\end_layout
-
-\begin_layout Plain Layout
-
-  # local vars
-\end_layout
-
-\begin_layout Plain Layout
-
-  top)
+function finalize_mode_tracker(context)
 \end_layout
 
 \begin_layout Plain Layout
@@ -7204,13 +7194,13 @@ echo Cromulence test
 
 \begin_layout Plain Layout
 
-passtest ./newfangle -Rtest:whole-chunk $TEX_SRC &>/dev/null || ( echo "Whole
+passtest $NEWFANGLE -Rtest:whole-chunk $TEX_SRC &>/dev/null || ( echo "Whole
  chunk failed" && exit 1 )
 \end_layout
 
 \begin_layout Plain Layout
 
-failtest ./newfangle -Rtest:partial-chunk $TEX_SRC &>/dev/null || ( echo
+failtest $NEWFANGLE -Rtest:partial-chunk $TEX_SRC &>/dev/null || ( echo
  "Partial chunk failed" && exit 1 )
 \end_layout
 
@@ -7929,7 +7919,7 @@ We can test this function like this:
 \end_layout
 
 \begin_layout Chunk
-pca-test.awk
+pca-test.awk,language=awk
 \end_layout
 
 \begin_layout Standard
@@ -7997,7 +7987,7 @@ chunkref{test:mode-definitions}>
 \end_layout
 
 \begin_layout Chunk
-pca-test.awk:summary
+pca-test.awk:summary,language=awk
 \end_layout
 
 \begin_layout Standard
@@ -8065,7 +8055,7 @@ which should give this output:
 \end_layout
 
 \begin_layout Chunk
-pca-test.awk-results
+pca-test.awk-results,language=
 \end_layout
 
 \begin_layout Standard
@@ -8117,7 +8107,7 @@ This code can perform transforms
 \end_layout
 
 \begin_layout Chunk
-mode_tracker
+mode_tracker,language=awk
 \end_layout
 
 \begin_layout Standard
@@ -8286,7 +8276,7 @@ function mode_escaper(context, s, r, src,
 \end_layout
 
 \begin_layout Chunk
-test:escapes
+test:escapes,language=sh
 \end_layout
 
 \begin_layout Standard
@@ -8301,7 +8291,7 @@ echo escapes test
 
 \begin_layout Plain Layout
 
-passtest ./newfangle -Rtest:comment-quote $TEX_SRC &>/dev/null || ( echo
+passtest $NEWFANGLE -Rtest:comment-quote $TEX_SRC &>/dev/null || ( echo
  "Comment-quote failed" && exit 1 )
 \end_layout
 
@@ -8524,7 +8514,7 @@ lstset
 \end_layout
 
 \begin_layout Chunk
-recognize-chunk
+recognize-chunk,language=awk
 \end_layout
 
 \begin_layout Standard
@@ -8712,7 +8702,7 @@ We recognize notangle style chunks too:
 \end_layout
 
 \begin_layout Chunk
-recognize-chunk
+recognize-chunk,language=awk
 \end_layout
 
 \begin_layout Standard
@@ -10955,7 +10945,7 @@ if (match(chunklet, "^([^
 
 \begin_layout Plain Layout
 
-  parse_chunk_args("", chunklet_parts[2], call_chunk_args, "(");
+  parse_chunk_args("c-like", chunklet_parts[2], call_chunk_args, "(");
 \end_layout
 
 \begin_layout Plain Layout
@@ -15378,12 +15368,65 @@ chunkref{test:helpers}>
 
 \begin_layout Plain Layout
 
+export NEWFANGLE=./newfangle
+\end_layout
+
+\begin_layout Plain Layout
+
+export TMP=${TMP:-/tmp}
+\end_layout
+
+\begin_layout Plain Layout
+
+=<
+\backslash
+chunkref{test:run-tests}>
+\end_layout
+
+\begin_layout Plain Layout
+
+# Now check that we can extract a newfangle that also passes the tests!
+\end_layout
+
+\begin_layout Plain Layout
+
+$NEWFANGLE -R./newfangle $TEX_SRC > ./new-newfangle
+\end_layout
+
+\begin_layout Plain Layout
+
+export NEWFANGLE=./new-newfangle
+\end_layout
+
+\begin_layout Plain Layout
+
+=<
+\backslash
+chunkref{test:run-tests}>
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chunk
+test:run-tests
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
 # run tests
 \end_layout
 
 \begin_layout Plain Layout
 
-./newfangle -Rpca-test.awk $TEX_SRC | awk -f - || exit 1
+$NEWFANGLE -Rpca-test.awk $TEX_SRC | awk -f - || exit 1
 \end_layout
 
 \begin_layout Plain Layout
@@ -15398,6 +15441,13 @@ chunkref{test:cromulence}>
 =<
 \backslash
 chunkref{test:escapes}>
+\end_layout
+
+\begin_layout Plain Layout
+
+=<
+\backslash
+chunkref{test:chunk-params}>
 \end_layout
 
 \end_inset
@@ -15581,7 +15631,7 @@ Chunk Parameters
 \end_layout
 
 \begin_layout Chunk
-tests-sub,language=,params=THING;colour
+test:chunk-params:sub,language=,params=THING;colour
 \end_layout
 
 \begin_layout Standard
@@ -15591,19 +15641,19 @@ status open
 
 \begin_layout Plain Layout
 
-I see a ${THING} of 
+I see a ${THING},
 \end_layout
 
 \begin_layout Plain Layout
 
-colour ${colour}, 
+a ${THING} of colour ${colour}, 
 \end_layout
 
 \begin_layout Plain Layout
 
-looking closer =<
+and looking closer =<
 \backslash
-chunkref{tests-sub-sub}(${colour})>
+chunkref{test:chunk-params:sub:sub}(${colour})>
 \end_layout
 
 \end_inset
@@ -15612,7 +15662,7 @@ chunkref{tests-sub-sub}(${colour})>
 \end_layout
 
 \begin_layout Chunk
-tests-sub-sub,params=colour
+test:chunk-params:sub:sub,params=colour,language=
 \end_layout
 
 \begin_layout Standard
@@ -15631,7 +15681,7 @@ a funny shade of ${colour}
 \end_layout
 
 \begin_layout Chunk
-tests
+test:chunk-params:text,language=
 \end_layout
 
 \begin_layout Standard
@@ -15643,7 +15693,7 @@ status open
 
 What do you see? "=<
 \backslash
-chunkref{tests-sub}(joe, red)>"
+chunkref{test:chunk-params:sub}(joe, red)>"
 \end_layout
 
 \begin_layout Plain Layout
@@ -15661,7 +15711,7 @@ Should generate output:
 \end_layout
 
 \begin_layout Chunk
-tests-result
+test:chunk-params:result
 \end_layout
 
 \begin_layout Standard
@@ -15671,17 +15721,17 @@ status open
 
 \begin_layout Plain Layout
 
-What do you see? "I see a joe of 
+What do you see? "I see a joe,
 \end_layout
 
 \begin_layout Plain Layout
 
-                  colour red, 
+                  a joe of colour red, 
 \end_layout
 
 \begin_layout Plain Layout
 
-                  looking closer a funny shade of red"
+                  and looking closer a funny shade of red"
 \end_layout
 
 \begin_layout Plain Layout
@@ -15689,8 +15739,38 @@ What do you see? "I see a joe of
 Well, fancy!
 \end_layout
 
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+And this chunk will perform the test:
+\end_layout
+
+\begin_layout Chunk
+test:chunk-params
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
 \begin_layout Plain Layout
 
+$NEWFANGLE -Rtest:chunk-params:result $TEX_SRC > $TMP/answer || exit 1
+\end_layout
+
+\begin_layout Plain Layout
+
+$NEWFANGLE -Rtest:chunk-params:text $TEX_SRC > $TMP/result || exit 1
+\end_layout
+
+\begin_layout Plain Layout
+
+passtest diff $TMP/answer $TMP/result || (echo test:chunk-params:text failed
+ ; exit 1)
 \end_layout
 
 \end_inset

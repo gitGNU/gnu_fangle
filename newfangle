@@ -103,9 +103,7 @@ function push_mode_tracker(context, language, mode,
     context[""] = top;
   }
 }
-function finalize_mode_tracker(context,
-  # local vars
-  top)
+function finalize_mode_tracker(context)
 {
   if ( ("" in context) && context[""] != 0) return 0;
   return 1;
@@ -367,7 +365,7 @@ function write_chunk_r(chunk_name, context, indent, tail,
       if (chunks[chunk_name, "part", part, "type"] == part_type_chunk) {
         if (match(chunklet, "^([^\\[\\(]*)\\((.*)\\)$", chunklet_parts)) {
           chunklet = chunklet_parts[1];
-          parse_chunk_args("", chunklet_parts[2], call_chunk_args, "(");
+          parse_chunk_args("c-like", chunklet_parts[2], call_chunk_args, "(");
           for (c in call_chunk_args) {
             call_chunk_args[c] = expand_chunk_args(call_chunk_args[c], chunk_params, chunk_args);
           }
@@ -450,34 +448,34 @@ function expand_chunk_args(text, params, args,
 BEGIN {
   part_type_chunk=1;
   SUBSEP=",";
-  modes["", "",  "submodes" ]="\\\\|\"|'|{|\\(|\\[";
-  modes["", "",  "delimiters"]=" *, *";
-  modes["", "\\", "terminators"]=".";
-  modes["", "\"", "submodes" ]="\\\\";
-  modes["", "\"", "terminators"]="\"";
-  escapes["", "\"", ++escapes["", "\""], "s"]="\\";
-  escapes["", "\"",   escapes["", "\""], "r"]="\\\\";
-  escapes["", "\"", ++escapes["", "\""], "s"]="\"";
-  escapes["", "\"",   escapes["", "\""], "r"]="\\" "\"";
-  escapes["", "\"", ++escapes["", "\""], "s"]="\n";
-  escapes["", "\"",   escapes["", "\""], "r"]="\\n";
-  modes["", "'", "submodes" ]="\\\\";
-  modes["", "'", "terminators"]="'";
-  escapes["", "'", ++escapes["", "'"], "s"]="\\";
-  escapes["", "'",   escapes["", "'"], "r"]="\\\\";
-  escapes["", "'", ++escapes["", "'"], "s"]="'";
-  escapes["", "'",   escapes["", "'"], "r"]="\\" "'";
-  escapes["", "'", ++escapes["", "'"], "s"]="\n";
-  escapes["", "'",   escapes["", "'"], "r"]="\\n";
-  modes["", "{",  "submodes" ]="\\\\|\"|{|\\(|\\[|'|/\\*";
-  modes["", "{",  "delimiters"]=" *, *";
-  modes["", "{",  "terminators"]="}";
-  modes["", "[",  "submodes" ]="\\\\|\"|{|\\(|\\[|'|/\\*";
-  modes["", "[",  "delimiters"]=" *, *";
-  modes["", "[",  "terminators"]="\\]";
-  modes["", "(",  "submodes" ]="\\\\|\"|{|\\(|\\[|'|/\\*";
-  modes["", "(",  "delimiters"]=" *, *";
-  modes["", "(",  "terminators"]="\\)";
+  modes["c-like", "",  "submodes" ]="\\\\|\"|'|{|\\(|\\[";
+  modes["c-like", "",  "delimiters"]=" *, *";
+  modes["c-like", "\\", "terminators"]=".";
+  modes["c-like", "\"", "submodes" ]="\\\\";
+  modes["c-like", "\"", "terminators"]="\"";
+  escapes["c-like", "\"", ++escapes["c-like", "\""], "s"]="\\";
+  escapes["c-like", "\"",   escapes["c-like", "\""], "r"]="\\\\";
+  escapes["c-like", "\"", ++escapes["c-like", "\""], "s"]="\"";
+  escapes["c-like", "\"",   escapes["c-like", "\""], "r"]="\\" "\"";
+  escapes["c-like", "\"", ++escapes["c-like", "\""], "s"]="\n";
+  escapes["c-like", "\"",   escapes["c-like", "\""], "r"]="\\n";
+  modes["c-like", "'", "submodes" ]="\\\\";
+  modes["c-like", "'", "terminators"]="'";
+  escapes["c-like", "'", ++escapes["c-like", "'"], "s"]="\\";
+  escapes["c-like", "'",   escapes["c-like", "'"], "r"]="\\\\";
+  escapes["c-like", "'", ++escapes["c-like", "'"], "s"]="'";
+  escapes["c-like", "'",   escapes["c-like", "'"], "r"]="\\" "'";
+  escapes["c-like", "'", ++escapes["c-like", "'"], "s"]="\n";
+  escapes["c-like", "'",   escapes["c-like", "'"], "r"]="\\n";
+  modes["c-like", "{",  "submodes" ]="\\\\|\"|{|\\(|\\[|'|/\\*";
+  modes["c-like", "{",  "delimiters"]=" *, *";
+  modes["c-like", "{",  "terminators"]="}";
+  modes["c-like", "[",  "submodes" ]="\\\\|\"|{|\\(|\\[|'|/\\*";
+  modes["c-like", "[",  "delimiters"]=" *, *";
+  modes["c-like", "[",  "terminators"]="\\]";
+  modes["c-like", "(",  "submodes" ]="\\\\|\"|{|\\(|\\[|'|/\\*";
+  modes["c-like", "(",  "delimiters"]=" *, *";
+  modes["c-like", "(",  "terminators"]="\\)";
 
   modes["c", "",  "submodes" ]="\\\\|\"|'|{|\\(|\\[";
   modes["c", "",  "delimiters"]=" *, *";
