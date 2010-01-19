@@ -115,8 +115,8 @@ Literate Programming
 \noun on
 Donald Knuth
 \noun default
- himself, whose literate programming tools seem to make use of as many escaped
- abbreviations for semantic markup as TeX itself.
+ himself, whose literate programming tools seem to make use of as many escape
+ sequences for semantic markup as TeX itself.
 \end_layout
 
 \begin_layout Standard
@@ -129,7 +129,7 @@ Norman Ramsey
 noweb
 \noun default
  set of tools (notangle, noweave and noroots) and helpfully reduced the
- amount of magic character sequences to just 
+ amount of magic character sequences to pretty much just 
 \begin_inset Flex CharStyle:Code
 status collapsed
 
@@ -184,8 +184,8 @@ Newfangle
 \begin_layout Standard
 Significantly, newfangle is just one program which replaces various programs
  in Noweb.
- Specifically noweave is done away with and implemented directly as LaTeX
- macros, and noroots is implemented as a function of the untangler 
+ Noweave is done away with and implemented directly as LaTeX macros, and
+ noroots is implemented as a function of the untangler 
 \noun on
 newfangle
 \noun default
@@ -228,16 +228,6 @@ indent of multi-line chunks may be mode dependant (i.e.
 \end_layout
 
 \begin_layout Enumerate
-support chunk-param usage =<
-\backslash
-param{name}>
-\end_layout
-
-\begin_layout Enumerate
-trim spaces from param
-\end_layout
-
-\begin_layout Enumerate
 add support for other commands in =<...>, starting with 
 \backslash
 label which takes the line-number within the chunk, and maybe should also
@@ -251,11 +241,6 @@ cant have listing inside a ruled box
 \begin_layout Enumerate
 when a parameterized chunk is included as well as the #line emission, say
  what the paremeters were for that invocation.
-\end_layout
-
-\begin_layout Enumerate
-with 2 macro expansions on one line ${} ${} the first is too greedy and
- looks to the final }
 \end_layout
 
 \begin_layout Enumerate
