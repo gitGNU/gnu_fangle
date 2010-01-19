@@ -132,6 +132,7 @@ function mode_tracker(context, text, values,
     if (length(submodes)>0) submodes = submodes "|";
     submodes=submodes terminators;
   } else terminators="";
+  if (! length(submodes)) return text; 
   while((cindex >= 0) && length(text)) {
     if (match(text, "(" submodes ")", a)) {
       if (RLENGTH<1) {
@@ -160,6 +161,7 @@ function mode_tracker(context, text, values,
               if (length(submodes)>0) submodes = submodes "|";
               submodes=submodes terminators;
             } else terminators="";
+            if (! length(submodes)) return text; 
         }
         item = item a[1];
         text = substr(text, 1 + length(part) + length(a[1]));
@@ -194,6 +196,7 @@ function mode_tracker(context, text, values,
             if (length(submodes)>0) submodes = submodes "|";
             submodes=submodes terminators;
           } else terminators="";
+          if (! length(submodes)) return text; 
       } else {
         error(sprintf("Submode '%s' set unknown mode in text: %s\nLanguage %s Mode %s\n", a[1], text, language, mode));
         text = substr(text, 1 + length(part) + length(a[1]));

@@ -7402,6 +7402,26 @@ status open
 
 \end_layout
 
+\begin_layout Standard
+If we don't find anything to match on --- probably because the language
+ is not supported --- then we return the entire text without matching anything.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+  if (! length(submodes)) return text; 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Chunk
 mode_tracker()
 \end_layout
@@ -8181,13 +8201,11 @@ function transform_escape(s, r, text,
 \end_layout
 
 \begin_layout Standard
-
 This function must append from index 
 \begin_inset Flex CharStyle:Code
 status collapsed
 
 \begin_layout Plain Layout
-
 c
 \end_layout
 
