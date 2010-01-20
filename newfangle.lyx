@@ -15347,6 +15347,31 @@ cd $PROJECT_DIR || exit 1
 
 \begin_layout Plain Layout
 
+python -m elyxer --css lyx.css $LYX_SRC | 
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+  iconv -c -f utf-8 -t ISO-8859-1//TRANSLIT | 
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+  sed 's/UTF-8"
+\backslash
+(.
+\backslash
+)>/ISO-8859-1"
+\backslash
+1>/' > www/docs/newfangle.html
+\end_layout
+
+\begin_layout Plain Layout
+
 /usr/local/bin/newfangle -R./newfangle $TEX_SRC > ./newfangle
 \end_layout
 
