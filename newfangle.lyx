@@ -15347,31 +15347,6 @@ cd $PROJECT_DIR || exit 1
 
 \begin_layout Plain Layout
 
-python -m elyxer --css lyx.css $LYX_SRC | 
-\backslash
-
-\end_layout
-
-\begin_layout Plain Layout
-
-  iconv -c -f utf-8 -t ISO-8859-1//TRANSLIT | 
-\backslash
-
-\end_layout
-
-\begin_layout Plain Layout
-
-  sed 's/UTF-8"
-\backslash
-(.
-\backslash
-)>/ISO-8859-1"
-\backslash
-1>/' > www/docs/newfangle.html
-\end_layout
-
-\begin_layout Plain Layout
-
 /usr/local/bin/newfangle -R./newfangle $TEX_SRC > ./newfangle
 \end_layout
 
@@ -15511,6 +15486,125 @@ TEX_DIR="$LYX_p"
 \begin_layout Plain Layout
 
 TEX_SRC="$TEX_DIR/$LYX_i"
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Extracting documentation
+\end_layout
+
+\begin_layout Chunk
+./gen-www
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+#python -m elyxer --css lyx.css $LYX_SRC | 
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+#  iconv -c -f utf-8 -t ISO-8859-1//TRANSLIT | 
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+#  sed 's/UTF-8"
+\backslash
+(.
+\backslash
+)>/ISO-8859-1"
+\backslash
+1>/' > www/docs/newfangle.html
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+( mkdir -p www/docs/newfangle && cd www/docs/newfangle && 
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+  lyx -e latex ../../../newfangle.lyx && 
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+  htlatex ../../../newfangle.tex "xhtml,fn-in" && 
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+  sed -i -e 's/<!--l
+\backslash
+.
+ [0-9][0-9]* *-->//g' newfangle.html
+\end_layout
+
+\begin_layout Plain Layout
+
+)
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+( mkdir -p www/docs/literate && cd www/docs/literate && 
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+  lyx -e latex ../../../literate.lyx && 
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+  htlatex ../../../literate.tex "xhtml,fn-in" && 
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+  sed -i -e 's/<!--l
+\backslash
+.
+ [0-9][0-9]* *-->$//g' literate.html
+\end_layout
+
+\begin_layout Plain Layout
+
+)
 \end_layout
 
 \end_inset

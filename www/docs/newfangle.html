@@ -4,7 +4,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>
 <meta name="generator" content="http://www.nongnu.org/elyxer/"/>
-<meta name="create-date" content="2010-01-20"/>
+<meta name="create-date" content="2010-01-23"/>
 <link rel="stylesheet" href="lyx.css" type="text/css" media="screen"/>
 <title>newfangle</title>
 </head>
@@ -454,10 +454,13 @@ Table of Contents
 <a class="Link" href="#toc-Section-14.1">Section 14.1: Extracting from Lyx</a>
 </div>
 <div class="toc">
-<a class="Link" href="#toc-Section-14.2">Section 14.2: Extracting from the command line</a>
+<a class="Link" href="#toc-Section-14.2">Section 14.2: Extracting documentation</a>
 </div>
 <div class="toc">
-<a class="Link" href="#toc-Section-14.3">Section 14.3: Testing</a>
+<a class="Link" href="#toc-Section-14.3">Section 14.3: Extracting from the command line</a>
+</div>
+<div class="toc">
+<a class="Link" href="#toc-Section-14.4">Section 14.4: Testing</a>
 </div></div>
 </div>
 
@@ -5889,9 +5892,8 @@ set -x
 =&lt;\chunkref{lyx-build-helper}&gt;
 cd $PROJECT_DIR || exit 1
 
-python -m elyxer --css lyx.css $LYX_SRC | \
-  iconv -c -f utf-8 -t ISO-8859-1//TRANSLIT | \
-  sed 's/UTF-8"\(.\)&gt;/ISO-8859-1"\1&gt;/' &gt; www/docs/newfangle.html
+=&lt;\chunkref{generate-documentation}&gt;
+
 /usr/local/bin/newfangle -R./newfangle $TEX_SRC &gt; ./newfangle
 /usr/local/bin/newfangle -R./newfangle.module $TEX_SRC &gt; ./newfangle.module
 
@@ -5944,7 +5946,28 @@ TEX_SRC="$TEX_DIR/$LYX_i"
 </div>
 </div>
 <h2 class="Section">
-<a class="toc" name="toc-Section-14.2">14.2</a> Extracting from the command line
+<a class="toc" name="toc-Section-14.2">14.2</a> Extracting documentation
+</h2>
+<div class="Chunk">
+generate-documentation
+</div>
+<div class="Standard">
+
+<div class="float">
+
+<div class="listing">
+<code class="listing">python -m elyxer --css lyx.css $LYX_SRC | \
+  iconv -c -f utf-8 -t ISO-8859-1//TRANSLIT | \
+  sed 's/UTF-8"\(.\)&gt;/ISO-8859-1"\1&gt;/' &gt; www/docs/newfangle.html
+
+( mkdir -p www/docs/literate &amp;&amp; cd www/docs/literate &amp;&amp; \
+  lyx -e latex ../../../literate.lyx &amp;&amp; htlatex ../../../literate.tex "xhtml,fn-in" )
+</code>
+</div>
+</div>
+</div>
+<h2 class="Section">
+<a class="toc" name="toc-Section-14.3">14.3</a> Extracting from the command line
 </h2>
 <div class="Standard">
 First you will need the tex output, then you can extract:
@@ -5965,7 +5988,7 @@ newfangle -R./newfangle.module newfangle.tex &gt; ./newfangle.module
 </div>
 </div>
 <h2 class="Section">
-<a class="toc" name="toc-Section-14.3">14.3</a> Testing
+<a class="toc" name="toc-Section-14.4">14.4</a> Testing
 </h2>
 <div class="Chunk">
 test:helpers
