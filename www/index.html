@@ -43,15 +43,7 @@ function fixBlameLinks() {
 Newfangle Literate Programming </div>
 
 <div class="page_nav">
-about | <a href="http://repo.or.cz/w/newfangle.git/shortlog">log</a> | <a
-href="http://repo.or.cz/git-browser/by-commit.html?r=newfangle.git">graphiclog</a>
-| <a
-href="http://repo.or.cz/w/newfangle.git/commit/0a8040029bd8e7a3b8d8ddbcd7acf2822c8708ed">commit</a>
-| <a
-href="http://repo.or.cz/w/newfangle.git/commitdiff/0a8040029bd8e7a3b8d8ddbcd7acf2822c8708ed">commitdiff</a>
-| <a href="http://repo.or.cz/w/newfangle.git/tree">tree</a> | <a
-href="http://repo.or.cz/editproj.cgi?name=newfangle.git">edit</a> | <a
-href="http://repo.or.cz/regproj.cgi?fork=newfangle.git">fork</a><br />
+about | <a href="http://repo.or.cz/w/newfangle.git">git repository</a> | <br />
 <br />
 </div>
 
@@ -60,10 +52,12 @@ Summary</div>
 
 <div class="readme">
 <p>Newfangle is a <a href="docs/literate/literate.html">literate
-programming</a> technique for Lyx (or Latex) inspired by notangle.</p>
+programming</a> technique for Lyx (or Latex) inspired by <a
+href="http://www.eecs.harvard.edu/nr/noweb/dist">notangle</a>.</p>
 
-<p>It comes in two parts. The <strong>weave</strong> part is implemented
-entirely in Latex, and the <strong>tangle</strong> part is implemented in awk
+<p>It comes in two parts. The <strong>weave</strong> part that produces the
+formatted document is implemented entirely in Latex, and the
+<strong>tangle</strong> that generates the source code is implemented in awk
 for portability.</p>
 
 <p>Naturally, newfangle is written using literate programming techniques, using
@@ -73,6 +67,32 @@ href="docs/newfangle/newfangle.html">documentation</a>.</p>
 <p>The source is written using the <a href="http://www.lyx.org/">Lyx</a>
 document editor - an excellent front end to Latex. Lyx is not required, but
 newfangle provides formatting support for Lyx.</p>
+
+<p>Literate programming makes you write good code, because if you can't write a
+good justification or explanation for your code, it makes you think again and
+write something that you can explain.</p>
+</div>
+
+<div class="title">
+Features</div>
+
+<div class="readme">
+<ul>
+  <li>Generics / macros. Newfangle macros accept parameters, so generic
+    algorithms can be expressed, and then invoked in the code using any
+    particular types or parameters - like C macros, but with all the literate
+    goodness and without all the backslash ugliness.</li>
+  <li>Latex lstlistings used for code chunk formatting, with automatic markup
+    for dozens of language types.</li>
+  <li>Automatic escaping and quoting. You can include a shell-script chunk in a
+    makefile and have all the $ escaped to $$ automatically in the extracted
+    source. You can include a text file in a // comment or a " string and have
+    the appropriate escaping done automatically!</li>
+  <li>Never worry about code documentation again!</li>
+  <li>Newfangle has a makefile stub, Makefile.inc that will automatically
+    extract all project sources, making newfangle easy to integrate with
+    standard Makefileprojects (including automake and autoconf). </li>
+</ul>
 </div>
 
 <div class="header">
