@@ -2873,7 +2873,7 @@ Newfangle awk source code
 \begin_layout Standard
 We use the copyright notice from chapter 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "cha:License"
 
 \end_inset
