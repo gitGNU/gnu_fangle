@@ -1,0 +1,1569 @@
+#LyX 1.6.4 created this file. For more info see http://www.lyx.org/
+\lyxformat 345
+\begin_document
+\begin_header
+\textclass article
+\begin_preamble
+% This file was converted from HTML to LaTeX with
+% Tomasz Wegrzanowski's <maniek@beer.com> gnuhtml2latex program
+% Version : 0.1
+\usepackage{footmisc}
+\lstset{numbers=left, stepnumber=1, numbersep=5pt, breaklines=false,
+basicstyle=\footnotesize\ttfamily,
+%keywordstyle=\color{darkgreen},
+numberstyle=\tiny,language=C,columns=fullflexible,
+numberfirstline=true}
+\end_preamble
+\use_default_options false
+\begin_modules
+logicalmkup
+\end_modules
+\language english
+\inputencoding auto
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation skip
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\author "" 
+\author "" 
+\end_header
+
+\begin_body
+
+\begin_layout Section*
+Literate programming
+\end_layout
+
+\begin_layout Subsubsection*
+From Wikipedia, the free encyclopedia
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+Literate programming
+\series default
+ is an approach to programming introduced by Donald Knuth as an alternative
+ to the structured programming paradigm of the 1970s.
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Knuth, Donald E.
+ (1984).
+ "Literate Programming" (PDF).
+ 
+\shape italic
+The Computer Journal
+\shape default
+ (British Computer Society) 
+\series bold
+27
+\series default
+ (2): 97-111.
+ doi:10.1093/comjnl/27.2.97.
+ http://www.literateprogramming.com/knuthweb.pdf.
+ Retrieved January 4, 2009.
+\begin_inset CommandInset label
+LatexCommand label
+name "fn:w1"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The literate programming paradigm, as conceived by Knuth, represents a move
+ away from writing programs in the manner and order imposed by the computer,
+ and instead enables programmers to develop programs in the order demanded
+ by the logic and flow of their thoughts.
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Quotes eld
+\end_inset
+
+I had the feeling that top-down and bottom-up were opposing methodologies:
+ one more suitable for program exposition and the other more suitable for
+ program creation.
+ But after gaining experience with WEB, I have come to realize that there
+ is no need to choose once and for all between top-down and bottom-up, because
+ a program is best thought of as a web instead of a tree.
+ A hierarchical structure is present, but the most important thing about
+ a program is its structural relationships.
+ A complex piece of software consists of simple parts and simple relations
+ between those parts; the programmer's task is to state those parts and
+ those relationships, in whatever order is best for human comprehension
+ not in some rigidly determined order like top-down or bottom-up.
+\begin_inset Quotes erd
+\end_inset
+
+ --- 
+\noun on
+Donald E.
+ Knuth, Literate Programming
+\noun default
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+footref{fn:w1}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ Literate programs are written as an uninterrupted exposition of logic in
+ an ordinary human language, much like the text of an essay, in which macros
+ which hide abstractions and traditional source code are included.
+ Literate programming tools are used to obtain two representations from
+ a literate source file: one suitable for further compilation or execution
+ by a computer, the 
+\begin_inset Quotes eld
+\end_inset
+
+tangled
+\begin_inset Quotes erd
+\end_inset
+
+ code, and another for viewing as formatted documentation, which is said
+ to be 
+\begin_inset Quotes eld
+\end_inset
+
+woven
+\begin_inset Quotes erd
+\end_inset
+
+ from the literate source.
+ (If one remembers that the first version of the tool was called 
+\noun on
+WEB
+\noun default
+, the amusing literary reference hidden by Knuth in these names becomes
+ obvious: 
+\begin_inset Quotes eld
+\end_inset
+
+Oh, what a tangled web we weave when first we practise to deceive
+\begin_inset Quotes erd
+\end_inset
+
+ --- Sir Walter Scott, in Canto VI, Stanza 17 of 
+\begin_inset Quotes eld
+\end_inset
+
+Marmion
+\begin_inset Quotes erd
+\end_inset
+
+ (1808) an epic poem about the Battle of Flodden Field in 1513.).
+ While the first generation of literate programming tools were computer
+ language-specific, the later ones are language-agnostic and exist above
+ the programming languages.
+ 
+\end_layout
+
+\begin_layout Subsection*
+Contents
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset toc
+LatexCommand tableofcontents
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Concept
+\end_layout
+
+\begin_layout Standard
+A literate program is an explanation of the program logic in a natural language,
+ such as English, interspersed with snippets of macros and traditional source
+ code.
+ Macros in a literate source file are simply title-like or explanatory phrases
+ in a human language that describe human abstractions created while solving
+ the programming problem, and hiding chunks of code or lower-level macros.
+ These macros are similar to the algorithms in pseudocode typically used
+ in teaching computer science.
+ These arbitrary explanatory phrases become precise new operators, created
+ on the fly by the programmer, forming a 
+\shape italic
+meta-language
+\shape default
+ on top of the underlying programming language.
+ 
+\end_layout
+
+\begin_layout Standard
+A preprocessor is used to substitute arbitrary hierarchies, or rather 
+\begin_inset Quotes eld
+\end_inset
+
+interconnected 'webs' of macros
+\begin_inset Quotes erd
+\end_inset
+
+,
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Quotes eld
+\end_inset
+
+WEB's macros are allowed to have at most one parameter.
+ Again, I did this in the interests of simplicity, because I noticed that
+ most applications of multiple parameters could in fact be reduced to the
+ one-parameter case.
+ For example, suppose that you want to define something like...
+ In other words, the name of one macro can usefully be a parameter to another
+ macro.
+ This particular trick makes it possible to...
+\begin_inset Quotes erd
+\end_inset
+
+ --- 
+\noun on
+Donald E.
+ Knuth, Literate Programming
+\noun default
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+footref{fn:w1}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ to produce the compilable source code with one command (
+\begin_inset Quotes eld
+\end_inset
+
+tangle
+\begin_inset Quotes erd
+\end_inset
+
+), and documentation with another (
+\begin_inset Quotes eld
+\end_inset
+
+weave
+\begin_inset Quotes erd
+\end_inset
+
+).
+ The preprocessor also provides an ability to write out the content of the
+ macros and to add to already created macros in any place in the text of
+ the literate program source file, thereby disposing of the need to keep
+ in mind the restrictions imposed by traditional programming languages or
+ to interrupt the flow of thought.
+ 
+\end_layout
+
+\begin_layout Subsection
+Advantages of the method
+\end_layout
+
+\begin_layout Standard
+According to Knuth,
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Knuth, Donald E.; Andrew Binstock (April 25, 2008).
+ "Interview with Donald Knuth".
+ http://www.informit.com/articles/article.aspx?p=1193856.
+ Retrieved January 4, 2009.
+ "Yet to me, literate programming is certainly the most important thing
+ that came out of the TeX project.
+ Not only has it enabled me to write and maintain programs faster and more
+ reliably than ever before, and been one of my greatest sources of joy since
+ the 1980s-it has actually been indispensable at times.
+ Some of my major programs, such as the MMIX meta-simulator, could not have
+ been written with any other methodology that I've ever heard of.
+ The complexity was simply too daunting for my limited brain to handle;
+ without literate programming, the whole enterprise would have flopped miserably.
+ ...
+ Literate programming is what you need to rise above the ordinary level
+ of achievement."
+\end_layout
+
+\end_inset
+
+
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+"Another surprising thing that I learned while using WEB was that traditional
+ programming languages had been causing me to write inferior programs, although
+ I hadn't realized what I was doing.
+ My original idea was that WEB would be merely a tool for documentation,
+ but I actually found that my WEB programs were better than the programs
+ I had been writing in other languages." --- 
+\noun on
+Donald E.
+ Knuth, Literate Programming
+\noun default
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+footref{fn:w1}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ literate programming provides for higher-quality programs, since it forces
+ programmers to explicitly state the thoughts behind the program, making
+ poorly thought-out design decisions more obvious.
+ Knuth also claims that literate programming provides a first-rate documentation
+ system, which is not an add-on, but is grown naturally in the process of
+ exposition of one's thoughts during a program creation.
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Quotes eld
+\end_inset
+
+Thus the WEB language allows a person to express programs in a 
+\shape italic
+"stream of consciousness" order
+\shape default
+.
+ TANGLE is able to scramble everything up into the arrangement that a PASCAL
+ compiler demands.
+ This feature of WEB is perhaps its greatest asset; it makes a WEB-written
+ program much more readable than the same program written purely in PASCAL,
+ even if the latter program is well commented.
+ And the fact that there's no need to be hung up on the question of top-down
+ versus bottom-up, since a programmer can now 
+\shape italic
+view a large program as a web, to be explored in a 
+\series bold
+psychologically correct order
+\series default
+ is perhaps the greatest lesson
+\shape default
+ I have learned from my recent experiences.
+\begin_inset Quotes erd
+\end_inset
+
+ --- 
+\noun on
+Donald E.
+ Knuth, Literate Programming
+\noun default
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+footref{fn:w1}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ The resulting documentation allows authors to restart their own thought
+ processes at any later time, and allows other programmers to more easily
+ understand the construction of the program.
+ This differs from traditional documentation, in which a programmer is presented
+ with source code that follows a compiler-imposed order, and must decipher
+ the thought process behind the program from the code and its associated
+ comments.
+ The meta-language capabilities of literate programming are also claimed
+ to facilitate thinking in general, giving a higher 
+\begin_inset Quotes eld
+\end_inset
+
+bird's eye view
+\begin_inset Quotes erd
+\end_inset
+
+ of the code and increasing the number of concepts the mind can successfully
+ retain and process.
+ Applicability of the concept to programming on a large scale, that of commercia
+l-grade programs is proven by an edition of TeX code as a literate program.
+ 
+\end_layout
+
+\begin_layout Subsection
+Misconceptions
+\end_layout
+
+\begin_layout Standard
+Literate programming is very often misunderstood
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Dominus, Mark-Jason (March 20, 2000).
+ 
+\begin_inset Quotes eld
+\end_inset
+
+POD is not Literate Programming
+\begin_inset Quotes erd
+\end_inset
+
+.
+ 
+\shape italic
+Perl.com
+\shape default
+.
+ http://www.perl.com/pub/a/tchrist/litprog.html.
+ Retrieved January 3, 2009.
+\begin_inset CommandInset label
+LatexCommand label
+name "fn:w7"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ to refer only to formatted documentation produced from a common file with
+ both source code and comments, or to voluminous commentaries included with
+ code.
+ This misconception has led to claims that comment-extraction tools, such
+ as the Perl Plain Old Documentation system, are 
+\begin_inset Quotes eld
+\end_inset
+
+literate programming tools
+\begin_inset Quotes erd
+\end_inset
+
+.
+ However, because these tools do not implement the 
+\begin_inset Quotes eld
+\end_inset
+
+web of abstract concepts
+\begin_inset Quotes erd
+\end_inset
+
+ hiding behind the system of natural-language macros, or provide an ability
+ to change the order of the source code from a machine-imposed sequence
+ to one convenient to the human mind, they cannot properly be called literate
+ programming tools in the sense intended by Knuth.
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+footref{fn:w7}
+\end_layout
+
+\end_inset
+
+
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Quotes eld
+\end_inset
+
+I chose the name WEB partly because it was one of the few three-letter words
+ of English that hadn't already been applied to computers.
+ But as time went on, I've become extremely pleased with the name, because
+ I think that a complex piece of software is, indeed, best regarded as a
+ web that has been delicately pieced together from simple materials.
+ We understand a complicated system by understanding its simple parts, and
+ by understanding the simple relations between those parts and their immediate
+ neighbors.
+ If we express a program as a web of ideas, we can emphasize its structural
+ properties in a natural and satisfying way.
+\begin_inset Quotes erd
+\end_inset
+
+ --- 
+\noun on
+Donald E.
+ Knuth, Literate Programming
+\noun default
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+footref{fn:w1}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Example
+\end_layout
+
+\begin_layout Standard
+A classic example of literate programming is the literate implementation
+ of the standard Unix 
+\family typewriter
+wc
+\family default
+ word counting program.
+ Knuth presented a CWEB version of this example in Chapter 12 of his 
+\shape italic
+Literate Programming
+\shape default
+ book.
+ The same example was later rewritten for the noweb literate programming
+ tool.
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+Ramsey, Norman (May 13, 2008).
+ 
+\begin_inset Quotes eld
+\end_inset
+
+An Example of noweb
+\begin_inset Quotes erd
+\end_inset
+
+.
+ http://www.cs.tufts.edu/
+\begin_inset space \space{}
+\end_inset
+
+nr/noweb/examples/wc.html.
+ Retrieved January 4, 2009.
+\begin_inset CommandInset label
+LatexCommand label
+name "fn:w9"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ This example provides a good illustration of the basic elements of literate
+ programming.
+ 
+\end_layout
+
+\begin_layout Section
+Creation of macros 
+\end_layout
+
+\begin_layout Standard
+The following snippet of the 
+\family typewriter
+wc
+\family default
+ literate program
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+footref{fn:w9}
+\end_layout
+
+\end_inset
+
+ shows how arbitrary descriptive phrases in a natural language are used
+ in a literate program to create macros, which act as new 
+\begin_inset Quotes eld
+\end_inset
+
+operators
+\begin_inset Quotes erd
+\end_inset
+
+ in the literate programming language, and hide chunks of code or other
+ macros.
+ The mark-up notation consists of double angle brackets (
+\begin_inset Quotes eld
+\end_inset
+
+
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+<<\SpecialChar \ldots{}
+>>
+\end_layout
+
+\end_inset
+
+
+\begin_inset Quotes erd
+\end_inset
+
+) that indicate macros, the 
+\begin_inset Quotes eld
+\end_inset
+
+
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+@
+\end_layout
+
+\end_inset
+
+
+\begin_inset Quotes erd
+\end_inset
+
+ symbol which indicates the end of the code section in a noweb file.
+ The 
+\begin_inset Quotes eld
+\end_inset
+
+
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+<<*>>
+\end_layout
+
+\end_inset
+
+
+\begin_inset Quotes erd
+\end_inset
+
+ symbol stands for the 
+\begin_inset Quotes eld
+\end_inset
+
+root
+\begin_inset Quotes erd
+\end_inset
+
+, topmost node the literate programming tool will start expanding the web
+ of macros from.
+ Actually, writing out the expanded source code can be done from any section
+ or subsection (i.e.
+ a piece of code designated as 
+\begin_inset Quotes erd
+\end_inset
+
+
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+<<name of the chunk>>=
+\end_layout
+
+\end_inset
+
+
+\begin_inset Quotes erd
+\end_inset
+
+, with the equal sign), so one literate program file can contain several
+ files with machine source code.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+The purpose of wc is to count lines, words, and/or characters in a list
+ of files.
+ The
+\end_layout
+
+\begin_layout Plain Layout
+
+number of lines in a file is ......../more explanations/ 
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+Here, then, is an overview of the file wc.c that is defined by the noweb
+ program wc.nw:
+\end_layout
+
+\begin_layout Plain Layout
+
+	<<*>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+	<<Header files to include>>
+\end_layout
+
+\begin_layout Plain Layout
+
+	<<Definitions>>
+\end_layout
+
+\begin_layout Plain Layout
+
+	<<Global variables>>
+\end_layout
+
+\begin_layout Plain Layout
+
+	<<Functions>>
+\end_layout
+
+\begin_layout Plain Layout
+
+	<<The main program>>
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+We must include the standard I/O definitions, since we want to send formatted
+ output
+\end_layout
+
+\begin_layout Plain Layout
+
+to stdout and stderr.
+\end_layout
+
+\begin_layout Plain Layout
+
+	<<Header files to include>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+	#include <stdio.h>
+\end_layout
+
+\begin_layout Plain Layout
+
+	@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Note also that the unraveling of the chunks can be done in any place in
+ the literate program text file, not necessarily in the order they are sequenced
+ in the enclosing chunk, but as is demanded by the logic reflected in the
+ explanatory text that envelops the whole program.
+ 
+\end_layout
+
+\begin_layout Section
+Program as a Web - Macros are not just section names
+\end_layout
+
+\begin_layout Standard
+Macros are not the same as 
+\begin_inset Quotes eld
+\end_inset
+
+section names
+\begin_inset Quotes erd
+\end_inset
+
+ in standard documentation.
+ Literate programming macros can hide any chunk of code behind themselves,
+ and be used inside any low-level machine language operators, often inside
+ logical operators such as 
+\begin_inset Quotes eld
+\end_inset
+
+
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+if
+\end_layout
+
+\end_inset
+
+
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+while
+\end_layout
+
+\end_inset
+
+
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+case
+\end_layout
+
+\end_inset
+
+
+\begin_inset Quotes erd
+\end_inset
+
+.
+ This is illustrated by the following snippet of the 
+\family typewriter
+wc
+\family default
+ literate program.
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+footref{fn:w9}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+The present chunk, which does the counting that is wc's raison d'etre, was
+ actually one of
+\end_layout
+
+\begin_layout Plain Layout
+
+the simplest to write.
+ We look at each character and change state if it begins or ends
+\end_layout
+
+\begin_layout Plain Layout
+
+a word.
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	<<scan file>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+	while (1) {
+\end_layout
+
+\begin_layout Plain Layout
+
+		<<Fill buffer if it is empty; break at end of file>>
+\end_layout
+
+\begin_layout Plain Layout
+
+		c = *ptr++;
+\end_layout
+
+\begin_layout Plain Layout
+
+		if (c > ' ' && c < 0177) {
+\end_layout
+
+\begin_layout Plain Layout
+
+			/* visible ASCII codes */
+\end_layout
+
+\begin_layout Plain Layout
+
+			if (!inword) {
+\end_layout
+
+\begin_layout Plain Layout
+
+				wordcount++;
+\end_layout
+
+\begin_layout Plain Layout
+
+				inword = 1;
+\end_layout
+
+\begin_layout Plain Layout
+
+			}
+\end_layout
+
+\begin_layout Plain Layout
+
+			continue;
+\end_layout
+
+\begin_layout Plain Layout
+
+		}
+\end_layout
+
+\begin_layout Plain Layout
+
+		if (c == '
+\backslash
+n') linecount++; 
+\end_layout
+
+\begin_layout Plain Layout
+
+		else if (c != ' ' && c != '
+\backslash
+t') continue;
+\end_layout
+
+\begin_layout Plain Layout
+
+		inword = 0;
+\end_layout
+
+\begin_layout Plain Layout
+
+		/* c is newline, space, or tab */ 
+\end_layout
+
+\begin_layout Plain Layout
+
+	}
+\end_layout
+
+\begin_layout Plain Layout
+
+	@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In fact, macros can stand for any arbitrary chunk of code or other macros,
+ and are thus more general than top-down or bottom-up 
+\begin_inset Quotes eld
+\end_inset
+
+chunking
+\begin_inset Quotes erd
+\end_inset
+
+, or than subsectioning.
+ Knuth says that when he realized this, he began to think of a program as
+ a 
+\shape italic
+web
+\shape default
+ of various parts.
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+footref{fn:w1}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Order of human logic, not that of the compiler
+\end_layout
+
+\begin_layout Standard
+In a noweb literate program besides the free order of their exposition,
+ the chunks behind macros, once introduced with 
+\begin_inset Quotes eld
+\end_inset
+
+
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+<<\SpecialChar \ldots{}
+>>=
+\end_layout
+
+\end_inset
+
+
+\begin_inset Quotes erd
+\end_inset
+
+, can be grown later in any place in the file by simply writing 
+\begin_inset Quotes eld
+\end_inset
+
+
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+<<name of the chunk>>=
+\end_layout
+
+\end_inset
+
+
+\begin_inset Quotes erd
+\end_inset
+
+ and adding more content to it, as the following snippet illustrates.
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+footref{fn:w1}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+The grand totals must be initialized to zero at the beginning of the program.
+\end_layout
+
+\begin_layout Plain Layout
+
+If we made these variables local to main, we would have to do this initializatio
+n
+\end_layout
+
+\begin_layout Plain Layout
+
+explicitly; however, C globals are automatically zeroed.
+ (Or rather,
+\begin_inset Quotes eld
+\end_inset
+
+statically
+\end_layout
+
+\begin_layout Plain Layout
+
+zeroed.
+\begin_inset Quotes erd
+\end_inset
+
+ (Get it?)
+\end_layout
+
+\begin_layout Plain Layout
+
+	<<Global variables>>+=
+\end_layout
+
+\begin_layout Plain Layout
+
+	long totwordcount, totlinecount, 
+\end_layout
+
+\begin_layout Plain Layout
+
+		 totcharcount; 
+\end_layout
+
+\begin_layout Plain Layout
+
+		/* total number of words, lines, chars */
+\end_layout
+
+\begin_layout Plain Layout
+
+	@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Record of the train of thought creates superior documentation
+\end_layout
+
+\begin_layout Standard
+The documentation for a literate program is produced as part of writing
+ the program.
+ Instead of comments provided as side notes to source code a literate program
+ contains the explanation of concepts on each level, with lower level concepts
+ deferred to their appropriate place, which allows for better communication
+ of thought.
+ The snippets of the literate 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+wc
+\end_layout
+
+\end_inset
+
+ above show how an explanation of the program and its source code are interwoven.
+ Such exposition of ideas creates the flow of thought that is like a literary
+ work.
+ Knuth famously wrote a 
+\begin_inset Quotes eld
+\end_inset
+
+novel
+\begin_inset Quotes erd
+\end_inset
+
+ which explains the code of the computer strategy game Colossal Cave Adventure,
+ perfectly readable.
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+The game, also known as 
+\shape italic
+ADVENT
+\shape default
+, was originally written by Crowther in about 700 lines of FORTRAN code;
+ Knuth recast it into the WEB idiom.
+ It is available at literateprogramming.com or on Knuth's website.
+ 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Literate programming tools
+\end_layout
+
+\begin_layout Standard
+The first published literate programming environment was WEB, introduced
+ by Donald Knuth in 1981 for his TeX typesetting system; it uses Pascal
+ as its underlying programming language and TeX for typesetting of the documenta
+tion.
+ The complete commented TeX source code was published in Knuth's 
+\shape italic
+TeX: The program
+\shape default
+, volume B of his 5-volume 
+\shape italic
+Computers and Typesetting
+\shape default
+.
+ Knuth had privately used a literate programming system called DOC as early
+ as 1979.
+ He was inspired by the ideas of Pierre-Arnoul de Marneffe
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+de Marneffe, Pierre Arnoul (December 1973).
+ 
+\shape italic
+Holon Programming - Report PMAR 73-23
+\shape default
+.
+ University de Liège, Service d'Informatique.
+\end_layout
+
+\end_inset
+
+.
+ The free CWEB, written by Knuth and Silvio Levy, is WEB adapted for C and
+ C++, runs on most operating systems and can produce TeX and PDF documentation.
+ 
+\end_layout
+
+\begin_layout Standard
+Other implementations of the literate programming concept are noweb and
+ FunnelWeb, both of which are independent of the programming language of
+ the source code.
+ Noweb is well-known for its simplicity: just 2 text markup conventions
+ and 2 tool invocations are needed to use it, and it allows for text formatting
+ in HTML rather than going through the TeX system.
+ FunnelWeb is another program without dependency on TeX which can produce
+ HTML documentation output.
+ It has more complicated markup (with 
+\begin_inset Quotes eld
+\end_inset
+
+
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+@
+\end_layout
+
+\end_inset
+
+
+\begin_inset Quotes erd
+\end_inset
+
+ escaping any FunnelWeb command), but has many more flexible options.
+ 
+\end_layout
+
+\begin_layout Standard
+The Leo text editor is an 
+\shape italic
+outlining
+\shape default
+ editor which supports optional noweb and CWEB markup.
+ The author of Leo actually mixes two different approaches: first, Leo is
+ an outlining editor, which helps with management of large texts, second,
+ Leo incorporates some of the ideas of literate programming, which in its
+ pure form (i.e.
+ the way it is used by Knuth Web tool and/or tools like 
+\begin_inset Quotes eld
+\end_inset
+
+noweb
+\begin_inset Quotes erd
+\end_inset
+
+) is possible only with some degree of inventiveness and the use of the
+ editor in a way not exactly envisioned by its author (in modified @root
+ nodes).
+ However this and other extensions (@file nodes) make outline programming
+ and text management successful and easy and in some ways similar to literate
+ programming.
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Ream, Edward K.
+ (September 2, 2008).
+ "Leo's Home Page".
+ http://webpages.charter.net/edreamleo/front.html.
+ Retrieved January 4, 2009.
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Standard
+The Haskell programming language has native support for semi-literate programmin
+g, inspired by CWEB but with a simpler implementation.
+ When aiming for TeX output, one writes a plain LaTeX file where source
+ code is marked by a given surrounding environment; LaTeX can be set up
+ to handle that environment, while the Haskell compiler looks for the right
+ markers to identify Haskell statements to compile, removing the TeX documentati
+on as if they were comments.
+ However, as described above, this is not literate programming in the sense
+ intended by Knuth.
+ Haskell's functional, modular nature
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Hughes, John (January 9, 2002).
+ 
+\shape italic
+Why Functional Programming Matters
+\shape default
+.
+ Institutionen för Datavetenskap, Chalmers Tekniska Högskola,.
+ http://www.cs.chalmers.se/
+\begin_inset space ~
+\end_inset
+
+rjmh/Papers/whyfp.pdf.
+ Retrieved January 4, 2009.
+\end_layout
+
+\end_inset
+
+ makes literate programming directly in the language somewhat easier, but
+ it is not nearly as powerful as one of the a WEB tools where 
+\begin_inset Quotes eld
+\end_inset
+
+tangle
+\begin_inset Quotes erd
+\end_inset
+
+ can reorganize in arbitrary ways.
+ 
+\end_layout
+
+\begin_layout Section
+See also
+\end_layout
+
+\begin_layout Standard
+Sweave - an example of use of the 
+\begin_inset Quotes eld
+\end_inset
+
+noweb
+\begin_inset Quotes erd
+\end_inset
+
+-like Literate Programming tool inside the R language for creation of dynamic
+ statistical reports 
+\end_layout
+
+\begin_layout Section
+Further reading
+\end_layout
+
+\begin_layout Standard
+Knuth, Donald E.
+ (1992).
+ 
+\shape italic
+Literate Programming
+\shape default
+.
+ , California: Stanford University Center for the Study of Language and
+ Information.
+ ISBN 978-0937073803.
+\begin_inset space ~
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Standard
+Guari, Eitan M.
+ (1994).
+ 
+\shape italic
+TeX & LaTeX: Drawing and Literate Programming
+\shape default
+.
+ McGraw Hill.
+ ISBN 0-07-911616-7.
+\begin_inset space ~
+\end_inset
+
+ (includes software).
+ 
+\end_layout
+
+\begin_layout Standard
+Nørmark, Kurt (August 13, 1998).
+ "Literate Programming - Issues and Problems".
+ University of Aalborg.
+ http://www.cs.aau.dk/
+\begin_inset space ~
+\end_inset
+
+normark/litpro/issues-and-problems.html.
+\begin_inset space ~
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Section
+External links
+\end_layout
+
+\begin_layout Standard
+comp.programming.literate FAQ at Internet FAQ Archives 
+\end_layout
+
+\begin_layout Standard
+Literate Programming newsgroup 
+\end_layout
+
+\begin_layout Standard
+LiteratePrograms a literate programming wiki.
+ 
+\end_layout
+
+\begin_layout Standard
+Select A literate programming example using noweb 
+\end_layout
+
+\begin_layout Standard
+Softpanorama page on literate programming 
+\end_layout
+
+\begin_layout Standard
+Haskell literate programming 
+\end_layout
+
+\begin_layout Standard
+Specification of literate programming in the Haskell Report the accepted
+ Haskell standard 
+\end_layout
+
+\begin_layout Standard
+Noweb — A Simple, Extensible Tool for Literate Programming 
+\end_layout
+
+\begin_layout Standard
+Lp4all — A Simple Literate Programming Tool with a wiki-like markup syntax
+ 
+\end_layout
+
+\end_body
+\end_document
