@@ -4,12 +4,13 @@
 \begin_header
 \textclass book
 \begin_preamble
-%\usepackage{xcolor}
-%\definecolor{darkgreen}{rgb}{0,0.5,0}
-\lstset{numbers=left, stepnumber=1, numbersep=5pt, breaklines=false,
+\lstset{
+numbers=left, stepnumber=1, numbersep=5pt,
+breaklines=false,
 basicstyle=\footnotesize\ttfamily,
-%keywordstyle=\color{darkgreen},
-numberstyle=\tiny,language=C,columns=fullflexible,
+numberstyle=\tiny,
+language=C,
+columns=fullflexible,
 numberfirstline=true}
 \end_preamble
 \use_default_options true
@@ -294,6 +295,14 @@ key "gpl-licenses"
  available too.
 \end_layout
 
+\begin_layout Standard
+As newfangle is currently written in 
+\noun on
+awk
+\noun default
+, an interpreted language, this should not be too hard.
+\end_layout
+
 \begin_layout Chunk
 gpl3-copyright,language=
 \end_layout
@@ -314,7 +323,7 @@ newfangle - fully featured notangle replacement in awk
 
 \begin_layout Plain Layout
 
-Copyright (C) Sam Liddicott 2009
+Copyright (C) 2009 Sam Liddicott <sam@liddicott.com>
 \end_layout
 
 \begin_layout Plain Layout
@@ -529,8 +538,14 @@ status collapsed
 \begin_layout Standard
 Also, unlike noroots, it prints out all roots --- not just those that are
  not used elsewhere.
- I find that a root not being used, doesn't make it particularly top level.
- My convention is that top level roots to be extracted begin with 
+ I find that a root not being used, doesn't make it particularly top level,
+ and so-called top level roots could also be included in another root as
+ well.
+ 
+\end_layout
+
+\begin_layout Standard
+My convention is that top level roots to be extracted begin with 
 \begin_inset Flex CharStyle:Code
 status collapsed
 
@@ -541,6 +556,17 @@ status collapsed
 \end_inset
 
  and have the form of a filename.
+\end_layout
+
+\begin_layout Standard
+Makefile.inc, discussed in 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "cha:makefile.inc"
+
+\end_inset
+
+, can automatically extract all such sources.
 \end_layout
 
 \begin_layout Section
@@ -600,7 +626,18 @@ status collapsed
 
 \end_inset
 
- option does not break indenting; also the 
+ option does not break indenting.
+\end_layout
+
+\begin_layout Standard
+Also, thanks to mode tracking (described in 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "cha:modes"
+
+\end_inset
+
+) the 
 \begin_inset Flex CharStyle:Code
 status collapsed
 
@@ -610,9 +647,11 @@ status collapsed
 
 \end_inset
 
- option does not interrupt (and break) multi-line C macros --- or indeed
- any line ending with a backslash.
- This does mean that sometimes the compiler might calculate the source line
+ option does not interrupt (and break) multi-line C macros either.
+\end_layout
+
+\begin_layout Standard
+This does mean that sometimes the compiler might calculate the source line
  wrongly when generating error messages in such cases, but there isn't any
  other way around if multi-line macros include other chunks.
 \end_layout
@@ -877,7 +916,18 @@ newfangle
 
 \end_inset
 
- awk script.
+ awk script, and run some basic tests.
+ 
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Plain Layout
+cross-ref to test chapter when it is a chapter all on its own
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection
@@ -975,6 +1025,28 @@ status collapsed
 \end_inset
 
  after the chunk name.
+ (Currently the language will affect all subsequent listings, so you may
+ need to specify 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+,language=
+\end_layout
+
+\end_inset
+
+ quite a lot)
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+so fix the bug
+\end_layout
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Standard
@@ -1060,21 +1132,13 @@ ttfamily
 
 \end_inset
 
- looks more normal for code, but has no bold (unless luximono is used, but
- it doesn't work for me); so I use 
-\begin_inset Flex CharStyle:Code
-status collapsed
-
-\begin_layout Plain Layout
-
-\backslash
-color{darkgreen}
+ looks more normal for code, but has no bold (an alternate typewriter font
+ is used).
+ 
 \end_layout
 
-\end_inset
-
- for my keywords.
- With 
+\begin_layout Standard
+With 
 \begin_inset Flex CharStyle:Code
 status collapsed
 
@@ -1086,7 +1150,7 @@ ttfamily
 
 \end_inset
 
-, 
+, I must also specify 
 \begin_inset Flex CharStyle:Code
 status collapsed
 
@@ -1096,7 +1160,7 @@ columns=fullflexible
 
 \end_inset
 
- is used or the wrong letter spacing is used.
+ or the wrong letter spacing is used.
 \end_layout
 
 \begin_layout Standard
@@ -1116,26 +1180,22 @@ status open
 
 
 \backslash
-usepackage{xcolor}
+lstset{
 \end_layout
 
 \begin_layout Plain Layout
 
-
-\backslash
-definecolor{darkgreen}{rgb}{0,0.5,0}
+numbers=left, stepnumber=1, numbersep=5pt,
 \end_layout
 
 \begin_layout Plain Layout
 
-
-\backslash
-lstset{numbers=left, stepnumber=5, numbersep=5pt, breaklines=false,
+breaklines=false,
 \end_layout
 
 \begin_layout Plain Layout
 
-  basicstyle=
+basicstyle=
 \backslash
 footnotesize
 \backslash
@@ -1144,21 +1204,24 @@ ttfamily,
 
 \begin_layout Plain Layout
 
-  keywordstyle=
+numberstyle=
 \backslash
-color{darkgreen},
+tiny,
 \end_layout
 
 \begin_layout Plain Layout
 
-  numberstyle=
-\backslash
-tiny,language=C,columns=fullflexible,
+language=C,
 \end_layout
 
 \begin_layout Plain Layout
 
-  numberfirstline=true
+columns=fullflexible,
+\end_layout
+
+\begin_layout Plain Layout
+
+numberfirstline=true
 \end_layout
 
 \begin_layout Plain Layout
@@ -1176,6 +1239,13 @@ Newfangle with Makefiles
 \end_layout
 
 \begin_layout Standard
+\begin_inset CommandInset label
+LatexCommand label
+name "cha:makefile.inc"
+
+\end_inset
+
+
 \begin_inset Note Note
 status open
 
