@@ -4959,7 +4959,7 @@ if (match(text_array[t], "^([a-zA-Z_][a-zA-Z0-9_]*)}", l) &&
 \end_layout
 
 \begin_layout Chapter
-Language Modes
+Language Modes & Quoting
 \end_layout
 
 \begin_layout Standard
@@ -5113,7 +5113,9 @@ status open
 
 \begin_layout Plain Layout
 
-s/"$/'/;
+print "hello world $0
+\backslash
+n";
 \end_layout
 
 \end_inset
@@ -5146,7 +5148,7 @@ status open
 
 \begin_layout Plain Layout
 
-perl -pe "=<
+perl -e "=<
 \backslash
 chunkref{example-perl}>"
 \end_layout
@@ -5161,11 +5163,15 @@ newfangle would need to generate output like this if it were to work:
 \end_layout
 
 \begin_layout LyX-Code
-perl -pe "s/
+perl -e "print 
 \backslash
-"
+"hello world $0
 \backslash
-$/'/;"
+
+\backslash
+n
+\backslash
+";" 
 \end_layout
 
 \begin_layout Standard
@@ -5875,6 +5881,17 @@ The first substitution is to replace a backslash with a double backslash.
 \end_layout
 
 \begin_layout Standard
+Note: Backslashes need double-escaping in the search pattern but not in
+ the replacement string, hence we are replacing a literal 
+\backslash
+ with a literal 
+\backslash
+
+\backslash
+.
+\end_layout
+
+\begin_layout Standard
 \begin_inset listings
 inline false
 status open
@@ -5882,6 +5899,10 @@ status open
 \begin_layout Plain Layout
 
 escapes[${language}, ${quote}, ++escapes[${language}, ${quote}], "s"]="
+\backslash
+
+\backslash
+
 \backslash
 
 \backslash
@@ -6156,7 +6177,7 @@ Note that the open is NOT a regex but the close token IS.
 status open
 
 \begin_layout Plain Layout
-WHen we can quote regex we won't have to put the slashes in here
+When we can quote regex we won't have to put the slashes in here
 \end_layout
 
 \end_inset
@@ -6509,6 +6530,38 @@ textbackslash{}n")>
 
 \end_layout
 
+\begin_layout Chunk
+mode:quote-dollar-escape,params=language;quote
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+escapes[${language}, ${quote}, ++escapes[${language}, ${quote}], "s"]="
+\backslash
+
+\backslash
+$";
+\end_layout
+
+\begin_layout Plain Layout
+
+escapes[${language}, ${quote},   escapes[${language}, ${quote}], "r"]="
+\backslash
+
+\backslash
+$";
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Standard
 We can add these definitions to various languages
 \end_layout
@@ -6577,6 +6630,13 @@ chunkref{common-mode-definitions}("awk")>
 =<
 \backslash
 chunkref{mode:add-hash-comments}("awk")>
+\end_layout
+
+\begin_layout Plain Layout
+
+=<
+\backslash
+chunkref{mode:add-naked-regex}("awk")>
 \end_layout
 
 \end_inset
@@ -6701,6 +6761,175 @@ the quick brown fox to bring lemonade
 \begin_layout Plain Layout
 
 to the party
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Regex
+\end_layout
+
+\begin_layout Standard
+This pattern is in-complete, but meant to detect naked regular expressions
+ in awk and perl; e.g.
+ 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+/.*$/
+\end_layout
+
+\end_inset
+
+, however required capabilities are not present.
+\end_layout
+
+\begin_layout Standard
+Current it only detects regexes anchored with 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+^
+\end_layout
+
+\end_inset
+
+ as used in newfangle.
+\end_layout
+
+\begin_layout Standard
+For full regex support, modes need to be named not after their starting
+ character, but some other more fully qualified name.
+\end_layout
+
+\begin_layout Chunk
+mode:add-naked-regex,params=language
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+=<
+\backslash
+chunkref{mode:add-submode}(${language}, "", "/
+\backslash
+textbackslash{}
+\backslash
+textbackslash{}^")>
+\end_layout
+
+\begin_layout Plain Layout
+
+modes[${language}, "/^", "terminators"]="/";
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Perl
+\end_layout
+
+\begin_layout Chunk
+mode-definitions
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+=<
+\backslash
+chunkref{common-mode-definitions}("perl")>
+\end_layout
+
+\begin_layout Plain Layout
+
+=<
+\backslash
+chunkref{mode:multi-line-comments}("perl")>
+\end_layout
+
+\begin_layout Plain Layout
+
+=<
+\backslash
+chunkref{mode:add-hash-comments}("perl")>
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Still need to add add s/, submod /, terminate both with //
+\end_layout
+
+\begin_layout Subsection
+sh
+\end_layout
+
+\begin_layout Chunk
+mode-definitions
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+=<
+\backslash
+chunkref{common-mode-definitions}("sh")>
+\end_layout
+
+\begin_layout Plain Layout
+
+#<
+\backslash
+chunkref{mode:common-string}("sh", "
+\backslash
+textbackslash{}"")>
+\end_layout
+
+\begin_layout Plain Layout
+
+#<
+\backslash
+chunkref{mode:common-string}("sh", "'")>
+\end_layout
+
+\begin_layout Plain Layout
+
+=<
+\backslash
+chunkref{mode:add-hash-comments}("sh")>
+\end_layout
+
+\begin_layout Plain Layout
+
+=<
+\backslash
+chunkref{mode:quote-dollar-escape}("sh", "
+\backslash
+"")>
 \end_layout
 
 \end_inset
@@ -6993,6 +7222,70 @@ chunkref{new-mode-tracker}(context, language, mode)>
 \begin_layout Plain Layout
 
     context[""] = top;
+\end_layout
+
+\begin_layout Plain Layout
+
+  }
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+function dump_mode_tracker(context,  
+\end_layout
+
+\begin_layout Plain Layout
+
+  c, d)
+\end_layout
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\begin_layout Plain Layout
+
+  for(c=0; c <= context[""]; c++) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    printf(" %2d   %s:%s
+\backslash
+n", c, context[c, "language"], context[c, "mode"]) > "/dev/stderr";
+\end_layout
+
+\begin_layout Plain Layout
+
+    for(d=1; ( (c, "values", d) in context); d++) {
+\end_layout
+
+\begin_layout Plain Layout
+
+      printf("   %2d %s
+\backslash
+n", d, context[c, "values", d]) > "/dev/stderr";
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
 \end_layout
 
 \begin_layout Plain Layout
@@ -8237,12 +8530,12 @@ function mode_escaper(context, s, r, src,
 
 \begin_layout Plain Layout
 
-				s[src] = escapes[context[c, "language"], context[c, "mode"], c, "s"];
+				s[src] = escapes[context[c, "language"], context[c, "mode"], cp, "s"];
 \end_layout
 
 \begin_layout Plain Layout
 
-				r[src] = escapes[context[c, "language"], context[c, "mode"], c, "r"];
+				r[src] = escapes[context[c, "language"], context[c, "mode"], cp, "r"];
 \end_layout
 
 \begin_layout Plain Layout
@@ -8263,6 +8556,33 @@ function mode_escaper(context, s, r, src,
 \begin_layout Plain Layout
 
 	return src;
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+function dump_escaper(c, s, r, cc) {
+\end_layout
+
+\begin_layout Plain Layout
+
+  for(cc=1; cc<=c; cc++) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    printf("%2d s[%s] r[%s]
+\backslash
+n", cc, s[cc], r[cc]) > "/dev/stderr"
+\end_layout
+
+\begin_layout Plain Layout
+
+  }
 \end_layout
 
 \begin_layout Plain Layout
@@ -10549,7 +10869,7 @@ function write_chunk_r(chunk_name, context, indent, tail,
 
 \begin_layout Plain Layout
 
-  chunklet, only_part, call_chunk_args)
+  chunklet, only_part, call_chunk_args, new_context)
 \end_layout
 
 \begin_layout Plain Layout
@@ -10759,6 +11079,11 @@ chunkref{write-part}>
 \begin_layout Plain Layout
 
   if (! finalize_mode_tracker(context)) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    dump_mode_tracker(context);
 \end_layout
 
 \begin_layout Plain Layout
@@ -10991,7 +11316,14 @@ new_src = mode_escaper(context, s, r, src);
 
 \begin_layout Plain Layout
 
-write_chunk_r(chunklet, context,
+=<
+\backslash
+chunkref{awk-delete-array}(new_context)>
+\end_layout
+
+\begin_layout Plain Layout
+
+write_chunk_r(chunklet, new_context,
 \end_layout
 
 \begin_layout Plain Layout
