@@ -709,6 +709,7 @@ length(active_chunk) {
   	# FILTHY HACK
    gsub("\\\\#", "#", line[3]);
    gsub("\\\\textbackslash{}", "\\", line[3]);
+   gsub("\\\\\\^", "^", line[3]);
       chunk_include(active_chunk, line[2] line[3], indent);
     } else if (substr(line[1], 1, 1) == "<") {
       chunk_include(active_chunk, line[4], indent);

@@ -6824,7 +6824,9 @@ chunkref{mode:add-submode}(${language}, "", "/
 \backslash
 textbackslash{}
 \backslash
-textbackslash{}^")>
+textbackslash{}
+\backslash
+^")>
 \end_layout
 
 \begin_layout Plain Layout
@@ -9721,6 +9723,23 @@ textbackslash{}", "
 
 \backslash
 ", ${text});
+\end_layout
+
+\begin_layout Plain Layout
+
+gsub("
+\backslash
+
+\backslash
+
+\backslash
+
+\backslash
+
+\backslash
+
+\backslash
+^", "^", ${text});
 \end_layout
 
 \end_inset
