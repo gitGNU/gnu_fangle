@@ -7,6 +7,28 @@
 % This file was converted from HTML to LaTeX with
 % Tomasz Wegrzanowski's <maniek@beer.com> gnuhtml2latex program
 % Version : 0.1
+%
+% This text is taken from Wikipedia, the free encyclopedia, presented here
+%  under the Creative Commons Attribution-Share Alike 3.0 Unported license.
+% 
+% This license is acceptable for Free Cultural Works.
+% 
+% You are free:
+% 
+% * to Share — to copy, distribute and transmit the work
+% 
+% * to Remix — to adapt the work
+% 
+% Under the following conditions:
+% 
+% Attribution - You must attribute the work in the manner specified by the 
+% author or licensor (but not in any way that suggests that they endorse 
+% you or your use of the work).
+% 
+% Share Alike If you alter, transform, or build upon this work, you may 
+% distribute the resulting work only under the same, similar or a 
+% compatible license.
+% 
 \usepackage{footmisc}
 \lstset{numbers=left, stepnumber=1, numbersep=5pt, breaklines=false,
 basicstyle=\footnotesize\ttfamily,
@@ -56,12 +78,71 @@ logicalmkup
 
 \begin_body
 
-\begin_layout Section*
+\begin_layout Part*
 Literate programming
 \end_layout
 
-\begin_layout Subsubsection*
-From Wikipedia, the free encyclopedia
+\begin_layout Section*
+Document license.
+\end_layout
+
+\begin_layout Standard
+This text is taken from Wikipedia, the free encyclopedia
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+http://en.wikipedia.org/wiki/Literate_programming
+\end_layout
+
+\end_inset
+
+, presented here under the 
+\noun on
+Creative Commons
+\noun default
+ Attribution-Share Alike 3.0 Unported license.
+\end_layout
+
+\begin_layout Standard
+This license is acceptable for Free Cultural Works.
+\end_layout
+
+\begin_layout Standard
+You are free:
+\end_layout
+
+\begin_layout Itemize
+to Share — to copy, distribute and transmit the work
+\end_layout
+
+\begin_layout Itemize
+to Remix — to adapt the work
+\end_layout
+
+\begin_layout Standard
+Under the following conditions:
+\end_layout
+
+\begin_layout List
+\labelwidthstring 00.00.0000
+Attribution You must attribute the work in the manner specified by the author
+ or licensor (but not in any way that suggests that they endorse you or
+ your use of the work).
+\end_layout
+
+\begin_layout List
+\labelwidthstring 00.00.0000
+Share
+\begin_inset space ~
+\end_inset
+
+Alike If you alter, transform, or build upon this work, you may distribute
+ the resulting work only under the same, similar or a compatible license.
+\end_layout
+
+\begin_layout Section*
+Literate Programming
 \end_layout
 
 \begin_layout Standard

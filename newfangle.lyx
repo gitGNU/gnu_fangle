@@ -4,6 +4,23 @@
 \begin_header
 \textclass book
 \begin_preamble
+% newfangle - fully featured notangle replacement in awk
+%
+% Copyright (C) 2009 Sam Liddicott <sam@liddicott.com>
+%
+% This program is free software: you can redistribute it and/or modify
+% it under the terms of the GNU General Public License as published by
+% the Free Software Foundation, either version 3 of the License, or
+% (at your option) any later version.
+%
+% This program is distributed in the hope that it will be useful,
+% but WITHOUT ANY WARRANTY; without even the implied warranty of
+% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+% GNU General Public License for more details.
+%
+% You should have received a copy of the GNU General Public License
+% along with this program.  If not, see <http://www.gnu.org/licenses/>.
+%
 \lstset{
 numbers=left, stepnumber=1, numbersep=5pt,
 breaklines=false,
@@ -13066,6 +13083,17 @@ DeclareLyXModule{Newfangle Literate Listings}
 
 \begin_layout Plain Layout
 
+=<
+\backslash
+chunkref{gpl3-copyright.hashed}>
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
 Format 11
 \end_layout
 
@@ -13110,6 +13138,37 @@ chunkref{chunkstyle}>
 =<
 \backslash
 chunkref{chunkref}>
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Because LyX modules are not yet a language supported by newfangle or lstlistings
+, we resort to this fake awk chunk below in order to have each line of the
+ GPL3 license commence with a #
+\end_layout
+
+\begin_layout Chunk
+gpl3-copyright.hashed,language=awk
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+#=<
+\backslash
+chunkref{gpl3-copyright}>
+\end_layout
+
+\begin_layout Plain Layout
+
 \end_layout
 
 \end_inset

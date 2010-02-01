@@ -1,0 +1,39 @@
+License
+
+The majority of newfangle is licensed under the GPL3 or later.
+
+Specifically:
+
+1. www/docs/literate/*
+   is licensed under the Creative Commons 
+   Attribution-ShareAlike 3.0 Unported License
+
+2. www/index.html
+   is jointly licensed under the GFDL and GPL3 or later
+
+3. www/docs/newfangle/*
+   newfangle*
+   is licensed under the GPL3 or later
+
+Newfangle Literate Programming
+
+Summary
+
+Newfangle is a literate programming technique for Lyx (or Latex) inspired by notangle.
+
+It comes in two parts. The weave part that produces the formatted document is implemented entirely in Latex, and the tangle that generates the source code is implemented in awk for portability.
+
+Naturally, newfangle is written using literate programming techniques, using itself, and so the source is also the documentation.
+
+The source is written using the Lyx document editor - an excellent front end to Latex. Lyx is not required, but newfangle provides formatting support for Lyx.
+
+Literate programming makes you write good code, because if you can't write a good justification or explanation for your code, it makes you think again and write something that you can explain.
+Features
+
+    * Generics / macros. Newfangle macros accept parameters, so generic algorithms can be expressed, and then invoked in the code using any particular types or parameters - like C macros, but with all the literate goodness and without all the backslash ugliness.
+    * Latex lstlistings used for code chunk formatting, with automatic markup for dozens of language types.
+    * Automatic escaping and quoting. You can include a shell-script chunk in a makefile and have all the $ escaped to $$ automatically in the extracted source. You can include a text file in a // comment or a " string and have the appropriate escaping done automatically!
+    * Never worry about code documentation again!
+    * Newfangle has a makefile stub, Makefile.inc that will automatically extract all project sources, making newfangle easy to integrate with standard Makefileprojects (including automake and autoconf).
+
+
