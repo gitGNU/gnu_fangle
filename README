@@ -5,15 +5,22 @@ The majority of newfangle is licensed under the GPL3 or later.
 Specifically:
 
 1. www/docs/literate/*
+   (C) Copyright various Wikipedia Contributors
    is licensed under the Creative Commons 
    Attribution-ShareAlike 3.0 Unported License
+   See file: COPYING.cc-by-sa 
 
 2. www/index.html
-   is jointly licensed under the GFDL and GPL3 or later
+   Design is based on the Git Web interfaces
+   (C) Copyright 2005-2006 Kay Sievers
+   Text (C) Copyright 2010 Sam Liddicott
+   licensed under the GPL2
 
 3. www/docs/newfangle/*
    newfangle*
-   is licensed under the GPL3 or later
+   (C) Copyright 2010 Sam Liddicott <sam@liddicott.com>
+   licensed under the GPL3 or later
+   See file: COPYING
 
 Newfangle Literate Programming
 
