@@ -16138,6 +16138,16 @@ status open
 
 \begin_layout Plain Layout
 
+python -m elyxer --css lyx.css --iso885915 --html --destdirectory www/docs/newfan
+gle.e newfangle.lyx > www/docs/newfangle.e/newfangle.html
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
 ( mkdir -p www/docs/newfangle && cd www/docs/newfangle && 
 \backslash
 
