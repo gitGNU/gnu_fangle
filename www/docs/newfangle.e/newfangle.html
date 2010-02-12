@@ -5283,7 +5283,7 @@ With a lyx-build-helper
 <span class="number-left">2</span>#  iconv -c -f utf-8 -t ISO-8859-1//TRANSLIT | \
 <span class="number-left">3</span>#  sed &#x2019;s/UTF-8"\(.\)&gt;/ISO-8859-1"\1&gt;/&#x2019; &gt; www/docs/newfangle.html
 <span class="number-left">4</span>&#x200b;
-<span class="number-left">5</span>python -m elyxer --css lyx.css --iso885915 --html --destdirectory www/docs/ $LYX_SRC &gt; www/docs/newfangle.html
+<span class="number-left">5</span>python -m elyxer --css lyx.css --iso885915 --html --destdirectory www/docs/newfangle.e newfangle.lyx &gt; www/docs/newfangle.e/newfangle.html
 <span class="number-left">6</span>&#x200b;
 <span class="number-left">7</span>( mkdir -p www/docs/newfangle &amp;&amp; cd www/docs/newfangle &amp;&amp; \
 <span class="number-left">8</span>  lyx -e latex ../../../newfangle.lyx &amp;&amp; \
