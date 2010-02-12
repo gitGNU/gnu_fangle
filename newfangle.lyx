@@ -16498,5 +16498,316 @@ passtest diff $TMP/answer $TMP/result || (echo test:chunk-params:text failed
 
 \end_layout
 
+\begin_layout Chapter
+Compile-log-lyx
+\begin_inset CommandInset label
+LatexCommand label
+name "cha:Compile-log-lyx"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chunk
+./compile-log-lyx,language=sh
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+#! /bin/sh
+\end_layout
+
+\begin_layout Plain Layout
+
+# can't use gtkdialog -i, cos it uses the "source" command which ubuntu
+ sh doesn't have
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+main() {
+\end_layout
+
+\begin_layout Plain Layout
+
+  errors="/tmp/compile.log.$$"
+\end_layout
+
+\begin_layout Plain Layout
+
+#  if grep '^[^ ]*:
+\backslash
+( In 
+\backslash
+|[0-9][0-9]*: [^ ]*:
+\backslash
+)' > $errors
+\end_layout
+
+\begin_layout Plain Layout
+
+if grep '^[^ ]*(
+\backslash
+([0-9][0-9]*
+\backslash
+)) *: *
+\backslash
+(error
+\backslash
+|warning
+\backslash
+)' > $errors
+\end_layout
+
+\begin_layout Plain Layout
+
+  then
+\end_layout
+
+\begin_layout Plain Layout
+
+    sed -i -e 's/^[^ ]*[/
+\backslash
+
+\backslash
+]
+\backslash
+([^/
+\backslash
+
+\backslash
+]*
+\backslash
+)(
+\backslash
+([ 0-9][ 0-9]*
+\backslash
+)) *: */
+\backslash
+1:
+\backslash
+2|
+\backslash
+2|/' $errors
+\end_layout
+
+\begin_layout Plain Layout
+
+    COMPILE_DIALOG='
+\end_layout
+
+\begin_layout Plain Layout
+
+ <vbox>
+\end_layout
+
+\begin_layout Plain Layout
+
+  <text>
+\end_layout
+
+\begin_layout Plain Layout
+
+    <label>Compiler errors:</label>
+\end_layout
+
+\begin_layout Plain Layout
+
+  </text>
+\end_layout
+
+\begin_layout Plain Layout
+
+  <tree exported_column="0">
+\end_layout
+
+\begin_layout Plain Layout
+
+    <variable>LINE</variable>
+\end_layout
+
+\begin_layout Plain Layout
+
+    <height>400</height><width>800</width>
+\end_layout
+
+\begin_layout Plain Layout
+
+    <label>File | Line | Message</label>
+\end_layout
+
+\begin_layout Plain Layout
+
+    <action>'".
+ $SELF ; "'lyxgoto $LINE</action>
+\end_layout
+
+\begin_layout Plain Layout
+
+    <input>'"cat $errors"'</input>
+\end_layout
+
+\begin_layout Plain Layout
+
+  </tree>
+\end_layout
+
+\begin_layout Plain Layout
+
+  <hbox>
+\end_layout
+
+\begin_layout Plain Layout
+
+   <button><label>Build</label>
+\end_layout
+
+\begin_layout Plain Layout
+
+     <action>lyxclient -c "LYXCMD:build-program" &</action>
+\end_layout
+
+\begin_layout Plain Layout
+
+   </button>
+\end_layout
+
+\begin_layout Plain Layout
+
+   <button ok></button>
+\end_layout
+
+\begin_layout Plain Layout
+
+  </hbox>
+\end_layout
+
+\begin_layout Plain Layout
+
+ </vbox>
+\end_layout
+
+\begin_layout Plain Layout
+
+'
+\end_layout
+
+\begin_layout Plain Layout
+
+    export COMPILE_DIALOG
+\end_layout
+
+\begin_layout Plain Layout
+
+    ( gtkdialog --program=COMPILE_DIALOG ; rm $errors ) &
+\end_layout
+
+\begin_layout Plain Layout
+
+  else
+\end_layout
+
+\begin_layout Plain Layout
+
+    rm $errors
+\end_layout
+
+\begin_layout Plain Layout
+
+  fi
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+lyxgoto() {
+\end_layout
+
+\begin_layout Plain Layout
+
+  file="${LINE%:*}"
+\end_layout
+
+\begin_layout Plain Layout
+
+  line="${LINE##*:}"
+\end_layout
+
+\begin_layout Plain Layout
+
+  extraline=`cat $file | head -n $line | tac | sed '/^
+\backslash
+
+\backslash
+
+\backslash
+
+\backslash
+begin{lstlisting}/q' | wc -l`
+\end_layout
+
+\begin_layout Plain Layout
+
+  extraline=`expr $extraline - 1`
+\end_layout
+
+\begin_layout Plain Layout
+
+  lyxclient -c "LYXCMD:command-sequence server-goto-file-row $file $line
+ ; char-forward ; repeat $extraline paragraph-down ; paragraph-up-select"
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+SELF="$0"
+\end_layout
+
+\begin_layout Plain Layout
+
+if test -z "$COMPILE_DIALOG"
+\end_layout
+
+\begin_layout Plain Layout
+
+then main "$@" 
+\end_layout
+
+\begin_layout Plain Layout
+
+fi
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \end_body
 \end_document
