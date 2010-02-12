@@ -1251,6 +1251,127 @@ numberfirstline=true
 
 \end_layout
 
+\begin_layout Standard
+Obtaining a 
+\begin_inset Flex CharStyle:Code
+status collapsed
+
+\begin_layout Plain Layout
+
+\series bold
+bold
+\series default
+ tt font
+\end_layout
+
+\end_inset
+
+ can be impossibly difficult and amazingly easy.
+ I spent many hours at it, following complicated instructions from those
+ who had spend many hours over it, and was finally delivered the simple
+ solution
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+on a plate
+\end_layout
+
+\end_inset
+
+ on the lyx mailing list.
+\end_layout
+
+\begin_layout Section
+txfonts
+\end_layout
+
+\begin_layout Standard
+The simple way was to add this to my preamble:
+\end_layout
+
+\begin_layout LyX-Code
+
+\backslash
+usepackage{txfonts}
+\end_layout
+
+\begin_layout LyX-Code
+
+\backslash
+renewcommand{
+\backslash
+ttdefault}{txtt}
+\end_layout
+
+\begin_layout Section
+ams pmb
+\end_layout
+
+\begin_layout Standard
+The next simplest way was to use ams poor-mans-bold, and add this to the
+ pre-amble:
+\end_layout
+
+\begin_layout LyX-Code
+
+\backslash
+usepackage{amsbsy}
+\end_layout
+
+\begin_layout LyX-Code
+%
+\backslash
+renewcommand{
+\backslash
+ttdefault}{txtt}
+\end_layout
+
+\begin_layout LyX-Code
+%somehow make 
+\backslash
+pmb be the command for bold, forgot how, sorry
+\end_layout
+
+\begin_layout Standard
+It works, but looks wretched on the dvi viewer.
+\end_layout
+
+\begin_layout Section
+Luximono
+\end_layout
+
+\begin_layout Standard
+The 
+\noun on
+lstlistings
+\noun default
+ documention suggests using Luximono.
+\end_layout
+
+\begin_layout Standard
+Luximono was installed according to the instructions in Ubuntu Forums: http://ub
+untuforums.org/showthread.php?t=1159181 with tips from http://miknight.blogspot.com/
+2005/
+\begin_inset space \hspace{}
+\length 0in
+\end_inset
+
+11/how-to-install-luxi-mono-font-in.html stating that:
+\end_layout
+
+\begin_layout LyX-Code
+sudo updmap --enable MixedMap ul9.map
+\end_layout
+
+\begin_layout Standard
+is required.
+\end_layout
+
+\begin_layout Standard
+It looks fine in PDF and PS view but still looks rotten in dvi view.
+\end_layout
+
 \begin_layout Chapter
 Newfangle with Makefiles
 \end_layout
