@@ -1,57 +1,43 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="iso-8859-1"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
-<!-- git web interface version 1.6.5.GIT, (C) 2005-2006, Kay Sievers <kay.sievers@vrfy.org>, Christian Gierke -->
-<!-- git core binaries version 1.6.5.GIT -->
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-  <meta name="robots" content="index, nofollow" />
-  <title>Public Git Hosting - newfangle.git/summary</title>
-  <script type="text/javascript">
-/* <![CDATA[ */
-function fixBlameLinks() {
-	var allLinks = document.getElementsByTagName("a");
-	for (var i = 0; i < allLinks.length; i++) {
-		var link = allLinks.item(i);
-		if (link.className == 'blamelink')
-			link.href = link.href.replace("/blame/", "/blame_incremental/");
-	}
-}
-/* ]]> */</script>
-  <link rel="stylesheet" type="text/css" href="http://repo.or.cz/gitweb.css" />
-  <link rel="alternate" title="newfangle.git - log - RSS feed"
-  href="http://repo.or.cz/w/newfangle.git/rss" type="application/rss+xml" />
-  <link rel="alternate" title="newfangle.git - log - RSS feed (no merges)"
-  href="http://repo.or.cz/w/newfangle.git/rss?opt=--no-merges"
-  type="application/rss+xml" />
-  <link rel="alternate" title="newfangle.git - log - Atom feed"
-  href="http://repo.or.cz/w/newfangle.git/atom?opt=--no-merges"
-  type="application/atom+xml" />
-  <link rel="alternate" title="newfangle.git - log - Atom feed (no merges)"
-  href="http://repo.or.cz/w/newfangle.git/atom?opt=--no-merges"
-  type="application/atom+xml" />
-  <link rel="shortcut icon" href="http://repo.or.cz/git-favicon.png"
-  type="image/png" />
-  <script type="text/javascript" src="http://repo.or.cz/gitweb.js">
-  </script>
+  <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+  <title>Newfangle - Literate programming for Lyx and Latex</title>
+  <link rel="stylesheet" href="styles.css" type="text/css" />
 </head>
 
 <body>
 
-<div class="page_header">
-Newfangle Literate Programming </div>
+<div id="container">
 
-<div class="page_nav">
-about | <a href="http://repo.or.cz/w/newfangle.git">git repository</a> | <a
-href="docs/newfangle.e/newfangle.html">documentation</a> | <br />
-<br />
+<div id="header">
+<h1>newfangle</h1>
+
+<p>newfangled literate programming - using lyx and latex</p>
 </div>
 
-<div class="title">
-Summary</div>
+<div id="nav">
+<ul>
+  <li><a href="http://www.nongnu.org/newfangle/" class="selected"
+    title="home page">home</a></li>
+  <li><a href="https://savannah.nongnu.org/p/newfangle"
+    title="CSS and XHTML web templates">project</a></li>
+  <li><a href="https://savannah.nongnu.org/mail/?group=newfangle"
+    title="web scripts">mailing list</a></li>
+  <li><a href="https://savannah.nongnu.org/bugs/?group=newfangle"
+    title="php, mysql, css and javascript code snippets">bugs</a></li>
+  <li><a href="#" title="licence">licence</a></li>
+  <li><a href="#" title="contact">contact</a></li>
+</ul>
+</div>
 
-<div class="readme">
+<div id="content">
+
+<div id="page">
+<h2>Introduction</h2>
+
 <p>Newfangle is a <a href="docs/literate/literate.html">literate
 programming</a> technique for Lyx (or Latex) inspired by <a
 href="http://www.eecs.harvard.edu/nr/noweb/dist">notangle</a>.</p>
@@ -72,12 +58,8 @@ newfangle provides formatting support for Lyx.</p>
 <p>Literate programming makes you write good code, because if you can't write a
 good justification or explanation for your code, it makes you think again and
 write something that you can explain.</p>
-</div>
 
-<div class="title">
-Features</div>
-
-<div class="readme">
+<h2>Features</h2>
 <ul>
   <li>Generics / macros. Newfangle macros accept parameters, so generic
     algorithms can be expressed, and then invoked in the code using any
@@ -96,58 +78,51 @@ Features</div>
 </ul>
 </div>
 
-<div class="header">
-<a class="title" href="http://repo.or.cz/w/newfangle.git/shortlog">Download or
-Browse Source Code</a> </div>
+<div id="sidebar">
+<h4>About Newfangle</h4>
 
-<table class="shortlog">
-  <tbody>
-    <tr class="dark">
-      <td title="2010-01-20"><i>Snapshot</i></td>
-      <td class="author"><a
-        title="Search for commits authored by Sam Liddicott" class="list"
-        href="http://repo.or.cz/w/newfangle.git/search?s=Sam+Liddicott;st=author">Sam
-        Liddicott</a></td>
-      <td><a class="list subject"
-        title="Fix generation of html documentation using icong ISO-8859-1//TRANSLIT"
-        href="http://repo.or.cz/w/newfangle.git/commit/0a8040029bd8e7a3b8d8ddbcd7acf2822c8708ed">Bleeding
-        edge</a> <span class="refs"><span class="head" title="heads/master"><a
-        href="http://repo.or.cz/w/newfangle.git/shortlog/refs/heads/master">master</a></span></span></td>
-      <td class="link"><a
-        href="http://repo.or.cz/w/newfangle.git/tree/master">Browse</a> | <a
-        href="http://repo.or.cz/w/newfangle.git/snapshot/master.tar.gz">tar.gz</a>
-        <a
-      href="http://repo.or.cz/w/newfangle.git/snapshot/master.zip">zip</a></td>
-    </tr>
-    <tr class="light">
-      <td title="2010-01-20"><i>2010-01-23</i></td>
-      <td class="author"><a
-        title="Search for commits authored by Sam Liddicott" class="list"
-        href="http://repo.or.cz/w/newfangle.git/search?s=Sam+Liddicott;st=author">Sam
-        Liddicott</a></td>
-      <td><a class="list subject"
-        href="http://repo.or.cz/w/newfangle.git/commit/abe02a9ae37ad6d6a959a25d67b3c6efe63c1d9e">Latest
-        Release </a></td>
-      <td class="link"><a
-        href="http://repo.or.cz/w/newfangle.git/tree/latest">Browse</a> | <a
-        href="http://repo.or.cz/w/newfangle.git/snapshot/latest.tar.gz">tar.gz</a>
-        <a
-      href="http://repo.or.cz/w/newfangle.git/snapshot/latest.zip">zip</a></td>
-    </tr>
-    <tr>
-      <td colspan="4"><a
-        href="http://repo.or.cz/w/newfangle.git/shortlog">...</a></td>
-    </tr>
-  </tbody>
-</table>
+<p>Newfangle is a <a href="docs/literate/literate.html">literate
+programming</a> technique for Lyx (and Latex) inspired by <a
+href="http://www.eecs.harvard.edu/nr/noweb/dist">notangle</a>. </p>
 
-<div class="page_footer">
+<p>Literate programming makes you write good code, because if you can't write a
+good justification or explanation for your code, it makes you think again and
+write something that you can explain.</p>
 
-<div class="page_footer_text">
-Newfangle Literate Programming</div>
-<a class="rss_logo" title="log RSS feed"
-href="http://repo.or.cz/w/newfangle.git/rss">RSS</a> <a class="rss_logo"
-title="log Atom feed" href="http://repo.or.cz/w/newfangle.git/atom">Atom</a>
+<h4>Releases</h4>
+<ul>
+  <li><a href="http://git.savannah.nongnu.org/cgit/newfangle.git"
+    title="spyka Webmaster resources">Browse bleeding edge</a></li>
+  <li><a
+    href="http://git.savannah.gnu.org/cgit/newfangle.git/snapshot/latest.tar.gz"
+    title="free web templates">Download latest release</a></li>
+  <li><a href="https://savannah.nongnu.org/p/newfangle"
+    title="free web templates">Project Page</a></li>
+</ul>
+
+<h4>Related projects</h4>
+<ul>
+  <li><a href="http://www.lyx.org/"
+  title="spyka web group community">Lyx</a></li>
+  <li><a href="http://www.latex-project.org/"
+    title="webhosting offers">Latex</a></li>
+  <li><a href="http://www.gnu.org/software/gawk/" title="spyka web group">GNU
+    Awk</a></li>
+</ul>
+</div>
+
+<div class="clear">
+</div>
+</div>
+
+<div id="footer">
+<p>© 2008 mySite. Design: <a href="http://www.spyka.net"
+title="spyka Webmaster">spyka webmaster</a> available from <a
+href="http://www.justfreetemplates.com" title="free css templates">Just Free
+Templates</a>. Valid <a href="http://validator.w3.org/check/referer"
+title="valid XHTML strict">XHTML</a> and <a
+href="http://jigsaw.w3.org/css-validator/check/referer" title="CSS">CSS</a></p>
+</div>
 </div>
 </body>
 </html>
