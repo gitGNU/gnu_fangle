@@ -15,9 +15,9 @@
 % 
 % You are free:
 % 
-% * to Share — to copy, distribute and transmit the work
+% * to Share - to copy, distribute and transmit the work
 % 
-% * to Remix — to adapt the work
+% * to Remix - to adapt the work
 % 
 % Under the following conditions:
 % 
@@ -32,7 +32,6 @@
 \usepackage{footmisc}
 \lstset{numbers=left, stepnumber=1, numbersep=5pt, breaklines=false,
 basicstyle=\footnotesize\ttfamily,
-%keywordstyle=\color{darkgreen},
 numberstyle=\tiny,language=C,columns=fullflexible,
 numberfirstline=true}
 \end_preamble
