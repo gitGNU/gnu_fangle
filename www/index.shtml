@@ -1,0 +1,45 @@
+<!--#if expr="! ${template}" --><!--#include virtual="/newfangle/template.shtml" --><!--#else -->
+<h2>Introduction</h2>
+
+<p>Newfangle is a <a href="docs/literate/literate.html">literate
+programming</a> technique for Lyx (and Latex) inspired by <a
+href="http://www.eecs.harvard.edu/nr/noweb/dist">notangle</a>. </p>
+
+<p>Literate programming makes you write good code, because if you can't write a
+good justification or explanation for your code, it makes you think again and
+write something that you can explain.</p>
+
+<p>It comes in two parts. The <strong>weave</strong> part that produces the
+formatted document is implemented entirely in Latex, and the
+<strong>tangle</strong> that generates the source code is implemented in awk
+for portability.</p>
+
+<p>Naturally, newfangle is written using literate programming techniques, using
+itself, and so the source is also the <a
+href="docs/newfangle.e/newfangle.html">documentation</a>.</p>
+
+<p>The source is written using the <a href="http://www.lyx.org/">Lyx</a>
+document editor - an excellent front end to Latex. Lyx is not required, but
+newfangle provides formatting support for Lyx.</p>
+
+<p>Literate programming makes you write good code, because if you can't write a
+good justification or explanation for your code, it makes you think again and
+write something that you can explain.</p>
+
+<h2>Features</h2>
+<ul>
+  <li>Generics / macros. Newfangle macros accept parameters, so generic
+    algorithms can be expressed, and then invoked in the code using any
+    particular types or parameters - like C macros, but with all the literate
+    goodness and without all the backslash ugliness.</li>
+  <li>Latex lstlistings used for code chunk formatting, with automatic markup
+    for dozens of language types.</li>
+  <li>Automatic escaping and quoting. You can include a shell-script chunk in a
+    makefile and have all the $ escaped to $$ automatically in the extracted
+    source. You can include a text file in a // comment or a " string and have
+    the appropriate escaping done automatically!</li>
+  <li>Never worry about code documentation again!</li>
+  <li>Newfangle has a makefile stub, Makefile.inc that will automatically
+    extract all project sources, making newfangle easy to integrate with
+    standard Makefileprojects (including automake and autoconf). </li>
+</ul>
