@@ -81,37 +81,40 @@
   not be too hard.
 
   <\nf-chunk|gpl3-copyright>
-    fangle - fully featured notangle replacement in awk
+    <item>fangle - fully featured notangle replacement in awk
 
-    \;
+    <item>
 
-    Copyright (C) 2009-2010 Sam Liddicott \<less\>sam@liddicott.com\<gtr\>
+    <item>Copyright (C) 2009-2010 Sam Liddicott
+    \<less\>sam@liddicott.com\<gtr\>
 
-    \;
+    <item>
 
-    This program is free software: you can redistribute it and/or modify
+    <item>This program is free software: you can redistribute it and/or
+    modify
 
-    it under the terms of the GNU General Public License as published by
+    <item>it under the terms of the GNU General Public License as published
+    by
 
-    the Free Software Foundation, either version 3 of the License, or
+    <item>the Free Software Foundation, either version 3 of the License, or
 
-    (at your option) any later version.
+    <item>(at your option) any later version.
 
-    \;
+    <item>
 
-    This program is distributed in the hope that it will be useful,
+    <item>This program is distributed in the hope that it will be useful,
 
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    <item>but WITHOUT ANY WARRANTY; without even the implied warranty of
 
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. \ See the
+    <item>MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. \ See the
 
-    GNU General Public License for more details.
+    <item>GNU General Public License for more details.
 
-    \;
+    <item>
 
-    You should have received a copy of the GNU General Public License
+    <item>You should have received a copy of the GNU General Public License
 
-    along with this program. \ If not, see
+    <item>along with this program. \ If not, see
     \<less\>http://www.gnu.org/licenses/\<gtr\>.
   </nf-chunk|text|>
 
@@ -741,23 +744,23 @@
   In my <LaTeX> pre-amble I usually specialise my code format with:
 
   <\nf-chunk|document-preamble>
-    \\lstset{
+    <item>\\lstset{
 
-    numbers=left, stepnumber=1, numbersep=5pt,
+    <item>numbers=left, stepnumber=1, numbersep=5pt,
 
-    breaklines=false,
+    <item>breaklines=false,
 
-    basicstyle=\\footnotesize\\ttfamily,
+    <item>basicstyle=\\footnotesize\\ttfamily,
 
-    numberstyle=\\tiny,
+    <item>numberstyle=\\tiny,
 
-    language=C,
+    <item>language=C,
 
-    columns=fullflexible,
+    <item>columns=fullflexible,
 
-    numberfirstline=true
+    <item>numberfirstline=true
 
-    }
+    <item>}
   </nf-chunk|tex|>
 
   \;
@@ -819,38 +822,38 @@
   probable Lyx filename from the noweb file that Lyx generated.
 
   <\nf-chunk|lyx-build-helper>
-    PROJECT_DIR="$LYX_r"
+    <item>PROJECT_DIR="$LYX_r"
 
-    LYX_SRC="$PROJECT_DIR/${LYX_i%.tex}.lyx"
+    <item>LYX_SRC="$PROJECT_DIR/${LYX_i%.tex}.lyx"
 
-    TEX_DIR="$LYX_p"
+    <item>TEX_DIR="$LYX_p"
 
-    TEX_SRC="$TEX_DIR/$LYX_i"
+    <item>TEX_SRC="$TEX_DIR/$LYX_i"
   </nf-chunk|sh|>
 
   And then we can define a lyx-build fragment similar to the autoboot
   fragment
 
   <\nf-chunk|lyx-build>
-    #! /bin/sh
+    <item>#! /bin/sh
 
-    =\<less\>\\chunkref{lyx-build-helper}\<gtr\>
+    <item>=\<less\>\\chunkref{lyx-build-helper}\<gtr\>
 
-    cd $PROJECT_DIR \|\| exit 1
+    <item>cd $PROJECT_DIR \|\| exit 1
 
-    \;
+    <item>
 
-    #/usr/bin/fangle -filter ./notanglefix-filter \\
+    <item>#/usr/bin/fangle -filter ./notanglefix-filter \\
 
-    # \ -R./Makefile.inc "../../noweb-lyx/noweb-lyx3.lyx" \\
+    <item># \ -R./Makefile.inc "../../noweb-lyx/noweb-lyx3.lyx" \\
 
-    # \ \| sed '/NOWEB_SOURCE=/s/=.*/=samba4-dfs.lyx/' \\
+    <item># \ \| sed '/NOWEB_SOURCE=/s/=.*/=samba4-dfs.lyx/' \\
 
-    # \ \<gtr\> ./Makefile.inc
+    <item># \ \<gtr\> ./Makefile.inc
 
-    #
+    <item>#
 
-    #make -f ./Makefile.inc fangle_sources
+    <item>#make -f ./Makefile.inc fangle_sources
   </nf-chunk|sh|>
 
   \;
@@ -909,16 +912,16 @@
   which are included in <nf-ref|./Makefile.inc|> below.
 
   <\nf-chunk|./Makefile.inc>
-    <nf-ref|Makefile.inc-vars|>
+    <item><nf-ref|Makefile.inc-vars|>
 
-    <nf-ref|Makefile.inc-targets|>
+    <item><nf-ref|Makefile.inc-targets|>
   </nf-chunk|make|>
 
   We first define a placeholder for <verbatim|LITERATE_SOURCE> to hold the
   name of this document. This will normally be passed on the command line.
 
   <\nf-chunk|Makefile.inc-vars>
-    LITERATE_SOURCE=
+    <item>LITERATE_SOURCE=
   </nf-chunk||>
 
   Fangle cannot process <LyX> or <TeXmacs> documents directly, so the first
@@ -947,24 +950,24 @@
   have <LyX> installed.
 
   <\nf-chunk|Makefile.inc-vars>
-    TEX_SOURCE=$(LYX_SOURCE:.lyx=.tex)
+    <item>TEX_SOURCE=$(LYX_SOURCE:.lyx=.tex)
 
-    EXTRA_DIST+=$(TEX_SOURCE)
+    <item>EXTRA_DIST+=$(TEX_SOURCE)
   </nf-chunk||>
 
   We then specify that the <TeX> source is to be generated from the <LyX>
   source.
 
   <\nf-chunk|Makefile.inc-targets>
-    $(TEX_SOURCE): $(LYX_SOURCE)
+    <item>$(TEX_SOURCE): $(LYX_SOURCE)
 
-    <nf-tab>lyx -e latex $\<less\>
+    <item><nf-tab>lyx -e latex $\<less\>
 
-    clean_tex:
+    <item>clean_tex:
 
-    <nf-tab>rm -f -- $(TEX_SOURCE)
+    <item><nf-tab>rm -f -- $(TEX_SOURCE)
 
-    clean: clean_tex
+    <item>clean: clean_tex
   </nf-chunk||>
 
   <subsection|Converting from <TeXmacs>><label|Converting-from-Lyx>
@@ -982,23 +985,23 @@
   have <LyX> installed.
 
   <\nf-chunk|Makefile.inc-vars>
-    TXT_SOURCE=$(LITERATE_SOURCE:.tm=.txt)
+    <item>TXT_SOURCE=$(LITERATE_SOURCE:.tm=.txt)
 
-    EXTRA_DIST+=$(TXT_SOURCE)
+    <item>EXTRA_DIST+=$(TXT_SOURCE)
   </nf-chunk||>
 
   <todo|Add loop around each $\<less\> so multiple targets can be specified>
 
   <\nf-chunk|Makefile.inc-targets>
-    $(TXT_SOURCE): $(LITERATE_SOURCE)
+    <item>$(TXT_SOURCE): $(LITERATE_SOURCE)
 
-    <nf-tab>texmacs -c $\<less\> $(TXT_SOURCE) -q
+    <item><nf-tab>texmacs -c $\<less\> $(TXT_SOURCE) -q
 
-    clean_txt:
+    <item>clean_txt:
 
-    <nf-tab>rm -f -- $(TXT_SOURCE)
+    <item><nf-tab>rm -f -- $(TXT_SOURCE)
 
-    clean: clean_txt
+    <item>clean: clean_txt
   </nf-chunk||>
 
   <section|Extracting Program Source>
@@ -1009,7 +1012,7 @@
   </footnote>.
 
   <\nf-chunk|Makefile.inc-vars>
-    FANGLE_SOURCE=$(TEX_SOURCE) $(TXT_SOURCE)
+    <item>FANGLE_SOURCE=$(TEX_SOURCE) $(TXT_SOURCE)
   </nf-chunk||>
 
   The literate document can result in any number of source files, but not all
@@ -1035,21 +1038,21 @@
   <verbatim|sshfs>mount \ that I was using.
 
   <\nf-chunk|Makefile.inc-vars>
-    FANGLE_SOURCE_STAMP=$(FANGLE_SOURCE).stamp
+    <item>FANGLE_SOURCE_STAMP=$(FANGLE_SOURCE).stamp
   </nf-chunk||>
 
   <\nf-chunk|Makefile.inc-targets>
-    $(FANGLE_SOURCE_STAMP): $(FANGLE_SOURCE) \\
+    <item>$(FANGLE_SOURCE_STAMP): $(FANGLE_SOURCE) \\
 
-    <nf-tab> \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ $(FANGLE_SOURCES) ; \\
+    <item><nf-tab> \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ $(FANGLE_SOURCES) ; \\
 
-    <nf-tab>echo -n \<gtr\> $(FANGLE_SOURCE_STAMP)
+    <item><nf-tab>echo -n \<gtr\> $(FANGLE_SOURCE_STAMP)
 
-    clean_stamp:
+    <item>clean_stamp:
 
-    <nf-tab>rm -f $(FANGLE_SOURCE_STAMP)
+    <item><nf-tab>rm -f $(FANGLE_SOURCE_STAMP)
 
-    clean: clean_stamp
+    <item>clean: clean_stamp
   </nf-chunk||>
 
   <section|Extracting Source Files>
@@ -1077,25 +1080,25 @@
   know what to extact!>
 
   <\nf-chunk|Makefile.inc-vars>
-    FANGLE_PREFIX:=\\.\\/
+    <item>FANGLE_PREFIX:=\\.\\/
 
-    FANGLE_SOURCES:=$(shell \\
+    <item>FANGLE_SOURCES:=$(shell \\
 
-    \ \ fangle -r $(FANGLE_SOURCE) \|\\
+    <item> \ fangle -r $(FANGLE_SOURCE) \|\\
 
-    \ \ sed -e 's/^[\<less\>][\<less\>]//;s/[\<gtr\>][\<gtr\>]$$//;/^$(FANGLE_PREFIX)/!d'
+    <item> \ sed -e 's/^[\<less\>][\<less\>]//;s/[\<gtr\>][\<gtr\>]$$//;/^$(FANGLE_PREFIX)/!d'
     \\
 
-    \ \ \ \ \ \ -e 's/^$(FANGLE_PREFIX)/\\.\\//' )
+    <item> \ \ \ \ \ -e 's/^$(FANGLE_PREFIX)/\\.\\//' )
   </nf-chunk||>
 
   The target below, <verbatim|echo_fangle_sources> is a helpful debugging
   target and shows the names of the files that would be extracted.
 
   <\nf-chunk|Makefile.inc-targets>
-    .PHONY: echo_fangle_sources
+    <item>.PHONY: echo_fangle_sources
 
-    echo_fangle_sources: ; @echo $(FANGLE_SOURCES)
+    <item>echo_fangle_sources: ; @echo $(FANGLE_SOURCES)
   </nf-chunk||>
 
   We define a convenient target called <verbatim|fangle_sources> so that
@@ -1103,19 +1106,19 @@
   literate document has been updated.\ 
 
   <\nf-chunk|Makefile.inc-targets>
-    .PHONY: fangle_sources
+    <item>.PHONY: fangle_sources
 
-    fangle_sources: $(FANGLE_SOURCE_STAMP)
+    <item>fangle_sources: $(FANGLE_SOURCE_STAMP)
   </nf-chunk||>
 
   And also a convenient target to remove extracted sources.
 
   <\nf-chunk|Makefile.inc-targets>
-    .PHONY: clean_fangle_sources
+    <item>.PHONY: clean_fangle_sources
 
-    clean_fangle_sources: ; \\
+    <item>clean_fangle_sources: ; \\
 
-    \ \ \ \ \ \ \ \ rm -f -- $(FANGLE_SOURCE_STAMP) $(FANGLE_SOURCES)
+    <item> \ \ \ \ \ \ \ rm -f -- $(FANGLE_SOURCE_STAMP) $(FANGLE_SOURCES)
   </nf-chunk||>
 
   We now look at the extraction of the source files.
@@ -1127,7 +1130,7 @@
   <verbatim|$(4)>.
 
   <\nf-chunk|Makefile.inc-vars>
-    if_extension=$(if $(findstring $(suffix $(1)),$(2)),$(3),$(4))
+    <item>if_extension=$(if $(findstring $(suffix $(1)),$(2)),$(3),$(4))
   </nf-chunk||>
 
   For some source files like C files, we want to output the line number and
@@ -1143,7 +1146,7 @@
   this.
 
   <\nf-chunk|Makefile.inc-vars>
-    C_EXTENSIONS=.c .h
+    <item>C_EXTENSIONS=.c .h
   </nf-chunk||>
 
   We can then use the <verbatim|if_extensions> macro to define a macro which
@@ -1152,11 +1155,11 @@
   <TeX> document.\ 
 
   <\nf-chunk|Makefile.inc-vars>
-    TABS=8
+    <item>TABS=8
 
-    nf_line=-L -T$(TABS)
+    <item>nf_line=-L -T$(TABS)
 
-    fangle=fangle $(call if_extension,$(2),$(C_EXTENSIONS),$(nf_line))
+    <item>fangle=fangle $(call if_extension,$(2),$(C_EXTENSIONS),$(nf_line))
     -R"$(2)" $(1)
   </nf-chunk||>
 
@@ -1166,9 +1169,9 @@
   indent=>
 
   <\nf-chunk|Makefile.inc-vars>
-    indent_options=-npro -kr -i8 -ts8 -sob -l80 -ss -ncs
+    <item>indent_options=-npro -kr -i8 -ts8 -sob -l80 -ss -ncs
 
-    indent=$(call if_extension,$(1),$(C_EXTENSIONS), \| indent
+    <item>indent=$(call if_extension,$(1),$(C_EXTENSIONS), \| indent
     $(indent_options))
   </nf-chunk||>
 
@@ -1179,15 +1182,15 @@
   or if none or a few C source files have changed.
 
   <\nf-chunk|Makefile.inc-vars>
-    fangle_extract=@mkdir -p $(dir $(1)) && \\
+    <item>fangle_extract=@mkdir -p $(dir $(1)) && \\
 
-    \ \ $(call fangle,$(2),$(1)) \<gtr\> "$(1).tmp" && \\
+    <item> \ $(call fangle,$(2),$(1)) \<gtr\> "$(1).tmp" && \\
 
-    \ \ cat "$(1).tmp" $(indent) \| cpif "$(1)" \\
+    <item> \ cat "$(1).tmp" $(indent) \| cpif "$(1)" \\
 
-    \ \ && rm -- "$(1).tmp" \|\| \\
+    <item> \ && rm -- "$(1).tmp" \|\| \\
 
-    \ \ (echo error newfangling $(1) from $(2) ; exit 1)
+    <item> \ (echo error newfangling $(1) from $(2) ; exit 1)
   </nf-chunk||>
 
   We define a target which will extract or update all sources. To do this we
@@ -1195,26 +1198,26 @@
   the <LaTeX> document.
 
   <\nf-chunk|Makefile.inc-vars>
-    define FANGLE_template
+    <item>define FANGLE_template
 
-    \ \ $(1): $(2)
+    <item> \ $(1): $(2)
 
-    <nf-tab>$$(call fangle_extract,$(1),$(2))
+    <item><nf-tab>$$(call fangle_extract,$(1),$(2))
 
-    \ \ FANGLE_TARGETS+=$(1)
+    <item> \ FANGLE_TARGETS+=$(1)
 
-    endef
+    <item>endef
   </nf-chunk||>
 
   We then enumerate the discovered <verbatim|FANGLE_SOURCES> to generate a
   makefile rule for each one using the makefile template we defined above.
 
   <\nf-chunk|Makefile.inc-targets>
-    $(foreach source,$(FANGLE_SOURCES),\\
+    <item>$(foreach source,$(FANGLE_SOURCES),\\
 
-    \ \ $(eval $(call FANGLE_template,$(source),$(FANGLE_SOURCE))) \\
+    <item> \ $(eval $(call FANGLE_template,$(source),$(FANGLE_SOURCE))) \\
 
-    )
+    <item>)
   </nf-chunk||>
 
   These will all be built with <verbatim|FANGLE_SOURCE_STAMP>.
@@ -1222,7 +1225,7 @@
   We also remove the generated sources on a make distclean.
 
   <\nf-chunk|Makefile.inc-targets>
-    _distclean: clean_fangle_sources
+    <item>_distclean: clean_fangle_sources
   </nf-chunk||>
 
   <section|Extracting Documentation>
@@ -1237,7 +1240,7 @@
   We produce a pdf file from the tex file.
 
   <\nf-chunk|Makefile.inc-vars>
-    FANGLE_PDF=$(TEX_SOURCE:.tex=.pdf)
+    <item>FANGLE_PDF=$(TEX_SOURCE:.tex=.pdf)
   </nf-chunk||>
 
   We run pdflatex twice to be sure that the contents and aux files are up to
@@ -1245,17 +1248,17 @@
   these files do not exist.
 
   <\nf-chunk|Makefile.inc-targets>
-    $(FANGLE_PDF): $(TEX_SOURCE)
+    <item>$(FANGLE_PDF): $(TEX_SOURCE)
 
-    <nf-tab>pdflatex $\<less\> && pdflatex $\<less\>
+    <item><nf-tab>pdflatex $\<less\> && pdflatex $\<less\>
 
-    \;
+    <item>
 
-    clean_pdf:
+    <item>clean_pdf:
 
-    <nf-tab>rm -f -- $(FANGLE_PDF) $(TEX_SOURCE:.tex=.toc) \\
+    <item><nf-tab>rm -f -- $(FANGLE_PDF) $(TEX_SOURCE:.tex=.toc) \\
 
-    <nf-tab> \ $(TEX_SOURCE:.tex=.log) $(TEX_SOURCE:.tex=.aux)
+    <item><nf-tab> \ $(TEX_SOURCE:.tex=.log) $(TEX_SOURCE:.tex=.aux)
   </nf-chunk||>
 
   <subsection|Formatting <TeXmacs>>
@@ -1263,7 +1266,7 @@
   <TeXmacs> can produce a PDF file directly.
 
   <\nf-chunk|Makefile.inc-vars>
-    FANGLE_PDF=$(TEX_SOURCE:.tm=.pdf)
+    <item>FANGLE_PDF=$(TEX_SOURCE:.tm=.pdf)
   </nf-chunk||>
 
   <\todo>
@@ -1278,15 +1281,15 @@
   </todo>
 
   <\nf-chunk|Makefile.inc-targets>
-    $(FANGLE_PDF): $(TEXMACS_SOURCE)
+    <item>$(FANGLE_PDF): $(TEXMACS_SOURCE)
 
-    <nf-tab>texmacs -c $(TEXMACS_SOURCE) $\<less\> -q
+    <item><nf-tab>texmacs -c $(TEXMACS_SOURCE) $\<less\> -q
 
-    \;
+    <item>
 
-    clean_pdf:
+    <item>clean_pdf:
 
-    <nf-tab>rm -f -- $(FANGLE_PDF)
+    <item><nf-tab>rm -f -- $(FANGLE_PDF)
   </nf-chunk||>
 
   <subsection|Building the Documentation as a Whole>
@@ -1295,34 +1298,34 @@
   may later hold other output formats.
 
   <\nf-chunk|Makefile.inc-vars>
-    FANGLE_DOCS=$(FANGLE_PDF)
+    <item>FANGLE_DOCS=$(FANGLE_PDF)
   </nf-chunk||>
 
   We also define <verbatim|fangle_docs> as a convenient phony target.
 
   <\nf-chunk|Makefile.inc-targets>
-    .PHONY: fangle_docs
+    <item>.PHONY: fangle_docs
 
-    fangle_docs: $(FANGLE_DOCS)
+    <item>fangle_docs: $(FANGLE_DOCS)
 
-    docs: fangle_docs
+    <item>docs: fangle_docs
   </nf-chunk||>
 
   And define a convenient <verbatim|clean_fangle_docs> which we add to the
   regular clean target
 
   <\nf-chunk|Makefile.inc-targets>
-    .PHONEY: clean_fangle_docs
+    <item>.PHONEY: clean_fangle_docs
 
-    clean_fangle_docs: clean_tex clean_pdf
+    <item>clean_fangle_docs: clean_tex clean_pdf
 
-    clean: clean_fangle_docs
+    <item>clean: clean_fangle_docs
 
-    \;
+    <item>
 
-    distclean_fangle_docs: clean_tex clean_fangle_docs
+    <item>distclean_fangle_docs: clean_tex clean_fangle_docs
 
-    distclean: clean distclean_fangle_docs
+    <item>distclean: clean distclean_fangle_docs
   </nf-chunk||>
 
   <section|Other helpers>
@@ -1355,29 +1358,29 @@
   <todo|De-lyxify>
 
   <\nf-chunk|*>
-    #! /bin/sh
+    <item>#! /bin/sh
 
-    \;
+    <item>
 
-    MAKE_SRC="${1:-${NW_LYX:-../../noweb-lyx/noweb-lyx3.lyx}}"
+    <item>MAKE_SRC="${1:-${NW_LYX:-../../noweb-lyx/noweb-lyx3.lyx}}"
 
-    MAKE_SRC=\0dirname "$MAKE_SRC"\0/\0basename "$MAKE_SRC" .lyx\0
+    <item>MAKE_SRC=\0dirname "$MAKE_SRC"\0/\0basename "$MAKE_SRC" .lyx\0
 
-    NOWEB_SRC="${2:-${NOWEB_SRC:-$MAKE_SRC.lyx}}"
+    <item>NOWEB_SRC="${2:-${NOWEB_SRC:-$MAKE_SRC.lyx}}"
 
-    lyx -e latex $MAKE_SRC
+    <item>lyx -e latex $MAKE_SRC
 
-    \;
+    <item>
 
-    fangle -R./Makefile.inc ${MAKE_SRC}.tex \\
+    <item>fangle -R./Makefile.inc ${MAKE_SRC}.tex \\
 
-    \ \ \| sed "/FANGLE_SOURCE=/s/^/#/;T;aNOWEB_SOURCE=$FANGLE_SRC" \\
+    <item> \ \| sed "/FANGLE_SOURCE=/s/^/#/;T;aNOWEB_SOURCE=$FANGLE_SRC" \\
 
-    \ \ \| cpif ./Makefile.inc
+    <item> \ \| cpif ./Makefile.inc
 
-    \;
+    <item>
 
-    make -f ./Makefile.inc fangle_sources
+    <item>make -f ./Makefile.inc fangle_sources
   </nf-chunk|sh|>
 
   The general Makefile can be invoked with <filename|./autoboot> and can also
@@ -1426,11 +1429,11 @@
   by the projects Makefile.
 
   <\nf-chunk|makefile-glue>
-    module_srcdir=modules/module
+    <item>module_srcdir=modules/module
 
-    MODULE_SOURCE=module.tm
+    <item>MODULE_SOURCE=module.tm
 
-    MODULE_STAMP=$(MODULE_SOURCE).stamp
+    <item>MODULE_STAMP=$(MODULE_SOURCE).stamp
   </nf-chunk||>
 
   The existing build system may already have a build target for
@@ -1442,7 +1445,7 @@
   </footnote>.
 
   <\nf-chunk|makefile-glue>
-    $(module_srcdir)/module.o: $(module_srcdir)/$(MODULE_STAMP)
+    <item>$(module_srcdir)/module.o: $(module_srcdir)/$(MODULE_STAMP)
   </nf-chunk|make|>
 
   The target for this new pre-requisite will be generated by a recursive make
@@ -1450,9 +1453,9 @@
   date, before it is built by the main projects makefile.
 
   <\nf-chunk|makefile-glue>
-    $(module_srcdir)/$(MODULE_STAMP): $(module_srcdir)/$(MODULE_SOURCE)
+    <item>$(module_srcdir)/$(MODULE_STAMP): $(module_srcdir)/$(MODULE_SOURCE)
 
-    <nf-tab>$(MAKE) -C $(module_srcdir) -f Makefile.inc fangle_sources
+    <item><nf-tab>$(MAKE) -C $(module_srcdir) -f Makefile.inc fangle_sources
     LITERATE_SOURCE=$(MODULE_SOURCE)
   </nf-chunk||>
 
@@ -1461,35 +1464,35 @@
   must use the same in our glue.
 
   <\nf-chunk|makefile-glue>
-    docs:: docs_module
+    <item>docs:: docs_module
 
-    .PHONY: docs_module
+    <item>.PHONY: docs_module
 
-    docs_module:
+    <item>docs_module:
 
-    <nf-tab>$(MAKE) -C $(module_srcdir) -f Makefile.inc docs
+    <item><nf-tab>$(MAKE) -C $(module_srcdir) -f Makefile.inc docs
     LITERATE_SOURCE=$(MODULE_SOURCE)
 
-    \;
+    <item>
 
-    clean:: clean_module
+    <item>clean:: clean_module
 
-    .PHONEY: clean_module
+    <item>.PHONEY: clean_module
 
-    clean_module:
+    <item>clean_module:
 
-    <nf-tab>$(MAKE) -C $(module_srcdir) -f Makefile.inc clean
+    <item><nf-tab>$(MAKE) -C $(module_srcdir) -f Makefile.inc clean
     LITERATE_SOURCE=$(MODULE_SOURCE)
 
-    \;
+    <item>
 
-    distclean:: distclean_module
+    <item>distclean:: distclean_module
 
-    .PHONY: distclean_module
+    <item>.PHONY: distclean_module
 
-    distclean_module:
+    <item>distclean_module:
 
-    <nf-tab>$(MAKE) -C $(module_srcdir) -f Makefile.inc distclean
+    <item><nf-tab>$(MAKE) -C $(module_srcdir) -f Makefile.inc distclean
     LITERATE_SOURCE=$(MODULE_SOURCE)
   </nf-chunk||>
 
@@ -1502,9 +1505,9 @@
   We use the copyright notice from chapter <reference|License>.
 
   <\nf-chunk|./fangle>
-    #! /usr/bin/awk -f
+    <item>#! /usr/bin/awk -f
 
-    # <nf-ref|gpl3-copyright|>
+    <item># <nf-ref|gpl3-copyright|>
   </nf-chunk|awk|>
 
   We also use code from <person|Arnold Robbins> public domain getopt (1993
@@ -1512,46 +1515,46 @@
   this appropriately.
 
   <\nf-chunk|./fangle>
-    \;
+    <item>
 
-    # NOTE: Arnold Robbins public domain getopt for awk is also used:
+    <item># NOTE: Arnold Robbins public domain getopt for awk is also used:
 
-    <nf-ref|getopt.awk-header|>
+    <item><nf-ref|getopt.awk-header|>
 
-    \;
+    <item>
 
-    <nf-ref|getopt.awk-getopt()|>
+    <item><nf-ref|getopt.awk-getopt()|>
 
-    \;
+    <item>
   </nf-chunk||>
 
   And include the following chunks (which are explained further on) to make
   up the program:
 
   <\nf-chunk|./fangle>
-    <nf-ref|helper-functions|>
+    <item><nf-ref|helper-functions|>
 
-    <nf-ref|mode-tracker|>
+    <item><nf-ref|mode-tracker|>
 
-    <nf-ref|parse_chunk_args|>
+    <item><nf-ref|parse_chunk_args|>
 
-    <nf-ref|chunk-storage-functions|>
+    <item><nf-ref|chunk-storage-functions|>
 
-    <nf-ref|output_chunk_names()|>
+    <item><nf-ref|output_chunk_names()|>
 
-    <nf-ref|output_chunks()|>
+    <item><nf-ref|output_chunks()|>
 
-    <nf-ref|write_chunk()|>
+    <item><nf-ref|write_chunk()|>
 
-    <nf-ref|expand_chunk_args()|>
+    <item><nf-ref|expand_chunk_args()|>
 
-    \;
+    <item>
 
-    <nf-ref|begin|>
+    <item><nf-ref|begin|>
 
-    <nf-ref|recognize-chunk|>
+    <item><nf-ref|recognize-chunk|>
 
-    <nf-ref|end|>
+    <item><nf-ref|end|>
   </nf-chunk||>
 
   <section|AWK tricks>
@@ -1565,15 +1568,16 @@
   an array to <verbatim|stderr>, and so this macro is also useful.
 
   <\nf-chunk|dump-array>
-    print "\\nDump: <nf-arg|ARRAY>\\n--------\\n" \<gtr\> "/dev/stderr";
+    <item>print "\\nDump: <nf-arg|ARRAY>\\n--------\\n" \<gtr\>
+    "/dev/stderr";
 
-    for (_x in <nf-arg|ARRAY>) {
+    <item>for (_x in <nf-arg|ARRAY>) {
 
-    \ \ print _x "=" <nf-arg|ARRAY>[_x] "\\n" \<gtr\> "/dev/stderr";
+    <item> \ print _x "=" <nf-arg|ARRAY>[_x] "\\n" \<gtr\> "/dev/stderr";
 
-    }
+    <item>}
 
-    print "========\\n" \<gtr\> "/dev/stderr";
+    <item>print "========\\n" \<gtr\> "/dev/stderr";
   </nf-chunk|awk|<tuple|ARRAY>>
 
   <section|Catching errors>
@@ -1581,29 +1585,31 @@
   Fatal errors are issued with the error function:
 
   <\nf-chunk|error()>
-    function error(message)
+    <item>function error(message)
 
-    {
+    <item>{
 
-    \ \ print "ERROR: " FILENAME ":" FNR " " message \<gtr\> "/dev/stderr";
+    <item> \ print "ERROR: " FILENAME ":" FNR " " message \<gtr\>
+    "/dev/stderr";
 
-    \ \ exit 1;
+    <item> \ exit 1;
 
-    }
+    <item>}
   </nf-chunk|awk|>
 
   and likewise for non-fatal warnings:
 
   <\nf-chunk|error()>
-    function warning(message)
+    <item>function warning(message)
 
-    {
+    <item>{
 
-    \ \ print "WARNING: " FILENAME ":" FNR " " message \<gtr\> "/dev/stderr";
+    <item> \ print "WARNING: " FILENAME ":" FNR " " message \<gtr\>
+    "/dev/stderr";
 
-    \ \ warnings++;
+    <item> \ warnings++;
 
-    }
+    <item>}
   </nf-chunk|awk|>
 
   <todo|append=helper-functions>
@@ -1688,19 +1694,19 @@
   multi-dimensional array path.
 
   <\nf-chunk|./fangle>
-    =\<less\>\\chunkref{get_chunk_args()}\<gtr\>
+    <item>=\<less\>\\chunkref{get_chunk_args()}\<gtr\>
   </nf-chunk||>
 
   <\nf-chunk|get_chunk_args()>
-    function get_chunk_args(text, values,
+    <item>function get_chunk_args(text, values,
 
-    \ \ # optional parameters
+    <item> \ # optional parameters
 
-    \ \ path, # hierarchical precursors
+    <item> \ path, # hierarchical precursors
 
-    \ \ # local vars
+    <item> \ # local vars
 
-    \ \ a, name)
+    <item> \ a, name)
   </nf-chunk||>
 
   The strategy is to parse the name, and then look for a value. If the value
@@ -1712,36 +1718,36 @@
   returning remaining text.
 
   <\nf-chunk|get_chunk_args()>
-    {
+    <item>{
 
-    \ \ split("", next_chunk_args);
+    <item> \ split("", next_chunk_args);
 
-    \ \ while(length(text)) {
+    <item> \ while(length(text)) {
 
-    \ \ \ \ if (match(text, "^ *}(.*)", a)) {
+    <item> \ \ \ if (match(text, "^ *}(.*)", a)) {
 
-    \ \ \ \ \ \ return a[1];
+    <item> \ \ \ \ \ return a[1];
 
-    \ \ \ \ }
+    <item> \ \ \ }
 
-    \ \ \ \ =\<less\>\\chunkref{parse-chunk-args}\<gtr\>
+    <item> \ \ \ =\<less\>\\chunkref{parse-chunk-args}\<gtr\>
 
-    \ \ }
+    <item> \ }
 
-    \ \ return text;
+    <item> \ return text;
 
-    }
+    <item>}
   </nf-chunk||>
 
   We can see that the text could be inspected with this regex:
 
   <\nf-chunk|parse-chunk-args>
-    if (! match(text, " *([^,=]*[^,= ]) *(([,=]) *(([^,}]*) *,* *(.*))\|)$",
-    a)) {
+    <item>if (! match(text, " *([^,=]*[^,= ]) *(([,=]) *(([^,}]*) *,*
+    *(.*))\|)$", a)) {
 
-    \ \ return text;
+    <item> \ return text;
 
-    }
+    <item>}
   </nf-chunk||>
 
   and that <verbatim|a> will have the following values:
@@ -1761,66 +1767,67 @@
   that we need to recurse:
 
   <\nf-chunk|parse-chunk-args>
-    name=a[1];
+    <item>name=a[1];
 
-    if (a[3] == "=") {
+    <item>if (a[3] == "=") {
 
-    \ \ if (substr(a[4],1,1) == "{") {
+    <item> \ if (substr(a[4],1,1) == "{") {
 
-    \ \ \ \ text = get_chunk_args(substr(a[4],2), values, path name SUBSEP);
+    <item> \ \ \ text = get_chunk_args(substr(a[4],2), values, path name
+    SUBSEP);
 
-    \ \ } else {
+    <item> \ } else {
 
-    \ \ \ \ values[path name]=a[5];
+    <item> \ \ \ values[path name]=a[5];
 
-    \ \ \ \ text = a[6];
+    <item> \ \ \ text = a[6];
 
-    \ \ }
+    <item> \ }
 
-    } else {
+    <item>} else {
 
-    \ \ values[path name]="";
+    <item> \ values[path name]="";
 
-    \ \ text = a[2];
+    <item> \ text = a[2];
 
-    }
+    <item>}
   </nf-chunk||>
 
   We can test this function like this:
 
   <\nf-chunk|gca-test.awk>
-    =\<less\>\\chunkref{get_chunk_args()}\<gtr\>
+    <item>=\<less\>\\chunkref{get_chunk_args()}\<gtr\>
 
-    BEGIN {
+    <item>BEGIN {
 
-    \ \ SUBSEP=".";
+    <item> \ SUBSEP=".";
 
-    \;
+    <item>
 
-    \ \ print get_chunk_args("name=freddie, foo={bar=baz, quux={quirk,
+    <item> \ print get_chunk_args("name=freddie, foo={bar=baz, quux={quirk,
     a=fleeg}}, etc", a);
 
-    \ \ for (b in a) {
+    <item> \ for (b in a) {
 
-    \ \ \ \ print "a[" b "] =\<gtr\> " a[b];
+    <item> \ \ \ print "a[" b "] =\<gtr\> " a[b];
 
-    \ \ }
+    <item> \ }
 
-    }
+    <item>}
   </nf-chunk||>
 
   which should give this output:
 
   <\nf-chunk|gca-test.awk-results>
-    a[foo.quux.quirk] =\<gtr\>\ 
+    <item>a[foo.quux.quirk] =\<gtr\>\ 
 
-    a[foo.quux.a] =\<gtr\> fleeg
+    <item>a[foo.quux.a] =\<gtr\> fleeg
 
-    a[foo.bar] =\<gtr\> baz
+    <item>a[foo.bar] =\<gtr\> baz
 
-    a[etc] =\<gtr\>\ 
+    <item>a[etc] =\<gtr\>\ 
 
-    a[name] =\<gtr\> freddie
+    <item>a[name] =\<gtr\> freddie
   </nf-chunk||>
 
   <section|Parsing chunk arguments><label|Chunk Arguments>
@@ -1875,29 +1882,30 @@
   <reference|modes> and used here with simplicity.
 
   <\nf-chunk|parse_chunk_args>
-    function parse_chunk_args(language, text, values, mode,
+    <item>function parse_chunk_args(language, text, values, mode,
 
-    \ \ # local vars
+    <item> \ # local vars
 
-    \ \ c, context, rest)
+    <item> \ c, context, rest)
 
-    {
+    <item>{
 
-    \ \ =\<less\>\\chunkref{new-mode-tracker}(context, language, mode)\<gtr\>
+    <item> \ =\<less\>\\chunkref{new-mode-tracker}(context, language,
+    mode)\<gtr\>
 
-    \ \ rest = mode_tracker(context, text, values);
+    <item> \ rest = mode_tracker(context, text, values);
 
-    \ \ # extract values
+    <item> \ # extract values
 
-    \ \ for(c=1; c \<less\>= context[0, "values"]; c++) {
+    <item> \ for(c=1; c \<less\>= context[0, "values"]; c++) {
 
-    \ \ \ \ values[c] = context[0, "values", c];
+    <item> \ \ \ values[c] = context[0, "values", c];
 
-    \ \ }
+    <item> \ }
 
-    \ \ return rest;
+    <item> \ return rest;
 
-    }
+    <item>}
   </nf-chunk||>
 
   <section|Expanding parameters in the text>
@@ -1919,23 +1927,23 @@
   each case.
 
   <\nf-chunk|expand_chunk_args()>
-    function expand_chunk_args(text, params, args, \ 
+    <item>function expand_chunk_args(text, params, args, \ 
 
-    \ \ p, text_array, next_text, v, t, l)
+    <item> \ p, text_array, next_text, v, t, l)
 
-    {
+    <item>{
 
-    \ \ if (split(text, text_array, "\\\\${")) {
+    <item> \ if (split(text, text_array, "\\\\${")) {
 
-    \ \ \ \ =\<less\>\\chunkref{substitute-chunk-args}\<gtr\>
+    <item> \ \ \ =\<less\>\\chunkref{substitute-chunk-args}\<gtr\>
 
-    \ \ }
+    <item> \ }
 
-    \;
+    <item>
 
-    \ \ return text;
+    <item> \ return text;
 
-    }
+    <item>}
   </nf-chunk||>
 
   First, we produce an associative array of substitution values indexed by
@@ -1943,11 +1951,11 @@
   replacement values as we extract each name.
 
   <\nf-chunk|substitute-chunk-args>
-    for(p in params) {
+    <item>for(p in params) {
 
-    \ \ v[params[p]]=args[p];
+    <item> \ v[params[p]]=args[p];
 
-    }
+    <item>}
   </nf-chunk||>
 
   We accumulate substituted text in the variable text. As the first part of
@@ -1957,7 +1965,7 @@
   <verbatim|$text>.
 
   <\nf-chunk-more>
-    text=text_array[1];
+    <item>text=text_array[1];
   </nf-chunk-more>
 
   We then iterate over the remaining values in the array<\footnote>
@@ -1967,11 +1975,11 @@
   argument.
 
   <\nf-chunk|substitute-chunk-args>
-    for(t=2; t in text_array; t++) {
+    <item>for(t=2; t in text_array; t++) {
 
-    \ \ =\<less\>\\chunkref{substitute-chunk-arg}\<gtr\>
+    <item> \ =\<less\>\\chunkref{substitute-chunk-arg}\<gtr\>
 
-    }
+    <item>}
   </nf-chunk||>
 
   After the split on <verbatim|${> a valid parameter reference will consist
@@ -1986,19 +1994,19 @@
   interfered with unless the parameter name also matches.
 
   <\nf-chunk|substitute-chunk-arg>
-    if (match(text_array[t], "^([a-zA-Z_][a-zA-Z0-9_]*)}", l) &&
+    <item>if (match(text_array[t], "^([a-zA-Z_][a-zA-Z0-9_]*)}", l) &&
 
-    \ \ \ \ l[1] in v)\ 
+    <item> \ \ \ l[1] in v)\ 
 
-    {
+    <item>{
 
-    \ \ text = text v[l[1]] substr(text_array[t], length(l[1])+2);
+    <item> \ text = text v[l[1]] substr(text_array[t], length(l[1])+2);
 
-    } else {
+    <item>} else {
 
-    \ \ text = text "${" text_array[t];
+    <item> \ text = text "${" text_array[t];
 
-    }
+    <item>}
   </nf-chunk||>
 
   <chapter|Language Modes & Quoting><label|modes>
@@ -2066,9 +2074,9 @@
   If that were then included in a chunk with language=make, like this:
 
   <\nf-chunk|example-makefile>
-    target: pre-req
+    <item>target: pre-req
 
-    <htab|5mm>=\<less\>\\chunkref{example-sh}\<gtr\>
+    <item><htab|5mm>=\<less\>\\chunkref{example-sh}\<gtr\>
   </nf-chunk|make|>
 
   We would need the output to look like this --- note the <verbatim|$$>:
@@ -2144,53 +2152,54 @@
   <verbatim|{> <verbatim|(> <verbatim|[> <verbatim|/*>
 
   <\nf-chunk|common-mode-definitions>
-    modes[${language}, "", \ "submodes" ]="\\\\\\\\\|\\"\|'\|{\|\\\\(\|\\\\[";
+    <item>modes[${language}, "", \ "submodes"
+    ]="\\\\\\\\\|\\"\|'\|{\|\\\\(\|\\\\[";
   </nf-chunk||language>
 
   In the default mode, a comma surrounded by un-important white space is a
   delimiter of language items.
 
   <\nf-chunk|common-mode-definitions>
-    modes[${language}, "", \ "delimiters"]=" *, *";
+    <item>modes[${language}, "", \ "delimiters"]=" *, *";
   </nf-chunk||language>
 
   and should pass this test:<todo|Why do the tests run in ?(? mode and not ??
   mode>
 
   <\nf-chunk|test:mode-definitions>
-    parse_chunk_args("c-like", "1,2,3", a, "");
+    <item>parse_chunk_args("c-like", "1,2,3", a, "");
 
-    if (a[1] != "1") e++;
+    <item>if (a[1] != "1") e++;
 
-    if (a[2] != "2") e++;
+    <item>if (a[2] != "2") e++;
 
-    if (a[3] != "3") e++;
+    <item>if (a[3] != "3") e++;
 
-    if (length(a) != 3) e++;
+    <item>if (length(a) != 3) e++;
 
-    =\<less\>\\chunkref{pca-test.awk:summary}\<gtr\>
+    <item>=\<less\>\\chunkref{pca-test.awk:summary}\<gtr\>
 
-    \;
+    <item>
 
-    parse_chunk_args("c-like", "joe, red", a, "");
+    <item>parse_chunk_args("c-like", "joe, red", a, "");
 
-    if (a[1] != "joe") e++;
+    <item>if (a[1] != "joe") e++;
 
-    if (a[2] != "red") e++;
+    <item>if (a[2] != "red") e++;
 
-    if (length(a) != 2) e++;
+    <item>if (length(a) != 2) e++;
 
-    =\<less\>\\chunkref{pca-test.awk:summary}\<gtr\>
+    <item>=\<less\>\\chunkref{pca-test.awk:summary}\<gtr\>
 
-    \;
+    <item>
 
-    parse_chunk_args("c-like", "${colour}", a, "");
+    <item>parse_chunk_args("c-like", "${colour}", a, "");
 
-    if (a[1] != "${colour}") e++;
+    <item>if (a[1] != "${colour}") e++;
 
-    if (length(a) != 1) e++;
+    <item>if (length(a) != 1) e++;
 
-    =\<less\>\\chunkref{pca-test.awk:summary}\<gtr\>
+    <item>=\<less\>\\chunkref{pca-test.awk:summary}\<gtr\>
   </nf-chunk||>
 
   Nested modes are identified by a backslash, a double or single quote,
@@ -2228,14 +2237,14 @@
   the string.
 
   <\nf-chunk|mode:common-string>
-    modes[${language}, "\\\\", "terminators"]=".";
+    <item>modes[${language}, "\\\\", "terminators"]=".";
   </nf-chunk||language>
 
   Otherwise, the string will be terminated by the same character that
   commenced it.
 
   <\nf-chunk|mode:common-string>
-    modes[${language}, ${quote}, "terminators"]=${quote};
+    <item>modes[${language}, ${quote}, "terminators"]=${quote};
   </nf-chunk||language>
 
   In C type languages, certain escape sequences exist in strings. We need to
@@ -2252,10 +2261,10 @@
   literal <verbatim|\\\\>.
 
   <\nf-chunk-more>
-    escapes[${language}, ${quote}, ++escapes[${language}, ${quote}],
+    <item>escapes[${language}, ${quote}, ++escapes[${language}, ${quote}],
     "s"]="\\\\\\\\";
 
-    escapes[${language}, ${quote}, \ \ escapes[${language}, ${quote}],
+    <item>escapes[${language}, ${quote}, \ \ escapes[${language}, ${quote}],
     "r"]="\\\\\\\\";
   </nf-chunk-more>
 
@@ -2263,20 +2272,20 @@
   backslash, otherwise it would terminate the string unexpectedly.
 
   <\nf-chunk-more>
-    escapes[${language}, ${quote}, ++escapes[${language}, ${quote}],
+    <item>escapes[${language}, ${quote}, ++escapes[${language}, ${quote}],
     "s"]=${quote};
 
-    escapes[${language}, ${quote}, \ \ escapes[${language}, ${quote}],
+    <item>escapes[${language}, ${quote}, \ \ escapes[${language}, ${quote}],
     "r"]="\\\\" ${quote};
   </nf-chunk-more>
 
   Any newlines in the string, must be replaced by <verbatim|\\n>.
 
   <\nf-chunk-more>
-    escapes[${language}, ${quote}, ++escapes[${language}, ${quote}],
+    <item>escapes[${language}, ${quote}, ++escapes[${language}, ${quote}],
     "s"]="\\n";
 
-    escapes[${language}, ${quote}, \ \ escapes[${language}, ${quote}],
+    <item>escapes[${language}, ${quote}, \ \ escapes[${language}, ${quote}],
     "r"]="\\\\n";
   </nf-chunk-more>
 
@@ -2284,25 +2293,26 @@
   quotes.
 
   <\nf-chunk|common-mode-definitions>
-    =\<less\>\\chunkref{mode:common-string}(${language},
+    <item>=\<less\>\\chunkref{mode:common-string}(${language},
     "\\textbackslash{}"")\<gtr\>
 
-    =\<less\>\\chunkref{mode:common-string}(${language}, "'")\<gtr\>
+    <item>=\<less\>\\chunkref{mode:common-string}(${language}, "'")\<gtr\>
   </nf-chunk||>
 
   Working strings should pass this test:
 
   <\nf-chunk|test:mode-definitions>
-    parse_chunk_args("c-like", "say \\"I said, \\\\\\"Hello, how are
+    <item>parse_chunk_args("c-like", "say \\"I said, \\\\\\"Hello, how are
     you\\\\\\".\\", for me", a, "");
 
-    if (a[1] != "say \\"I said, \\\\\\"Hello, how are you\\\\\\".\\"") e++;
+    <item>if (a[1] != "say \\"I said, \\\\\\"Hello, how are you\\\\\\".\\"")
+    e++;
 
-    if (a[2] != "for me") e++;
+    <item>if (a[2] != "for me") e++;
 
-    if (length(a) != 2) e++;
+    <item>if (length(a) != 2) e++;
 
-    =\<less\>\\chunkref{pca-test.awk:summary}\<gtr\>
+    <item>=\<less\>\\chunkref{pca-test.awk:summary}\<gtr\>
   </nf-chunk||>
 
   <subsection|Parentheses, Braces and Brackets>
@@ -2311,39 +2321,41 @@
   braces are closed by an alternate character.
 
   <\nf-chunk|mode:common-brackets>
-    modes[<nf-arg|language>, <nf-arg|open>, \ "submodes"
+    <item>modes[<nf-arg|language>, <nf-arg|open>, \ "submodes"
     ]="\\\\\\\\\|\\"\|{\|\\\\(\|\\\\[\|'\|/\\\\*";
 
-    modes[<nf-arg|language>, <nf-arg|open>, \ "delimiters"]=" *, *";
+    <item>modes[<nf-arg|language>, <nf-arg|open>, \ "delimiters"]=" *, *";
 
-    modes[<nf-arg|language>, <nf-arg|open>, \ "terminators"]=<nf-arg|close>;
+    <item>modes[<nf-arg|language>, <nf-arg|open>,
+    \ "terminators"]=<nf-arg|close>;
   </nf-chunk||<tuple|language|open|close>>
 
   Note that the open is NOT a regex but the close token IS. <todo|When we can
   quote regex we won't have to put the slashes in here>
 
   <\nf-chunk|common-mode-definitions>
-    =\<less\>\\chunkref{mode:common-brackets}(${language}, "{", "}")\<gtr\>
+    <item>=\<less\>\\chunkref{mode:common-brackets}(${language}, "{",
+    "}")\<gtr\>
 
-    =\<less\>\\chunkref{mode:common-brackets}(${language}, "[",
+    <item>=\<less\>\\chunkref{mode:common-brackets}(${language}, "[",
     "\\textbackslash{}\\textbackslash{}]")\<gtr\>
 
-    =\<less\>\\chunkref{mode:common-brackets}(${language}, "(",
+    <item>=\<less\>\\chunkref{mode:common-brackets}(${language}, "(",
     "\\textbackslash{}\\textbackslash{})")\<gtr\>
   </nf-chunk||>
 
   <subsection|Customizing Standard Modes>
 
   <\nf-chunk|mode:add-submode>
-    modes[${language}, ${mode}, "submodes"] = modes[${language}, ${mode},
-    "submodes"] "\|" ${submode};
+    <item>modes[${language}, ${mode}, "submodes"] = modes[${language},
+    ${mode}, "submodes"] "\|" ${submode};
   </nf-chunk||<tuple|language|mode|submode>>
 
   <\nf-chunk|mode:add-escapes>
-    escapes[${language}, ${mode}, ++escapes[${language}, ${mode}],
+    <item>escapes[${language}, ${mode}, ++escapes[${language}, ${mode}],
     "s"]=${search};
 
-    escapes[${language}, ${mode}, \ \ escapes[${language}, ${mode}],
+    <item>escapes[${language}, ${mode}, \ \ escapes[${language}, ${mode}],
     "r"]=${replace};
   </nf-chunk||<tuple|language|mode|search|replace>>
 
@@ -2355,18 +2367,18 @@
   <verbatim|//comment> style comments to be added to any language:
 
   <\nf-chunk|mode:multi-line-comments>
-    =\<less\>\\chunkref{mode:add-submode}(${language}, "",
+    <item>=\<less\>\\chunkref{mode:add-submode}(${language}, "",
     "/\\textbackslash{}\\textbackslash{}*")\<gtr\>
 
-    modes[${language}, "/*", "terminators"]="\\\\*/";
+    <item>modes[${language}, "/*", "terminators"]="\\\\*/";
   </nf-chunk||<tuple|language>>
 
   <\nf-chunk|mode:single-line-slash-comments>
-    =\<less\>\\chunkref{mode:add-submode}(${language}, "", "//")\<gtr\>
+    <item>=\<less\>\\chunkref{mode:add-submode}(${language}, "", "//")\<gtr\>
 
-    modes[${language}, "//", "terminators"]="\\n";
+    <item>modes[${language}, "//", "terminators"]="\\n";
 
-    =\<less\>\\chunkref{mode:add-escapes}(${language}, "//",
+    <item>=\<less\>\\chunkref{mode:add-escapes}(${language}, "//",
     "\\textbackslash{}n", "\\textbackslash{}n//")\<gtr\>
   </nf-chunk||language>
 
@@ -2377,11 +2389,12 @@
   hacky work-arounds in the parser for now>
 
   <\nf-chunk|mode:add-hash-comments>
-    =\<less\>\\chunkref{mode:add-submode}(${language}, "", "\\#")\<gtr\>
+    <item>=\<less\>\\chunkref{mode:add-submode}(${language}, "",
+    "\\#")\<gtr\>
 
-    modes[${language}, "#", "terminators"]="\\n";
+    <item>modes[${language}, "#", "terminators"]="\\n";
 
-    =\<less\>\\chunkref{mode:add-escapes}(${language}, "\\#",
+    <item>=\<less\>\\chunkref{mode:add-escapes}(${language}, "\\#",
     "\\textbackslash{}n", "\\textbackslash{}n\\#")\<gtr\>
   </nf-chunk||<tuple|language>>
 
@@ -2389,46 +2402,47 @@
   multi-line
 
   <\nf-chunk|mode:add-hash-defines>
-    =\<less\>\\chunkref{mode:add-submode}(${language}, "", "\\#")\<gtr\>
+    <item>=\<less\>\\chunkref{mode:add-submode}(${language}, "",
+    "\\#")\<gtr\>
 
-    modes[${language}, "#", "submodes" ]="\\\\\\\\";
+    <item>modes[${language}, "#", "submodes" ]="\\\\\\\\";
 
-    modes[${language}, "#", "terminators"]="\\n";
+    <item>modes[${language}, "#", "terminators"]="\\n";
 
-    =\<less\>\\chunkref{mode:add-escapes}(${language}, "\\#",
+    <item>=\<less\>\\chunkref{mode:add-escapes}(${language}, "\\#",
     "\\textbackslash{}n", "\\textbackslash{}\\textbackslash{}\\textbackslash{}\\textbackslash{}\\textbackslash{}n")\<gtr\>
   </nf-chunk||<tuple|language>>
 
   <\nf-chunk|mode:quote-dollar-escape>
-    escapes[${language}, ${quote}, ++escapes[${language}, ${quote}],
+    <item>escapes[${language}, ${quote}, ++escapes[${language}, ${quote}],
     "s"]="\\\\$";
 
-    escapes[${language}, ${quote}, \ \ escapes[${language}, ${quote}],
+    <item>escapes[${language}, ${quote}, \ \ escapes[${language}, ${quote}],
     "r"]="\\\\$";
   </nf-chunk||<tuple|language|quote>>
 
   We can add these definitions to various languages
 
   <\nf-chunk|mode-definitions>
-    <nf-ref|common-mode-definitions|<tuple|"c-like">>
+    <item><nf-ref|common-mode-definitions|<tuple|"c-like">>
 
-    \;
+    <item>
 
-    <nf-ref|common-mode-definitions|<tuple|"c">>
+    <item><nf-ref|common-mode-definitions|<tuple|"c">>
 
-    =\<less\>\\chunkref{mode:multi-line-comments}("c")\<gtr\>
+    <item>=\<less\>\\chunkref{mode:multi-line-comments}("c")\<gtr\>
 
-    =\<less\>\\chunkref{mode:single-line-slash-comments}("c")\<gtr\>
+    <item>=\<less\>\\chunkref{mode:single-line-slash-comments}("c")\<gtr\>
 
-    =\<less\>\\chunkref{mode:add-hash-defines}("c")\<gtr\>
+    <item>=\<less\>\\chunkref{mode:add-hash-defines}("c")\<gtr\>
 
-    \;
+    <item>
 
-    =\<less\>\\chunkref{common-mode-definitions}("awk")\<gtr\>
+    <item>=\<less\>\\chunkref{common-mode-definitions}("awk")\<gtr\>
 
-    =\<less\>\\chunkref{mode:add-hash-comments}("awk")\<gtr\>
+    <item>=\<less\>\\chunkref{mode:add-hash-comments}("awk")\<gtr\>
 
-    =\<less\>\\chunkref{mode:add-naked-regex}("awk")\<gtr\>
+    <item>=\<less\>\\chunkref{mode:add-naked-regex}("awk")\<gtr\>
   </nf-chunk||>
 
   The awk definitions should allow a comment block like this:
@@ -2437,31 +2451,31 @@
   =\<less\>\\chunkref{test:comment-text}\<gtr\>|awk|>
 
   <\nf-chunk|test:comment-text>
-    Now is the time for
+    <item>Now is the time for
 
-    the quick brown fox to bring lemonade
+    <item>the quick brown fox to bring lemonade
 
-    to the party
+    <item>to the party
   </nf-chunk||>
 
   to come out like this:
 
   <\nf-chunk|test:comment-quote:result>
-    # Comment: Now is the time for
+    <item># Comment: Now is the time for
 
-    #the quick brown fox to bring lemonade
+    <item>#the quick brown fox to bring lemonade
 
-    #to the party
+    <item>#to the party
   </nf-chunk||>
 
   The C definition for such a block should have it come out like this:
 
   <\nf-chunk|test:comment-quote:C-result>
-    # Comment: Now is the time for\\
+    <item># Comment: Now is the time for\\
 
-    the quick brown fox to bring lemonade\\
+    <item>the quick brown fox to bring lemonade\\
 
-    to the party
+    <item>to the party
   </nf-chunk||>
 
   <subsection|Regex>
@@ -2476,20 +2490,20 @@
   character, but some other more fully qualified name.
 
   <\nf-chunk|mode:add-naked-regex>
-    =\<less\>\\chunkref{mode:add-submode}(${language}, "",
+    <item>=\<less\>\\chunkref{mode:add-submode}(${language}, "",
     "/\\textbackslash{}\\textbackslash{}\\^")\<gtr\>
 
-    modes[${language}, "/^", "terminators"]="/";
+    <item>modes[${language}, "/^", "terminators"]="/";
   </nf-chunk||<tuple|language>>
 
   <subsection|Perl>
 
   <\nf-chunk|mode-definitions>
-    =\<less\>\\chunkref{common-mode-definitions}("perl")\<gtr\>
+    <item>=\<less\>\\chunkref{common-mode-definitions}("perl")\<gtr\>
 
-    =\<less\>\\chunkref{mode:multi-line-comments}("perl")\<gtr\>
+    <item>=\<less\>\\chunkref{mode:multi-line-comments}("perl")\<gtr\>
 
-    =\<less\>\\chunkref{mode:add-hash-comments}("perl")\<gtr\>
+    <item>=\<less\>\\chunkref{mode:add-hash-comments}("perl")\<gtr\>
   </nf-chunk||>
 
   Still need to add add <verbatim|s/>, submode <verbatim|/>, terminate both
@@ -2499,16 +2513,16 @@
   <subsection|sh>
 
   <\nf-chunk|mode-definitions>
-    =\<less\>\\chunkref{common-mode-definitions}("sh")\<gtr\>
+    <item>=\<less\>\\chunkref{common-mode-definitions}("sh")\<gtr\>
 
-    #\<less\>\\chunkref{mode:common-string}("sh",
+    <item>#\<less\>\\chunkref{mode:common-string}("sh",
     "\\textbackslash{}"")\<gtr\>
 
-    #\<less\>\\chunkref{mode:common-string}("sh", "'")\<gtr\>
+    <item>#\<less\>\\chunkref{mode:common-string}("sh", "'")\<gtr\>
 
-    =\<less\>\\chunkref{mode:add-hash-comments}("sh")\<gtr\>
+    <item>=\<less\>\\chunkref{mode:add-hash-comments}("sh")\<gtr\>
 
-    =\<less\>\\chunkref{mode:quote-dollar-escape}("sh", "\\"")\<gtr\>
+    <item>=\<less\>\\chunkref{mode:quote-dollar-escape}("sh", "\\"")\<gtr\>
   </nf-chunk||>
 
   <section|Some tests>
@@ -2517,36 +2531,36 @@
   processed due to a mode terminator being found.
 
   <\nf-chunk|test:mode-definitions>
-    rest = parse_chunk_args("c-like", "1, 2, 3) spare", a, "(");
+    <item>rest = parse_chunk_args("c-like", "1, 2, 3) spare", a, "(");
 
-    if (a[1] != 1) e++;
+    <item>if (a[1] != 1) e++;
 
-    if (a[2] != 2) e++;
+    <item>if (a[2] != 2) e++;
 
-    if (a[3] != 3) e++;
+    <item>if (a[3] != 3) e++;
 
-    if (length(a) != 3) e++;
+    <item>if (length(a) != 3) e++;
 
-    if (rest != " spare") e++;
+    <item>if (rest != " spare") e++;
 
-    =\<less\>\\chunkref{pca-test.awk:summary}\<gtr\>
+    <item>=\<less\>\\chunkref{pca-test.awk:summary}\<gtr\>
   </nf-chunk||>
 
   We must also be able to parse the example given earlier.
 
   <\nf-chunk|test:mode-definitions>
-    parse_chunk_args("c-like", "things[x, y], get_other_things(a,
+    <item>parse_chunk_args("c-like", "things[x, y], get_other_things(a,
     \\"(all)\\"), 99", a, "(");
 
-    if (a[1] != "things[x, y]") e++;
+    <item>if (a[1] != "things[x, y]") e++;
 
-    if (a[2] != "get_other_things(a, \\"(all)\\")") e++;
+    <item>if (a[2] != "get_other_things(a, \\"(all)\\")") e++;
 
-    if (a[3] != "99") e++;
+    <item>if (a[3] != "99") e++;
 
-    if (length(a) != 3) e++;
+    <item>if (length(a) != 3) e++;
 
-    =\<less\>\\chunkref{pca-test.awk:summary}\<gtr\>
+    <item>=\<less\>\\chunkref{pca-test.awk:summary}\<gtr\>
   </nf-chunk||>
 
   <section|A non-recursive mode tracker>
@@ -2557,24 +2571,24 @@
   when passed an empty hash will intialize it.
 
   <\nf-chunk|new-mode-tracker()>
-    function new_mode_tracker(context, language, mode) {
+    <item>function new_mode_tracker(context, language, mode) {
 
-    \ \ context[""] = 0;
+    <item> \ context[""] = 0;
 
-    \ \ context[0, "language"] = language;
+    <item> \ context[0, "language"] = language;
 
-    \ \ context[0, "mode"] = mode;
+    <item> \ context[0, "mode"] = mode;
 
-    }
+    <item>}
   </nf-chunk||>
 
   Because awk functions cannot return an array, we must create the array
   first and pass it in, so we have a fangle macro to do this:
 
   <\nf-chunk|new-mode-tracker>
-    =\<less\>\\chunkref{awk-delete-array}(${context})\<gtr\>
+    <item>=\<less\>\\chunkref{awk-delete-array}(${context})\<gtr\>
 
-    new_mode_tracker(${context}, ${language}, ${mode});
+    <item>new_mode_tracker(${context}, ${language}, ${mode});
   </nf-chunk|awk|<tuple|context|language|mode>>
 
   <subsection|Management>
@@ -2583,119 +2597,119 @@
   current language
 
   <\nf-chunk|mode_tracker>
-    function push_mode_tracker(context, language, mode,
+    <item>function push_mode_tracker(context, language, mode,
 
-    \ \ # local vars
+    <item> \ # local vars
 
-    \ \ top)
+    <item> \ top)
 
-    {
+    <item>{
 
-    \ \ if (! ("" in context)) {
+    <item> \ if (! ("" in context)) {
 
-    \ \ \ \ =\<less\>\\chunkref{new-mode-tracker}(context, language,
+    <item> \ \ \ =\<less\>\\chunkref{new-mode-tracker}(context, language,
     mode)\<gtr\>
 
-    \ \ } else {
+    <item> \ } else {
 
-    \ \ \ \ top = context[""];
+    <item> \ \ \ top = context[""];
 
-    \ \ \ \ if (context[top, "language"] == language && mode=="") mode =
+    <item> \ \ \ if (context[top, "language"] == language && mode=="") mode =
     context[top, "mode"];
 
-    \ \ \ \ top++;
+    <item> \ \ \ top++;
 
-    \ \ \ \ context[top, "language"] = language;
+    <item> \ \ \ context[top, "language"] = language;
 
-    \ \ \ \ context[top, "mode"] = mode;
+    <item> \ \ \ context[top, "mode"] = mode;
 
-    \ \ \ \ context[""] = top;
+    <item> \ \ \ context[""] = top;
 
-    \ \ }
+    <item> \ }
 
-    }
+    <item>}
   </nf-chunk|awk|>
 
   <\nf-chunk|mode_tracker>
-    function dump_mode_tracker(context, \ 
+    <item>function dump_mode_tracker(context, \ 
 
-    \ \ c, d)
+    <item> \ c, d)
 
-    {
+    <item>{
 
-    \ \ for(c=0; c \<less\>= context[""]; c++) {
+    <item> \ for(c=0; c \<less\>= context[""]; c++) {
 
-    \ \ \ \ printf(" %2d \ \ %s:%s\\n", c, context[c, "language"], context[c,
-    "mode"]) \<gtr\> "/dev/stderr";
+    <item> \ \ \ printf(" %2d \ \ %s:%s\\n", c, context[c, "language"],
+    context[c, "mode"]) \<gtr\> "/dev/stderr";
 
-    \ \ \ \ for(d=1; ( (c, "values", d) in context); d++) {
+    <item> \ \ \ for(d=1; ( (c, "values", d) in context); d++) {
 
-    \ \ \ \ \ \ printf(" \ \ %2d %s\\n", d, context[c, "values", d]) \<gtr\>
-    "/dev/stderr";
+    <item> \ \ \ \ \ printf(" \ \ %2d %s\\n", d, context[c, "values", d])
+    \<gtr\> "/dev/stderr";
 
-    \ \ \ \ }
+    <item> \ \ \ }
 
-    \ \ }
+    <item> \ }
 
-    }
+    <item>}
   </nf-chunk||>
 
   <\nf-chunk|mode_tracker>
-    function finalize_mode_tracker(context)
+    <item>function finalize_mode_tracker(context)
 
-    {
+    <item>{
 
-    \ \ if ( ("" in context) && context[""] != 0) return 0;
+    <item> \ if ( ("" in context) && context[""] != 0) return 0;
 
-    \ \ return 1;
+    <item> \ return 1;
 
-    }
+    <item>}
   </nf-chunk||>
 
   This implies that any chunk must be syntactically whole; for instance, this
   is fine:
 
   <\nf-chunk|test:whole-chunk>
-    if (1) {
+    <item>if (1) {
 
-    \ \ =\<less\>\\chunkref{test:say-hello}\<gtr\>
+    <item> \ =\<less\>\\chunkref{test:say-hello}\<gtr\>
 
-    }
+    <item>}
   </nf-chunk||>
 
   <\nf-chunk|test:say-hello>
-    print "hello";
+    <item>print "hello";
   </nf-chunk||>
 
   But this is not fine; the chunk <nf-ref|test:hidden-else|> is not properly
   cromulent.
 
   <\nf-chunk|test:partial-chunk>
-    if (1) {
+    <item>if (1) {
 
-    \ \ =\<less\>\\chunkref{test:hidden-else}\<gtr\>
+    <item> \ =\<less\>\\chunkref{test:hidden-else}\<gtr\>
 
-    }
+    <item>}
   </nf-chunk||>
 
   <\nf-chunk|test:hidden-else>
-    \ \ print "I'm fine";
+    <item> \ print "I'm fine";
 
-    } else {
+    <item>} else {
 
-    \ \ print "I'm not";
+    <item> \ print "I'm not";
   </nf-chunk||>
 
   These tests will check for correct behaviour:
 
   <\nf-chunk|test:cromulence>
-    echo Cromulence test
+    <item>echo Cromulence test
 
-    passtest $FANGLE -Rtest:whole-chunk $TEX_SRC &\<gtr\>/dev/null \|\| (
-    echo "Whole chunk failed" && exit 1 )
+    <item>passtest $FANGLE -Rtest:whole-chunk $TEX_SRC &\<gtr\>/dev/null \|\|
+    ( echo "Whole chunk failed" && exit 1 )
 
-    failtest $FANGLE -Rtest:partial-chunk $TEX_SRC &\<gtr\>/dev/null \|\| (
-    echo "Partial chunk failed" && exit 1 )
+    <item>failtest $FANGLE -Rtest:partial-chunk $TEX_SRC &\<gtr\>/dev/null
+    \|\| ( echo "Partial chunk failed" && exit 1 )
   </nf-chunk||>
 
   <subsection|Tracker>
@@ -2706,79 +2720,79 @@
   psuedo-recursion using our own stack based on a hash.
 
   <\nf-chunk|mode_tracker()>
-    function mode_tracker(context, text, values,\ 
+    <item>function mode_tracker(context, text, values,\ 
 
-    \ \ # optional parameters
+    <item> \ # optional parameters
 
-    \ \ # local vars
+    <item> \ # local vars
 
-    \ \ mode, submodes, language,
+    <item> \ mode, submodes, language,
 
-    \ \ cindex, c, a, part, item, name, result, new_values, new_mode,\ 
+    <item> \ cindex, c, a, part, item, name, result, new_values, new_mode,\ 
 
-    \ \ delimiters, terminators)
+    <item> \ delimiters, terminators)
 
-    {
+    <item>{
   </nf-chunk|awk|>
 
   We could be re-commencing with a valid context, so we need to setup the
   state according to the last context.
 
   <\nf-chunk|mode_tracker()>
-    \ \ cindex = context[""] + 0;
+    <item> \ cindex = context[""] + 0;
 
-    \ \ mode = context[cindex, "mode"];
+    <item> \ mode = context[cindex, "mode"];
 
-    \ \ language = context[cindex, "language" ];
+    <item> \ language = context[cindex, "language" ];
   </nf-chunk||>
 
   First we construct a single large regex combining the possible sub-modes
   for the current mode along with the terminators for the current mode.
 
   <\nf-chunk|parse_chunk_args-reset-modes>
-    \ \ submodes=modes[language, mode, "submodes"];
+    <item> \ submodes=modes[language, mode, "submodes"];
 
-    \;
+    <item>
 
-    \ \ if ((language, mode, "delimiters") in modes) {
+    <item> \ if ((language, mode, "delimiters") in modes) {
 
-    \ \ \ \ delimiters = modes[language, mode, "delimiters"];
+    <item> \ \ \ delimiters = modes[language, mode, "delimiters"];
 
-    \ \ \ \ if (length(submodes)\<gtr\>0) submodes = submodes "\|";
+    <item> \ \ \ if (length(submodes)\<gtr\>0) submodes = submodes "\|";
 
-    \ \ \ \ submodes=submodes delimiters;
+    <item> \ \ \ submodes=submodes delimiters;
 
-    \ \ } else delimiters="";
+    <item> \ } else delimiters="";
 
-    \ \ if ((language, mode, "terminators") in modes) {
+    <item> \ if ((language, mode, "terminators") in modes) {
 
-    \ \ \ \ terminators = modes[language, mode, "terminators"];
+    <item> \ \ \ terminators = modes[language, mode, "terminators"];
 
-    \ \ \ \ if (length(submodes)\<gtr\>0) submodes = submodes "\|";
+    <item> \ \ \ if (length(submodes)\<gtr\>0) submodes = submodes "\|";
 
-    \ \ \ \ submodes=submodes terminators;
+    <item> \ \ \ submodes=submodes terminators;
 
-    \ \ } else terminators="";
+    <item> \ } else terminators="";
   </nf-chunk||>
 
   If we don't find anything to match on --- probably because the language is
   not supported --- then we return the entire text without matching anything.
 
   <\nf-chunk|parse_chunk_args-reset-modes>
-    \ if (! length(submodes)) return text;
+    <item> if (! length(submodes)) return text;
   </nf-chunk||>
 
   <\nf-chunk|mode_tracker()>
-    =\<less\>\\chunkref{parse_chunk_args-reset-modes}\<gtr\>
+    <item>=\<less\>\\chunkref{parse_chunk_args-reset-modes}\<gtr\>
   </nf-chunk||>
 
   We then iterate the text (until there is none left) looking for sub-modes
   or terminators in the regex.
 
   <\nf-chunk|mode_tracker()>
-    \ \ while((cindex \<gtr\>= 0) && length(text)) {
+    <item> \ while((cindex \<gtr\>= 0) && length(text)) {
 
-    \ \ \ \ if (match(text, "(" submodes ")", a)) {
+    <item> \ \ \ if (match(text, "(" submodes ")", a)) {
   </nf-chunk||>
 
   A bug that creeps in regularly during development is bad regexes of zero
@@ -2786,15 +2800,15 @@
   catch that right away with this test.
 
   <\nf-chunk|mode_tracker()>
-    \ \ \ \ \ \ if (RLENGTH\<less\>1) {
+    <item> \ \ \ \ \ if (RLENGTH\<less\>1) {
 
-    \ \ \ \ \ \ \ \ error(sprintf("Internal error, matched zero length
+    <item> \ \ \ \ \ \ \ error(sprintf("Internal error, matched zero length
     submode, should be impossible - likely regex computation error\\n" \\
 
-    \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ "Language=%s\\nmode=%s\\nmatch=%s\\n",
+    <item> \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ "Language=%s\\nmode=%s\\nmatch=%s\\n",
     language, mode, submodes));
 
-    \ \ \ \ \ \ }
+    <item> \ \ \ \ \ }
   </nf-chunk||>
 
   part is defined as the text up to the sub-mode or terminator, and this is
@@ -2806,66 +2820,68 @@
   \ <wide|he said.|\<wide-overbrace\>><rsup|item>>
 
   <\nf-chunk|mode_tracker()>
-    \ \ \ \ \ \ part = substr(text, 1, RSTART -1);
+    <item> \ \ \ \ \ part = substr(text, 1, RSTART -1);
 
-    \ \ \ \ \ \ item = item part;
+    <item> \ \ \ \ \ item = item part;
   </nf-chunk||>
 
   We must now determine what was matched. If it was a terminator, then we
   must restore the previous mode.
 
   <\nf-chunk|mode_tracker()>
-    \ \ \ \ \ \ if (match(a[1], "^" terminators "$")) {
+    <item> \ \ \ \ \ if (match(a[1], "^" terminators "$")) {
 
-    #printf("%2d EXIT \ MODE [%s] by [%s] [%s]\\n", cindex, mode, a[1], text)
-    \<gtr\> "/dev/stderr"
+    <item>#printf("%2d EXIT \ MODE [%s] by [%s] [%s]\\n", cindex, mode, a[1],
+    text) \<gtr\> "/dev/stderr"
 
-    \ \ \ \ \ \ \ \ context[cindex, "values", ++context[cindex, "values"]] =
-    item;
+    <item> \ \ \ \ \ \ \ context[cindex, "values", ++context[cindex,
+    "values"]] = item;
 
-    \ \ \ \ \ \ \ \ delete context[cindex];
+    <item> \ \ \ \ \ \ \ delete context[cindex];
 
-    \ \ \ \ \ \ \ \ context[""] = --cindex;
+    <item> \ \ \ \ \ \ \ context[""] = --cindex;
 
-    \ \ \ \ \ \ \ \ if (cindex\<gtr\>=0) {
+    <item> \ \ \ \ \ \ \ if (cindex\<gtr\>=0) {
 
-    \ \ \ \ \ \ \ \ \ \ mode = context[cindex, "mode"];
+    <item> \ \ \ \ \ \ \ \ \ mode = context[cindex, "mode"];
 
-    \ \ \ \ \ \ \ \ \ \ language = context[cindex, "language"];
+    <item> \ \ \ \ \ \ \ \ \ language = context[cindex, "language"];
 
-    \ \ \ \ \ \ \ \ \ \ =\<less\>\\chunkref{parse_chunk_args-reset-modes}\<gtr\>
+    <item> \ \ \ \ \ \ \ \ \ =\<less\>\\chunkref{parse_chunk_args-reset-modes}\<gtr\>
 
-    \ \ \ \ \ \ \ \ }
+    <item> \ \ \ \ \ \ \ }
 
-    \ \ \ \ \ \ \ \ item = item a[1];
+    <item> \ \ \ \ \ \ \ item = item a[1];
 
-    \ \ \ \ \ \ \ \ text = substr(text, 1 + length(part) + length(a[1]));
+    <item> \ \ \ \ \ \ \ text = substr(text, 1 + length(part) +
+    length(a[1]));
 
-    \ \ \ \ \ \ }
+    <item> \ \ \ \ \ }
   </nf-chunk||>
 
   If a delimiter was matched, then we must store the current item in the
   parsed values array, and reset the item.
 
   <\nf-chunk|mode_tracker()>
-    \ \ \ \ \ \ else if (match(a[1], "^" delimiters "$")) {
+    <item> \ \ \ \ \ else if (match(a[1], "^" delimiters "$")) {
 
-    \ \ \ \ \ \ \ \ if (cindex==0) {
+    <item> \ \ \ \ \ \ \ if (cindex==0) {
 
-    \ \ \ \ \ \ \ \ \ \ context[cindex, "values", ++context[cindex,
+    <item> \ \ \ \ \ \ \ \ \ context[cindex, "values", ++context[cindex,
     "values"]] = item;
 
-    \ \ \ \ \ \ \ \ \ \ item = "";
+    <item> \ \ \ \ \ \ \ \ \ item = "";
 
-    \ \ \ \ \ \ \ \ } else {
+    <item> \ \ \ \ \ \ \ } else {
 
-    \ \ \ \ \ \ \ \ \ \ item = item a[1];
+    <item> \ \ \ \ \ \ \ \ \ item = item a[1];
 
-    \ \ \ \ \ \ \ \ }
+    <item> \ \ \ \ \ \ \ }
 
-    \ \ \ \ \ \ \ \ text = substr(text, 1 + length(part) + length(a[1]));
+    <item> \ \ \ \ \ \ \ text = substr(text, 1 + length(part) +
+    length(a[1]));
 
-    \ \ \ \ \ \ }
+    <item> \ \ \ \ \ }
   </nf-chunk||>
 
   otherwise, if a new submode is detected (all submodes have terminators), we
@@ -2873,37 +2889,39 @@
   mode.
 
   <\nf-chunk|mode_tracker()>
-    \ else if ((language, a[1], "terminators") in modes) {
+    <item> else if ((language, a[1], "terminators") in modes) {
 
-    \ \ \ \ \ \ \ \ #check if new_mode is defined
+    <item> \ \ \ \ \ \ \ #check if new_mode is defined
 
-    \ \ \ \ \ \ \ \ item = item a[1];
+    <item> \ \ \ \ \ \ \ item = item a[1];
 
-    #printf("%2d ENTER MODE [%s] in [%s]\\n", cindex, a[1], text) \<gtr\>
-    "/dev/stderr"
+    <item>#printf("%2d ENTER MODE [%s] in [%s]\\n", cindex, a[1], text)
+    \<gtr\> "/dev/stderr"
 
-    \ \ \ \ \ \ \ \ text = substr(text, 1 + length(part) + length(a[1]));
+    <item> \ \ \ \ \ \ \ text = substr(text, 1 + length(part) +
+    length(a[1]));
 
-    \ \ \ \ \ \ \ \ context[""] = ++cindex;
+    <item> \ \ \ \ \ \ \ context[""] = ++cindex;
 
-    \ \ \ \ \ \ \ \ context[cindex, "mode"] = a[1];
+    <item> \ \ \ \ \ \ \ context[cindex, "mode"] = a[1];
 
-    \ \ \ \ \ \ \ \ context[cindex, "language"] = language;
+    <item> \ \ \ \ \ \ \ context[cindex, "language"] = language;
 
-    \ \ \ \ \ \ \ \ mode = a[1];
+    <item> \ \ \ \ \ \ \ mode = a[1];
 
-    \ \ \ \ \ \ \ \ =\<less\>\\chunkref{parse_chunk_args-reset-modes}\<gtr\>
+    <item> \ \ \ \ \ \ \ =\<less\>\\chunkref{parse_chunk_args-reset-modes}\<gtr\>
 
-    \ \ \ \ \ \ } else {
+    <item> \ \ \ \ \ } else {
 
-    \ \ \ \ \ \ \ \ error(sprintf("Submode '%s' set unknown mode in text:
-    %s\\nLanguage %s Mode %s\\n", a[1], text, language, mode));
+    <item> \ \ \ \ \ \ \ error(sprintf("Submode '%s' set unknown mode in
+    text: %s\\nLanguage %s Mode %s\\n", a[1], text, language, mode));
 
-    \ \ \ \ \ \ \ \ text = substr(text, 1 + length(part) + length(a[1]));
+    <item> \ \ \ \ \ \ \ text = substr(text, 1 + length(part) +
+    length(a[1]));
 
-    \ \ \ \ \ \ }
+    <item> \ \ \ \ \ }
 
-    \ \ \ \ }
+    <item> \ \ \ }
   </nf-chunk||>
 
   In the final case, we parsed to the end of the string. If the string was
@@ -2913,31 +2931,31 @@
   are split over two fragments.
 
   <\nf-chunk|mode_tracker()>
-    else {
+    <item>else {
 
-    \ \ \ \ \ \ context[cindex, "values", ++context[cindex, "values"]] = item
-    text;
+    <item> \ \ \ \ \ context[cindex, "values", ++context[cindex, "values"]] =
+    item text;
 
-    \ \ \ \ \ \ text = "";
+    <item> \ \ \ \ \ text = "";
 
-    \ \ \ \ \ \ item = "";
+    <item> \ \ \ \ \ item = "";
 
-    \ \ \ \ }
+    <item> \ \ \ }
 
-    \ \ }
+    <item> \ }
 
-    \;
+    <item>
 
-    \ \ context["item"] = item;
+    <item> \ context["item"] = item;
 
-    \;
+    <item>
 
-    \ \ if (length(item)) context[cindex, "values", ++context[cindex,
+    <item> \ if (length(item)) context[cindex, "values", ++context[cindex,
     "values"]] = item;
 
-    \ \ return text;
+    <item> \ return text;
 
-    }
+    <item>}
   </nf-chunk||>
 
   <subsubsection|One happy chunk>
@@ -2945,9 +2963,9 @@
   All the mode tracker chunks are referred to here:
 
   <\nf-chunk|mode-tracker>
-    =\<less\>\\chunkref{new_mode_tracker()}\<gtr\>
+    <item>=\<less\>\\chunkref{new_mode_tracker()}\<gtr\>
 
-    =\<less\>\\chunkref{mode_tracker()}\<gtr\>
+    <item>=\<less\>\\chunkref{mode_tracker()}\<gtr\>
   </nf-chunk||>
 
   <subsubsection|Tests>
@@ -2955,59 +2973,59 @@
   We can test this function like this:
 
   <\nf-chunk|pca-test.awk>
-    =\<less\>\\chunkref{error()}\<gtr\>
+    <item>=\<less\>\\chunkref{error()}\<gtr\>
 
-    =\<less\>\\chunkref{mode-tracker}\<gtr\>
+    <item>=\<less\>\\chunkref{mode-tracker}\<gtr\>
 
-    =\<less\>\\chunkref{parse_chunk_args()}\<gtr\>
+    <item>=\<less\>\\chunkref{parse_chunk_args()}\<gtr\>
 
-    BEGIN {
+    <item>BEGIN {
 
-    \ \ SUBSEP=".";
+    <item> \ SUBSEP=".";
 
-    \ \ =\<less\>\\chunkref{mode-definitions}\<gtr\>
+    <item> \ =\<less\>\\chunkref{mode-definitions}\<gtr\>
 
-    \;
+    <item>
 
-    \ \ =\<less\>\\chunkref{test:mode-definitions}\<gtr\>
+    <item> \ =\<less\>\\chunkref{test:mode-definitions}\<gtr\>
 
-    }
+    <item>}
   </nf-chunk|awk|>
 
   <\nf-chunk|pca-test.awk:summary>
-    if (e) {
+    <item>if (e) {
 
-    \ \ printf "Failed " e
+    <item> \ printf "Failed " e
 
-    \ \ for (b in a) {
+    <item> \ for (b in a) {
 
-    \ \ \ \ print "a[" b "] =\<gtr\> " a[b];
+    <item> \ \ \ print "a[" b "] =\<gtr\> " a[b];
 
-    \ \ }
+    <item> \ }
 
-    } else {
+    <item>} else {
 
-    \ \ print "Passed"
+    <item> \ print "Passed"
 
-    }
+    <item>}
 
-    split("", a);
+    <item>split("", a);
 
-    e=0;
+    <item>e=0;
   </nf-chunk|awk|>
 
   which should give this output:
 
   <\nf-chunk|pca-test.awk-results>
-    a[foo.quux.quirk] =\<gtr\>\ 
+    <item>a[foo.quux.quirk] =\<gtr\>\ 
 
-    a[foo.quux.a] =\<gtr\> fleeg
+    <item>a[foo.quux.a] =\<gtr\> fleeg
 
-    a[foo.bar] =\<gtr\> baz
+    <item>a[foo.bar] =\<gtr\> baz
 
-    a[etc] =\<gtr\>\ 
+    <item>a[etc] =\<gtr\>\ 
 
-    a[name] =\<gtr\> freddie
+    <item>a[name] =\<gtr\> freddie
   </nf-chunk||>
 
   <section|Escaping and Quoting>
@@ -3018,85 +3036,85 @@
   This code can perform transforms
 
   <\nf-chunk|mode_tracker>
-    function transform_escape(s, r, text,
+    <item>function transform_escape(s, r, text,
 
-    \ \ \ \ # optional
+    <item> \ \ \ # optional
 
-    \ \ \ \ max,\ 
+    <item> \ \ \ max,\ 
 
-    \ \ \ \ \ \ \ \ # local vars
+    <item> \ \ \ \ \ \ \ # local vars
 
-    \ \ \ \ \ \ \ \ c)
+    <item> \ \ \ \ \ \ \ c)
 
-    {
+    <item>{
 
-    \ \ for(c=1; c \<less\>= max && (c in s); c++) {
+    <item> \ for(c=1; c \<less\>= max && (c in s); c++) {
 
-    \ \ \ \ gsub(s[c], r[c], text);
+    <item> \ \ \ gsub(s[c], r[c], text);
 
-    \ \ }
+    <item> \ }
 
-    \ \ return text;
+    <item> \ return text;
 
-    }
+    <item>}
   </nf-chunk|awk|>
 
   This function must append from index c onwards, and escape transforms from
   the supplied context, and return c + number of new transforms.
 
   <\nf-chunk|mode_tracker>
-    function mode_escaper(context, s, r, src,
+    <item>function mode_escaper(context, s, r, src,
 
-    \ \ c, cp, cpl)
+    <item> \ c, cp, cpl)
 
-    {
+    <item>{
 
-    \ \ \ \ \ \ \ \ for(c = context[""]; c \<gtr\>= 0; c--) {
+    <item> \ \ \ \ \ \ \ for(c = context[""]; c \<gtr\>= 0; c--) {
 
-    \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ if ( (context[c, "language"], context[c,
-    "mode"]) in escapes) {
+    <item> \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ if ( (context[c, "language"],
+    context[c, "mode"]) in escapes) {
 
-    \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ cpl = escapes[context[c,
-    "language"], context[c, "mode"]];
+    <item> \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ cpl =
+    escapes[context[c, "language"], context[c, "mode"]];
 
-    \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ for (cp = 1; cp \<less\>=
-    cpl; cp ++) {
+    <item> \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ for (cp = 1; cp
+    \<less\>= cpl; cp ++) {
 
-    \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ++src;
+    <item> \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ++src;
 
-    \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ s[src] =
-    escapes[context[c, "language"], context[c, "mode"], cp, "s"];
+    <item> \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ s[src]
+    = escapes[context[c, "language"], context[c, "mode"], cp, "s"];
 
-    \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ r[src] =
-    escapes[context[c, "language"], context[c, "mode"], cp, "r"];
+    <item> \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ r[src]
+    = escapes[context[c, "language"], context[c, "mode"], cp, "r"];
 
-    \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+    <item> \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
 
-    \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+    <item> \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
 
-    \ \ \ \ \ \ \ \ }
+    <item> \ \ \ \ \ \ \ }
 
-    \ \ \ \ \ \ \ \ return src;
+    <item> \ \ \ \ \ \ \ return src;
 
-    }
+    <item>}
 
-    function dump_escaper(c, s, r, cc) {
+    <item>function dump_escaper(c, s, r, cc) {
 
-    \ \ for(cc=1; cc\<less\>=c; cc++) {
+    <item> \ for(cc=1; cc\<less\>=c; cc++) {
 
-    \ \ \ \ printf("%2d s[%s] r[%s]\\n", cc, s[cc], r[cc]) \<gtr\>
+    <item> \ \ \ printf("%2d s[%s] r[%s]\\n", cc, s[cc], r[cc]) \<gtr\>
     "/dev/stderr"
 
-    \ \ }
+    <item> \ }
 
-    }
+    <item>}
   </nf-chunk|awk|>
 
   <\nf-chunk|test:escapes>
-    echo escapes test
+    <item>echo escapes test
 
-    passtest $FANGLE -Rtest:comment-quote $TEX_SRC &\<gtr\>/dev/null \|\| (
-    echo "Comment-quote failed" && exit 1 )
+    <item>passtest $FANGLE -Rtest:comment-quote $TEX_SRC &\<gtr\>/dev/null
+    \|\| ( echo "Comment-quote failed" && exit 1 )
   </nf-chunk|sh|>
 
   <chapter|Recognizing Chunks>
@@ -3140,19 +3158,19 @@
   <verbatim|\\lstset>).
 
   <\nf-chunk|recognize-chunk>
-    /^\\\\Chunk{/ {
+    <item>/^\\\\Chunk{/ {
 
-    \ \ if (match($0, "^\\\\\\\\Chunk{ *([^ ,}]*),?(.*)}", line)) {
+    <item> \ if (match($0, "^\\\\\\\\Chunk{ *([^ ,}]*),?(.*)}", line)) {
 
-    \ \ \ \ next_chunk_name = line[1];
+    <item> \ \ \ next_chunk_name = line[1];
 
-    \ \ \ \ get_chunk_args(line[2], next_chunk_args);
+    <item> \ \ \ get_chunk_args(line[2], next_chunk_args);
 
-    \ \ }
+    <item> \ }
 
-    \ \ next;
+    <item> \ next;
 
-    }
+    <item>}
   </nf-chunk|awk|>
 
   We also make a basic attempt to parse the name out of the
@@ -3165,23 +3183,23 @@
   </footnote>.
 
   <\nf-chunk|recognize-chunk>
-    /^\\\\begin{lstlisting}\|^\\\\begin{Chunk}/ {
+    <item>/^\\\\begin{lstlisting}\|^\\\\begin{Chunk}/ {
 
-    \ \ if (match($0, "}.*[[,] *name= *{? *([^], }]*)", line)) {
+    <item> \ if (match($0, "}.*[[,] *name= *{? *([^], }]*)", line)) {
 
-    \ \ \ \ new_chunk(line[1]);
+    <item> \ \ \ new_chunk(line[1]);
 
-    \ \ } else {
+    <item> \ } else {
 
-    \ \ \ \ new_chunk(next_chunk_name, next_chunk_args);
+    <item> \ \ \ new_chunk(next_chunk_name, next_chunk_args);
 
-    \ \ }
+    <item> \ }
 
-    \ \ chunking=1;
+    <item> \ chunking=1;
 
-    \ \ next;
+    <item> \ next;
 
-    }
+    <item>}
   </nf-chunk||>
 
   <subsection|Noweb>
@@ -3189,21 +3207,22 @@
   We recognize notangle style chunks too:
 
   <\nf-chunk|recognize-chunk>
-    /^[\<less\>]\<less\>.*[\<gtr\>]\<gtr\>=/ {
+    <item>/^[\<less\>]\<less\>.*[\<gtr\>]\<gtr\>=/ {
 
-    \ \ if (match($0, "^[\<less\>]\<less\>(.*)[\<gtr\>]\<gtr\>= *$", line)) {
+    <item> \ if (match($0, "^[\<less\>]\<less\>(.*)[\<gtr\>]\<gtr\>= *$",
+    line)) {
 
-    \ \ \ \ chunking=1;
+    <item> \ \ \ chunking=1;
 
-    \ \ \ \ notangle_mode=1;
+    <item> \ \ \ notangle_mode=1;
 
-    \ \ \ \ new_chunk(line[1]);
+    <item> \ \ \ new_chunk(line[1]);
 
-    \ \ \ \ next;
+    <item> \ \ \ next;
 
-    \ \ }
+    <item> \ }
 
-    }
+    <item>}
   </nf-chunk|awk|>
 
   <section|Chunk end>
@@ -3221,27 +3240,27 @@
   </footnote>
 
   <\nf-chunk|recognize-chunk>
-    /^\\\\[e]nd{lstlisting}\|^\\\\[e]nd{Chunk}/ {
+    <item>/^\\\\[e]nd{lstlisting}\|^\\\\[e]nd{Chunk}/ {
 
-    \ \ chunking=0;
+    <item> \ chunking=0;
 
-    \ \ active_chunk="";
+    <item> \ active_chunk="";
 
-    \ \ next;
+    <item> \ next;
 
-    }
+    <item>}
   </nf-chunk||>
 
   <subsection|noweb>
 
   <\nf-chunk|recognize-chunk>
-    /^@ *$/ {
+    <item>/^@ *$/ {
 
-    \ \ chunking=0;
+    <item> \ chunking=0;
 
-    \ \ active_chunk="";
+    <item> \ active_chunk="";
 
-    }
+    <item>}
   </nf-chunk||>
 
   All other recognizers are only of effect if we are chunking; there's no
@@ -3249,7 +3268,7 @@
   them as efficiently as we can.
 
   <\nf-chunk|recognize-chunk>
-    ! chunking { next; }
+    <item>! chunking { next; }
   </nf-chunk||>
 
   <section|Chunk contents>
@@ -3266,20 +3285,20 @@
   </footnote>.
 
   <\nf-chunk|recognize-chunk>
-    length(active_chunk) {
+    <item>length(active_chunk) {
 
-    \ \ =\<less\>\\chunkref{process-chunk-tabs}\<gtr\>
+    <item> \ =\<less\>\\chunkref{process-chunk-tabs}\<gtr\>
 
-    \ \ =\<less\>\\chunkref{process-chunk}\<gtr\>
+    <item> \ =\<less\>\\chunkref{process-chunk}\<gtr\>
 
-    }
+    <item>}
   </nf-chunk||>
 
   If a chunk just consisted of plain text, we could handle the chunk like
   this:
 
   <\nf-chunk|process-chunk-simple>
-    chunk_line(active_chunk, $0 ORS);
+    <item>chunk_line(active_chunk, $0 ORS);
   </nf-chunk||>
 
   but in fact a chunk can include references to other chunks. Chunk includes
@@ -3294,11 +3313,11 @@
   on output.
 
   <\nf-chunk|process-chunk-tabs>
-    if (length(tabs)) {
+    <item>if (length(tabs)) {
 
-    \ \ gsub("\\t", tabs);
+    <item> \ gsub("\\t", tabs);
 
-    }
+    <item>}
   </nf-chunk||>
 
   <subsection|lstlistings><label|sub:lst-listings-includes>
@@ -3331,13 +3350,13 @@
   it is to remove these from any arguments parsed by fangle.
 
   <\nf-chunk|delatex>
-    # FILTHY HACK
+    <item># FILTHY HACK
 
-    gsub("\\\\\\\\#", "#", ${text});
+    <item>gsub("\\\\\\\\#", "#", ${text});
 
-    gsub("\\\\\\\\textbackslash{}", "\\\\", ${text});
+    <item>gsub("\\\\\\\\textbackslash{}", "\\\\", ${text});
 
-    gsub("\\\\\\\\\\\\^", "^", ${text});
+    <item>gsub("\\\\\\\\\\\\^", "^", ${text});
   </nf-chunk||<tuple|text>>
 
   As each chunk line may contain more than one chunk include, we will split
@@ -3350,19 +3369,19 @@
   take as much as we can up to the first <verbatim|\\chunkref> command.
 
   <\nf-chunk|process-chunk>
-    chunk = $0;
+    <item>chunk = $0;
 
-    indent = 0;
+    <item>indent = 0;
 
-    while(match(chunk,\ 
+    <item>while(match(chunk,\ 
 
-    \ \ \ \ \ \ \ \ \ \ \ \ "([=]\<less\>\\\\\\\\chunkref{([^}\<gtr\>]*)}(\\\\(.*\\\\)\|)\<gtr\>\|\<less\>\<less\>([a-zA-Z_][-a-zA-Z0-9_]*)\<gtr\>\<gtr\>)",\ 
+    <item> \ \ \ \ \ \ \ \ \ \ \ "([=]\<less\>\\\\\\\\chunkref{([^}\<gtr\>]*)}(\\\\(.*\\\\)\|)\<gtr\>\|\<less\>\<less\>([a-zA-Z_][-a-zA-Z0-9_]*)\<gtr\>\<gtr\>)",\ 
 
-    \ \ \ \ \ \ \ \ \ \ \ \ line)\\
+    <item> \ \ \ \ \ \ \ \ \ \ \ line)\\
 
-    ) {
+    <item>) {
 
-    \ \ chunklet = substr(chunk, 1, RSTART - 1);
+    <item> \ chunklet = substr(chunk, 1, RSTART - 1);
   </nf-chunk||>
 
   We keep track of the indent count, by counting the number of literal
@@ -3374,11 +3393,11 @@
   command, which we will process next as we continue around the loop.
 
   <\nf-chunk|process-chunk>
-    \ \ indent += length(chunklet);
+    <item> \ indent += length(chunklet);
 
-    \ \ chunk_line(active_chunk, chunklet);
+    <item> \ chunk_line(active_chunk, chunklet);
 
-    \ \ chunk = substr(chunk, RSTART + RLENGTH);
+    <item> \ chunk = substr(chunk, RSTART + RLENGTH);
   </nf-chunk||>
 
   We then consider the type of chunk command we have found, whether it is the
@@ -3390,36 +3409,36 @@
   processing to be part of the name of the chunk to be included.
 
   <\nf-chunk|process-chunk>
-    \ \ if (substr(line[1], 1, 1) == "=") {
+    <item> \ if (substr(line[1], 1, 1) == "=") {
 
-    \ \ \ \ # chunk name up to }
+    <item> \ \ \ # chunk name up to }
 
-    \ \ \ \ \ \ \ \ =\<less\>\\chunkref{delatex}(line[3])\<gtr\>
+    <item> \ \ \ \ \ \ \ =\<less\>\\chunkref{delatex}(line[3])\<gtr\>
 
-    \ \ \ \ chunk_include(active_chunk, line[2] line[3], indent);
+    <item> \ \ \ chunk_include(active_chunk, line[2] line[3], indent);
 
-    \ \ } else if (substr(line[1], 1, 1) == "\<less\>") {
+    <item> \ } else if (substr(line[1], 1, 1) == "\<less\>") {
 
-    \ \ \ \ chunk_include(active_chunk, line[4], indent);
+    <item> \ \ \ chunk_include(active_chunk, line[4], indent);
 
-    \ \ } else {
+    <item> \ } else {
 
-    \ \ \ \ error("Unknown chunk fragment: " line[1]);
+    <item> \ \ \ error("Unknown chunk fragment: " line[1]);
 
-    \ \ }
+    <item> \ }
   <|nf-chunk>
     \;
 
-    \;
+    <item>
   </nf-chunk|>
 
   The loop will continue until there are no more chunkref statements in the
   text, at which point we process the final part of the chunk.
 
   <\nf-chunk|process-chunk>
-    }
+    <item>}
 
-    chunk_line(active_chunk, chunk);
+    <item>chunk_line(active_chunk, chunk);
   </nf-chunk||>
 
   <label|lone-newline>We add the newline character as a chunklet on it's own,
@@ -3427,7 +3446,7 @@
   processing the output.
 
   <\nf-chunk|process-chunk>
-    chunk_line(active_chunk, "\n");
+    <item>chunk_line(active_chunk, "\n");
   <|nf-chunk>
     \;
   </nf-chunk|>
@@ -3457,94 +3476,96 @@
   At the start, first we set the default options.
 
   <\nf-chunk|default-options>
-    debug=0;
+    <item>debug=0;
 
-    linenos=0;
+    <item>linenos=0;
 
-    notangle_mode=0;
+    <item>notangle_mode=0;
 
-    root="*";
+    <item>root="*";
 
-    tabs = "";
+    <item>tabs = "";
   </nf-chunk||>
 
   Then we use getopt the standard way, and null out ARGV afterwards in the
   normal AWK fashion.
 
   <\nf-chunk|read-options>
-    Optind = 1 \ \ \ # skip ARGV[0]
+    <item>Optind = 1 \ \ \ # skip ARGV[0]
 
-    while(getopt(ARGC, ARGV, "R:LdT:hr")!=-1) {
+    <item>while(getopt(ARGC, ARGV, "R:LdT:hr")!=-1) {
 
-    \ \ =\<less\>\\chunkref{handle-options}\<gtr\>
+    <item> \ =\<less\>\\chunkref{handle-options}\<gtr\>
 
-    }
+    <item>}
 
-    for (i=1; i\<less\>Optind; i++) { ARGV[i]=""; }
+    <item>for (i=1; i\<less\>Optind; i++) { ARGV[i]=""; }
   </nf-chunk||>
 
   This is how we handle our options:
 
   <\nf-chunk|handle-options>
-    if (Optopt == "R") root = Optarg;
+    <item>if (Optopt == "R") root = Optarg;
 
-    else if (Optopt == "r") root="";
+    <item>else if (Optopt == "r") root="";
 
-    else if (Optopt == "L") linenos = 1;
+    <item>else if (Optopt == "L") linenos = 1;
 
-    else if (Optopt == "d") debug = 1;
+    <item>else if (Optopt == "d") debug = 1;
 
-    else if (Optopt == "T") tabs = indent_string(Optarg+0);
+    <item>else if (Optopt == "T") tabs = indent_string(Optarg+0);
 
-    else if (Optopt == "h") help();
+    <item>else if (Optopt == "h") help();
 
-    else if (Optopt == "?") help();
+    <item>else if (Optopt == "?") help();
   </nf-chunk||>
 
   We do all of this at the beginning of the program
 
   <\nf-chunk|begin>
-    BEGIN {
+    <item>BEGIN {
 
-    \ \ =\<less\>\\chunkref{constants}\<gtr\>
+    <item> \ =\<less\>\\chunkref{constants}\<gtr\>
 
-    \ \ =\<less\>\\chunkref{mode-definitions}\<gtr\>
+    <item> \ =\<less\>\\chunkref{mode-definitions}\<gtr\>
 
-    \ \ =\<less\>\\chunkref{default-options}\<gtr\>
+    <item> \ =\<less\>\\chunkref{default-options}\<gtr\>
 
-    \;
+    <item>
 
-    \ \ =\<less\>\\chunkref{read-options}\<gtr\>
+    <item> \ =\<less\>\\chunkref{read-options}\<gtr\>
 
-    }
+    <item>}
   </nf-chunk||>
 
   And have a simple help function
 
   <\nf-chunk|help()>
-    function help() {
+    <item>function help() {
 
-    \ \ print "Usage:"
+    <item> \ print "Usage:"
 
-    \ \ print " \ fangle [-L] -R\<less\>rootname\<gtr\> [source.tex ...]"
+    <item> \ print " \ fangle [-L] -R\<less\>rootname\<gtr\> [source.tex
+    ...]"
 
-    \ \ print " \ fangle -r [source.tex ...]"
+    <item> \ print " \ fangle -r [source.tex ...]"
 
-    \ \ print " \ If the filename, source.tex is not specified then stdin is
-    used"
+    <item> \ print " \ If the filename, source.tex is not specified then
+    stdin is used"
 
-    \ \ print
+    <item> \ print
 
-    \ \ print "-L causes the C statement: #line \<less\>lineno\<gtr\>
+    <item> \ print "-L causes the C statement: #line \<less\>lineno\<gtr\>
     \\"filename\\"" to be issued"
 
-    \ \ print "-R causes the named root to be written to stdout"
+    <item> \ print "-R causes the named root to be written to stdout"
 
-    \ \ print "-r lists all roots in the file (even those used elsewhere)"
+    <item> \ print "-r lists all roots in the file (even those used
+    elsewhere)"
 
-    \ \ exit 1;
+    <item> \ exit 1;
 
-    }
+    <item>}
   </nf-chunk||>
 
   <chapter|Generating the Output>
@@ -3552,33 +3573,33 @@
   We generate output by calling output_chunk, or listing the chunk names.
 
   <\nf-chunk|generate-output>
-    if (length(root)) output_chunk(root);
+    <item>if (length(root)) output_chunk(root);
 
-    else output_chunk_names();
+    <item>else output_chunk_names();
   </nf-chunk||>
 
   We also have some other output debugging:
 
   <\nf-chunk|debug-output>
-    if (debug) {
+    <item>if (debug) {
 
-    \ \ print "------ chunk names "
+    <item> \ print "------ chunk names "
 
-    \ \ output_chunk_names();
+    <item> \ output_chunk_names();
 
-    \ \ print "====== chunks"
+    <item> \ print "====== chunks"
 
-    \ \ output_chunks();
+    <item> \ output_chunks();
 
-    \ \ print "++++++ debug"
+    <item> \ print "++++++ debug"
 
-    \ \ for (a in chunks) {
+    <item> \ for (a in chunks) {
 
-    \ \ \ \ print a "=" chunks[a];
+    <item> \ \ \ print a "=" chunks[a];
 
-    \ \ }
+    <item> \ }
 
-    }
+    <item>}
   </nf-chunk||>
 
   We do both of these at the end. We also set <verbatim|ORS=""> because each
@@ -3587,15 +3608,15 @@
   <reference|sub:ORS-chunk-text>.
 
   <\nf-chunk|end>
-    END {
+    <item>END {
 
-    \ \ =\<less\>\\chunkref{debug-output}\<gtr\>
+    <item> \ =\<less\>\\chunkref{debug-output}\<gtr\>
 
-    \ \ ORS="";
+    <item> \ ORS="";
 
-    \ \ =\<less\>\\chunkref{generate-output}\<gtr\>
+    <item> \ =\<less\>\\chunkref{generate-output}\<gtr\>
 
-    }
+    <item>}
   </nf-chunk||>
 
   We write chunk names like this. If we seem to be running in notangle
@@ -3603,57 +3624,57 @@
   <verbatim|\<less\>\<less\>name\<gtr\>\<gtr\>> the same way notangle does:
 
   <\nf-chunk|output_chunk_names()>
-    function output_chunk_names( \ \ c, prefix, suffix)\ 
+    <item>function output_chunk_names( \ \ c, prefix, suffix)\ 
 
-    {
+    <item>{
 
-    \ \ if (notangle_mode) {
+    <item> \ if (notangle_mode) {
 
-    \ \ \ \ prefix="\<less\>\<less\>";
+    <item> \ \ \ prefix="\<less\>\<less\>";
 
-    \ \ \ \ suffix="\<gtr\>\<gtr\>";
+    <item> \ \ \ suffix="\<gtr\>\<gtr\>";
 
-    \ \ }
+    <item> \ }
 
-    \ \ for (c in chunk_names) {
+    <item> \ for (c in chunk_names) {
 
-    \ \ \ \ print prefix c suffix "\\n";
+    <item> \ \ \ print prefix c suffix "\\n";
 
-    \ \ }
+    <item> \ }
 
-    }
+    <item>}
   </nf-chunk||>
 
   This function would write out all chunks
 
   <\nf-chunk|output_chunks()>
-    function output_chunks( \ a)\ 
+    <item>function output_chunks( \ a)\ 
 
-    {
+    <item>{
 
-    \ \ for (a in chunk_names) {
+    <item> \ for (a in chunk_names) {
 
-    \ \ \ \ output_chunk(chunk_names[a]);
+    <item> \ \ \ output_chunk(chunk_names[a]);
 
-    \ \ }
+    <item> \ }
 
-    }
+    <item>}
 
-    \;
+    <item>
 
-    function output_chunk(chunk) {
+    <item>function output_chunk(chunk) {
 
-    \ \ newline = 1;
+    <item> \ newline = 1;
 
-    \ \ lineno_needed = linenos;
+    <item> \ lineno_needed = linenos;
 
-    \;
+    <item>
 
-    \ \ write_chunk(chunk);
+    <item> \ write_chunk(chunk);
 
-    }
+    <item>}
 
-    \;
+    <item>
   </nf-chunk||>
 
   <section|Assembling the Chunks>
@@ -3665,31 +3686,31 @@
   We first initialize the mode tracker for this chunk.
 
   <\nf-chunk|write_chunk()>
-    function write_chunk(chunk_name) {
+    <item>function write_chunk(chunk_name) {
 
-    \ \ =\<less\>\\chunkref{awk-delete-array}(context)\<gtr\>
+    <item> \ =\<less\>\\chunkref{awk-delete-array}(context)\<gtr\>
 
-    \ \ return write_chunk_r(chunk_name, context);
+    <item> \ return write_chunk_r(chunk_name, context);
 
-    }
+    <item>}
 
-    \;
+    <item>
 
-    function write_chunk_r(chunk_name, context, indent, tail,
+    <item>function write_chunk_r(chunk_name, context, indent, tail,
 
-    \ \ # optional vars
+    <item> \ # optional vars
 
-    \ \ <with|font-shape|italic|chunk-path>, chunk_args,\ 
+    <item> \ <with|font-shape|italic|chunk-path>, chunk_args,\ 
 
-    \ \ s, r, src, new_src,\ 
+    <item> \ s, r, src, new_src,\ 
 
-    \ \ # local vars
+    <item> \ # local vars
 
-    \ \ chunk_params, part, max_part, part_line, frag, max_frag, text,\ 
+    <item> \ chunk_params, part, max_part, part_line, frag, max_frag, text,\ 
 
-    \ \ chunklet, only_part, call_chunk_args, new_context)
+    <item> \ chunklet, only_part, call_chunk_args, new_context)
 
-    {
+    <item>{
   </nf-chunk||>
 
   <subsection|Chunk Parts><label|sub:Chunk-parts>
@@ -3699,20 +3720,20 @@
   should be emitted.
 
   <\nf-chunk|write_chunk()>
-    \ \ if (match(chunk_name, "^(.*)\\\\[([0-9]*)\\\\]$", chunk_name_parts))
-    {
+    <item> \ if (match(chunk_name, "^(.*)\\\\[([0-9]*)\\\\]$",
+    chunk_name_parts)) {
 
-    \ \ \ \ chunk_name = chunk_name_parts[1];
+    <item> \ \ \ chunk_name = chunk_name_parts[1];
 
-    \ \ \ \ only_part = chunk_name_parts[2];
+    <item> \ \ \ only_part = chunk_name_parts[2];
 
-    \ \ }
+    <item> \ }
   </nf-chunk||>
 
   We then create a mode tracker
 
   <\nf-chunk|write_chunk()>
-    \ =\<less\>\\chunkref{new-mode-tracker}(context, chunks[chunk_name,
+    <item> =\<less\>\\chunkref{new-mode-tracker}(context, chunks[chunk_name,
     "language"], "")\<gtr\>
   </nf-chunk||>
 
@@ -3721,45 +3742,45 @@
   <verbatim|chunk_args>.
 
   <\nf-chunk|write_chunk()>
-    \ split(chunks[chunk_name, "params"], chunk_params, " *; *");
+    <item> split(chunks[chunk_name, "params"], chunk_params, " *; *");
   </nf-chunk||>
 
   To assemble a chunk, we write out each part.
 
   <\nf-chunk|write_chunk()>
-    \ \ if (! (chunk_name in chunk_names)) {
+    <item> \ if (! (chunk_name in chunk_names)) {
 
-    \ \ \ \ error(sprintf(_"The root module \<less\>\<less\>%s\<gtr\>\<gtr\>
-    was not defined.\\nUsed by: %s",\\
+    <item> \ \ \ error(sprintf(_"The root module
+    \<less\>\<less\>%s\<gtr\>\<gtr\> was not defined.\\nUsed by: %s",\\
 
-    \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ chunk_name, chunk_path));
+    <item> \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ chunk_name, chunk_path));
 
-    \ \ }
+    <item> \ }
 
-    \;
+    <item>
 
-    \ \ max_part = chunks[chunk_name, "part"];
+    <item> \ max_part = chunks[chunk_name, "part"];
 
-    \ \ for(part = 1; part \<less\>= max_part; part++) {
+    <item> \ for(part = 1; part \<less\>= max_part; part++) {
 
-    \ \ \ \ if (! only_part \|\| part == only_part) {
+    <item> \ \ \ if (! only_part \|\| part == only_part) {
 
-    \ \ \ \ \ \ =\<less\>\\chunkref{write-part}\<gtr\>
+    <item> \ \ \ \ \ =\<less\>\\chunkref{write-part}\<gtr\>
 
-    \ \ \ \ }
+    <item> \ \ \ }
 
-    \ \ }
+    <item> \ }
 
-    \ \ if (! finalize_mode_tracker(context)) {
+    <item> \ if (! finalize_mode_tracker(context)) {
 
-    \ \ \ \ dump_mode_tracker(context);
+    <item> \ \ \ dump_mode_tracker(context);
 
-    \ \ \ \ error(sprintf(_"Module %s did not close context properly.\\nUsed
-    by: %s\\n", chunk_name, chunk_path));
+    <item> \ \ \ error(sprintf(_"Module %s did not close context
+    properly.\\nUsed by: %s\\n", chunk_name, chunk_path));
 
-    \ \ }
+    <item> \ }
 
-    }
+    <item>}
   </nf-chunk||>
 
   A part can either be a chunklet of lines, or an include of another chunk.
@@ -3774,69 +3795,71 @@
   file-line directive.
 
   <\nf-chunk|write-part>
-    =\<less\>\\chunkref{check-source-jump}\<gtr\>
+    <item>=\<less\>\\chunkref{check-source-jump}\<gtr\>
 
-    \;
+    <item>
 
-    chunklet = chunks[chunk_name, "part", part];
+    <item>chunklet = chunks[chunk_name, "part", part];
 
-    if (chunks[chunk_name, "part", part, "type"] == part_type_chunk) {
+    <item>if (chunks[chunk_name, "part", part, "type"] == part_type_chunk) {
 
-    \ \ =\<less\>\\chunkref{write-included-chunk}\<gtr\>
+    <item> \ =\<less\>\\chunkref{write-included-chunk}\<gtr\>
 
-    } else if (chunklet SUBSEP "line" in chunks) {
+    <item>} else if (chunklet SUBSEP "line" in chunks) {
 
-    \ \ =\<less\>\\chunkref{write-chunklets}\<gtr\>
+    <item> \ =\<less\>\\chunkref{write-chunklets}\<gtr\>
 
-    } else {
+    <item>} else {
 
-    \ \ # empty last chunklet
+    <item> \ # empty last chunklet
 
-    }
+    <item>}
   </nf-chunk||>
 
   To write an included chunk, we must detect any optional chunk arguments in
   parenthesis. Then we recurse calling <verbatim|write_chunk()>.
 
   <\nf-chunk|write-included-chunk>
-    if (match(chunklet, "^([^\\\\[\\\\(]*)\\\\((.*)\\\\)$", chunklet_parts))
-    {
+    <item>if (match(chunklet, "^([^\\\\[\\\\(]*)\\\\((.*)\\\\)$",
+    chunklet_parts)) {
 
-    \ \ chunklet = chunklet_parts[1];
+    <item> \ chunklet = chunklet_parts[1];
 
-    \ \ parse_chunk_args("c-like", chunklet_parts[2], call_chunk_args, "(");
+    <item> \ parse_chunk_args("c-like", chunklet_parts[2], call_chunk_args,
+    "(");
 
-    \ \ for (c in call_chunk_args) {
+    <item> \ for (c in call_chunk_args) {
 
-    \ \ \ \ call_chunk_args[c] = expand_chunk_args(call_chunk_args[c],
+    <item> \ \ \ call_chunk_args[c] = expand_chunk_args(call_chunk_args[c],
     chunk_params, chunk_args);
 
-    \ \ }
+    <item> \ }
 
-    } else {
+    <item>} else {
 
-    \ \ split("", call_chunk_args);
+    <item> \ split("", call_chunk_args);
 
-    }
+    <item>}
 
-    # update the transforms arrays
+    <item># update the transforms arrays
 
-    new_src = mode_escaper(context, s, r, src);
+    <item>new_src = mode_escaper(context, s, r, src);
 
-    =\<less\>\\chunkref{awk-delete-array}(new_context)\<gtr\>
+    <item>=\<less\>\\chunkref{awk-delete-array}(new_context)\<gtr\>
 
-    write_chunk_r(chunklet, new_context,
+    <item>write_chunk_r(chunklet, new_context,
 
-    \ \ \ \ \ \ \ \ \ \ \ \ chunks[chunk_name, "part", part, "indent"]
+    <item> \ \ \ \ \ \ \ \ \ \ \ chunks[chunk_name, "part", part, "indent"]
     indent,
 
-    \ \ \ \ \ \ \ \ \ \ \ \ chunks[chunk_name, "part", part, "tail"],
+    <item> \ \ \ \ \ \ \ \ \ \ \ chunks[chunk_name, "part", part, "tail"],
 
-    \ \ \ \ \ \ \ \ \ \ \ \ chunk_path "\\n \ \ \ \ \ \ \ \ " chunk_name,
+    <item> \ \ \ \ \ \ \ \ \ \ \ chunk_path "\\n \ \ \ \ \ \ \ \ "
+    chunk_name,
 
-    \ \ \ \ \ \ \ \ \ \ \ \ call_chunk_args,
+    <item> \ \ \ \ \ \ \ \ \ \ \ call_chunk_args,
 
-    \ \ \ \ \ \ \ \ \ \ \ \ s, r, new_src);
+    <item> \ \ \ \ \ \ \ \ \ \ \ s, r, new_src);
   </nf-chunk||>
 
   Before we output a chunklet of lines, we first emit the file and line
@@ -3850,25 +3873,25 @@
   we note that we want to emit the line statement when it is next safe.
 
   <\nf-chunk|write-chunklets>
-    max_frag = chunks[chunklet, "line"];
+    <item>max_frag = chunks[chunklet, "line"];
 
-    for(frag = 1; frag \<less\>= max_frag; frag++) {
+    <item>for(frag = 1; frag \<less\>= max_frag; frag++) {
 
-    \ \ =\<less\>\\chunkref{write-file-line}\<gtr\>
+    <item> \ =\<less\>\\chunkref{write-file-line}\<gtr\>
   </nf-chunk||>
 
   We then extract the chunklet text and expand any arguments.
 
   <\nf-chunk|write-chunklets>
-    \;
+    <item>
 
-    \ \ text = chunks[chunklet, frag];
+    <item> \ text = chunks[chunklet, frag];
 
-    \ 
+    <item>\ 
 
-    \ \ /* check params */
+    <item> \ /* check params */
 
-    \ \ text = expand_chunk_args(text, chunk_params, chunk_args);
+    <item> \ text = expand_chunk_args(text, chunk_params, chunk_args);
   </nf-chunk||>
 
   If the text is a single newline (which we keep separate - see
@@ -3882,23 +3905,24 @@
   that indentation can be managed with the following piece of text.
 
   <\nf-chunk|write-chunklets>
-    \;
+    <item>
 
-    \ if (text == "\\n") {
+    <item> if (text == "\\n") {
 
-    \ \ \ \ lineno++;
+    <item> \ \ \ lineno++;
 
-    \ \ \ \ if (part == max_part && frag == max_frag && length(chunk_path)) {
+    <item> \ \ \ if (part == max_part && frag == max_frag &&
+    length(chunk_path)) {
 
-    \ \ \ \ \ \ text = "";
+    <item> \ \ \ \ \ text = "";
 
-    \ \ \ \ \ \ break;
+    <item> \ \ \ \ \ break;
 
-    \ \ \ \ } else {
+    <item> \ \ \ } else {
 
-    \ \ \ \ \ \ newline = 1;
+    <item> \ \ \ \ \ newline = 1;
 
-    \ \ \ \ }
+    <item> \ \ \ }
   </nf-chunk||>
 
   If this text does not represent a newline, but we see that we are the first
@@ -3911,25 +3935,25 @@
   </note>
 
   <\nf-chunk|write-chunklets>
-    \ \ } else if (length(text) \|\| length(tail)) {
+    <item> \ } else if (length(text) \|\| length(tail)) {
 
-    \ \ \ \ if (newline) text = indent text;
+    <item> \ \ \ if (newline) text = indent text;
 
-    \ \ \ \ newline = 0;
+    <item> \ \ \ newline = 0;
 
-    \ \ }
+    <item> \ }
 
-    \;
+    <item>
   </nf-chunk||>
 
   Tail will soon no longer be relevant once mode-detection is in place.
 
   <\nf-chunk|write-chunklets>
-    \ \ text = text tail;
+    <item> \ text = text tail;
 
-    \ \ mode_tracker(context, text);
+    <item> \ mode_tracker(context, text);
 
-    \ \ print transform_escape(s, r, text, src);
+    <item> \ print transform_escape(s, r, text, src);
   </nf-chunk||>
 
   If a line ends in a backslash --- suggesting continuation --- then we
@@ -3937,13 +3961,14 @@
   lines.
 
   <\nf-chunk|write-chunklets>
-    \ \ if (linenos) {
+    <item> \ if (linenos) {
 
-    \ \ \ \ lineno_suppressed = substr(lastline, length(lastline)) == "\\\\";
+    <item> \ \ \ lineno_suppressed = substr(lastline, length(lastline)) ==
+    "\\\\";
 
-    \ \ }
+    <item> \ }
 
-    }
+    <item>}
   </nf-chunk||>
 
   Of course there is no point in actually outputting the source filename and
@@ -3952,37 +3977,37 @@
   when they had changed.
 
   <\nf-chunk|write-file-line>
-    if (newline && lineno_needed && ! lineno_suppressed) {
+    <item>if (newline && lineno_needed && ! lineno_suppressed) {
 
-    \ \ filename = a_filename;
+    <item> \ filename = a_filename;
 
-    \ \ lineno = a_lineno;
+    <item> \ lineno = a_lineno;
 
-    \ \ print "#line " lineno " \\"" filename "\\"\\n"
+    <item> \ print "#line " lineno " \\"" filename "\\"\\n"
 
-    \ \ lineno_needed = 0;
+    <item> \ lineno_needed = 0;
 
-    }
+    <item>}
   </nf-chunk||>
 
   We check if a new file-line is needed by checking if the source line
   matches what we (or a compiler) would expect.
 
   <\nf-chunk|check-source-jump>
-    if (linenos && (chunk_name SUBSEP "part" SUBSEP part SUBSEP "FILENAME" in
-    chunks)) {
+    <item>if (linenos && (chunk_name SUBSEP "part" SUBSEP part SUBSEP
+    "FILENAME" in chunks)) {
 
-    \ \ a_filename = chunks[chunk_name, "part", part, "FILENAME"];
+    <item> \ a_filename = chunks[chunk_name, "part", part, "FILENAME"];
 
-    \ \ a_lineno = chunks[chunk_name, "part", part, "LINENO"];
+    <item> \ a_lineno = chunks[chunk_name, "part", part, "LINENO"];
 
-    \ \ if (a_filename != filename \|\| a_lineno != lineno) {
+    <item> \ if (a_filename != filename \|\| a_lineno != lineno) {
 
-    \ \ \ \ lineno_needed++;
+    <item> \ \ \ lineno_needed++;
 
-    \ \ }
+    <item> \ }
 
-    }
+    <item>}
   </nf-chunk||>
 
   <chapter|Storing Chunks>
@@ -3992,9 +4017,9 @@
   chunklets used in a chunk will be stored in <verbatim|chunks>.
 
   <\nf-chunk|constants>
-    part_type_chunk=1;
+    <item>part_type_chunk=1;
 
-    SUBSEP=",";
+    <item>SUBSEP=",";
   </nf-chunk||>
 
   The params mentioned are not chunk parameters for parameterized chunks, as
@@ -4005,90 +4030,90 @@
   </footnote>.
 
   <\nf-chunk|chunk-storage-functions>
-    function new_chunk(chunk_name, params,
+    <item>function new_chunk(chunk_name, params,
 
-    \ \ # local vars
+    <item> \ # local vars
 
-    \ \ p, append )
+    <item> \ p, append )
 
-    {
+    <item>{
 
-    \ \ # HACK WHILE WE CHANGE TO ( ) for PARAM CHUNKS
+    <item> \ # HACK WHILE WE CHANGE TO ( ) for PARAM CHUNKS
 
-    \ \ gsub("\\\\(\\\\)$", "", chunk_name);
+    <item> \ gsub("\\\\(\\\\)$", "", chunk_name);
 
-    \ \ if (! (chunk_name in chunk_names)) {
+    <item> \ if (! (chunk_name in chunk_names)) {
 
-    \ \ \ \ if (debug) print "New chunk " chunk_name;
+    <item> \ \ \ if (debug) print "New chunk " chunk_name;
 
-    \ \ \ \ chunk_names[chunk_name];
+    <item> \ \ \ chunk_names[chunk_name];
 
-    \ \ \ \ for (p in params) {
+    <item> \ \ \ for (p in params) {
 
-    \ \ \ \ \ \ chunks[chunk_name, p] = params[p];
+    <item> \ \ \ \ \ chunks[chunk_name, p] = params[p];
 
-    \ \ \ \ }
+    <item> \ \ \ }
 
-    \ \ \ \ if ("append" in params) {
+    <item> \ \ \ if ("append" in params) {
 
-    \ \ \ \ \ \ append=params["append"];
+    <item> \ \ \ \ \ append=params["append"];
 
-    \ \ \ \ \ \ if (! (append in chunk_names)) {
+    <item> \ \ \ \ \ if (! (append in chunk_names)) {
 
-    \ \ \ \ \ \ \ \ warning("Chunk " chunk_name " is appended to chunk "
+    <item> \ \ \ \ \ \ \ warning("Chunk " chunk_name " is appended to chunk "
     append " which is not defined yet");
 
-    \ \ \ \ \ \ \ \ new_chunk(append);
+    <item> \ \ \ \ \ \ \ new_chunk(append);
 
-    \ \ \ \ \ \ }
+    <item> \ \ \ \ \ }
 
-    \ \ \ \ \ \ chunk_include(append, chunk_name);
+    <item> \ \ \ \ \ chunk_include(append, chunk_name);
 
-    \ \ \ \ \ \ chunk_line(append, ORS);
+    <item> \ \ \ \ \ chunk_line(append, ORS);
 
-    \ \ \ \ }
+    <item> \ \ \ }
 
-    \ \ }
+    <item> \ }
 
-    \ \ active_chunk = chunk_name;
+    <item> \ active_chunk = chunk_name;
 
-    \ \ prime_chunk(chunk_name);
+    <item> \ prime_chunk(chunk_name);
 
-    }
+    <item>}
   </nf-chunk||>
 
   <\nf-chunk|chunk-storage-functions>
-    \;
+    <item>
 
-    function prime_chunk(chunk_name)
+    <item>function prime_chunk(chunk_name)
 
-    {
+    <item>{
 
-    \ \ chunks[chunk_name, "part", ++chunks[chunk_name, "part"] ] = \\
+    <item> \ chunks[chunk_name, "part", ++chunks[chunk_name, "part"] ] = \\
 
-    \ \ \ \ \ \ \ \ \ chunk_name SUBSEP "chunklet" SUBSEP ""
+    <item> \ \ \ \ \ \ \ \ chunk_name SUBSEP "chunklet" SUBSEP ""
     ++chunks[chunk_name, "chunklet"];
 
-    \ \ chunks[chunk_name, "part", chunks[chunk_name, "part"], "FILENAME"] =
-    FILENAME;
+    <item> \ chunks[chunk_name, "part", chunks[chunk_name, "part"],
+    "FILENAME"] = FILENAME;
 
-    \ \ chunks[chunk_name, "part", chunks[chunk_name, "part"], "LINENO"] =
-    FNR + 1;
+    <item> \ chunks[chunk_name, "part", chunks[chunk_name, "part"], "LINENO"]
+    = FNR + 1;
 
-    }
+    <item>}
 
-    \;
+    <item>
 
-    function chunk_line(chunk_name, line){
+    <item>function chunk_line(chunk_name, line){
 
-    \ \ chunks[chunk_name, "chunklet", chunks[chunk_name, "chunklet"],
+    <item> \ chunks[chunk_name, "chunklet", chunks[chunk_name, "chunklet"],
 
-    \ \ \ \ \ \ \ \ \ ++chunks[chunk_name, "chunklet", chunks[chunk_name,
-    "chunklet"], "line"] \ ] = line;
+    <item> \ \ \ \ \ \ \ \ ++chunks[chunk_name, "chunklet",
+    chunks[chunk_name, "chunklet"], "line"] \ ] = line;
 
-    }
+    <item>}
 
-    \;
+    <item>
   </nf-chunk||>
 
   Chunk include represents a <em|chunkref> statement, and stores the
@@ -4098,27 +4123,27 @@
   should be indented.
 
   <\nf-chunk|chunk-storage-functions>
-    function chunk_include(chunk_name, chunk_ref, indent, tail)
+    <item>function chunk_include(chunk_name, chunk_ref, indent, tail)
 
-    {
+    <item>{
 
-    \ \ chunks[chunk_name, "part", ++chunks[chunk_name, "part"] ] =
+    <item> \ chunks[chunk_name, "part", ++chunks[chunk_name, "part"] ] =
     chunk_ref;
 
-    \ \ chunks[chunk_name, "part", chunks[chunk_name, "part"], "type" ] =
-    part_type_chunk;
+    <item> \ chunks[chunk_name, "part", chunks[chunk_name, "part"], "type" ]
+    = part_type_chunk;
 
-    \ \ chunks[chunk_name, "part", chunks[chunk_name, "part"], "indent" ] =
-    indent_string(indent);
+    <item> \ chunks[chunk_name, "part", chunks[chunk_name, "part"], "indent"
+    ] = indent_string(indent);
 
-    \ \ chunks[chunk_name, "part", chunks[chunk_name, "part"], "tail" ] =
-    tail;
+    <item> \ chunks[chunk_name, "part", chunks[chunk_name, "part"], "tail" ]
+    = tail;
 
-    \ \ prime_chunk(chunk_name);
+    <item> \ prime_chunk(chunk_name);
 
-    }
+    <item>}
 
-    \;
+    <item>
   </nf-chunk||>
 
   The indent is calculated by indent_string, which may in future convert some
@@ -4127,11 +4152,11 @@
   printing an empty string using that format.
 
   <\nf-chunk|chunk-storage-functions>
-    function indent_string(indent) {
+    <item>function indent_string(indent) {
 
-    \ \ return sprintf("%" indent "s", "");
+    <item> \ return sprintf("%" indent "s", "");
 
-    }
+    <item>}
   </nf-chunk||>
 
   <chapter|getopt><label|cha:getopt>
@@ -4146,52 +4171,52 @@
   The getopt.awk header is:
 
   <\nf-chunk|getopt.awk-header>
-    # getopt.awk --- do C library getopt(3) function in awk
+    <item># getopt.awk --- do C library getopt(3) function in awk
 
-    #
+    <item>#
 
-    # Arnold Robbins, arnold@skeeve.com, Public Domain
+    <item># Arnold Robbins, arnold@skeeve.com, Public Domain
 
-    #
+    <item>#
 
-    # Initial version: March, 1991
+    <item># Initial version: March, 1991
 
-    # Revised: May, 1993
+    <item># Revised: May, 1993
 
-    \;
+    <item>
   </nf-chunk||>
 
   The provided explanation is:
 
   <\nf-chunk|getopt.awk-notes>
-    # External variables:
+    <item># External variables:
 
-    # \ \ \ Optind -- index in ARGV of first nonoption argument
+    <item># \ \ \ Optind -- index in ARGV of first nonoption argument
 
-    # \ \ \ Optarg -- string value of argument to current option
+    <item># \ \ \ Optarg -- string value of argument to current option
 
-    # \ \ \ Opterr -- if nonzero, print our own diagnostic
+    <item># \ \ \ Opterr -- if nonzero, print our own diagnostic
 
-    # \ \ \ Optopt -- current option letter
+    <item># \ \ \ Optopt -- current option letter
 
-    \;
+    <item>
 
-    # Returns:
+    <item># Returns:
 
-    # \ \ \ -1 \ \ \ \ at end of options
+    <item># \ \ \ -1 \ \ \ \ at end of options
 
-    # \ \ \ ? \ \ \ \ \ for unrecognized option
+    <item># \ \ \ ? \ \ \ \ \ for unrecognized option
 
-    # \ \ \ \<less\>c\<gtr\> \ \ \ a character representing the current
+    <item># \ \ \ \<less\>c\<gtr\> \ \ \ a character representing the current
     option
 
-    \;
+    <item>
 
-    # Private Data:
+    <item># Private Data:
 
-    # \ \ \ _opti \ -- index in multi-flag option, e.g., -abc
+    <item># \ \ \ _opti \ -- index in multi-flag option, e.g., -abc
 
-    \;
+    <item>
   </nf-chunk||>
 
   The function follows. The final two parameters, <verbatim|thisopt> and
@@ -4200,162 +4225,163 @@
   convention to help us humans.
 
   <\nf-chunk|getopt.awk-getopt()>
-    function getopt(argc, argv, options, \ \ \ thisopt, i)
+    <item>function getopt(argc, argv, options, \ \ \ thisopt, i)
 
-    {
+    <item>{
 
-    \ \ \ \ if (length(options) == 0) \ \ \ # no options given
+    <item> \ \ \ if (length(options) == 0) \ \ \ # no options given
 
-    \ \ \ \ \ \ \ \ return -1
+    <item> \ \ \ \ \ \ \ return -1
 
-    \ \ \ \ if (argv[Optind] == "--") { \ # all done
+    <item> \ \ \ if (argv[Optind] == "--") { \ # all done
 
-    \ \ \ \ \ \ \ \ Optind++
+    <item> \ \ \ \ \ \ \ Optind++
 
-    \ \ \ \ \ \ \ \ _opti = 0
+    <item> \ \ \ \ \ \ \ _opti = 0
 
-    \ \ \ \ \ \ \ \ return -1
+    <item> \ \ \ \ \ \ \ return -1
 
-    \ \ \ \ } else if (argv[Optind] !~ /^-[^: \\t\\n\\f\\r\\v\\b]/) {
+    <item> \ \ \ } else if (argv[Optind] !~ /^-[^: \\t\\n\\f\\r\\v\\b]/) {
 
-    \ \ \ \ \ \ \ \ _opti = 0
+    <item> \ \ \ \ \ \ \ _opti = 0
 
-    \ \ \ \ \ \ \ \ return -1
+    <item> \ \ \ \ \ \ \ return -1
 
-    \ \ \ \ }
+    <item> \ \ \ }
 
-    \ \ \ \ if (_opti == 0)
+    <item> \ \ \ if (_opti == 0)
 
-    \ \ \ \ \ \ \ \ _opti = 2
+    <item> \ \ \ \ \ \ \ _opti = 2
 
-    \ \ \ \ thisopt = substr(argv[Optind], _opti, 1)
+    <item> \ \ \ thisopt = substr(argv[Optind], _opti, 1)
 
-    \ \ \ \ Optopt = thisopt
+    <item> \ \ \ Optopt = thisopt
 
-    \ \ \ \ i = index(options, thisopt)
+    <item> \ \ \ i = index(options, thisopt)
 
-    \ \ \ \ if (i == 0) {
+    <item> \ \ \ if (i == 0) {
 
-    \ \ \ \ \ \ \ \ if (Opterr)
+    <item> \ \ \ \ \ \ \ if (Opterr)
 
-    \ \ \ \ \ \ \ \ \ \ \ \ printf("%c -- invalid option\\n",
+    <item> \ \ \ \ \ \ \ \ \ \ \ printf("%c -- invalid option\\n",
 
-    \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ thisopt)
+    <item> \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ thisopt)
     \<gtr\> "/dev/stderr"
 
-    \ \ \ \ \ \ \ \ if (_opti \<gtr\>= length(argv[Optind])) {
+    <item> \ \ \ \ \ \ \ if (_opti \<gtr\>= length(argv[Optind])) {
 
-    \ \ \ \ \ \ \ \ \ \ \ \ Optind++
+    <item> \ \ \ \ \ \ \ \ \ \ \ Optind++
 
-    \ \ \ \ \ \ \ \ \ \ \ \ _opti = 0
+    <item> \ \ \ \ \ \ \ \ \ \ \ _opti = 0
 
-    \ \ \ \ \ \ \ \ } else
+    <item> \ \ \ \ \ \ \ } else
 
-    \ \ \ \ \ \ \ \ \ \ \ \ _opti++
+    <item> \ \ \ \ \ \ \ \ \ \ \ _opti++
 
-    \ \ \ \ \ \ \ \ return "?"
+    <item> \ \ \ \ \ \ \ return "?"
 
-    \ \ \ \ }
+    <item> \ \ \ }
   </nf-chunk||>
 
   At this point, the option has been found and we need to know if it takes
   any arguments.
 
   <\nf-chunk|getopt.awk-getopt()>
-    \ \ \ \ if (substr(options, i + 1, 1) == ":") {
+    <item> \ \ \ if (substr(options, i + 1, 1) == ":") {
 
-    \ \ \ \ \ \ \ \ # get option argument
+    <item> \ \ \ \ \ \ \ # get option argument
 
-    \ \ \ \ \ \ \ \ if (length(substr(argv[Optind], _opti + 1)) \<gtr\> 0)
+    <item> \ \ \ \ \ \ \ if (length(substr(argv[Optind], _opti + 1)) \<gtr\>
+    0)
 
-    \ \ \ \ \ \ \ \ \ \ \ \ Optarg = substr(argv[Optind], _opti + 1)
+    <item> \ \ \ \ \ \ \ \ \ \ \ Optarg = substr(argv[Optind], _opti + 1)
 
-    \ \ \ \ \ \ \ \ else
+    <item> \ \ \ \ \ \ \ else
 
-    \ \ \ \ \ \ \ \ \ \ \ \ Optarg = argv[++Optind]
+    <item> \ \ \ \ \ \ \ \ \ \ \ Optarg = argv[++Optind]
 
-    \ \ \ \ \ \ \ \ _opti = 0
+    <item> \ \ \ \ \ \ \ _opti = 0
 
-    \ \ \ \ } else
+    <item> \ \ \ } else
 
-    \ \ \ \ \ \ \ \ Optarg = ""
+    <item> \ \ \ \ \ \ \ Optarg = ""
 
-    \ \ \ \ if (_opti == 0 \|\| _opti \<gtr\>= length(argv[Optind])) {
+    <item> \ \ \ if (_opti == 0 \|\| _opti \<gtr\>= length(argv[Optind])) {
 
-    \ \ \ \ \ \ \ \ Optind++
+    <item> \ \ \ \ \ \ \ Optind++
 
-    \ \ \ \ \ \ \ \ _opti = 0
+    <item> \ \ \ \ \ \ \ _opti = 0
 
-    \ \ \ \ } else
+    <item> \ \ \ } else
 
-    \ \ \ \ \ \ \ \ _opti++
+    <item> \ \ \ \ \ \ \ _opti++
 
-    \ \ \ \ return thisopt
+    <item> \ \ \ return thisopt
 
-    }
+    <item>}
   </nf-chunk||>
 
   A test program is built in, too
 
   <\nf-chunk|getopt.awk-begin>
-    BEGIN {
+    <item>BEGIN {
 
-    \ \ \ \ Opterr = 1 \ \ \ # default is to diagnose
+    <item> \ \ \ Opterr = 1 \ \ \ # default is to diagnose
 
-    \ \ \ \ Optind = 1 \ \ \ # skip ARGV[0]
+    <item> \ \ \ Optind = 1 \ \ \ # skip ARGV[0]
 
-    \ \ \ \ # test program
+    <item> \ \ \ # test program
 
-    \ \ \ \ if (_getopt_test) {
+    <item> \ \ \ if (_getopt_test) {
 
-    \ \ \ \ \ \ \ \ while ((_go_c = getopt(ARGC, ARGV, "ab:cd")) != -1)
+    <item> \ \ \ \ \ \ \ while ((_go_c = getopt(ARGC, ARGV, "ab:cd")) != -1)
 
-    \ \ \ \ \ \ \ \ \ \ \ \ printf("c = \<less\>%c\<gtr\>, optarg =
+    <item> \ \ \ \ \ \ \ \ \ \ \ printf("c = \<less\>%c\<gtr\>, optarg =
     \<less\>%s\<gtr\>\\n",
 
-    \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ _go_c,
+    <item> \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ _go_c,
     Optarg)
 
-    \ \ \ \ \ \ \ \ printf("non-option arguments:\\n")
+    <item> \ \ \ \ \ \ \ printf("non-option arguments:\\n")
 
-    \ \ \ \ \ \ \ \ for (; Optind \<less\> ARGC; Optind++)
+    <item> \ \ \ \ \ \ \ for (; Optind \<less\> ARGC; Optind++)
 
-    \ \ \ \ \ \ \ \ \ \ \ \ printf("\\tARGV[%d] = \<less\>%s\<gtr\>\\n",
+    <item> \ \ \ \ \ \ \ \ \ \ \ printf("\\tARGV[%d] = \<less\>%s\<gtr\>\\n",
 
-    \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Optind,
+    <item> \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Optind,
     ARGV[Optind])
 
-    \ \ \ \ }
+    <item> \ \ \ }
 
-    }
+    <item>}
   </nf-chunk||>
 
   The entire getopt.awk is made out of these chunks in order
 
   <\nf-chunk|getopt.awk>
-    =\<less\>\\chunkref{getopt.awk-header}\<gtr\>
+    <item>=\<less\>\\chunkref{getopt.awk-header}\<gtr\>
 
-    \;
+    <item>
 
-    =\<less\>\\chunkref{getopt.awk-notes}\<gtr\>
+    <item>=\<less\>\\chunkref{getopt.awk-notes}\<gtr\>
 
-    =\<less\>\\chunkref{getopt.awk-getopt()}\<gtr\>
+    <item>=\<less\>\\chunkref{getopt.awk-getopt()}\<gtr\>
 
-    =\<less\>\\chunkref{getopt.awk-begin}\<gtr\>
+    <item>=\<less\>\\chunkref{getopt.awk-begin}\<gtr\>
   </nf-chunk||>
 
   Although we only want the header and function:
 
   <\nf-chunk|getopt>
-    # try: locate getopt.awk for the full original file
+    <item># try: locate getopt.awk for the full original file
 
-    # as part of your standard awk installation
+    <item># as part of your standard awk installation
 
-    =\<less\>\\chunkref{getopt.awk-header}\<gtr\>
+    <item>=\<less\>\\chunkref{getopt.awk-header}\<gtr\>
 
-    \;
+    <item>
 
-    =\<less\>\\chunkref{getopt.awk-getopt()}\<gtr\>
+    <item>=\<less\>\\chunkref{getopt.awk-getopt()}\<gtr\>
   </nf-chunk||>
 
   <chapter|Fangle LaTeX source code><label|latex-source>
@@ -4371,48 +4397,50 @@
   listing and contain the chunk name.
 
   <\nf-chunk|./fangle.module>
-    #\\DeclareLyXModule{Fangle Literate Listings}
+    <item>#\\DeclareLyXModule{Fangle Literate Listings}
 
-    #DescriptionBegin
+    <item>#DescriptionBegin
 
-    # \ Fangle literate listings allow one to write
+    <item># \ Fangle literate listings allow one to write
 
-    # \ \ literate programs after the fashion of noweb, but without having
+    <item># \ \ literate programs after the fashion of noweb, but without
+    having
 
-    # \ \ to use noweave to generate the documentation. Instead the listings
+    <item># \ \ to use noweave to generate the documentation. Instead the
+    listings
 
-    # \ \ package is extended in conjunction with the noweb package to
+    <item># \ \ package is extended in conjunction with the noweb package to
     implement
 
-    # \ \ to code formating directly as latex.
+    <item># \ \ to code formating directly as latex.
 
-    # \ The fangle awk script
+    <item># \ The fangle awk script
 
-    #DescriptionEnd
+    <item>#DescriptionEnd
 
-    \;
+    <item>
 
-    =\<less\>\\chunkref{gpl3-copyright.hashed}\<gtr\>
+    <item>=\<less\>\\chunkref{gpl3-copyright.hashed}\<gtr\>
 
-    \;
+    <item>
 
-    Format 11
+    <item>Format 11
 
-    \;
+    <item>
 
-    AddToPreamble
+    <item>AddToPreamble
 
-    =\<less\>\\chunkref{./fangle.sty}\<gtr\>
+    <item>=\<less\>\\chunkref{./fangle.sty}\<gtr\>
 
-    EndPreamble
+    <item>EndPreamble
 
-    \;
+    <item>
 
-    =\<less\>\\chunkref{chunkstyle}\<gtr\>
+    <item>=\<less\>\\chunkref{chunkstyle}\<gtr\>
 
-    \;
+    <item>
 
-    =\<less\>\\chunkref{chunkref}\<gtr\>
+    <item>=\<less\>\\chunkref{chunkref}\<gtr\>
   </nf-chunk|lyx-module|>
 
   Because <LyX> modules are not yet a language supported by fangle or
@@ -4420,9 +4448,9 @@
   line of the GPL3 license commence with a #
 
   <\nf-chunk|gpl3-copyright.hashed>
-    #=\<less\>\\chunkref{gpl3-copyright}\<gtr\>
+    <item>#=\<less\>\\chunkref{gpl3-copyright}\<gtr\>
 
-    \;
+    <item>
   </nf-chunk|awk|>
 
   <subsection|The Chunk style>
@@ -4443,47 +4471,47 @@
   We set PassThru to 1 because the user is actually entering raw latex.
 
   <\nf-chunk|chunkstyle>
-    Style Chunk
+    <item>Style Chunk
 
-    \ \ LatexType \ \ \ \ \ \ \ \ \ \ \ \ Command
+    <item> \ LatexType \ \ \ \ \ \ \ \ \ \ \ \ Command
 
-    \ \ LatexName \ \ \ \ \ \ \ \ \ \ \ \ Chunk
+    <item> \ LatexName \ \ \ \ \ \ \ \ \ \ \ \ Chunk
 
-    \ \ Margin \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ First_Dynamic
+    <item> \ Margin \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ First_Dynamic
 
-    \ \ LeftMargin \ \ \ \ \ \ \ \ \ \ \ Chunk:xxx
+    <item> \ LeftMargin \ \ \ \ \ \ \ \ \ \ \ Chunk:xxx
 
-    \ \ LabelSep \ \ \ \ \ \ \ \ \ \ \ \ \ xx
+    <item> \ LabelSep \ \ \ \ \ \ \ \ \ \ \ \ \ xx
 
-    \ \ LabelType \ \ \ \ \ \ \ \ \ \ \ \ Static
+    <item> \ LabelType \ \ \ \ \ \ \ \ \ \ \ \ Static
 
-    \ \ LabelString \ \ \ \ \ \ \ \ \ \ "Chunk:"
+    <item> \ LabelString \ \ \ \ \ \ \ \ \ \ "Chunk:"
 
-    \ \ Align \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Left
+    <item> \ Align \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Left
 
-    \ \ PassThru \ \ \ \ \ \ \ \ \ \ \ \ \ 1
+    <item> \ PassThru \ \ \ \ \ \ \ \ \ \ \ \ \ 1
 
-    \;
+    <item>
   </nf-chunk||>
 
   To make the label very visible we choose a larger font coloured red.
 
   <\nf-chunk|chunkstyle>
-    \ \ LabelFont
+    <item> \ LabelFont
 
-    \ \ \ \ Family \ \ \ \ \ \ \ \ \ \ \ \ \ Sans
+    <item> \ \ \ Family \ \ \ \ \ \ \ \ \ \ \ \ \ Sans
 
-    \ \ \ \ Size \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Large
+    <item> \ \ \ Size \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Large
 
-    \ \ \ \ Series \ \ \ \ \ \ \ \ \ \ \ \ \ Bold
+    <item> \ \ \ Series \ \ \ \ \ \ \ \ \ \ \ \ \ Bold
 
-    \ \ \ \ Shape \ \ \ \ \ \ \ \ \ \ \ \ \ \ Italic
+    <item> \ \ \ Shape \ \ \ \ \ \ \ \ \ \ \ \ \ \ Italic
 
-    \ \ \ \ Color \ \ \ \ \ \ \ \ \ \ \ \ \ \ red
+    <item> \ \ \ Color \ \ \ \ \ \ \ \ \ \ \ \ \ \ red
 
-    \ \ EndFont
+    <item> \ EndFont
 
-    End
+    <item>End
   </nf-chunk||>
 
   <subsection|The chunkref style>
@@ -4492,25 +4520,25 @@
   references to chunks.
 
   <\nf-chunk|chunkref>
-    InsetLayout Chunkref
+    <item>InsetLayout Chunkref
 
-    \ \ LyxType \ \ \ \ \ \ \ \ \ \ \ \ \ \ charstyle
+    <item> \ LyxType \ \ \ \ \ \ \ \ \ \ \ \ \ \ charstyle
 
-    \ \ LatexType \ \ \ \ \ \ \ \ \ \ \ \ Command
+    <item> \ LatexType \ \ \ \ \ \ \ \ \ \ \ \ Command
 
-    \ \ LatexName \ \ \ \ \ \ \ \ \ \ \ \ chunkref
+    <item> \ LatexName \ \ \ \ \ \ \ \ \ \ \ \ chunkref
 
-    \ \ PassThru \ \ \ \ \ \ \ \ \ \ \ \ \ 1
+    <item> \ PassThru \ \ \ \ \ \ \ \ \ \ \ \ \ 1
 
-    \ \ LabelFont \ \ \ \ \ \ \ \ \ \ \ \ 
+    <item> \ LabelFont \ \ \ \ \ \ \ \ \ \ \ \ 
 
-    \ \ \ \ Shape \ \ \ \ \ \ \ \ \ \ \ \ \ \ Italic
+    <item> \ \ \ Shape \ \ \ \ \ \ \ \ \ \ \ \ \ \ Italic
 
-    \ \ \ \ Color \ \ \ \ \ \ \ \ \ \ \ \ \ \ red
+    <item> \ \ \ Color \ \ \ \ \ \ \ \ \ \ \ \ \ \ red
 
-    \ \ EndFont
+    <item> \ EndFont
 
-    End
+    <item>End
   </nf-chunk||>
 
   <section|Latex Macros><label|sec:Latex-Macros>
@@ -4520,13 +4548,13 @@
   markup module expects here.
 
   <\nf-chunk|./fangle.sty>
-    \\usepackage{listings}%
+    <item>\\usepackage{listings}%
 
-    \\usepackage{noweb}%
+    <item>\\usepackage{noweb}%
 
-    \\usepackage{xargs}%
+    <item>\\usepackage{xargs}%
 
-    \\renewcommand{\\code}[1]{\\texttt{#1}}%
+    <item>\\renewcommand{\\code}[1]{\\texttt{#1}}%
   </nf-chunk|tex|>
 
   We also define a <verbatim|CChunk> macro, for use as:
@@ -4535,18 +4563,18 @@
   <verbatim|\\Chunk>.
 
   <\nf-chunk|./fangle.sty>
-    \\lstnewenvironment{Chunk}{\\relax}{\\relax}%
+    <item>\\lstnewenvironment{Chunk}{\\relax}{\\relax}%
   </nf-chunk||>
 
   We also define a suitable <verbatim|\\lstset> of parameters that suit the
   literate programming style after the fashion of <name|noweave>.
 
   <\nf-chunk|./fangle.sty>
-    \\lstset{numbers=left, stepnumber=5, numbersep=5pt,
+    <item>\\lstset{numbers=left, stepnumber=5, numbersep=5pt,
 
-    \ \ \ \ \ \ \ \ breaklines=false,basicstyle=\\ttfamily,
+    <item> \ \ \ \ \ \ \ breaklines=false,basicstyle=\\ttfamily,
 
-    \ \ \ \ \ \ \ \ numberstyle=\\tiny, language=C}%
+    <item> \ \ \ \ \ \ \ numberstyle=\\tiny, language=C}%
   </nf-chunk||>
 
   We also define a notangle-like mechanism for escaping to <LaTeX> from the
@@ -4564,7 +4592,7 @@
   shown... we need to somehow escape this representation...
 
   <\nf-chunk|./fangle.sty>
-    \\lstset{escapeinside={=\<less\>}{\<gtr\>}}%
+    <item>\\lstset{escapeinside={=\<less\>}{\<gtr\>}}%
   </nf-chunk||>
 
   Although our macros will contain the <verbatim|@> symbol, they will be
@@ -4577,15 +4605,15 @@
   remember the old maketitle in case we need it.
 
   <\nf-chunk|./fangle.sty>
-    %\\makeatletter
+    <item>%\\makeatletter
 
-    %somehow re-defining maketitle gives us a left-aligned title
+    <item>%somehow re-defining maketitle gives us a left-aligned title
 
-    %which is extactly what our specially formatted title needs!
+    <item>%which is extactly what our specially formatted title needs!
 
-    \\global\\let\\fangle@lst@maketitle\\lst@maketitle%
+    <item>\\global\\let\\fangle@lst@maketitle\\lst@maketitle%
 
-    \\global\\def\\lst@maketitle{}%
+    <item>\\global\\def\\lst@maketitle{}%
   </nf-chunk||>
 
   <subsection|The chunk command><label|sub:The-chunk-command>
@@ -4596,15 +4624,15 @@
   <verbatim|\\lst@chunkname> and restore in in lstlistings Init hook.
 
   <\nf-chunk|./fangle.sty>
-    \\def\\Chunk#1{%
+    <item>\\def\\Chunk#1{%
 
-    \ \ \\lstset{title={\\fanglecaption},name=#1}%
+    <item> \ \\lstset{title={\\fanglecaption},name=#1}%
 
-    \ \ \\global\\edef\\lst@chunkname{\\lst@intname}%
+    <item> \ \\global\\edef\\lst@chunkname{\\lst@intname}%
 
-    }%
+    <item>}%
 
-    \\def\\lst@chunkname{\\empty}%
+    <item>\\def\\lst@chunkname{\\empty}%
   </nf-chunk||>
 
   <subsubsection|Chunk parameters>
@@ -4615,7 +4643,7 @@
   the listings package complaining.
 
   <\nf-chunk|./fangle.sty>
-    \\lst@Key{params}\\relax{\\def\\fangle@chunk@params{#1}}%
+    <item>\\lst@Key{params}\\relax{\\def\\fangle@chunk@params{#1}}%
   </nf-chunk||>
 
   As it is common to define a chunk which then needs appending to another
@@ -4623,7 +4651,7 @@
   include, we support an append= option.
 
   <\nf-chunk|./fangle.sty>
-    \\lst@Key{append}\\relax{\\def\\fangle@chunk@append{#1}}%
+    <item>\\lst@Key{append}\\relax{\\def\\fangle@chunk@append{#1}}%
   </nf-chunk||>
 
   <subsection|The noweb styled caption>
@@ -4672,7 +4700,7 @@
   restore at the beginning of a chunk.
 
   <\nf-chunk|./fangle.sty>
-    \\newcounter{fangle@chunkcounter}%
+    <item>\\newcounter{fangle@chunkcounter}%
   </nf-chunk||>
 
   We construct the name of this variable to store the counter to be the text
@@ -4704,41 +4732,41 @@
   package will interpret as not existing.
 
   <\nf-chunk|./fangle.sty>
-    \\def\\fangle@caption{%
+    <item>\\def\\fangle@caption{%
 
-    \ \ \\edef\\chunkcount{lst-chunk-\\lst@intname}%
+    <item> \ \\edef\\chunkcount{lst-chunk-\\lst@intname}%
 
-    \ \ \\@ifundefined{\\chunkcount}{%
+    <item> \ \\@ifundefined{\\chunkcount}{%
 
-    \ \ \ \ \\expandafter\\gdef\\csname \\chunkcount\\endcsname{0}%
+    <item> \ \ \ \\expandafter\\gdef\\csname \\chunkcount\\endcsname{0}%
 
-    \ \ \ \ \\setcounter{fangle@chunkcounter}{\\csname
+    <item> \ \ \ \\setcounter{fangle@chunkcounter}{\\csname
     \\chunkcount\\endcsname}%
 
-    \ \ \ \ \\let\\prevchunkname\\relax%
+    <item> \ \ \ \\let\\prevchunkname\\relax%
 
-    \ \ }{%
+    <item> \ }{%
 
-    \ \ \ \ \\setcounter{fangle@chunkcounter}{\\csname
+    <item> \ \ \ \\setcounter{fangle@chunkcounter}{\\csname
     \\chunkcount\\endcsname}%
 
-    \ \ \ \ \\edef\\prevchunkname{\\lst@intname-\\arabic{fangle@chunkcounter}}%
+    <item> \ \ \ \\edef\\prevchunkname{\\lst@intname-\\arabic{fangle@chunkcounter}}%
 
-    \ \ }%
+    <item> \ }%
   </nf-chunk||>
 
   After incrementing the chunk counter, we then define the name of this
   chunk, as well as the name of the first chunk.
 
   <\nf-chunk|./fangle.sty>
-    \ \ \\addtocounter{fangle@chunkcounter}{1}%
+    <item> \ \\addtocounter{fangle@chunkcounter}{1}%
 
-    \ \ \\global\\expandafter\\edef\\csname
+    <item> \ \\global\\expandafter\\edef\\csname
     \\chunkcount\\endcsname{\\arabic{fangle@chunkcounter}}%
 
-    \ \ \\edef\\chunkname{\\lst@intname-\\arabic{fangle@chunkcounter}}%
+    <item> \ \\edef\\chunkname{\\lst@intname-\\arabic{fangle@chunkcounter}}%
 
-    \ \ \\edef\\firstchunkname{\\lst@intname-1}%
+    <item> \ \\edef\\firstchunkname{\\lst@intname-1}%
   </nf-chunk||>
 
   We now need to calculate the name of the next chunk. We do this by
@@ -4750,11 +4778,11 @@
   label then we define <verbatim|\\nextchunkname> to <verbatim|\\relax>.
 
   <\nf-chunk|./fangle.sty>
-    \ \ \\addtocounter{fangle@chunkcounter}{1}%
+    <item> \ \\addtocounter{fangle@chunkcounter}{1}%
 
-    \ \ \\edef\\nextchunkname{\\lst@intname-\\arabic{fangle@chunkcounter}}%
+    <item> \ \\edef\\nextchunkname{\\lst@intname-\\arabic{fangle@chunkcounter}}%
 
-    \ \ \\@ifundefined{r@label-\\nextchunkname}{\\let\\nextchunkname\\relax}{}%
+    <item> \ \\@ifundefined{r@label-\\nextchunkname}{\\let\\nextchunkname\\relax}{}%
   </nf-chunk||>
 
   The noweb package requires that we define a <verbatim|\\sublabel> for every
@@ -4767,13 +4795,13 @@
   that anyway.
 
   <\nf-chunk|./fangle.sty>
-    \ \ \\sublabel{\\chunkname}%
+    <item> \ \\sublabel{\\chunkname}%
 
-    % define this label for every chunk instance, so we
+    <item>% define this label for every chunk instance, so we
 
-    % can tell when we are the last chunk of this name
+    <item>% can tell when we are the last chunk of this name
 
-    \ \ \\label{label-\\chunkname}%
+    <item> \ \\label{label-\\chunkname}%
   </nf-chunk||>
 
   We also try and add the chunk to the list of listings, but I'm afraid we
@@ -4781,7 +4809,7 @@
   references.
 
   <\nf-chunk|./fangle.sty>
-    \ \ \\addcontentsline{lol}{lstlisting}{\\lst@name~[\\protect\\subpageref{\\chunkname}]}%
+    <item> \ \\addcontentsline{lol}{lstlisting}{\\lst@name~[\\protect\\subpageref{\\chunkname}]}%
   </nf-chunk||>
 
   We then call the noweb output macros in the same way that noweave generates
@@ -4790,67 +4818,67 @@
   output somewhat.
 
   <\nf-chunk|./fangle.sty>
-    \ \ \\nwmargintag{%
+    <item> \ \\nwmargintag{%
 
-    \ \ \ \ {%
+    <item> \ \ \ {%
 
-    \ \ \ \ \ \ \\nwtagstyle{}%
+    <item> \ \ \ \ \ \\nwtagstyle{}%
 
-    \ \ \ \ \ \ \\subpageref{\\chunkname}%
+    <item> \ \ \ \ \ \\subpageref{\\chunkname}%
 
-    \ \ \ \ }%
+    <item> \ \ \ }%
 
-    \ \ }%
+    <item> \ }%
 
-    %
+    <item>%
 
-    \ \ \\moddef{%
+    <item> \ \\moddef{%
 
-    \ \ \ \ {\\lst@name}%
+    <item> \ \ \ {\\lst@name}%
 
-    \ \ \ \ {%
+    <item> \ \ \ {%
 
-    \ \ \ \ \ \ \\nwtagstyle{}\\/%
+    <item> \ \ \ \ \ \\nwtagstyle{}\\/%
 
-    \ \ \ \ \ \ \\@ifundefined{fangle@chunk@params}{}{%
+    <item> \ \ \ \ \ \\@ifundefined{fangle@chunk@params}{}{%
 
-    \ \ \ \ \ \ \ \ (\\fangle@chunk@params)%
+    <item> \ \ \ \ \ \ \ (\\fangle@chunk@params)%
 
-    \ \ \ \ \ \ }%
+    <item> \ \ \ \ \ }%
 
-    \ \ \ \ \ \ [\\csname \\chunkcount\\endcsname]~%
+    <item> \ \ \ \ \ [\\csname \\chunkcount\\endcsname]~%
 
-    \ \ \ \ \ \ \\subpageref{\\firstchunkname}%
+    <item> \ \ \ \ \ \\subpageref{\\firstchunkname}%
 
-    \ \ \ \ }%
+    <item> \ \ \ }%
 
-    \ \ \ \ \\@ifundefined{fangle@chunk@append}{}{%
+    <item> \ \ \ \\@ifundefined{fangle@chunk@append}{}{%
 
-    \ \ \ \ \\ifx{}\\fangle@chunk@append{x}\\else%
+    <item> \ \ \ \\ifx{}\\fangle@chunk@append{x}\\else%
 
-    \ \ \ \ \ \ \ \ ,~add~to~\\fangle@chunk@append%
+    <item> \ \ \ \ \ \ \ ,~add~to~\\fangle@chunk@append%
 
-    \ \ \ \ \\fi%
+    <item> \ \ \ \\fi%
 
-    \ \ \ \ }%
+    <item> \ \ \ }%
 
-    \\global\\def\\fangle@chunk@append{}%
+    <item>\\global\\def\\fangle@chunk@append{}%
 
-    \\lstset{append=x}%
+    <item>\\lstset{append=x}%
 
-    \ \ }%
+    <item> \ }%
 
-    %
+    <item>%
 
-    \ \ \\ifx\\relax\\prevchunkname\\endmoddef\\else\\plusendmoddef\\fi%
+    <item> \ \\ifx\\relax\\prevchunkname\\endmoddef\\else\\plusendmoddef\\fi%
 
-    % \ \\nwstartdeflinemarkup%
+    <item>% \ \\nwstartdeflinemarkup%
 
-    \ \ \\nwprevnextdefs{\\prevchunkname}{\\nextchunkname}%
+    <item> \ \\nwprevnextdefs{\\prevchunkname}{\\nextchunkname}%
 
-    % \ \\nwenddeflinemarkup%
+    <item>% \ \\nwenddeflinemarkup%
 
-    }%
+    <item>}%
   </nf-chunk||>
 
   Originally this was developed as a <verbatim|listings> aspect, in the Init
@@ -4859,15 +4887,15 @@
   listings name to the name passed to the <verbatim|\\Chunk> command, though.
 
   <\nf-chunk|./fangle.sty>
-    %\\lst@BeginAspect{fangle}
+    <item>%\\lst@BeginAspect{fangle}
 
-    %\\lst@Key{fangle}{true}[t]{\\lstKV@SetIf{#1}{true}}
+    <item>%\\lst@Key{fangle}{true}[t]{\\lstKV@SetIf{#1}{true}}
 
-    \\lst@AddToHookExe{PreSet}{\\global\\let\\lst@intname\\lst@chunkname}
+    <item>\\lst@AddToHookExe{PreSet}{\\global\\let\\lst@intname\\lst@chunkname}
 
-    \\lst@AddToHook{Init}{}%\\fangle@caption}
+    <item>\\lst@AddToHook{Init}{}%\\fangle@caption}
 
-    %\\lst@EndAspect
+    <item>%\\lst@EndAspect
   </nf-chunk||>
 
   <subsection|Cross references>
@@ -4889,89 +4917,89 @@
   </note>
 
   <\nf-chunk|./fangle.sty>
-    \\def\\chunkref@args#1,{%
+    <item>\\def\\chunkref@args#1,{%
 
-    \ \ \\def\\arg{#1}%
+    <item> \ \\def\\arg{#1}%
 
-    \ \ \\lst@ReplaceIn\\arg\\lst@filenamerpl%
+    <item> \ \\lst@ReplaceIn\\arg\\lst@filenamerpl%
 
-    \ \ \\arg%
+    <item> \ \\arg%
 
-    \ \ \\@ifnextchar){\\relax}{, \\chunkref@args}%
+    <item> \ \\@ifnextchar){\\relax}{, \\chunkref@args}%
 
-    }%
+    <item>}%
 
-    \\newcommand\\chunkref[2][0]{%
+    <item>\\newcommand\\chunkref[2][0]{%
 
-    \ \ \\@ifnextchar({\\chunkref@i{#1}{#2}}{\\chunkref@i{#1}{#2}()}%
+    <item> \ \\@ifnextchar({\\chunkref@i{#1}{#2}}{\\chunkref@i{#1}{#2}()}%
 
-    }%
+    <item>}%
 
-    \\def\\chunkref@i#1#2(#3){%
+    <item>\\def\\chunkref@i#1#2(#3){%
 
-    \ \ \\def\\zero{0}%
+    <item> \ \\def\\zero{0}%
 
-    \ \ \\def\\chunk{#2}%
+    <item> \ \\def\\chunk{#2}%
 
-    \ \ \\def\\chunkno{#1}%
+    <item> \ \\def\\chunkno{#1}%
 
-    \ \ \\def\\chunkargs{#3}%
+    <item> \ \\def\\chunkargs{#3}%
 
-    \ \ \\ifx\\chunkno\\zero%
+    <item> \ \\ifx\\chunkno\\zero%
 
-    \ \ \ \ \\def\\chunkname{#2-1}%
+    <item> \ \ \ \\def\\chunkname{#2-1}%
 
-    \ \ \\else%
+    <item> \ \\else%
 
-    \ \ \ \ \\def\\chunkname{#2-\\chunkno}%
+    <item> \ \ \ \\def\\chunkname{#2-\\chunkno}%
 
-    \ \ \\fi%
+    <item> \ \\fi%
 
-    \ \ \\let\\lst@arg\\chunk%
+    <item> \ \\let\\lst@arg\\chunk%
 
-    \ \ \\lst@ReplaceIn\\chunk\\lst@filenamerpl%
+    <item> \ \\lst@ReplaceIn\\chunk\\lst@filenamerpl%
 
-    \ \ \\LA{%\\moddef{%
+    <item> \ \\LA{%\\moddef{%
 
-    \ \ \ \ {\\chunk}%
+    <item> \ \ \ {\\chunk}%
 
-    \ \ \ \ {%
+    <item> \ \ \ {%
 
-    \ \ \ \ \ \ \\nwtagstyle{}\\/%
+    <item> \ \ \ \ \ \\nwtagstyle{}\\/%
 
-    \ \ \ \ \ \ \\ifx\\chunkno\\zero%
+    <item> \ \ \ \ \ \\ifx\\chunkno\\zero%
 
-    \ \ \ \ \ \ \\else%
+    <item> \ \ \ \ \ \\else%
 
-    \ \ \ \ \ \ [\\chunkno]%
+    <item> \ \ \ \ \ [\\chunkno]%
 
-    \ \ \ \ \ \ \\fi%
+    <item> \ \ \ \ \ \\fi%
 
-    \ \ \ \ \ \ \\ifx\\chunkargs\\empty%
+    <item> \ \ \ \ \ \\ifx\\chunkargs\\empty%
 
-    \ \ \ \ \ \ \\else%
+    <item> \ \ \ \ \ \\else%
 
-    \ \ \ \ \ \ \ \ (\\chunkref@args #3,)%
+    <item> \ \ \ \ \ \ \ (\\chunkref@args #3,)%
 
-    \ \ \ \ \ \ \\fi%
+    <item> \ \ \ \ \ \\fi%
 
-    \ \ \ \ \ \ ~\\subpageref{\\chunkname}%
+    <item> \ \ \ \ \ ~\\subpageref{\\chunkname}%
 
-    \ \ \ \ }%
+    <item> \ \ \ }%
 
-    \ \ }%
+    <item> \ }%
 
-    \ \ \\RA%\\endmoddef%
+    <item> \ \\RA%\\endmoddef%
 
-    }%
+    <item>}%
   </nf-chunk||>
 
   <subsection|The end>
 
   <\nf-chunk|./fangle.sty>
-    %
+    <item>%
 
-    %\\makeatother
+    <item>%\\makeatother
   </nf-chunk||>
 
   <chapter|Extracting fangle>
@@ -4985,106 +5013,109 @@
   me.
 
   <\nf-chunk|lyx-build>
-    #! /bin/sh
+    <item>#! /bin/sh
 
-    set -x
+    <item>set -x
 
-    \;
+    <item>
 
-    =\<less\>\\chunkref{lyx-build-helper}\<gtr\>
+    <item>=\<less\>\\chunkref{lyx-build-helper}\<gtr\>
 
-    cd $PROJECT_DIR \|\| exit 1
+    <item>cd $PROJECT_DIR \|\| exit 1
 
-    \;
+    <item>
 
-    /usr/local/bin/fangle -R./fangle $TEX_SRC \<gtr\> ./fangle
+    <item>/usr/local/bin/fangle -R./fangle $TEX_SRC \<gtr\> ./fangle
 
-    /usr/local/bin/fangle -R./fangle.module $TEX_SRC \<gtr\> ./fangle.module
+    <item>/usr/local/bin/fangle -R./fangle.module $TEX_SRC \<gtr\>
+    ./fangle.module
 
-    \;
+    <item>
 
-    =\<less\>\\chunkref{test:helpers}\<gtr\>
+    <item>=\<less\>\\chunkref{test:helpers}\<gtr\>
 
-    export FANGLE=./fangle
+    <item>export FANGLE=./fangle
 
-    export TMP=${TMP:-/tmp}
+    <item>export TMP=${TMP:-/tmp}
 
-    =\<less\>\\chunkref{test:run-tests}\<gtr\>
+    <item>=\<less\>\\chunkref{test:run-tests}\<gtr\>
 
-    # Now check that we can extract a fangle that also passes the tests!
+    <item># Now check that we can extract a fangle that also passes the
+    tests!
 
-    $FANGLE -R./fangle $TEX_SRC \<gtr\> ./new-fangle
+    <item>$FANGLE -R./fangle $TEX_SRC \<gtr\> ./new-fangle
 
-    export FANGLE=./new-fangle
+    <item>export FANGLE=./new-fangle
 
-    =\<less\>\\chunkref{test:run-tests}\<gtr\>
+    <item>=\<less\>\\chunkref{test:run-tests}\<gtr\>
   </nf-chunk|sh|>
 
   <\nf-chunk|test:run-tests>
-    # run tests
+    <item># run tests
 
-    $FANGLE -Rpca-test.awk $TEX_SRC \| awk -f - \|\| exit 1
+    <item>$FANGLE -Rpca-test.awk $TEX_SRC \| awk -f - \|\| exit 1
 
-    =\<less\>\\chunkref{test:cromulence}\<gtr\>
+    <item>=\<less\>\\chunkref{test:cromulence}\<gtr\>
 
-    =\<less\>\\chunkref{test:escapes}\<gtr\>
+    <item>=\<less\>\\chunkref{test:escapes}\<gtr\>
 
-    =\<less\>\\chunkref{test:chunk-params}\<gtr\>
+    <item>=\<less\>\\chunkref{test:chunk-params}\<gtr\>
   </nf-chunk|sh|>
 
   With a lyx-build-helper
 
   <\nf-chunk|lyx-build-helper>
-    PROJECT_DIR="$LYX_r"
+    <item>PROJECT_DIR="$LYX_r"
 
-    LYX_SRC="$PROJECT_DIR/${LYX_i%.tex}.lyx"
+    <item>LYX_SRC="$PROJECT_DIR/${LYX_i%.tex}.lyx"
 
-    TEX_DIR="$LYX_p"
+    <item>TEX_DIR="$LYX_p"
 
-    TEX_SRC="$TEX_DIR/$LYX_i"
+    <item>TEX_SRC="$TEX_DIR/$LYX_i"
   </nf-chunk|sh|>
 
   <section|Extracting documentation>
 
   <\nf-chunk|./gen-www>
-    #python -m elyxer --css lyx.css $LYX_SRC \| \\
+    <item>#python -m elyxer --css lyx.css $LYX_SRC \| \\
 
-    # \ iconv -c -f utf-8 -t ISO-8859-1//TRANSLIT \| \\
+    <item># \ iconv -c -f utf-8 -t ISO-8859-1//TRANSLIT \| \\
 
-    # \ sed 's/UTF-8"\\(.\\)\<gtr\>/ISO-8859-1"\\1\<gtr\>/' \<gtr\>
+    <item># \ sed 's/UTF-8"\\(.\\)\<gtr\>/ISO-8859-1"\\1\<gtr\>/' \<gtr\>
     www/docs/fangle.html
 
-    \;
+    <item>
 
-    python -m elyxer --css lyx.css --iso885915 --html --destdirectory
+    <item>python -m elyxer --css lyx.css --iso885915 --html --destdirectory
     www/docs/fangle.e \\
 
-    \ \ \ \ \ \ \ fangle.lyx \<gtr\> www/docs/fangle.e/fangle.html
+    <item> \ \ \ \ \ \ fangle.lyx \<gtr\> www/docs/fangle.e/fangle.html
 
-    \;
+    <item>
 
-    ( mkdir -p www/docs/fangle && cd www/docs/fangle && \\
+    <item>( mkdir -p www/docs/fangle && cd www/docs/fangle && \\
 
-    \ \ lyx -e latex ../../../fangle.lyx && \\
+    <item> \ lyx -e latex ../../../fangle.lyx && \\
 
-    \ \ htlatex ../../../fangle.tex "xhtml,fn-in" && \\
+    <item> \ htlatex ../../../fangle.tex "xhtml,fn-in" && \\
 
-    \ \ sed -i -e 's/\<less\>!--l\\. [0-9][0-9]* *--\<gtr\>//g' fangle.html
+    <item> \ sed -i -e 's/\<less\>!--l\\. [0-9][0-9]* *--\<gtr\>//g'
+    fangle.html
 
-    )
+    <item>)
 
-    \;
+    <item>
 
-    ( mkdir -p www/docs/literate && cd www/docs/literate && \\
+    <item>( mkdir -p www/docs/literate && cd www/docs/literate && \\
 
-    \ \ lyx -e latex ../../../literate.lyx && \\
+    <item> \ lyx -e latex ../../../literate.lyx && \\
 
-    \ \ htlatex ../../../literate.tex "xhtml,fn-in" && \\
+    <item> \ htlatex ../../../literate.tex "xhtml,fn-in" && \\
 
-    \ \ sed -i -e 's/\<less\>!--l\\. [0-9][0-9]* *--\<gtr\>$//g'
+    <item> \ sed -i -e 's/\<less\>!--l\\. [0-9][0-9]* *--\<gtr\>$//g'
     literate.html
 
-    )
+    <item>)
   </nf-chunk||>
 
   <section|Extracting from the command line>
@@ -5092,45 +5123,45 @@
   First you will need the tex output, then you can extract:
 
   <\nf-chunk|lyx-build-manual>
-    lyx -e latex fangle.lyx
+    <item>lyx -e latex fangle.lyx
 
-    fangle -R./fangle fangle.tex \<gtr\> ./fangle
+    <item>fangle -R./fangle fangle.tex \<gtr\> ./fangle
 
-    fangle -R./fangle.module fangle.tex \<gtr\> ./fangle.module
+    <item>fangle -R./fangle.module fangle.tex \<gtr\> ./fangle.module
   </nf-chunk|sh|>
 
   <section|Testing>
 
   <\nf-chunk|test:helpers>
-    passtest() {
+    <item>passtest() {
 
-    \ \ if "$@"
+    <item> \ if "$@"
 
-    \ \ then echo "Passed"
+    <item> \ then echo "Passed"
 
-    \ \ else echo "Failed"
+    <item> \ else echo "Failed"
 
-    \ \ \ \ \ \ \ return 1
+    <item> \ \ \ \ \ \ return 1
 
-    \ \ fi
+    <item> \ fi
 
-    }
+    <item>}
 
-    \;
+    <item>
 
-    failtest() {
+    <item>failtest() {
 
-    \ \ if ! "$@"
+    <item> \ if ! "$@"
 
-    \ \ then echo "Passed"
+    <item> \ then echo "Passed"
 
-    \ \ else echo "Failed"
+    <item> \ else echo "Failed"
 
-    \ \ \ \ \ \ \ return 1
+    <item> \ \ \ \ \ \ return 1
 
-    \ \ fi
+    <item> \ fi
 
-    }
+    <item>}
   </nf-chunk||>
 
   <part|Tests>
@@ -5138,155 +5169,158 @@
   <chapter|Chunk Parameters>
 
   <\nf-chunk|test:chunk-params:sub>
-    I see a ${THING},
+    <item>I see a ${THING},
 
-    a ${THING} of colour ${colour},\ 
+    <item>a ${THING} of colour ${colour},\ 
 
-    and looking closer =\<less\>\\chunkref{test:chunk-params:sub:sub}(${colour})\<gtr\>
+    <item>and looking closer =\<less\>\\chunkref{test:chunk-params:sub:sub}(${colour})\<gtr\>
   </nf-chunk||<tuple|THING|colour>>
 
   <\nf-chunk|test:chunk-params:sub:sub>
-    a funny shade of ${colour}
+    <item>a funny shade of ${colour}
   </nf-chunk||<tuple|colour>>
 
   <\nf-chunk|test:chunk-params:text>
-    What do you see? "=\<less\>\\chunkref{test:chunk-params:sub}(joe,
+    <item>What do you see? "=\<less\>\\chunkref{test:chunk-params:sub}(joe,
     red)\<gtr\>"
 
-    Well, fancy!
+    <item>Well, fancy!
   </nf-chunk||>
 
   Should generate output:
 
   <\nf-chunk|test:chunk-params:result>
-    What do you see? "I see a joe,
+    <item>What do you see? "I see a joe,
 
-    \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ a joe of colour red,\ 
+    <item> \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ a joe of colour red,\ 
 
-    \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ and looking closer a funny shade of
-    red"
+    <item> \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ and looking closer a funny shade
+    of red"
 
-    Well, fancy!
+    <item>Well, fancy!
   </nf-chunk||>
 
   And this chunk will perform the test:
 
   <\nf-chunk|test:chunk-params>
-    $FANGLE -Rtest:chunk-params:result $TEX_SRC \<gtr\> $TMP/answer \|\| exit
-    1
+    <item>$FANGLE -Rtest:chunk-params:result $TEX_SRC \<gtr\> $TMP/answer
+    \|\| exit 1
 
-    $FANGLE -Rtest:chunk-params:text $TEX_SRC \<gtr\> $TMP/result \|\| exit 1
+    <item>$FANGLE -Rtest:chunk-params:text $TEX_SRC \<gtr\> $TMP/result \|\|
+    exit 1
 
-    passtest diff $TMP/answer $TMP/result \|\| (echo test:chunk-params:text
-    failed ; exit 1)
+    <item>passtest diff $TMP/answer $TMP/result \|\| (echo
+    test:chunk-params:text failed ; exit 1)
   </nf-chunk||>
 
   <chapter|Compile-log-lyx><label|Compile-log-lyx>
 
   <\nf-chunk|Chunk: ./compile-log-lyx>
-    #! /bin/sh
+    <item>#! /bin/sh
 
-    # can't use gtkdialog -i, cos it uses the "source" command which ubuntu
-    sh doesn't have
+    <item># can't use gtkdialog -i, cos it uses the "source" command which
+    ubuntu sh doesn't have
 
-    \;
+    <item>
 
-    main() {
+    <item>main() {
 
-    \ \ errors="/tmp/compile.log.$$"
+    <item> \ errors="/tmp/compile.log.$$"
 
-    # \ if grep '^[^ ]*:\\( In \\\|[0-9][0-9]*: [^ ]*:\\)' \<gtr\> $errors
-
-    if grep '^[^ ]*(\\([0-9][0-9]*\\)) *: *\\(error\\\|warning\\)' \<gtr\>
+    <item># \ if grep '^[^ ]*:\\( In \\\|[0-9][0-9]*: [^ ]*:\\)' \<gtr\>
     $errors
 
-    \ \ then
+    <item>if grep '^[^ ]*(\\([0-9][0-9]*\\)) *: *\\(error\\\|warning\\)'
+    \<gtr\> $errors
 
-    \ \ \ \ sed -i -e 's/^[^ ]*[/\\\\]\\([^/\\\\]*\\)(\\([ 0-9][ 0-9]*\\)) *:
-    */\\1:\\2\|\\2\|/' $errors
+    <item> \ then
 
-    \ \ \ \ COMPILE_DIALOG='
+    <item> \ \ \ sed -i -e 's/^[^ ]*[/\\\\]\\([^/\\\\]*\\)(\\([ 0-9][
+    0-9]*\\)) *: */\\1:\\2\|\\2\|/' $errors
 
-    \ \<less\>vbox\<gtr\>
+    <item> \ \ \ COMPILE_DIALOG='
 
-    \ \ \<less\>text\<gtr\>
+    <item> \<less\>vbox\<gtr\>
 
-    \ \ \ \ \<less\>label\<gtr\>Compiler errors:\<less\>/label\<gtr\>
+    <item> \ \<less\>text\<gtr\>
 
-    \ \ \<less\>/text\<gtr\>
+    <item> \ \ \ \<less\>label\<gtr\>Compiler errors:\<less\>/label\<gtr\>
 
-    \ \ \<less\>tree exported_column="0"\<gtr\>
+    <item> \ \<less\>/text\<gtr\>
 
-    \ \ \ \ \<less\>variable\<gtr\>LINE\<less\>/variable\<gtr\>
+    <item> \ \<less\>tree exported_column="0"\<gtr\>
 
-    \ \ \ \ \<less\>height\<gtr\>400\<less\>/height\<gtr\>\<less\>width\<gtr\>800\<less\>/width\<gtr\>
+    <item> \ \ \ \<less\>variable\<gtr\>LINE\<less\>/variable\<gtr\>
 
-    \ \ \ \ \<less\>label\<gtr\>File \| Line \| Message\<less\>/label\<gtr\>
+    <item> \ \ \ \<less\>height\<gtr\>400\<less\>/height\<gtr\>\<less\>width\<gtr\>800\<less\>/width\<gtr\>
 
-    \ \ \ \ \<less\>action\<gtr\>'". $SELF ; "'lyxgoto
+    <item> \ \ \ \<less\>label\<gtr\>File \| Line \|
+    Message\<less\>/label\<gtr\>
+
+    <item> \ \ \ \<less\>action\<gtr\>'". $SELF ; "'lyxgoto
     $LINE\<less\>/action\<gtr\>
 
-    \ \ \ \ \<less\>input\<gtr\>'"cat $errors"'\<less\>/input\<gtr\>
+    <item> \ \ \ \<less\>input\<gtr\>'"cat $errors"'\<less\>/input\<gtr\>
 
-    \ \ \<less\>/tree\<gtr\>
+    <item> \ \<less\>/tree\<gtr\>
 
-    \ \ \<less\>hbox\<gtr\>
+    <item> \ \<less\>hbox\<gtr\>
 
-    \ \ \ \<less\>button\<gtr\>\<less\>label\<gtr\>Build\<less\>/label\<gtr\>
+    <item> \ \ \<less\>button\<gtr\>\<less\>label\<gtr\>Build\<less\>/label\<gtr\>
 
-    \ \ \ \ \ \<less\>action\<gtr\>lyxclient -c "LYXCMD:build-program"
+    <item> \ \ \ \ \<less\>action\<gtr\>lyxclient -c "LYXCMD:build-program"
     &\<less\>/action\<gtr\>
 
-    \ \ \ \<less\>/button\<gtr\>
+    <item> \ \ \<less\>/button\<gtr\>
 
-    \ \ \ \<less\>button ok\<gtr\>\<less\>/button\<gtr\>
+    <item> \ \ \<less\>button ok\<gtr\>\<less\>/button\<gtr\>
 
-    \ \ \<less\>/hbox\<gtr\>
+    <item> \ \<less\>/hbox\<gtr\>
 
-    \ \<less\>/vbox\<gtr\>
+    <item> \<less\>/vbox\<gtr\>
 
-    '
+    <item>'
 
-    \ \ \ \ export COMPILE_DIALOG
+    <item> \ \ \ export COMPILE_DIALOG
 
-    \ \ \ \ ( gtkdialog --program=COMPILE_DIALOG ; rm $errors ) &
+    <item> \ \ \ ( gtkdialog --program=COMPILE_DIALOG ; rm $errors ) &
 
-    \ \ else
+    <item> \ else
 
-    \ \ \ \ rm $errors
+    <item> \ \ \ rm $errors
 
-    \ \ fi
+    <item> \ fi
 
-    }
+    <item>}
 
-    \;
+    <item>
 
-    lyxgoto() {
+    <item>lyxgoto() {
 
-    \ \ file="${LINE%:*}"
+    <item> \ file="${LINE%:*}"
 
-    \ \ line="${LINE##*:}"
+    <item> \ line="${LINE##*:}"
 
-    \ \ extraline=\0cat $file \| head -n $line \| tac \| sed
+    <item> \ extraline=\0cat $file \| head -n $line \| tac \| sed
     '/^\\\\\\\\begin{lstlisting}/q' \| wc -l\0
 
-    \ \ extraline=\0expr $extraline - 1\0
+    <item> \ extraline=\0expr $extraline - 1\0
 
-    \ \ lyxclient -c "LYXCMD:command-sequence server-goto-file-row $file
+    <item> \ lyxclient -c "LYXCMD:command-sequence server-goto-file-row $file
     $line ; char-forward ; repeat $extraline paragraph-down ;
     paragraph-up-select"
 
-    }
+    <item>}
 
-    \;
+    <item>
 
-    SELF="$0"
+    <item>SELF="$0"
 
-    if test -z "$COMPILE_DIALOG"
+    <item>if test -z "$COMPILE_DIALOG"
 
-    then main "$@"\ 
+    <item>then main "$@"\ 
 
-    fi
+    <item>fi
   </nf-chunk|sh|>
 
   \;
