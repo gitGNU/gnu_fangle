@@ -1,22 +1,22 @@
-<TeXmacs|1.0.7.4>
+<TeXmacs|1.0.7.10>
 
-<style|<tuple|book|newfangle>>
+<style|<tuple|book|fangle>>
 
 <\body>
   <hide-preamble|<assign|LyX|<macro|L<space|-0.1667em><move|Y|0fn|-0.25em><space|-0.125em>X>><assign|par-first|0fn><assign|par-par-sep|0.5fn>>
 
-  <doc-data|<doc-title|newfangle>|<doc-author-data|<author-name|Sam
+  <doc-data|<doc-title|fangle>|<doc-author-data|<author-name|Sam
   Liddicott>|<\author-address>
     sam@liddicott.com
   </author-address>>|<doc-date|August 2009>>
 
   <section*|Introduction>
 
-  <name|Newfangle> is a tool for newfangled literate programming. Newfangled
-  is defined as <em|New and often needlessly novel> by
+  <name|Fangle> is a tool for fangled literate programming. Newfangled is
+  defined as <em|New and often needlessly novel> by
   <name|TheFreeDictionary.com>.
 
-  In this case, newfangled means yet another new<footnote|and improved.>
+  In this case, fangled means yet another not-so-new<footnote|but improved.>
   method for literate programming.
 
   <name|Literate Programming> has a long history starting with the great
@@ -40,25 +40,26 @@
   this would be of no advantage to me if the <LyX> / <LaTeX> combination
   brought more complications in their place.
 
-  <name|Newfangle> was thus born --- as an awk replacement for notangle,
-  adding some important features, like better integration with <LyX> and
-  <LaTeX> (and later <TeXmacs>), multiple output format conversions, and
-  fixing notangle bugs like indentation when using -L for line numbers.
+  <name|Fangle> was thus born (originally called <name|Newfangle>) as an awk
+  replacement for notangle, adding some important features, like better
+  integration with <LyX> and <LaTeX> (and later <TeXmacs>), multiple output
+  format conversions, and fixing notangle bugs like indentation when using -L
+  for line numbers.
 
-  Significantly, newfangle is just one program which replaces various
-  programs in <name|Noweb>. Noweave is done away with and implemented
-  directly as <LaTeX> macros, and noroots is implemented as a function of the
-  untangler newfangle.
+  Significantly, fangle is just one program which replaces various programs
+  in <name|Noweb>. Noweave is done away with and implemented directly as
+  <LaTeX> macros, and noroots is implemented as a function of the untangler
+  fangle.
 
-  Newfangle is written in awk for portability reasons, awk being available
-  for most platforms. A Python version<\footnote>
+  Fangle is written in awk for portability reasons, awk being available for
+  most platforms. A Python version<\footnote>
     hasn't anyone implemented awk in python yet?
   </footnote> was considered for the benefit of <LyX> but a scheme version
   for <TeXmacs> will probably materialise first; as <TeXmacs> macro
-  capabilities help make edit-time and format-time rendering of newfangle
-  chunks simple enough for my weak brain.
+  capabilities help make edit-time and format-time rendering of fangle chunks
+  simple enough for my weak brain.
 
-  As an extension to many literate-programming styles, Newfangle permits code
+  As an extension to many literate-programming styles, Fangle permits code
   chunks to take parameters and thus operate somewhat like C pre-processor
   macros, or like C++ templates. Name parameters (or even local
   <em|variables> in the callers scope) are anticipated, as parameterized
@@ -67,17 +68,17 @@
 
   <section*|<new-page*>License><label|License>
 
-  Newfangle is licensed under the GPL 3 (or later).
+  Fangle is licensed under the GPL 3 (or later).
 
-  This doesn't mean that you can't use or distribute newfangle with sources
-  of an incompatible license, but it means you must make the source of
-  newfangle available too.
+  This doesn't mean that you can't use or distribute fangle with sources of
+  an incompatible license, but it means you must make the source of fangle
+  available too.
 
-  As newfangle is currently written in awk, an interpreted language, this
-  should not be too hard.
+  As fangle is currently written in awk, an interpreted language, this should
+  not be too hard.
 
   <\nf-chunk|gpl3-copyright>
-    newfangle - fully featured notangle replacement in awk
+    fangle - fully featured notangle replacement in awk
 
     \;
 
@@ -119,7 +120,7 @@
     <no-break><pageref|auto-2>
 
     <vspace*|2fn><with|font-series|bold|math-font-series|bold|font-size|1.19|I<space|2spc>Using
-    Newfangle> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    Fangle> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-3><vspace|1fn>
 
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|1<space|2spc>Introduction
@@ -127,7 +128,7 @@
     <no-break><pageref|auto-4><vspace|0.5fn>
 
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|2<space|2spc>Running
-    Newfangle> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    Fangle> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-5><vspace|0.5fn>
 
     2.1<space|2spc>Listing roots <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
@@ -141,12 +142,12 @@
     <no-break><pageref|auto-8>
 
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|3<space|2spc>Using
-    Newfangle with L<rsup|<space|-0.8spc><move|A|0fn|-0.1fn>><space|-0.2spc>T<rsub|<space|-0.4spc><move|<resize|<with|math-level|0|E>||||0.5fn|>|0fn|-0.1fn>><space|-0.4spc>X>
+    Fangle with L<rsup|<space|-0.8spc><move|A|0fn|-0.1fn>><space|-0.2spc>T<rsub|<space|-0.4spc><move|<resize|<with|math-level|0|E>||||0.5fn>|0fn|-0.1fn>><space|-0.4spc>X>
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-9><vspace|0.5fn>
 
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|4<space|2spc>Using
-    Newfangle with L<space|-0.1667em><move|Y|0fn|-0.25em><space|-0.125em>X>
+    Fangle with L<space|-0.1667em><move|Y|0fn|-0.25em><space|-0.125em>X>
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-10><vspace|0.5fn>
 
@@ -191,11 +192,11 @@
     <no-break><pageref|auto-20>>
 
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|5<space|2spc>Using
-    Newfangle with T<rsub|<space|-0.4spc><move|<resize|<with|math-level|0|E>||||0.5fn|>|0fn|-0.1fn>><space|-0.4spc>X<rsub|<space|-0.4spc><move|<resize|M<space|-0.2spc>A<space|-0.4spc>CS||||0.5fn|>|0fn|-0.1fn>>>
+    Fangle with T<rsub|<space|-0.4spc><move|<resize|<with|math-level|0|E>||||0.5fn>|0fn|-0.1fn>><space|-0.4spc>X<rsub|<space|-0.4spc><move|<resize|M<space|-0.2spc>A<space|-0.4spc>CS||||0.5fn>|0fn|-0.1fn>>>
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-21><vspace|0.5fn>
 
-    <vspace*|1fn><with|font-series|bold|math-font-series|bold|6<space|2spc>Newfangle
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|6<space|2spc>Fangle
     with Makefiles> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-22><vspace|0.5fn>
 
@@ -208,12 +209,12 @@
 
     <with|par-left|1.5fn|6.2.1<space|2spc>Converting from
     L<space|-0.1667em><move|Y|0fn|-0.25em><space|-0.125em>X to
-    L<rsup|<space|-0.8spc><move|A|0fn|-0.1fn>><space|-0.2spc>T<rsub|<space|-0.4spc><move|<resize|<with|math-level|0|E>||||0.5fn|>|0fn|-0.1fn>><space|-0.4spc>X
+    L<rsup|<space|-0.8spc><move|A|0fn|-0.1fn>><space|-0.2spc>T<rsub|<space|-0.4spc><move|<resize|<with|math-level|0|E>||||0.5fn>|0fn|-0.1fn>><space|-0.4spc>X
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-25>>
 
     <with|par-left|1.5fn|6.2.2<space|2spc>Converting from
-    T<rsub|<space|-0.4spc><move|<resize|<with|math-level|0|E>||||0.5fn|>|0fn|-0.1fn>><space|-0.4spc>X<rsub|<space|-0.4spc><move|<resize|M<space|-0.2spc>A<space|-0.4spc>CS||||0.5fn|>|0fn|-0.1fn>>
+    T<rsub|<space|-0.4spc><move|<resize|<with|math-level|0|E>||||0.5fn>|0fn|-0.1fn>><space|-0.4spc>X<rsub|<space|-0.4spc><move|<resize|M<space|-0.2spc>A<space|-0.4spc>CS||||0.5fn>|0fn|-0.1fn>>
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-26>>
 
@@ -256,7 +257,7 @@
     Code> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-36><vspace|1fn>
 
-    <vspace*|1fn><with|font-series|bold|math-font-series|bold|7<space|2spc>Newfangle
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|7<space|2spc>Fangle
     awk source code> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-37><vspace|0.5fn>
 
@@ -420,11 +421,11 @@
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-79><vspace|0.5fn>
 
-    <vspace*|1fn><with|font-series|bold|math-font-series|bold|15<space|2spc>Newfangle
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|15<space|2spc>Fangle
     LaTeX source code> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-80><vspace|0.5fn>
 
-    15.1<space|2spc>newfangle module <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    15.1<space|2spc>fangle module <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-81>
 
     <with|par-left|1.5fn|15.1.1<space|2spc>The Chunk style
@@ -463,7 +464,7 @@
     <no-break><pageref|auto-91>>
 
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|16<space|2spc>Extracting
-    newfangle> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    fangle> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-92><vspace|0.5fn>
 
     16.1<space|2spc>Extracting from Lyx <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
@@ -493,28 +494,28 @@
     <no-break><pageref|auto-99><vspace|0.5fn>
   </table-of-contents>
 
-  <part|Using Newfangle>
+  <part|Using Fangle>
 
   <chapter|Introduction to Literate Programming>
 
   Todo: Should really follow on from a part-0 explanation of what literate
   programming is.
 
-  <chapter|Running Newfangle>
+  <chapter|Running Fangle>
 
-  Newfangle is a replacement for <name|noweb>, which consists of
+  Fangle is a replacement for <name|noweb>, which consists of
   <verbatim|notangle>, <verbatim|noroots> and <verbatim|noweave>.
 
-  Like <verbatim|notangle> and <verbatim|noroots>, <verbatim|newfangle> can
-  read multiple named files, or from stdin.
+  Like <verbatim|notangle> and <verbatim|noroots>, <verbatim|fangle> can read
+  multiple named files, or from stdin.
 
   <section|Listing roots>
 
-  The -r option causes newfangle to behave like noroots.
+  The -r option causes fangle to behave like noroots.
 
-  <code*|newfangle -r filename.tex>
+  <code*|fangle -r filename.tex>
 
-  will print out the newfangle roots of a tex file.\ 
+  will print out the fangle roots of a tex file.\ 
 
   Unlike the <verbatim|noroots> command, the roots are not enclosed in
   <verbatim|\<less\>\<less\>name\<gtr\>\<gtr\>>, unless at least one of the
@@ -538,7 +539,7 @@
 
   The standard way to extract a file would be:
 
-  <verbatim|newfangle -R./Makefile.inc newfangle.tex \<gtr\> ./Makefile.inc>
+  <verbatim|fangle -R./Makefile.inc fangle.tex \<gtr\> ./Makefile.inc>
 
   Unlike the <verbatim|noroots> command, the <verbatim|<verbatim|-L>> option
   does not break indenting.
@@ -556,10 +557,10 @@
   The noweave replacement built into the editing and formatting environment
   for <TeXmacs>, <LyX> (which uses <LaTeX>), and even for raw <LaTeX>.
 
-  Use of newfangle with <TeXmacs>, <LyX> and <LaTeX> are explained the the
-  next few chapters.
+  Use of fangle with <TeXmacs>, <LyX> and <LaTeX> are explained the the next
+  few chapters.
 
-  <chapter|Using Newfangle with <LaTeX>>
+  <chapter|Using Fangle with <LaTeX>>
 
   Because the noweave replacement is impemented in <LaTeX>, there is no
   processing stage required before running the <LaTeX> command. <LaTeX> may
@@ -569,7 +570,7 @@
   The formatting is managed by a set of macros shown in
   <reference|latex-source>, and can be included with:
 
-  <verbatim|\\usepackage{newfangle.sty}>
+  <verbatim|\\usepackage{fangle.sty}>
 
   Norman Ramsay's origial <filename|noweb.sty> package is required as it is
   used for formatting the code chunk captions.
@@ -582,16 +583,16 @@
 
   <todo|Add examples of use of Macros>
 
-  <chapter|Using Newfangle with <LyX>>
+  <chapter|Using Fangle with <LyX>>
 
   <LyX> uses the same <LaTeX> macros shown in <reference|latex-source> as
-  part of a <LyX> module file <filename|newfangle.module>, which
-  automatically includes the macros in the document pre-amble provided that
-  the newfangle <LyX> module is used in the document.
+  part of a <LyX> module file <filename|fangle.module>, which automatically
+  includes the macros in the document pre-amble provided that the fangle
+  <LyX> module is used in the document.
 
   <section|Installing the <LyX> module>
 
-  Copy <filename|newfangle.module> to your <LyX> layouts directory, which for
+  Copy <filename|fangle.module> to your <LyX> layouts directory, which for
   unix users will be <filename|~/.lyx/layouts>
 
   In order to make the new literate styles availalble, you will need to
@@ -653,7 +654,7 @@
   It is not necessary to base your literate document on any of the original
   <LyX> literate classes; so select a regular class for your document type.
 
-  Add the new module <em|Newfangle Literate Listings> and also <em|Logical
+  Add the new module <em|Fangle Literate Listings> and also <em|Logical
   Markup> which is very useful.
 
   In the drop-down style listbox you should notice a new style defined,
@@ -745,7 +746,7 @@
   Latex(Plain)-\<gtr\>Program as:
 
   <\verbatim>
-    set -x ; newfangle -Rlyx-build $$i \|\ 
+    set -x ; fangle -Rlyx-build $$i \|\ 
 
     \ \ env LYX_b=$$b LYX_i=$$i LYX_o=$$o LYX_p=$$p LYX_r=$$r bash
   </verbatim>
@@ -772,12 +773,12 @@
   this document is shown here for historical reference.\ 
 
   <\verbatim>
-    lyx -e latex newfangle.lyx && \\
+    lyx -e latex fangle.lyx && \\
 
-    \ \ newfangle newfangle.lyx \<gtr\> ./autoboot
+    \ \ fangle fangle.lyx \<gtr\> ./autoboot
   </verbatim>
 
-  This looks simple enough, but as mentioned, newfangle has to be had from
+  This looks simple enough, but as mentioned, fangle has to be had from
   somewhere before it can be extracted.
 
   <subsection|...>
@@ -812,7 +813,7 @@
 
     \;
 
-    #/usr/bin/newfangle -filter ./notanglefix-filter \\
+    #/usr/bin/fangle -filter ./notanglefix-filter \\
 
     # \ -R./Makefile.inc "../../noweb-lyx/noweb-lyx3.lyx" \\
 
@@ -822,16 +823,16 @@
 
     #
 
-    #make -f ./Makefile.inc newfangle_sources
+    #make -f ./Makefile.inc fangle_sources
   </nf-chunk|sh|>
 
   \;
 
-  <chapter|Using Newfangle with <TeXmacs>>
+  <chapter|Using Fangle with <TeXmacs>>
 
   <todo|Write this chapter>
 
-  <chapter|Newfangle with Makefiles><label|makefile.inc>
+  <chapter|Fangle with Makefiles><label|makefile.inc>
 
   Here we describe a <filename|Makefile.inc> that you can include in your own
   Makefiles, or glue as a recursive make to other projects.
@@ -862,8 +863,8 @@
   </verbatim>
 
   This requires that the literate programming environment have the ability to
-  represent a TAB character in a way the newfangle will generate an actual
-  TAB character.
+  represent a TAB character in a way the fangle will generate an actual TAB
+  character.
 
   We also adopt a convention that code chunks whose names beginning with
   <verbatim|./> should always be automatically extracted from the document.
@@ -893,17 +894,15 @@
     LITERATE_SOURCE=
   </nf-chunk||>
 
-  Newfangle cannot process <LyX> or <TeXmacs> documents directly, so the
-  first stage is to convert these to more suitable text based
-  formats<\footnote>
-    <LyX> and <TeXmacs> formats are text-based, but not suitable for
-    newfangle
+  Fangle cannot process <LyX> or <TeXmacs> documents directly, so the first
+  stage is to convert these to more suitable text based formats<\footnote>
+    <LyX> and <TeXmacs> formats are text-based, but not suitable for fangle
   </footnote>.
 
   <subsection|Converting from <LyX> to <LaTeX>><label|Converting-from-Lyx>
 
   The first stage will always be to convert the <LyX> file to a <LaTeX> file.
-  Newfangle must run on a <TeX> file because the <LyX> command
+  Fangle must run on a <TeX> file because the <LyX> command
   <verbatim|server-goto-file-line><\footnote>
     The Lyx command <verbatim|server-goto-file-line> is used to position the
     Lyx cursor at the compiler errors.
@@ -912,9 +911,9 @@
   <verbatim|server-goto-file-line> when moving the cursor to error lines
   during compile failures.
 
-  The command <verbatim|lyx -e literate newfangle.lyx> will produce
-  <verbatim|newfangle.tex>, a <TeX> file; so we define a make target to be
-  the same as the <LyX> file but with the <verbatim|.tex> extension.
+  The command <verbatim|lyx -e literate fangle.lyx> will produce
+  <verbatim|fangle.tex>, a <TeX> file; so we define a make target to be the
+  same as the <LyX> file but with the <verbatim|.tex> extension.
 
   The <verbatim|EXTRA_DIST> is for automake support so that the <TeX> files
   will automaticaly be distributed with the source, to help those who don't
@@ -943,14 +942,13 @@
 
   <subsection|Converting from <TeXmacs>><label|Converting-from-Lyx>
 
-  Newfangle cannot process <TeXmacs> files directly<\footnote>
+  Fangle cannot process <TeXmacs> files directly<\footnote>
     but this is planned when <TeXmacs> uses xml as it's native format
   </footnote>, but must first convert them to text files.
 
-  The command <verbatim|texmacs -c newfangle.tm newfangle.txt -q> will
-  produce <verbatim|newfangle.txt>, a text file; so we define a make target
-  to be the same as the <TeXmacs> file but with the <verbatim|.txt>
-  extension.
+  The command <verbatim|texmacs -c fangle.tm fangle.txt -q> will produce
+  <verbatim|fangle.txt>, a text file; so we define a make target to be the
+  same as the <TeXmacs> file but with the <verbatim|.txt> extension.
 
   The <verbatim|EXTRA_DIST> is for automake support so that the <TeX> files
   will automaticaly be distributed with the source, to help those who don't
@@ -978,13 +976,13 @@
 
   <section|Extracting Program Source>
 
-  The program source is extracted using newfangle, which is designed to
-  operate on text or a <LaTeX> documents<\footnote>
+  The program source is extracted using fangle, which is designed to operate
+  on text or a <LaTeX> documents<\footnote>
     <LaTeX> documents are just slightly special text documents
   </footnote>.
 
   <\nf-chunk|Makefile.inc-vars>
-    NEWFANGLE_SOURCE=$(TEX_SOURCE) $(TXT_SOURCE)
+    FANGLE_SOURCE=$(TEX_SOURCE) $(TXT_SOURCE)
   </nf-chunk||>
 
   The literate document can result in any number of source files, but not all
@@ -994,9 +992,9 @@
   revised. We use <verbatim|CPIF> from the <em|Noweb> tools to avoid updating
   the file if the content has not changed.
 
-  However, if a source file is not updated, then the newfangle file will
-  always have a newer time-stamp and the makefile will always re-attempt to
-  extact a newer source file.
+  However, if a source file is not updated, then the fangle file will always
+  have a newer time-stamp and the makefile will always re-attempt to extact a
+  newer source file.
 
   Because of this, we use a stamp file which is always updated each time the
   sources are fully extracted from the <LaTeX> document. If the stamp file is
@@ -1010,26 +1008,26 @@
   <verbatim|sshfs> that I was using.
 
   <\nf-chunk|Makefile.inc-vars>
-    NEWFANGLE_SOURCE_STAMP=$(NEWFANGLE_SOURCE).stamp
+    FANGLE_SOURCE_STAMP=$(FANGLE_SOURCE).stamp
   </nf-chunk||>
 
   <\nf-chunk|Makefile.inc-targets>
-    $(NEWFANGLE_SOURCE_STAMP): $(NEWFANGLE_SOURCE) \\
+    $(FANGLE_SOURCE_STAMP): $(FANGLE_SOURCE) \\
 
-    <nf-tab> \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ $(NEWFANGLE_SOURCES) ; \\
+    <nf-tab> \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ $(FANGLE_SOURCES) ; \\
 
-    <nf-tab>echo -n \<gtr\> $(NEWFANGLE_SOURCE_STAMP)
+    <nf-tab>echo -n \<gtr\> $(FANGLE_SOURCE_STAMP)
 
     clean_stamp:
 
-    <nf-tab>rm -f $(NEWFANGLE_SOURCE_STAMP)
+    <nf-tab>rm -f $(FANGLE_SOURCE_STAMP)
 
     clean: clean_stamp
   </nf-chunk||>
 
   <section|Extracting Source Files>
 
-  We compute <verbatim|NEWFANGLE_SOURCES> to hold the names of all the source
+  We compute <verbatim|FANGLE_SOURCES> to hold the names of all the source
   files defined in this document. We compute this only once, by means of
   <verbatim|:=> in assignent. The sed deletes the any
   <verbatim|\<less\>\<less\>> and <verbatim|\<gtr\>\<gtr\>> which may
@@ -1040,8 +1038,8 @@
   begin with <filename|./>
 
   <\note>
-    <verbatim|NEWFANGLE_PREFIX> is set to <verbatim|./> by default, but
-    whatever it may be overridden to, the prefix is replaced by a literal
+    <verbatim|FANGLE_PREFIX> is set to <verbatim|./> by default, but whatever
+    it may be overridden to, the prefix is replaced by a literal
     <verbatim|./> before extraction so that files will be extracted in the
     current directory whatever the prefix. This supports namespace or
     sub-project prefixes like <verbatim|documents:> for chunks like
@@ -1052,45 +1050,45 @@
   know what to extact!>
 
   <\nf-chunk|Makefile.inc-vars>
-    NEWFANGLE_PREFIX:=\\.\\/
+    FANGLE_PREFIX:=\\.\\/
 
-    NEWFANGLE_SOURCES:=$(shell \\
+    FANGLE_SOURCES:=$(shell \\
 
-    \ \ newfangle -r $(NEWFANGLE_SOURCE) \|\\
+    \ \ fangle -r $(FANGLE_SOURCE) \|\\
 
-    \ \ sed -e 's/^[\<less\>][\<less\>]//;s/[\<gtr\>][\<gtr\>]$$//;/^$(NEWFANGLE_PREFIX)/!d'
+    \ \ sed -e 's/^[\<less\>][\<less\>]//;s/[\<gtr\>][\<gtr\>]$$//;/^$(FANGLE_PREFIX)/!d'
     \\
 
-    \ \ \ \ \ \ -e 's/^$(NEWFANGLE_PREFIX)/\\.\\//' )
+    \ \ \ \ \ \ -e 's/^$(FANGLE_PREFIX)/\\.\\//' )
   </nf-chunk||>
 
-  The target below, <verbatim|echo_newfangle_sources> is a helpful debugging
+  The target below, <verbatim|echo_fangle_sources> is a helpful debugging
   target and shows the names of the files that would be extracted.
 
   <\nf-chunk|Makefile.inc-targets>
-    .PHONY: echo_newfangle_sources
+    .PHONY: echo_fangle_sources
 
-    echo_newfangle_sources: ; @echo $(NEWFANGLE_SOURCES)
+    echo_fangle_sources: ; @echo $(FANGLE_SOURCES)
   </nf-chunk||>
 
-  We define a convenient target called <verbatim|newfangle_sources> so that
-  <verbatim|make -f newfangle_sources> will re-extract the source if the
+  We define a convenient target called <verbatim|fangle_sources> so that
+  <verbatim|make -f fangle_sources> will re-extract the source if the
   literate document has been updated.\ 
 
   <\nf-chunk|Makefile.inc-targets>
-    .PHONY: newfangle_sources
+    .PHONY: fangle_sources
 
-    newfangle_sources: $(NEWFANGLE_SOURCE_STAMP)
+    fangle_sources: $(FANGLE_SOURCE_STAMP)
   </nf-chunk||>
 
   And also a convenient target to remove extracted sources.
 
   <\nf-chunk|Makefile.inc-targets>
-    .PHONY: clean_newfangle_sources
+    .PHONY: clean_fangle_sources
 
-    clean_newfangle_sources: ; \\
+    clean_fangle_sources: ; \\
 
-    \ \ \ \ \ \ \ \ rm -f -- $(NEWFANGLE_SOURCE_STAMP) $(NEWFANGLE_SOURCES)
+    \ \ \ \ \ \ \ \ rm -f -- $(FANGLE_SOURCE_STAMP) $(FANGLE_SOURCES)
   </nf-chunk||>
 
   We now look at the extraction of the source files.
@@ -1121,22 +1119,22 @@
   </nf-chunk||>
 
   We can then use the <verbatim|if_extensions> macro to define a macro which
-  expands out to the <verbatim|-L> option if newfangle is being invoked in a
-  C source file, so that C compile errors will refer to the line number in
-  the Lyx document.\ 
+  expands out to the <verbatim|-L> option if fangle is being invoked in a C
+  source file, so that C compile errors will refer to the line number in the
+  Lyx document.\ 
 
   <\nf-chunk|Makefile.inc-vars>
     TABS=8
 
     nf_line=-L -T$(TABS)
 
-    newfangle=newfangle $(call if_extension,$(2),$(C_EXTENSIONS),$(nf_line))
+    fangle=fangle $(call if_extension,$(2),$(C_EXTENSIONS),$(nf_line))
     -R"$(2)" $(1)
   </nf-chunk||>
 
   We can use a similar trick to define an indent macro which takes just the
   filename as an argument and can return a pipeline stage calling the indent
-  command. Indent can be turned off with <verbatim|make newfangle_sources
+  command. Indent can be turned off with <verbatim|make fangle_sources
   indent=>
 
   <\nf-chunk|Makefile.inc-vars>
@@ -1153,9 +1151,9 @@
   or if none or a few C source files have changed.
 
   <\nf-chunk|Makefile.inc-vars>
-    newfangle_extract=@mkdir -p $(dir $(1)) && \\
+    fangle_extract=@mkdir -p $(dir $(1)) && \\
 
-    \ \ $(call newfangle,$(2),$(1)) \<gtr\> "$(1).tmp" && \\
+    \ \ $(call fangle,$(2),$(1)) \<gtr\> "$(1).tmp" && \\
 
     \ \ cat "$(1).tmp" $(indent) \| cpif "$(1)" \\
 
@@ -1169,13 +1167,13 @@
   the <LaTeX> document.
 
   <\nf-chunk|Makefile.inc-vars>
-    define NEWFANGLE_template
+    define FANGLE_template
 
     \ \ $(1): $(2)
 
-    <nf-tab>$$(call newfangle_extract,$(1),$(2))
+    <nf-tab>$$(call fangle_extract,$(1),$(2))
 
-    \ \ NEWFANGLE_TARGETS+=$(1)
+    \ \ FANGLE_TARGETS+=$(1)
 
     endef
   </nf-chunk||>
@@ -1184,19 +1182,19 @@
   makefile rule for each one using the makefile template we defined above.
 
   <\nf-chunk|Makefile.inc-targets>
-    $(foreach source,$(NEWFANGLE_SOURCES),\\
+    $(foreach source,$(FANGLE_SOURCES),\\
 
-    \ \ $(eval $(call NEWFANGLE_template,$(source),$(NEWFANGLE_SOURCE))) \\
+    \ \ $(eval $(call FANGLE_template,$(source),$(FANGLE_SOURCE))) \\
 
     )
   </nf-chunk||>
 
-  These will all be built with <verbatim|NEWFANGLE_SOURCE_STAMP>.
+  These will all be built with <verbatim|FANGLE_SOURCE_STAMP>.
 
   We also remove the generated sources on a make distclean.
 
   <\nf-chunk|Makefile.inc-targets>
-    _distclean: clean_newfangle_sources
+    _distclean: clean_fangle_sources
   </nf-chunk||>
 
   <section|Extracting Documentation>
@@ -1211,7 +1209,7 @@
   We produce a pdf file from the tex file.
 
   <\nf-chunk|Makefile.inc-vars>
-    NEWFANGLE_PDF=$(TEX_SOURCE:.tex=.pdf)
+    FANGLE_PDF=$(TEX_SOURCE:.tex=.pdf)
   </nf-chunk||>
 
   We run pdflatex twice to be sure that the contents and aux files are up to
@@ -1219,7 +1217,7 @@
   these files do not exist.
 
   <\nf-chunk|Makefile.inc-targets>
-    $(NEWFANGLE_PDF): $(TEX_SOURCE)
+    $(FANGLE_PDF): $(TEX_SOURCE)
 
     <nf-tab>pdflatex $\<less\> && pdflatex $\<less\>
 
@@ -1227,7 +1225,7 @@
 
     clean_pdf:
 
-    <nf-tab>rm -f -- $(NEWFANGLE_PDF) $(TEX_SOURCE:.tex=.toc) \\
+    <nf-tab>rm -f -- $(FANGLE_PDF) $(TEX_SOURCE:.tex=.toc) \\
 
     <nf-tab> \ $(TEX_SOURCE:.tex=.log) $(TEX_SOURCE:.tex=.aux)
   </nf-chunk||>
@@ -1237,7 +1235,7 @@
   <TeXmacs> can produce a PDF file directly.
 
   <\nf-chunk|Makefile.inc-vars>
-    NEWFANGLE_PDF=$(TEX_SOURCE:.tm=.pdf)
+    FANGLE_PDF=$(TEX_SOURCE:.tm=.pdf)
   </nf-chunk||>
 
   <\todo>
@@ -1249,7 +1247,7 @@
   </todo>
 
   <\nf-chunk|Makefile.inc-targets>
-    $(NEWFANGLE_PDF): $(TEXMACS_SOURCE)
+    $(FANGLE_PDF): $(TEXMACS_SOURCE)
 
     <nf-tab>texmacs -c $(TEXMACS_SOURCE) $\<less\> -q
 
@@ -1257,43 +1255,43 @@
 
     clean_pdf:
 
-    <nf-tab>rm -f -- $(NEWFANGLE_PDF)
+    <nf-tab>rm -f -- $(FANGLE_PDF)
   </nf-chunk||>
 
   <subsection|Building the Documentation as a Whole>
 
-  Currently we only build pdf as a final format, but
-  <verbatim|NEWFANGLE_DOCS> may later hold other output formats.
+  Currently we only build pdf as a final format, but <verbatim|FANGLE_DOCS>
+  may later hold other output formats.
 
   <\nf-chunk|Makefile.inc-vars>
-    NEWFANGLE_DOCS=$(NEWFANGLE_PDF)
+    FANGLE_DOCS=$(FANGLE_PDF)
   </nf-chunk||>
 
-  We also define <verbatim|newfangle_docs> as a convenient phony target.
+  We also define <verbatim|fangle_docs> as a convenient phony target.
 
   <\nf-chunk|Makefile.inc-targets>
-    .PHONY: newfangle_docs
+    .PHONY: fangle_docs
 
-    newfangle_docs: $(NEWFANGLE_DOCS)
+    fangle_docs: $(FANGLE_DOCS)
 
-    docs: newfangle_docs
+    docs: fangle_docs
   </nf-chunk||>
 
   And define a convenient <verbatim|clean_noweb_docs> which we add to the
   regular clean target
 
   <\nf-chunk|Makefile.inc-targets>
-    .PHONEY: clean_newfangle_docs
+    .PHONEY: clean_fangle_docs
 
-    clean_newfangle_docs: clean_tex clean_pdf
+    clean_fangle_docs: clean_tex clean_pdf
 
-    clean: clean_newfangle_docs
+    clean: clean_fangle_docs
 
     \;
 
-    distclean_newfangle_docs: clean_tex clean_newfangle_docs
+    distclean_fangle_docs: clean_tex clean_fangle_docs
 
-    distclean: clean distclean_newfangle_docs
+    distclean: clean distclean_fangle_docs
   </nf-chunk||>
 
   <section|Other helpers>
@@ -1301,11 +1299,11 @@
   If <filename|Makefile.inc> is included into <filename|Makefile>, then
   extracted files can be updated with this command:
 
-  <verbatim|make newfangle_sources>
+  <verbatim|make fangle_sources>
 
   otherwise, with:
 
-  <verbatim|make -f Makefile.inc newfangle_sources>
+  <verbatim|make -f Makefile.inc fangle_sources>
 
   <section|Boot-strapping the extraction>
 
@@ -1340,15 +1338,15 @@
 
     \;
 
-    newfangle -R./Makefile.inc ${MAKE_SRC}.tex \\
+    fangle -R./Makefile.inc ${MAKE_SRC}.tex \\
 
-    \ \ \| sed "/NEWFANGLE_SOURCE=/s/^/#/;T;aNOWEB_SOURCE=$NEWFANGLE_SRC" \\
+    \ \ \| sed "/FANGLE_SOURCE=/s/^/#/;T;aNOWEB_SOURCE=$FANGLE_SRC" \\
 
     \ \ \| cpif ./Makefile.inc
 
     \;
 
-    make -f ./Makefile.inc newfangle_sources
+    make -f ./Makefile.inc fangle_sources
   </nf-chunk|sh|>
 
   The general Makefile can be invoked with <filename|./autoboot> and can also
@@ -1358,16 +1356,16 @@
   The <em|autoboot> can be extracted with this command:
 
   <\verbatim>
-    lyx -e latex newfangle.lyx && \\
+    lyx -e latex fangle.lyx && \\
 
-    \ \ newfangle newfangle.lyx \<gtr\> ./autoboot
+    \ \ fangle fangle.lyx \<gtr\> ./autoboot
   </verbatim>
 
-  This looks simple enough, but as mentioned, newfangle has to be had from
+  This looks simple enough, but as mentioned, fangle has to be had from
   somewhere before it can be extracted.
 
-  On a unix system will extract <filename|newfangle.module> and the
-  <filename|newfangle> awk script, and run some basic tests.\ 
+  On a unix system will extract <filename|fangle.module> and the
+  <filename|fangle> awk script, and run some basic tests.\ 
 
   <todo|cross-ref to test chapter when it is a chapter all on its own>
 
@@ -1423,7 +1421,7 @@
   <\nf-chunk|makefile-glue>
     $(module_srcdir)/$(MODULE_STAMP): $(module_srcdir)/$(MODULE_SOURCE)
 
-    <nf-tab>$(MAKE) -C $(module_srcdir) -f Makefile.inc newfangle_sources
+    <nf-tab>$(MAKE) -C $(module_srcdir) -f Makefile.inc fangle_sources
     LITERATE_SOURCE=$(MODULE_SOURCE)
   </nf-chunk||>
 
@@ -1468,11 +1466,11 @@
 
   <part|Source Code>
 
-  <chapter|Newfangle awk source code>
+  <chapter|Fangle awk source code>
 
   We use the copyright notice from chapter <reference|License>.
 
-  <\nf-chunk|./newfangle>
+  <\nf-chunk|./fangle>
     #! /usr/bin/awk -f
 
     # <nf-ref|gpl3-copyright|>
@@ -1482,7 +1480,7 @@
   revision) defined in <reference|getopt>, and naturally want to attribute
   this appropriately.
 
-  <\nf-chunk|./newfangle>
+  <\nf-chunk|./fangle>
     \;
 
     # NOTE: Arnold Robbins public domain getopt for awk is also used:
@@ -1499,7 +1497,7 @@
   And include the following chunks (which are explained further on) to make
   up the program:
 
-  <\nf-chunk|./newfangle>
+  <\nf-chunk|./fangle>
     <nf-ref|helper-functions|>
 
     <nf-ref|mode-tracker|>
@@ -1528,7 +1526,7 @@
   <section|AWK tricks>
 
   The portable way to erase an array in awk is to split the empty string, so
-  we define a newfangle macro that can split an array, like this:
+  we define a fangle macro that can split an array, like this:
 
   <nf-chunk|awk-delete-array|split("", <nf-arg|ARRAY>);|awk|<tuple|ARRAY>>
 
@@ -1585,8 +1583,8 @@
 
   For <LyX> and <LaTeX>, the <verbatim|lstlistings> package is used to format
   the lines of code chunks. You may recal from chapter XXX that arguments to
-  a chunk definition are pure <LaTeX> code. This means that newfangle needs
-  to be able to parse <LaTeX> a little.
+  a chunk definition are pure <LaTeX> code. This means that fangle needs to
+  be able to parse <LaTeX> a little.
 
   <LaTeX> arguments to <verbatim|lstlistings> macros are a comma seperated
   list of key-value pairs, and values containing commas are enclosed in
@@ -1640,11 +1638,11 @@
   There will be other arguments supported too;\ 
 
   <\description-long>
-    <item*|params>As an extension to many literate-programming styles,
-    newfangle permits code chunks to take parameters and thus operate
-    somewhat like C pre-processor macros, or like C++ templates. Chunk
-    parameters are declared with a chunk argument called params, which holds
-    a semi-colon separated list of parameters, like this:
+    <item*|params>As an extension to many literate-programming styles, fangle
+    permits code chunks to take parameters and thus operate somewhat like C
+    pre-processor macros, or like C++ templates. Chunk parameters are
+    declared with a chunk argument called params, which holds a semi-colon
+    separated list of parameters, like this:
 
     \;
 
@@ -1660,7 +1658,7 @@
   above. The optional parameter path is used during recursion to build up the
   multi-dimensional array path.
 
-  <\nf-chunk|./newfangle>
+  <\nf-chunk|./fangle>
     =\<less\>\\chunkref{get_chunk_args()}\<gtr\>
   </nf-chunk||>
 
@@ -1978,13 +1976,13 @@
 
   <section|Modes>
 
-  <verbatim|lstlistings> and <verbatim|newfangle> both recognize source
+  <verbatim|lstlistings> and <verbatim|fangle> both recognize source
   languages, and perform some basic parsing. <verbatim|lstlistings> can
   detect strings and comments within a language definition and perform
   suitable rendering, such as italics for comments, and visible-spaces within
   strings.
 
-  Newfangle similarly can recognize strings, and comments, etc, within a
+  Fangle similarly can recognize strings, and comments, etc, within a
   language, so that any chunks included with <verbatim|\\chunkref> can be
   suitably escape or quoted.
 
@@ -2006,9 +2004,9 @@
 
   \;
 
-  <math|things<wide|[x, y]|\<wide-overbrace\>><rsup|1. [ mode>,
-  get_other_things<wide|(a, <wide*|<with|mode|text|">(all)<with|mode|text|">|\<wide-underbrace\>><rsub|3.
-  " mode>)|\<wide-overbrace\>><rsup|2. ( mode>>
+  <math|things<wide|<around|[|x, y|]>|\<wide-overbrace\>><rsup|1. [ mode>,
+  get_other_things<wide|<around|(|a, <wide*|<text|"><around|(|all|)><text|">|\<wide-underbrace\>><rsub|3.
+  " mode>|)>|\<wide-overbrace\>><rsup|2. ( mode>>
 
   \;
 
@@ -2028,7 +2026,7 @@
 
   <nf-chunk|example-sh|perl -e "=\<less\>\\chunkref{example-perl}\<gtr\>"|sh|>
 
-  newfangle would need to generate output like this:
+  fangle would need to generate output like this:
 
   <verbatim|perl -e "print \\"hello world \\$0\\\\n\\";" >
 
@@ -2070,12 +2068,12 @@
 
   <verbatim|echo "hello \0id ...\0">
 
-  <phantom|<verbatim|echo "hello \0id <math|<math|>>>><with|mode|math|\<uparrow\>>
+  <phantom|<verbatim|echo "hello \0id >><math|\<uparrow\>>
 
-  Any characters inserted at the point marked <with|mode|math|\<uparrow\>>
-  would need to be escaped, including <verbatim|\0> <verbatim|\|>
-  <verbatim|*> among others. First it would need escaping for the back-ticks
-  <verbatim|\0>, and then for the double-quotes <verbatim|">.
+  Any characters inserted at the point marked <math|\<uparrow\>> would need
+  to be escaped, including <verbatim|\0> <verbatim|\|> <verbatim|*> among
+  others. First it would need escaping for the back-ticks <verbatim|\0>, and
+  then for the double-quotes <verbatim|">.
 
   <todo|MAYBE>Escaping need not occur if the format and mode of the included
   chunk matches that of the including chunk.
@@ -2110,7 +2108,7 @@
     TODO: Add =\<less\>\\mode{}\<gtr\> command which will allow us to signify
     that a string is
 
-    \ regex and thus newfangle will quote it for us.
+    \ regex and thus fangle will quote it for us.
   </todo>
 
   Submodes are entered by the characters \ <verbatim|"> <verbatim|'>
@@ -2443,7 +2441,7 @@
   in awk and perl; e.g. <verbatim|/.*$/>, however required capabilities are
   not present.
 
-  Current it only detects regexes anchored with ^ as used in newfangle.
+  Current it only detects regexes anchored with ^ as used in fangle.
 
   For full regex support, modes need to be named not after their starting
   character, but some other more fully qualified name.
@@ -2542,7 +2540,7 @@
   </nf-chunk||>
 
   Because awk functions cannot return an array, we must create the array
-  first and pass it in, so we have a newfangle macro to do this:
+  first and pass it in, so we have a fangle macro to do this:
 
   <\nf-chunk|new-mode-tracker>
     =\<less\>\\chunkref{awk-delete-array}(${context})\<gtr\>
@@ -2664,11 +2662,11 @@
   <\nf-chunk|test:cromulence>
     echo Cromulence test
 
-    passtest $NEWFANGLE -Rtest:whole-chunk $TEX_SRC &\<gtr\>/dev/null \|\| (
+    passtest $FANGLE -Rtest:whole-chunk $TEX_SRC &\<gtr\>/dev/null \|\| (
     echo "Whole chunk failed" && exit 1 )
 
-    failtest $NEWFANGLE -Rtest:partial-chunk $TEX_SRC &\<gtr\>/dev/null \|\|
-    ( echo "Partial chunk failed" && exit 1 )
+    failtest $FANGLE -Rtest:partial-chunk $TEX_SRC &\<gtr\>/dev/null \|\| (
+    echo "Partial chunk failed" && exit 1 )
   </nf-chunk||>
 
   <subsection|Tracker>
@@ -3068,13 +3066,13 @@
   <\nf-chunk|test:escapes>
     echo escapes test
 
-    passtest $NEWFANGLE -Rtest:comment-quote $TEX_SRC &\<gtr\>/dev/null \|\|
-    ( echo "Comment-quote failed" && exit 1 )
+    passtest $FANGLE -Rtest:comment-quote $TEX_SRC &\<gtr\>/dev/null \|\| (
+    echo "Comment-quote failed" && exit 1 )
   </nf-chunk|sh|>
 
   <chapter|Recognizing Chunks>
 
-  Newfangle recognizes noweb chunks, but as we also want better <LaTeX>
+  Fangle recognizes noweb chunks, but as we also want better <LaTeX>
   integration we will recognize any of these:
 
   <\itemize>
@@ -3301,7 +3299,7 @@
   then, when writing chunkref argumemts that need these characters, I must
   use the forms <verbatim|\\textbackslash{}> and <verbatim|\\#>; so I also
   define a hacky chunk <verbatim|delatex> to be used further on whose purpose
-  it is to remove these from any arguments parsed by newfangle.
+  it is to remove these from any arguments parsed by fangle.
 
   <\nf-chunk|delatex>
     # FILTHY HACK
@@ -3355,12 +3353,12 @@
   </nf-chunk||>
 
   We then consider the type of chunk command we have found, whether it is the
-  newfangle style command beginning with <verbatim|=\<less\>> the older
-  notangle style beginning with <verbatim|\<less\>\<less\>>.
+  fangle style command beginning with <verbatim|=\<less\>> the older notangle
+  style beginning with <verbatim|\<less\>\<less\>>.
 
-  Newfangle chunks may have parameters contained within square brackets.
-  These will be matched in <verbatim|line[3]> and are considered at this
-  stage of processing to be part of the name of the chunk to be included.
+  Fangle chunks may have parameters contained within square brackets. These
+  will be matched in <verbatim|line[3]> and are considered at this stage of
+  processing to be part of the name of the chunk to be included.
 
   <\nf-chunk|process-chunk>
     \ \ if (substr(line[1], 1, 1) == "=") {
@@ -3499,9 +3497,9 @@
 
     \ \ print "Usage:"
 
-    \ \ print " \ newfangle [-L] -R\<less\>rootname\<gtr\> [source.tex ...]"
+    \ \ print " \ fangle [-L] -R\<less\>rootname\<gtr\> [source.tex ...]"
 
-    \ \ print " \ newfangle -r [source.tex ...]"
+    \ \ print " \ fangle -r [source.tex ...]"
 
     \ \ print " \ If the filename, source.tex is not specified then stdin is
     used"
@@ -4331,24 +4329,24 @@
     =\<less\>\\chunkref{getopt.awk-getopt()}\<gtr\>
   </nf-chunk||>
 
-  <chapter|Newfangle LaTeX source code><label|latex-source>
+  <chapter|Fangle LaTeX source code><label|latex-source>
 
-  <section|newfangle module>
+  <section|fangle module>
 
   Here we define a <LyX> <verbatim|.module> file that makes it convenient to
   use <LyX> for writing such literate programs.
 
-  This file <verbatim|./newfangle.module> can be installed in your personal
+  This file <verbatim|./fangle.module> can be installed in your personal
   <verbatim|.lyx/layouts> folder. You will need to Tools Reconfigure so that
   <LyX> notices it. It adds a new format Chunk, which should precede every
   listing and contain the chunk name.
 
-  <\nf-chunk|./newfangle.module>
-    #\\DeclareLyXModule{Newfangle Literate Listings}
+  <\nf-chunk|./fangle.module>
+    #\\DeclareLyXModule{Fangle Literate Listings}
 
     #DescriptionBegin
 
-    # \ Newfangle literate listings allow one to write
+    # \ Fangle literate listings allow one to write
 
     # \ \ literate programs after the fashion of noweb, but without having
 
@@ -4359,7 +4357,7 @@
 
     # \ \ to code formating directly as latex.
 
-    # \ The newfangle awk script
+    # \ The fangle awk script
 
     #DescriptionEnd
 
@@ -4375,7 +4373,7 @@
 
     AddToPreamble
 
-    =\<less\>\\chunkref{./newfangle.sty}\<gtr\>
+    =\<less\>\\chunkref{./fangle.sty}\<gtr\>
 
     EndPreamble
 
@@ -4388,7 +4386,7 @@
     =\<less\>\\chunkref{chunkref}\<gtr\>
   </nf-chunk|lyx-module|>
 
-  Because <LyX> modules are not yet a language supported by newfangle or
+  Because <LyX> modules are not yet a language supported by fangle or
   lstlistings, we resort to this fake awk chunk below in order to have each
   line of the GPL3 license commence with a #
 
@@ -4408,7 +4406,7 @@
 
   The chunk style is defined as a <LaTeX> command, so that all text on the
   same line is passed to the <verbatim|LaTeX> command <verbatim|Chunk>. This
-  makes it easy to parse using <verbatim|newfangle>, and easy to pass these
+  makes it easy to parse using <verbatim|fangle>, and easy to pass these
   options on to the listings package. The first word in a chunk section
   should be the chunk name, and will have <verbatim|name=> prepended to it.
   Any other words are accepted arguments to <verbatim|lstset>.
@@ -4492,7 +4490,7 @@
   own <verbatim|\\code> environment, we re-define the one that <LyX> logical
   markup module expects here.
 
-  <\nf-chunk|./newfangle.sty>
+  <\nf-chunk|./fangle.sty>
     \\usepackage{listings}%
 
     \\usepackage{noweb}%
@@ -4507,14 +4505,14 @@
   <verbatim|\\begin{Chunk}> when I can do this without clashing with
   <verbatim|\\Chunk>.
 
-  <\nf-chunk|./newfangle.sty>
+  <\nf-chunk|./fangle.sty>
     \\lstnewenvironment{Chunk}{\\relax}{\\relax}%
   </nf-chunk||>
 
   We also define a suitable <verbatim|\\lstset> of parameters that suit the
   literate programming style after the fashion of <name|noweave>.
 
-  <\nf-chunk|./newfangle.sty>
+  <\nf-chunk|./fangle.sty>
     \\lstset{numbers=left, stepnumber=5, numbersep=5pt,
 
     \ \ \ \ \ \ \ \ breaklines=false,basicstyle=\\ttfamily,
@@ -4527,17 +4525,16 @@
   <verbatim|=\<less\>...\<gtr\>> sequence to contain <LaTeX> code, and
   include another like this chunk: <verbatim|=\<less\>\\chunkref{chunkname}\<gtr\>>.
   However, because <verbatim|=\<less\>...\<gtr\>> is already defined to
-  contain <LaTeX> code for this document --- this is a newfangle document
-  after all --- the code fragment below effectively contains the <LaTeX>
-  code: <verbatim|}{>. To avoid problems with document generation, I had to
-  declare an lstlistings property: <verbatim|escapeinside={}> for this
-  listing only; which in <LyX> was done by right-clicking the listings inset,
-  choosing settings-\<gtr\>advanced. Therefore <verbatim|=\<less\>> isn't
-  interpreted literally here, in a listing when the escape sequence is
-  already defined as shown... we need to somehow escape this
-  representation...
+  contain <LaTeX> code for this document --- this is a fangle document after
+  all --- the code fragment below effectively contains the <LaTeX> code:
+  <verbatim|}{>. To avoid problems with document generation, I had to declare
+  an lstlistings property: <verbatim|escapeinside={}> for this listing only;
+  which in <LyX> was done by right-clicking the listings inset, choosing
+  settings-\<gtr\>advanced. Therefore <verbatim|=\<less\>> isn't interpreted
+  literally here, in a listing when the escape sequence is already defined as
+  shown... we need to somehow escape this representation...
 
-  <\nf-chunk|./newfangle.sty>
+  <\nf-chunk|./fangle.sty>
     \\lstset{escapeinside={=\<less\>}{\<gtr\>}}%
   </nf-chunk||>
 
@@ -4550,14 +4547,14 @@
   interact badly if other listings want a regular title or caption. We
   remember the old maketitle in case we need it.
 
-  <\nf-chunk|./newfangle.sty>
+  <\nf-chunk|./fangle.sty>
     %\\makeatletter
 
     %somehow re-defining maketitle gives us a left-aligned title
 
     %which is extactly what our specially formatted title needs!
 
-    \\global\\let\\newfangle@lst@maketitle\\lst@maketitle%
+    \\global\\let\\fangle@lst@maketitle\\lst@maketitle%
 
     \\global\\def\\lst@maketitle{}%
   </nf-chunk||>
@@ -4569,10 +4566,10 @@
   next <verbatim|\\lstlisting> starts, so we make a note of this in
   <verbatim|\\lst@chunkname> and restore in in lstlistings Init hook.
 
-  <\nf-chunk|./newfangle.sty>
+  <\nf-chunk|./fangle.sty>
     \\def\\Chunk#1{%
 
-    \ \ \\lstset{title={\\newfanglecaption},name=#1}%
+    \ \ \\lstset{title={\\fanglecaption},name=#1}%
 
     \ \ \\global\\edef\\lst@chunkname{\\lst@intname}%
 
@@ -4583,31 +4580,31 @@
 
   <subsubsection|Chunk parameters>
 
-  Newfangle permits parameterized chunks, and requires the paramters to be
-  specified as listings options. The newfangle script uses this, and although
-  we don't do anything with these in the <LaTeX> code right now, we need to
-  stop the listings package complaining.
+  Fangle permits parameterized chunks, and requires the paramters to be
+  specified as listings options. The fangle script uses this, and although we
+  don't do anything with these in the <LaTeX> code right now, we need to stop
+  the listings package complaining.
 
-  <\nf-chunk|./newfangle.sty>
-    \\lst@Key{params}\\relax{\\def\\newfangle@chunk@params{#1}}%
+  <\nf-chunk|./fangle.sty>
+    \\lst@Key{params}\\relax{\\def\\fangle@chunk@params{#1}}%
   </nf-chunk||>
 
   As it is common to define a chunk which then needs appending to another
   chunk, and annoying to have to declare a single line chunk to manage the
   include, we support an append= option.
 
-  <\nf-chunk|./newfangle.sty>
-    \\lst@Key{append}\\relax{\\def\\newfangle@chunk@append{#1}}%
+  <\nf-chunk|./fangle.sty>
+    \\lst@Key{append}\\relax{\\def\\fangle@chunk@append{#1}}%
   </nf-chunk||>
 
   <subsection|The noweb styled caption>
 
-  We define a public macro <verbatim|\\newfanglecaption> which can be set as
-  a regular title. By means of <verbatim|\\protect>, It expands to
-  <verbatim|\\newfangle@caption> at the appopriate time when the caption is
+  We define a public macro <verbatim|\\fanglecaption> which can be set as a
+  regular title. By means of <verbatim|\\protect>, It expands to
+  <verbatim|\\fangle@caption> at the appopriate time when the caption is
   emitted.
 
-  <nf-chunk|./newfangle.sty|\\def\\newfanglecaption{\\protect\\newfangle@caption}%||>
+  <nf-chunk|./fangle.sty|\\def\\fanglecaption{\\protect\\fangle@caption}%||>
 
   <\big-figure>
     22c <math|\<langle\>>some-chunk 19b<math|\<rangle\>><math|\<equiv\>>+
@@ -4645,8 +4642,8 @@
   </footnote>, so we have one counter which we save at the end of a chunk and
   restore at the beginning of a chunk.
 
-  <\nf-chunk|./newfangle.sty>
-    \\newcounter{newfangle@chunkcounter}%
+  <\nf-chunk|./fangle.sty>
+    \\newcounter{fangle@chunkcounter}%
   </nf-chunk||>
 
   We construct the name of this variable to store the counter to be the text
@@ -4656,11 +4653,11 @@
   We save the counter like this:
 
   <nf-chunk|save-counter|\\global\\expandafter\\edef\\csname
-  \\chunkcount\\endcsname{\\arabic{newfangle@chunkcounter}}%||>
+  \\chunkcount\\endcsname{\\arabic{fangle@chunkcounter}}%||>
 
   and restore the counter like this:
 
-  <nf-chunk|restore-counter|\\setcounter{newfangle@chunkcounter}{\\csname
+  <nf-chunk|restore-counter|\\setcounter{fangle@chunkcounter}{\\csname
   \\chunkcount\\endcsname}%||>
 
   If there does not already exist a variable whose name is stored in
@@ -4677,8 +4674,8 @@
   <verbatim|\\prevchunkname> is set to <verbatim|\\relax> which the noweb
   package will interpret as not existing.
 
-  <\nf-chunk|./newfangle.sty>
-    \\def\\newfangle@caption{%
+  <\nf-chunk|./fangle.sty>
+    \\def\\fangle@caption{%
 
     \ \ \\edef\\chunkcount{lst-chunk-\\lst@intname}%
 
@@ -4686,17 +4683,17 @@
 
     \ \ \ \ \\expandafter\\gdef\\csname \\chunkcount\\endcsname{0}%
 
-    \ \ \ \ \\setcounter{newfangle@chunkcounter}{\\csname
+    \ \ \ \ \\setcounter{fangle@chunkcounter}{\\csname
     \\chunkcount\\endcsname}%
 
     \ \ \ \ \\let\\prevchunkname\\relax%
 
     \ \ }{%
 
-    \ \ \ \ \\setcounter{newfangle@chunkcounter}{\\csname
+    \ \ \ \ \\setcounter{fangle@chunkcounter}{\\csname
     \\chunkcount\\endcsname}%
 
-    \ \ \ \ \\edef\\prevchunkname{\\lst@intname-\\arabic{newfangle@chunkcounter}}%
+    \ \ \ \ \\edef\\prevchunkname{\\lst@intname-\\arabic{fangle@chunkcounter}}%
 
     \ \ }%
   </nf-chunk||>
@@ -4704,13 +4701,13 @@
   After incrementing the chunk counter, we then define the name of this
   chunk, as well as the name of the first chunk.
 
-  <\nf-chunk|./newfangle.sty>
-    \ \ \\addtocounter{newfangle@chunkcounter}{1}%
+  <\nf-chunk|./fangle.sty>
+    \ \ \\addtocounter{fangle@chunkcounter}{1}%
 
     \ \ \\global\\expandafter\\edef\\csname
-    \\chunkcount\\endcsname{\\arabic{newfangle@chunkcounter}}%
+    \\chunkcount\\endcsname{\\arabic{fangle@chunkcounter}}%
 
-    \ \ \\edef\\chunkname{\\lst@intname-\\arabic{newfangle@chunkcounter}}%
+    \ \ \\edef\\chunkname{\\lst@intname-\\arabic{fangle@chunkcounter}}%
 
     \ \ \\edef\\firstchunkname{\\lst@intname-1}%
   </nf-chunk||>
@@ -4723,10 +4720,10 @@
   least tell the second time <LaTeX> is run. If we don't find such a defined
   label then we define <verbatim|\\nextchunkname> to <verbatim|\\relax>.
 
-  <\nf-chunk|./newfangle.sty>
-    \ \ \\addtocounter{newfangle@chunkcounter}{1}%
+  <\nf-chunk|./fangle.sty>
+    \ \ \\addtocounter{fangle@chunkcounter}{1}%
 
-    \ \ \\edef\\nextchunkname{\\lst@intname-\\arabic{newfangle@chunkcounter}}%
+    \ \ \\edef\\nextchunkname{\\lst@intname-\\arabic{fangle@chunkcounter}}%
 
     \ \ \\@ifundefined{r@label-\\nextchunkname}{\\let\\nextchunkname\\relax}{}%
   </nf-chunk||>
@@ -4740,7 +4737,7 @@
   at least twice after new chunk sections are added --- but noweb requried
   that anyway.
 
-  <\nf-chunk|./newfangle.sty>
+  <\nf-chunk|./fangle.sty>
     \ \ \\sublabel{\\chunkname}%
 
     % define this label for every chunk instance, so we
@@ -4754,7 +4751,7 @@
   don't do very well. We want each chunk name listing once, with all of it's
   references.
 
-  <\nf-chunk|./newfangle.sty>
+  <\nf-chunk|./fangle.sty>
     \ \ \\addcontentsline{lol}{lstlisting}{\\lst@name~[\\protect\\subpageref{\\chunkname}]}%
   </nf-chunk||>
 
@@ -4763,7 +4760,7 @@
   or <verbatim|\\nwenddeflinemarkup> <emdash> and if we do, it messes up the
   output somewhat.
 
-  <\nf-chunk|./newfangle.sty>
+  <\nf-chunk|./fangle.sty>
     \ \ \\nwmargintag{%
 
     \ \ \ \ {%
@@ -4786,9 +4783,9 @@
 
     \ \ \ \ \ \ \\nwtagstyle{}\\/%
 
-    \ \ \ \ \ \ \\@ifundefined{newfangle@chunk@params}{}{%
+    \ \ \ \ \ \ \\@ifundefined{fangle@chunk@params}{}{%
 
-    \ \ \ \ \ \ \ \ (\\newfangle@chunk@params)%
+    \ \ \ \ \ \ \ \ (\\fangle@chunk@params)%
 
     \ \ \ \ \ \ }%
 
@@ -4798,17 +4795,17 @@
 
     \ \ \ \ }%
 
-    \ \ \ \ \\@ifundefined{newfangle@chunk@append}{}{%
+    \ \ \ \ \\@ifundefined{fangle@chunk@append}{}{%
 
-    \ \ \ \ \\ifx{}\\newfangle@chunk@append{x}\\else%
+    \ \ \ \ \\ifx{}\\fangle@chunk@append{x}\\else%
 
-    \ \ \ \ \ \ \ \ ,~add~to~\\newfangle@chunk@append%
+    \ \ \ \ \ \ \ \ ,~add~to~\\fangle@chunk@append%
 
     \ \ \ \ \\fi%
 
     \ \ \ \ }%
 
-    \\global\\def\\newfangle@chunk@append{}%
+    \\global\\def\\fangle@chunk@append{}%
 
     \\lstset{append=x}%
 
@@ -4832,14 +4829,14 @@
   <emdash> <verbatim|\\lst@AddToHookExe{PreSet}> is still required to set the
   listings name to the name passed to the <verbatim|\\Chunk> command, though.
 
-  <\nf-chunk|./newfangle.sty>
-    %\\lst@BeginAspect{newfangle}
+  <\nf-chunk|./fangle.sty>
+    %\\lst@BeginAspect{fangle}
 
-    %\\lst@Key{newfangle}{true}[t]{\\lstKV@SetIf{#1}{true}}
+    %\\lst@Key{fangle}{true}[t]{\\lstKV@SetIf{#1}{true}}
 
     \\lst@AddToHookExe{PreSet}{\\global\\let\\lst@intname\\lst@chunkname}
 
-    \\lst@AddToHook{Init}{}%\\newfangle@caption}
+    \\lst@AddToHook{Init}{}%\\fangle@caption}
 
     %\\lst@EndAspect
   </nf-chunk||>
@@ -4862,7 +4859,7 @@
     signify subscript even though we have <verbatim|lst@ReplaceIn>
   </note>
 
-  <\nf-chunk|./newfangle.sty>
+  <\nf-chunk|./fangle.sty>
     \\def\\chunkref@args#1,{%
 
     \ \ \\def\\arg{#1}%
@@ -4942,20 +4939,20 @@
 
   <subsection|The end>
 
-  <\nf-chunk|./newfangle.sty>
+  <\nf-chunk|./fangle.sty>
     %
 
     %\\makeatother
   </nf-chunk||>
 
-  <chapter|Extracting newfangle>
+  <chapter|Extracting fangle>
 
   <section|Extracting from Lyx>
 
   To extract from <LyX>, you will need to configure <LyX> as explained in
   section <reference|Configuring-the-build>.
 
-  <label|lyx-build-script>And this lyx-build scrap will extract newfangle for
+  <label|lyx-build-script>And this lyx-build scrap will extract fangle for
   me.
 
   <\nf-chunk|lyx-build>
@@ -4971,26 +4968,25 @@
 
     \;
 
-    /usr/local/bin/newfangle -R./newfangle $TEX_SRC \<gtr\> ./newfangle
+    /usr/local/bin/fangle -R./fangle $TEX_SRC \<gtr\> ./fangle
 
-    /usr/local/bin/newfangle -R./newfangle.module $TEX_SRC \<gtr\>
-    ./newfangle.module
+    /usr/local/bin/fangle -R./fangle.module $TEX_SRC \<gtr\> ./fangle.module
 
     \;
 
     =\<less\>\\chunkref{test:helpers}\<gtr\>
 
-    export NEWFANGLE=./newfangle
+    export FANGLE=./fangle
 
     export TMP=${TMP:-/tmp}
 
     =\<less\>\\chunkref{test:run-tests}\<gtr\>
 
-    # Now check that we can extract a newfangle that also passes the tests!
+    # Now check that we can extract a fangle that also passes the tests!
 
-    $NEWFANGLE -R./newfangle $TEX_SRC \<gtr\> ./new-newfangle
+    $FANGLE -R./fangle $TEX_SRC \<gtr\> ./new-fangle
 
-    export NEWFANGLE=./new-newfangle
+    export FANGLE=./new-fangle
 
     =\<less\>\\chunkref{test:run-tests}\<gtr\>
   </nf-chunk|sh|>
@@ -4998,7 +4994,7 @@
   <\nf-chunk|test:run-tests>
     # run tests
 
-    $NEWFANGLE -Rpca-test.awk $TEX_SRC \| awk -f - \|\| exit 1
+    $FANGLE -Rpca-test.awk $TEX_SRC \| awk -f - \|\| exit 1
 
     =\<less\>\\chunkref{test:cromulence}\<gtr\>
 
@@ -5027,25 +5023,24 @@
     # \ iconv -c -f utf-8 -t ISO-8859-1//TRANSLIT \| \\
 
     # \ sed 's/UTF-8"\\(.\\)\<gtr\>/ISO-8859-1"\\1\<gtr\>/' \<gtr\>
-    www/docs/newfangle.html
+    www/docs/fangle.html
 
     \;
 
     python -m elyxer --css lyx.css --iso885915 --html --destdirectory
-    www/docs/newfangle.e \\
+    www/docs/fangle.e \\
 
-    \ \ \ \ \ \ \ newfangle.lyx \<gtr\> www/docs/newfangle.e/newfangle.html
+    \ \ \ \ \ \ \ fangle.lyx \<gtr\> www/docs/fangle.e/fangle.html
 
     \;
 
-    ( mkdir -p www/docs/newfangle && cd www/docs/newfangle && \\
+    ( mkdir -p www/docs/fangle && cd www/docs/fangle && \\
 
-    \ \ lyx -e latex ../../../newfangle.lyx && \\
+    \ \ lyx -e latex ../../../fangle.lyx && \\
 
-    \ \ htlatex ../../../newfangle.tex "xhtml,fn-in" && \\
+    \ \ htlatex ../../../fangle.tex "xhtml,fn-in" && \\
 
-    \ \ sed -i -e 's/\<less\>!--l\\. [0-9][0-9]* *--\<gtr\>//g'
-    newfangle.html
+    \ \ sed -i -e 's/\<less\>!--l\\. [0-9][0-9]* *--\<gtr\>//g' fangle.html
 
     )
 
@@ -5068,11 +5063,11 @@
   First you will need the tex output, then you can extract:
 
   <\nf-chunk|lyx-build-manual>
-    lyx -e latex newfangle.lyx
+    lyx -e latex fangle.lyx
 
-    newfangle -R./newfangle newfangle.tex \<gtr\> ./newfangle
+    fangle -R./fangle fangle.tex \<gtr\> ./fangle
 
-    newfangle -R./newfangle.module newfangle.tex \<gtr\> ./newfangle.module
+    fangle -R./fangle.module fangle.tex \<gtr\> ./fangle.module
   </nf-chunk|sh|>
 
   <section|Testing>
@@ -5148,11 +5143,10 @@
   And this chunk will perform the test:
 
   <\nf-chunk|test:chunk-params>
-    $NEWFANGLE -Rtest:chunk-params:result $TEX_SRC \<gtr\> $TMP/answer \|\|
-    exit 1
+    $FANGLE -Rtest:chunk-params:result $TEX_SRC \<gtr\> $TMP/answer \|\| exit
+    1
 
-    $NEWFANGLE -Rtest:chunk-params:text $TEX_SRC \<gtr\> $TMP/result \|\|
-    exit 1
+    $FANGLE -Rtest:chunk-params:text $TEX_SRC \<gtr\> $TMP/result \|\| exit 1
 
     passtest diff $TMP/answer $TMP/result \|\| (echo test:chunk-params:text
     failed ; exit 1)
@@ -5280,1628 +5274,3 @@
     <associate|sfactor|5>
   </collection>
 </initial>
-
-<\references>
-  <\collection>
-    <associate||<tuple|?h|?>>
-    <associate|*|<tuple|29a|29>>
-    <associate|-|<tuple|?a|?>>
-    <associate|.|<tuple|?v|?>>
-    <associate|./|<tuple|?v|?>>
-    <associate|./Makefile.inc|<tuple|23a|23>>
-    <associate|./gen-www|<tuple|82a|82>>
-    <associate|./n|<tuple|?v|?>>
-    <associate|./ne|<tuple|?v|?>>
-    <associate|./new|<tuple|?v|?>>
-    <associate|./newangle.sty|<tuple|?ag|?>>
-    <associate|./newf|<tuple|?v|?>>
-    <associate|./newfa|<tuple|?v|?>>
-    <associate|./newfan|<tuple|?v|?>>
-    <associate|./newfang|<tuple|?v|?>>
-    <associate|./newfangl|<tuple|?v|?>>
-    <associate|./newfangle|<tuple|36a|36>>
-    <associate|./newfangle.module|<tuple|73a|73>>
-    <associate|./newfangle.sty|<tuple|79a|79>>
-    <associate|/|<tuple|?u|?>>
-    <associate|/.|<tuple|?u|?>>
-    <associate|/.n|<tuple|?u|?>>
-    <associate|/.ne|<tuple|?u|?>>
-    <associate|/.new|<tuple|?u|?>>
-    <associate|Bootstrap-Using-a-Makefile|<tuple|6.2.1|23>>
-    <associate|Chunk Arguments|<tuple|8.2|37>>
-    <associate|Chunk: ./compile-log-lyx|<tuple|87a|87>>
-    <associate|Chunk: getopt.awk-begin|<tuple|?x|?>>
-    <associate|Chunk: test:chunk-params:sub|<tuple|?o|?>>
-    <associate|Chunk: test:chunk-params:sub:sub|<tuple|?p|?>>
-    <associate|Compile-log-lyx|<tuple|18|87>>
-    <associate|Converting-from-Lyx|<tuple|6.2.2|24>>
-    <associate|License|<tuple|2|4>>
-    <associate|Makefile.inc-targets|<tuple|28c|28>>
-    <associate|Makefile.inc-vars|<tuple|28b|28>>
-    <associate|a|<tuple|?x|?>>
-    <associate|auto-1|<tuple|?|3>>
-    <associate|auto-10|<tuple|4|17>>
-    <associate|auto-100|<tuple|17|85>>
-    <associate|auto-101|<tuple|18|87>>
-    <associate|auto-11|<tuple|4.1|17>>
-    <associate|auto-12|<tuple|4.2|17>>
-    <associate|auto-13|<tuple|4.2.1|17>>
-    <associate|auto-14|<tuple|4.2.2|17>>
-    <associate|auto-15|<tuple|4.2.3|17>>
-    <associate|auto-16|<tuple|4.3|18>>
-    <associate|auto-17|<tuple|4.3.1|18>>
-    <associate|auto-18|<tuple|4.3.2|18>>
-    <associate|auto-19|<tuple|4.4|19>>
-    <associate|auto-2|<tuple|2|4>>
-    <associate|auto-20|<tuple|4.4.1|19>>
-    <associate|auto-21|<tuple|5|21>>
-    <associate|auto-22|<tuple|6|23>>
-    <associate|auto-23|<tuple|6.1|23>>
-    <associate|auto-24|<tuple|6.2|23>>
-    <associate|auto-25|<tuple|6.2.1|24>>
-    <associate|auto-26|<tuple|6.2.2|24>>
-    <associate|auto-27|<tuple|6.3|24>>
-    <associate|auto-28|<tuple|6.4|25>>
-    <associate|auto-29|<tuple|6.5|27>>
-    <associate|auto-3|<tuple|I|9>>
-    <associate|auto-30|<tuple|6.5.1|27>>
-    <associate|auto-31|<tuple|6.5.1.1|27>>
-    <associate|auto-32|<tuple|6.5.2|27>>
-    <associate|auto-33|<tuple|6.5.3|28>>
-    <associate|auto-34|<tuple|6.6|28>>
-    <associate|auto-35|<tuple|6.7|28>>
-    <associate|auto-36|<tuple|6.8|29>>
-    <associate|auto-37|<tuple|6.8.0.0.1|29>>
-    <associate|auto-38|<tuple|II|31>>
-    <associate|auto-39|<tuple|7|33>>
-    <associate|auto-4|<tuple|1|11>>
-    <associate|auto-40|<tuple|7.1|33>>
-    <associate|auto-41|<tuple|7.2|34>>
-    <associate|auto-42|<tuple|8|35>>
-    <associate|auto-43|<tuple|8.1|35>>
-    <associate|auto-44|<tuple|8.2|37>>
-    <associate|auto-45|<tuple|8.3|38>>
-    <associate|auto-46|<tuple|9|41>>
-    <associate|auto-47|<tuple|9.1|41>>
-    <associate|auto-48|<tuple|9.1.1|41>>
-    <associate|auto-49|<tuple|9.1.2|41>>
-    <associate|auto-5|<tuple|2|13>>
-    <associate|auto-50|<tuple|9.2|42>>
-    <associate|auto-51|<tuple|9.2.1|43>>
-    <associate|auto-52|<tuple|9.2.2|43>>
-    <associate|auto-53|<tuple|9.2.3|44>>
-    <associate|auto-54|<tuple|9.2.4|45>>
-    <associate|auto-55|<tuple|9.2.5|45>>
-    <associate|auto-56|<tuple|9.2.6|46>>
-    <associate|auto-57|<tuple|9.2.7|46>>
-    <associate|auto-58|<tuple|9.2.8|47>>
-    <associate|auto-59|<tuple|9.3|47>>
-    <associate|auto-6|<tuple|2.1|13>>
-    <associate|auto-60|<tuple|9.4|47>>
-    <associate|auto-61|<tuple|9.4.1|47>>
-    <associate|auto-62|<tuple|9.4.2|47>>
-    <associate|auto-63|<tuple|9.4.3|49>>
-    <associate|auto-64|<tuple|9.4.3.1|51>>
-    <associate|auto-65|<tuple|9.4.3.2|51>>
-    <associate|auto-66|<tuple|9.5|52>>
-    <associate|auto-67|<tuple|10|53>>
-    <associate|auto-68|<tuple|10.1|53>>
-    <associate|auto-69|<tuple|10.1.1|53>>
-    <associate|auto-7|<tuple|2.2|13>>
-    <associate|auto-70|<tuple|10.1.2|54>>
-    <associate|auto-71|<tuple|10.2|54>>
-    <associate|auto-72|<tuple|10.2.1|54>>
-    <associate|auto-73|<tuple|10.2.2|54>>
-    <associate|auto-74|<tuple|10.3|55>>
-    <associate|auto-75|<tuple|10.3.1|55>>
-    <associate|auto-76|<tuple|11|59>>
-    <associate|auto-77|<tuple|12|61>>
-    <associate|auto-78|<tuple|12.1|62>>
-    <associate|auto-79|<tuple|12.1.1|62>>
-    <associate|auto-8|<tuple|2.3|13>>
-    <associate|auto-80|<tuple|13|67>>
-    <associate|auto-81|<tuple|14|69>>
-    <associate|auto-82|<tuple|15|73>>
-    <associate|auto-83|<tuple|15.1|73>>
-    <associate|auto-84|<tuple|15.1.1|73>>
-    <associate|auto-85|<tuple|15.1.2|74>>
-    <associate|auto-86|<tuple|15.2|74>>
-    <associate|auto-87|<tuple|15.2.1|75>>
-    <associate|auto-88|<tuple|15.2.1.1|75>>
-    <associate|auto-89|<tuple|15.2.2|76>>
-    <associate|auto-9|<tuple|3|15>>
-    <associate|auto-90|<tuple|1|76>>
-    <associate|auto-91|<tuple|15.2.3|76>>
-    <associate|auto-92|<tuple|15.2.4|78>>
-    <associate|auto-93|<tuple|15.2.5|79>>
-    <associate|auto-94|<tuple|16|81>>
-    <associate|auto-95|<tuple|16.1|81>>
-    <associate|auto-96|<tuple|16.2|82>>
-    <associate|auto-97|<tuple|16.3|82>>
-    <associate|auto-98|<tuple|16.4|82>>
-    <associate|auto-99|<tuple|III|83>>
-    <associate|aw|<tuple|?x|?>>
-    <associate|awk|<tuple|?x|?>>
-    <associate|awk-|<tuple|?x|?>>
-    <associate|awk-d|<tuple|?x|?>>
-    <associate|awk-de|<tuple|?x|?>>
-    <associate|awk-del|<tuple|?x|?>>
-    <associate|awk-dele|<tuple|?x|?>>
-    <associate|awk-delet|<tuple|?x|?>>
-    <associate|awk-delete|<tuple|?x|?>>
-    <associate|awk-delete-|<tuple|?x|?>>
-    <associate|awk-delete-a|<tuple|?x|?>>
-    <associate|awk-delete-ar|<tuple|?x|?>>
-    <associate|awk-delete-arr|<tuple|?x|?>>
-    <associate|awk-delete-arra|<tuple|?x|?>>
-    <associate|awk-delete-array|<tuple|33d|33>>
-    <associate|begin|<tuple|59d|59>>
-    <associate|cha:getopt|<tuple|14|69>>
-    <associate|check-source-jump|<tuple|65c|65>>
-    <associate|chunk-storage-functions|<tuple|68a|68>>
-    <associate|chunkref|<tuple|74c|74>>
-    <associate|chunkstyle|<tuple|74a|74>>
-    <associate|code-label-*-1|<tuple|[* 1]|29>>
-    <associate|code-label---1|<tuple|[- 1]|?>>
-    <associate|code-label--1|<tuple|[ 1]|?>>
-    <associate|code-label-.-1|<tuple|[. 1]|?>>
-    <associate|code-label-./-1|<tuple|[./ 1]|?>>
-    <associate|code-label-./Makefile.inc-1|<tuple|[./Makefile.inc 1]|23>>
-    <associate|code-label-./gen-www-1|<tuple|[./gen-www 1]|82>>
-    <associate|code-label-./n-1|<tuple|[./n 1]|?>>
-    <associate|code-label-./ne-1|<tuple|[./ne 1]|?>>
-    <associate|code-label-./new-1|<tuple|[./new 1]|?>>
-    <associate|code-label-./newangle.sty-1|<tuple|[./newangle.sty 1]|?>>
-    <associate|code-label-./newf-1|<tuple|[./newf 1]|?>>
-    <associate|code-label-./newfa-1|<tuple|[./newfa 1]|?>>
-    <associate|code-label-./newfan-1|<tuple|[./newfan 1]|?>>
-    <associate|code-label-./newfang-1|<tuple|[./newfang 1]|?>>
-    <associate|code-label-./newfangl-1|<tuple|[./newfangl 1]|?>>
-    <associate|code-label-./newfangle-1|<tuple|[./newfangle 1]|33>>
-    <associate|code-label-./newfangle-2|<tuple|[./newfangle 2]|33>>
-    <associate|code-label-./newfangle-3|<tuple|[./newfangle 3]|33>>
-    <associate|code-label-./newfangle-4|<tuple|[./newfangle 4]|36>>
-    <associate|code-label-./newfangle.module-1|<tuple|[./newfangle.module
-    1]|73>>
-    <associate|code-label-./newfangle.sty-1|<tuple|[./newfangle.sty 1]|74>>
-    <associate|code-label-./newfangle.sty-10|<tuple|[./newfangle.sty 10]|76>>
-    <associate|code-label-./newfangle.sty-11|<tuple|[./newfangle.sty 11]|77>>
-    <associate|code-label-./newfangle.sty-12|<tuple|[./newfangle.sty 12]|77>>
-    <associate|code-label-./newfangle.sty-13|<tuple|[./newfangle.sty 13]|77>>
-    <associate|code-label-./newfangle.sty-14|<tuple|[./newfangle.sty 14]|77>>
-    <associate|code-label-./newfangle.sty-15|<tuple|[./newfangle.sty 15]|77>>
-    <associate|code-label-./newfangle.sty-16|<tuple|[./newfangle.sty 16]|78>>
-    <associate|code-label-./newfangle.sty-17|<tuple|[./newfangle.sty 17]|78>>
-    <associate|code-label-./newfangle.sty-18|<tuple|[./newfangle.sty 18]|79>>
-    <associate|code-label-./newfangle.sty-19|<tuple|[./newfangle.sty 19]|79>>
-    <associate|code-label-./newfangle.sty-2|<tuple|[./newfangle.sty 2]|74>>
-    <associate|code-label-./newfangle.sty-3|<tuple|[./newfangle.sty 3]|75>>
-    <associate|code-label-./newfangle.sty-4|<tuple|[./newfangle.sty 4]|75>>
-    <associate|code-label-./newfangle.sty-5|<tuple|[./newfangle.sty 5]|75>>
-    <associate|code-label-./newfangle.sty-6|<tuple|[./newfangle.sty 6]|75>>
-    <associate|code-label-./newfangle.sty-7|<tuple|[./newfangle.sty 7]|75>>
-    <associate|code-label-./newfangle.sty-8|<tuple|[./newfangle.sty 8]|76>>
-    <associate|code-label-./newfangle.sty-9|<tuple|[./newfangle.sty 9]|76>>
-    <associate|code-label-/-1|<tuple|[/ 1]|?>>
-    <associate|code-label-/.-1|<tuple|[/. 1]|?>>
-    <associate|code-label-/.n-1|<tuple|[/.n 1]|?>>
-    <associate|code-label-/.ne-1|<tuple|[/.ne 1]|?>>
-    <associate|code-label-/.new-1|<tuple|[/.new 1]|?>>
-    <associate|code-label-Chunk: ./compile-log-lyx-1|<tuple|[Chunk:
-    ./compile-log-lyx 1]|87>>
-    <associate|code-label-Chunk: getopt.awk-begin-1|<tuple|[Chunk:
-    getopt.awk-begin 1]|?>>
-    <associate|code-label-Chunk: test:chunk-params:sub-1|<tuple|[Chunk:
-    test:chunk-params:sub 1]|?>>
-    <associate|code-label-Chunk: test:chunk-params:sub:sub-1|<tuple|[Chunk:
-    test:chunk-params:sub:sub 1]|?>>
-    <associate|code-label-Makefile.inc-targets-1|<tuple|[Makefile.inc-targets
-    1]|24>>
-    <associate|code-label-Makefile.inc-targets-10|<tuple|[Makefile.inc-targets
-    10]|28>>
-    <associate|code-label-Makefile.inc-targets-11|<tuple|[Makefile.inc-targets
-    11]|28>>
-    <associate|code-label-Makefile.inc-targets-12|<tuple|[Makefile.inc-targets
-    12]|28>>
-    <associate|code-label-Makefile.inc-targets-2|<tuple|[Makefile.inc-targets
-    2]|24>>
-    <associate|code-label-Makefile.inc-targets-3|<tuple|[Makefile.inc-targets
-    3]|25>>
-    <associate|code-label-Makefile.inc-targets-4|<tuple|[Makefile.inc-targets
-    4]|25>>
-    <associate|code-label-Makefile.inc-targets-5|<tuple|[Makefile.inc-targets
-    5]|26>>
-    <associate|code-label-Makefile.inc-targets-6|<tuple|[Makefile.inc-targets
-    6]|26>>
-    <associate|code-label-Makefile.inc-targets-7|<tuple|[Makefile.inc-targets
-    7]|27>>
-    <associate|code-label-Makefile.inc-targets-8|<tuple|[Makefile.inc-targets
-    8]|27>>
-    <associate|code-label-Makefile.inc-targets-9|<tuple|[Makefile.inc-targets
-    9]|27>>
-    <associate|code-label-Makefile.inc-vars-1|<tuple|[Makefile.inc-vars
-    1]|23>>
-    <associate|code-label-Makefile.inc-vars-10|<tuple|[Makefile.inc-vars
-    10]|26>>
-    <associate|code-label-Makefile.inc-vars-11|<tuple|[Makefile.inc-vars
-    11]|26>>
-    <associate|code-label-Makefile.inc-vars-12|<tuple|[Makefile.inc-vars
-    12]|27>>
-    <associate|code-label-Makefile.inc-vars-13|<tuple|[Makefile.inc-vars
-    13]|27>>
-    <associate|code-label-Makefile.inc-vars-14|<tuple|[Makefile.inc-vars
-    14]|27>>
-    <associate|code-label-Makefile.inc-vars-15|<tuple|[Makefile.inc-vars
-    15]|28>>
-    <associate|code-label-Makefile.inc-vars-2|<tuple|[Makefile.inc-vars
-    2]|24>>
-    <associate|code-label-Makefile.inc-vars-3|<tuple|[Makefile.inc-vars
-    3]|24>>
-    <associate|code-label-Makefile.inc-vars-4|<tuple|[Makefile.inc-vars
-    4]|25>>
-    <associate|code-label-Makefile.inc-vars-5|<tuple|[Makefile.inc-vars
-    5]|25>>
-    <associate|code-label-Makefile.inc-vars-6|<tuple|[Makefile.inc-vars
-    6]|25>>
-    <associate|code-label-Makefile.inc-vars-7|<tuple|[Makefile.inc-vars
-    7]|26>>
-    <associate|code-label-Makefile.inc-vars-8|<tuple|[Makefile.inc-vars
-    8]|26>>
-    <associate|code-label-Makefile.inc-vars-9|<tuple|[Makefile.inc-vars
-    9]|26>>
-    <associate|code-label-a-1|<tuple|[a 1]|?>>
-    <associate|code-label-aw-1|<tuple|[aw 1]|?>>
-    <associate|code-label-awk--1|<tuple|[awk- 1]|?>>
-    <associate|code-label-awk-1|<tuple|[awk 1]|?>>
-    <associate|code-label-awk-d-1|<tuple|[awk-d 1]|?>>
-    <associate|code-label-awk-de-1|<tuple|[awk-de 1]|?>>
-    <associate|code-label-awk-del-1|<tuple|[awk-del 1]|?>>
-    <associate|code-label-awk-dele-1|<tuple|[awk-dele 1]|?>>
-    <associate|code-label-awk-delet-1|<tuple|[awk-delet 1]|?>>
-    <associate|code-label-awk-delete--1|<tuple|[awk-delete- 1]|?>>
-    <associate|code-label-awk-delete-1|<tuple|[awk-delete 1]|?>>
-    <associate|code-label-awk-delete-a-1|<tuple|[awk-delete-a 1]|?>>
-    <associate|code-label-awk-delete-ar-1|<tuple|[awk-delete-ar 1]|?>>
-    <associate|code-label-awk-delete-arr-1|<tuple|[awk-delete-arr 1]|?>>
-    <associate|code-label-awk-delete-arra-1|<tuple|[awk-delete-arra 1]|?>>
-    <associate|code-label-awk-delete-array-1|<tuple|[awk-delete-array 1]|33>>
-    <associate|code-label-begin-1|<tuple|[begin 1]|59>>
-    <associate|code-label-check-source-jump-1|<tuple|[check-source-jump
-    1]|65>>
-    <associate|code-label-chunk-storage-functions-1|<tuple|[chunk-storage-functions
-    1]|67>>
-    <associate|code-label-chunk-storage-functions-2|<tuple|[chunk-storage-functions
-    2]|67>>
-    <associate|code-label-chunk-storage-functions-3|<tuple|[chunk-storage-functions
-    3]|68>>
-    <associate|code-label-chunk-storage-functions-4|<tuple|[chunk-storage-functions
-    4]|68>>
-    <associate|code-label-chunkref-1|<tuple|[chunkref 1]|74>>
-    <associate|code-label-chunkstyle-1|<tuple|[chunkstyle 1]|74>>
-    <associate|code-label-chunkstyle-2|<tuple|[chunkstyle 2]|74>>
-    <associate|code-label-common-mode-definitions-1|<tuple|[common-mode-definitions
-    1]|43>>
-    <associate|code-label-common-mode-definitions-2|<tuple|[common-mode-definitions
-    2]|43>>
-    <associate|code-label-common-mode-definitions-3|<tuple|[common-mode-definitions
-    3]|43>>
-    <associate|code-label-common-mode-definitions-4|<tuple|[common-mode-definitions
-    4]|44>>
-    <associate|code-label-common-mode-definitions-5|<tuple|[common-mode-definitions
-    5]|45>>
-    <associate|code-label-constants-1|<tuple|[constants 1]|67>>
-    <associate|code-label-d--1|<tuple|[d- 1]|?>>
-    <associate|code-label-d-1|<tuple|[d 1]|?>>
-    <associate|code-label-de-1|<tuple|[de 1]|?>>
-    <associate|code-label-debug-output-1|<tuple|[debug-output 1]|61>>
-    <associate|code-label-default-options-1|<tuple|[default-options 1]|59>>
-    <associate|code-label-delatex-1|<tuple|[delatex 1]|56>>
-    <associate|code-label-deu-1|<tuple|[deu 1]|?>>
-    <associate|code-label-deum-1|<tuple|[deum 1]|?>>
-    <associate|code-label-deump-1|<tuple|[deump 1]|?>>
-    <associate|code-label-do--1|<tuple|[do- 1]|?>>
-    <associate|code-label-doc--1|<tuple|[doc- 1]|?>>
-    <associate|code-label-docu--1|<tuple|[docu- 1]|?>>
-    <associate|code-label-docum--1|<tuple|[docum- 1]|?>>
-    <associate|code-label-docume--1|<tuple|[docume- 1]|?>>
-    <associate|code-label-documen--1|<tuple|[documen- 1]|?>>
-    <associate|code-label-document--1|<tuple|[document- 1]|?>>
-    <associate|code-label-document-p-1|<tuple|[document-p 1]|?>>
-    <associate|code-label-document-pr-1|<tuple|[document-pr 1]|?>>
-    <associate|code-label-document-pre-1|<tuple|[document-pre 1]|?>>
-    <associate|code-label-document-prea-1|<tuple|[document-prea 1]|?>>
-    <associate|code-label-document-pream-1|<tuple|[document-pream 1]|?>>
-    <associate|code-label-document-preamb-1|<tuple|[document-preamb 1]|?>>
-    <associate|code-label-document-preambl-1|<tuple|[document-preambl 1]|?>>
-    <associate|code-label-document-preamble-1|<tuple|[document-preamble
-    1]|19>>
-    <associate|code-label-du-1|<tuple|[du 1]|?>>
-    <associate|code-label-dum-1|<tuple|[dum 1]|?>>
-    <associate|code-label-dump--1|<tuple|[dump- 1]|?>>
-    <associate|code-label-dump-1|<tuple|[dump 1]|?>>
-    <associate|code-label-dump-a-1|<tuple|[dump-a 1]|?>>
-    <associate|code-label-dump-ar-1|<tuple|[dump-ar 1]|?>>
-    <associate|code-label-dump-arr-1|<tuple|[dump-arr 1]|?>>
-    <associate|code-label-dump-arra-1|<tuple|[dump-arra 1]|?>>
-    <associate|code-label-dump-array-1|<tuple|[dump-array 1]|33>>
-    <associate|code-label-e-1|<tuple|[e 1]|?>>
-    <associate|code-label-end-1|<tuple|[end 1]|61>>
-    <associate|code-label-er-1|<tuple|[er 1]|?>>
-    <associate|code-label-err-1|<tuple|[err 1]|?>>
-    <associate|code-label-erro-1|<tuple|[erro 1]|?>>
-    <associate|code-label-error()-1|<tuple|[error() 1]|34>>
-    <associate|code-label-error()-2|<tuple|[error() 2]|34>>
-    <associate|code-label-error(-1|<tuple|[error( 1]|?>>
-    <associate|code-label-error-1|<tuple|[error 1]|?>>
-    <associate|code-label-example-makefile-1|<tuple|[example-makefile 1]|42>>
-    <associate|code-label-example-perl,-1|<tuple|[example-perl, 1]|?>>
-    <associate|code-label-example-perl,language=perl-1|<tuple|[example-perl,language=perl
-    1]|?>>
-    <associate|code-label-example-perl-1|<tuple|[example-perl 1]|41>>
-    <associate|code-label-example-sh-1|<tuple|[example-sh 1]|41>>
-    <associate|code-label-expand_chunk_args()-1|<tuple|[expand_chunk_args()
-    1]|38>>
-    <associate|code-label-g--1|<tuple|[g- 1]|?>>
-    <associate|code-label-g-1|<tuple|[g 1]|?>>
-    <associate|code-label-gca-test.awk-1|<tuple|[gca-test.awk 1]|37>>
-    <associate|code-label-gca-test.awk-results-1|<tuple|[gca-test.awk-results
-    1]|37>>
-    <associate|code-label-ge-1|<tuple|[ge 1]|?>>
-    <associate|code-label-generate-output-1|<tuple|[generate-output 1]|61>>
-    <associate|code-label-get-1|<tuple|[get 1]|?>>
-    <associate|code-label-get_-1|<tuple|[get_ 1]|?>>
-    <associate|code-label-get_c-1|<tuple|[get_c 1]|?>>
-    <associate|code-label-get_ch-1|<tuple|[get_ch 1]|?>>
-    <associate|code-label-get_chu-1|<tuple|[get_chu 1]|?>>
-    <associate|code-label-get_chun-1|<tuple|[get_chun 1]|?>>
-    <associate|code-label-get_chunk+-1|<tuple|[get_chunk+ 1]|?>>
-    <associate|code-label-get_chunk-1|<tuple|[get_chunk 1]|?>>
-    <associate|code-label-get_chunk_-1|<tuple|[get_chunk_ 1]|?>>
-    <associate|code-label-get_chunk_a-1|<tuple|[get_chunk_a 1]|?>>
-    <associate|code-label-get_chunk_ar-1|<tuple|[get_chunk_ar 1]|?>>
-    <associate|code-label-get_chunk_arg-1|<tuple|[get_chunk_arg 1]|?>>
-    <associate|code-label-get_chunk_args()-1|<tuple|[get_chunk_args() 1]|36>>
-    <associate|code-label-get_chunk_args()-2|<tuple|[get_chunk_args() 2]|36>>
-    <associate|code-label-get_chunk_args(-1|<tuple|[get_chunk_args( 1]|?>>
-    <associate|code-label-get_chunk_args-1|<tuple|[get_chunk_args 1]|?>>
-    <associate|code-label-getopt-1|<tuple|[getopt 1]|71>>
-    <associate|code-label-getopt.awk-1|<tuple|[getopt.awk 1]|71>>
-    <associate|code-label-getopt.awk-begin-1|<tuple|[getopt.awk-begin 1]|71>>
-    <associate|code-label-getopt.awk-getopt()-1|<tuple|[getopt.awk-getopt()
-    1]|70>>
-    <associate|code-label-getopt.awk-getopt()-2|<tuple|[getopt.awk-getopt()
-    2]|71>>
-    <associate|code-label-getopt.awk-header-1|<tuple|[getopt.awk-header
-    1]|70>>
-    <associate|code-label-getopt.awk-notes-1|<tuple|[getopt.awk-notes 1]|70>>
-    <associate|code-label-gp--1|<tuple|[gp- 1]|?>>
-    <associate|code-label-gpl--1|<tuple|[gpl- 1]|?>>
-    <associate|code-label-gpl3--1|<tuple|[gpl3- 1]|?>>
-    <associate|code-label-gpl3-c-1|<tuple|[gpl3-c 1]|?>>
-    <associate|code-label-gpl3-co-1|<tuple|[gpl3-co 1]|?>>
-    <associate|code-label-gpl3-cop-1|<tuple|[gpl3-cop 1]|?>>
-    <associate|code-label-gpl3-copy-1|<tuple|[gpl3-copy 1]|?>>
-    <associate|code-label-gpl3-copyr-1|<tuple|[gpl3-copyr 1]|?>>
-    <associate|code-label-gpl3-copyri-1|<tuple|[gpl3-copyri 1]|?>>
-    <associate|code-label-gpl3-copyrig-1|<tuple|[gpl3-copyrig 1]|?>>
-    <associate|code-label-gpl3-copyrigh-1|<tuple|[gpl3-copyrigh 1]|?>>
-    <associate|code-label-gpl3-copyright-1|<tuple|[gpl3-copyright 1]|4>>
-    <associate|code-label-gpl3-copyright-2|<tuple|[gpl3-copyright 2]|?>>
-    <associate|code-label-gpl3-copyright.hashed-1|<tuple|[gpl3-copyright.hashed
-    1]|73>>
-    <associate|code-label-handle-options-1|<tuple|[handle-options 1]|59>>
-    <associate|code-label-help()-1|<tuple|[help() 1]|59>>
-    <associate|code-label-l-1|<tuple|[l 1]|?>>
-    <associate|code-label-ly-1|<tuple|[ly 1]|?>>
-    <associate|code-label-lyx--1|<tuple|[lyx- 1]|?>>
-    <associate|code-label-lyx-1|<tuple|[lyx 1]|?>>
-    <associate|code-label-lyx-b-1|<tuple|[lyx-b 1]|?>>
-    <associate|code-label-lyx-bu-1|<tuple|[lyx-bu 1]|?>>
-    <associate|code-label-lyx-bui-1|<tuple|[lyx-bui 1]|?>>
-    <associate|code-label-lyx-buil-1|<tuple|[lyx-buil 1]|?>>
-    <associate|code-label-lyx-build--1|<tuple|[lyx-build- 1]|?>>
-    <associate|code-label-lyx-build-1|<tuple|[lyx-build 1]|20>>
-    <associate|code-label-lyx-build-2|<tuple|[lyx-build 2]|81>>
-    <associate|code-label-lyx-build-3|<tuple|[lyx-build 3]|?>>
-    <associate|code-label-lyx-build-h-1|<tuple|[lyx-build-h 1]|?>>
-    <associate|code-label-lyx-build-he-1|<tuple|[lyx-build-he 1]|?>>
-    <associate|code-label-lyx-build-hel-1|<tuple|[lyx-build-hel 1]|?>>
-    <associate|code-label-lyx-build-help-1|<tuple|[lyx-build-help 1]|?>>
-    <associate|code-label-lyx-build-helpe-1|<tuple|[lyx-build-helpe 1]|?>>
-    <associate|code-label-lyx-build-helper-1|<tuple|[lyx-build-helper 1]|19>>
-    <associate|code-label-lyx-build-helper-2|<tuple|[lyx-build-helper 2]|81>>
-    <associate|code-label-lyx-build-helper-3|<tuple|[lyx-build-helper 3]|?>>
-    <associate|code-label-lyx-build-manual-1|<tuple|[lyx-build-manual 1]|82>>
-    <associate|code-label-lyx-build=-1|<tuple|[lyx-build= 1]|?>>
-    <associate|code-label-makefile-glue-1|<tuple|[makefile-glue 1]|29>>
-    <associate|code-label-makefile-glue-2|<tuple|[makefile-glue 2]|30>>
-    <associate|code-label-makefile-glue-3|<tuple|[makefile-glue 3]|30>>
-    <associate|code-label-makefile-glue-4|<tuple|[makefile-glue 4]|30>>
-    <associate|code-label-mode-definitions-1|<tuple|[mode-definitions 1]|46>>
-    <associate|code-label-mode-definitions-2|<tuple|[mode-definitions 2]|46>>
-    <associate|code-label-mode-definitions-3|<tuple|[mode-definitions 3]|47>>
-    <associate|code-label-mode-tracker-1|<tuple|[mode-tracker 1]|51>>
-    <associate|code-label-mode:add-escapes-1|<tuple|[mode:add-escapes 1]|45>>
-    <associate|code-label-mode:add-hash-comments-1|<tuple|[mode:add-hash-comments
-    1]|45>>
-    <associate|code-label-mode:add-hash-defines-1|<tuple|[mode:add-hash-defines
-    1]|45>>
-    <associate|code-label-mode:add-naked-regex-1|<tuple|[mode:add-naked-regex
-    1]|46>>
-    <associate|code-label-mode:add-submode-1|<tuple|[mode:add-submode 1]|45>>
-    <associate|code-label-mode:common-brackets-1|<tuple|[mode:common-brackets
-    1]|44>>
-    <associate|code-label-mode:common-string-1|<tuple|[mode:common-string
-    1]|44>>
-    <associate|code-label-mode:common-string-2|<tuple|[mode:common-string
-    2]|44>>
-    <associate|code-label-mode:common-string-3|<tuple|[mode:common-string
-    3]|44>>
-    <associate|code-label-mode:common-string-4|<tuple|[mode:common-string
-    4]|44>>
-    <associate|code-label-mode:common-string-5|<tuple|[mode:common-string
-    5]|44>>
-    <associate|code-label-mode:multi-line-comments-1|<tuple|[mode:multi-line-comments
-    1]|45>>
-    <associate|code-label-mode:quote-dollar-escape-1|<tuple|[mode:quote-dollar-escape
-    1]|45>>
-    <associate|code-label-mode:single-line-slash-comments-1|<tuple|[mode:single-line-slash-comments
-    1]|45>>
-    <associate|code-label-mode_tracker()-1|<tuple|[mode_tracker() 1]|49>>
-    <associate|code-label-mode_tracker()-10|<tuple|[mode_tracker() 10]|51>>
-    <associate|code-label-mode_tracker()-2|<tuple|[mode_tracker() 2]|49>>
-    <associate|code-label-mode_tracker()-3|<tuple|[mode_tracker() 3]|49>>
-    <associate|code-label-mode_tracker()-4|<tuple|[mode_tracker() 4]|49>>
-    <associate|code-label-mode_tracker()-5|<tuple|[mode_tracker() 5]|49>>
-    <associate|code-label-mode_tracker()-6|<tuple|[mode_tracker() 6]|50>>
-    <associate|code-label-mode_tracker()-7|<tuple|[mode_tracker() 7]|50>>
-    <associate|code-label-mode_tracker()-8|<tuple|[mode_tracker() 8]|50>>
-    <associate|code-label-mode_tracker()-9|<tuple|[mode_tracker() 9]|50>>
-    <associate|code-label-mode_tracker(-1|<tuple|[mode_tracker( 1]|?>>
-    <associate|code-label-mode_tracker-1|<tuple|[mode_tracker 1]|48>>
-    <associate|code-label-mode_tracker-2|<tuple|[mode_tracker 2]|48>>
-    <associate|code-label-mode_tracker-3|<tuple|[mode_tracker 3]|48>>
-    <associate|code-label-mode_tracker-4|<tuple|[mode_tracker 4]|52>>
-    <associate|code-label-mode_tracker-5|<tuple|[mode_tracker 5]|52>>
-    <associate|code-label-new-mode-tracker()-1|<tuple|[new-mode-tracker()
-    1]|47>>
-    <associate|code-label-new-mode-tracker-1|<tuple|[new-mode-tracker 1]|47>>
-    <associate|code-label-new_mode_tracker-1|<tuple|[new_mode_tracker 1]|?>>
-    <associate|code-label-output_chunk_names()-1|<tuple|[output_chunk_names()
-    1]|61>>
-    <associate|code-label-output_chunks()-1|<tuple|[output_chunks() 1]|62>>
-    <associate|code-label-p-1|<tuple|[p 1]|?>>
-    <associate|code-label-pa-1|<tuple|[pa 1]|?>>
-    <associate|code-label-par-1|<tuple|[par 1]|?>>
-    <associate|code-label-pars-1|<tuple|[pars 1]|?>>
-    <associate|code-label-parse--1|<tuple|[parse- 1]|?>>
-    <associate|code-label-parse-1|<tuple|[parse 1]|?>>
-    <associate|code-label-parse-c-1|<tuple|[parse-c 1]|?>>
-    <associate|code-label-parse-ch-1|<tuple|[parse-ch 1]|?>>
-    <associate|code-label-parse-chu-1|<tuple|[parse-chu 1]|?>>
-    <associate|code-label-parse-chun-1|<tuple|[parse-chun 1]|?>>
-    <associate|code-label-parse-chunk--1|<tuple|[parse-chunk- 1]|?>>
-    <associate|code-label-parse-chunk-1|<tuple|[parse-chunk 1]|?>>
-    <associate|code-label-parse-chunk-a-1|<tuple|[parse-chunk-a 1]|?>>
-    <associate|code-label-parse-chunk-ar-1|<tuple|[parse-chunk-ar 1]|?>>
-    <associate|code-label-parse-chunk-arg-1|<tuple|[parse-chunk-arg 1]|?>>
-    <associate|code-label-parse-chunk-args-1|<tuple|[parse-chunk-args 1]|36>>
-    <associate|code-label-parse-chunk-args-2|<tuple|[parse-chunk-args 2]|37>>
-    <associate|code-label-parse-chunk=-1|<tuple|[parse-chunk= 1]|?>>
-    <associate|code-label-parse_chunk_args-1|<tuple|[parse_chunk_args 1]|38>>
-    <associate|code-label-parse_chunk_args-reset-modes-1|<tuple|[parse_chunk_args-reset-modes
-    1]|49>>
-    <associate|code-label-parse_chunk_args-reset-modes-2|<tuple|[parse_chunk_args-reset-modes
-    2]|49>>
-    <associate|code-label-pca-test.awk-1|<tuple|[pca-test.awk 1]|51>>
-    <associate|code-label-pca-test.awk-results-1|<tuple|[pca-test.awk-results
-    1]|51>>
-    <associate|code-label-pca-test.awk:summary-1|<tuple|[pca-test.awk:summary
-    1]|51>>
-    <associate|code-label-process-chunk-1|<tuple|[process-chunk 1]|56>>
-    <associate|code-label-process-chunk-2|<tuple|[process-chunk 2]|56>>
-    <associate|code-label-process-chunk-3|<tuple|[process-chunk 3]|56>>
-    <associate|code-label-process-chunk-4|<tuple|[process-chunk 4]|56>>
-    <associate|code-label-process-chunk-5|<tuple|[process-chunk 5]|57>>
-    <associate|code-label-process-chunk-simple-1|<tuple|[process-chunk-simple
-    1]|55>>
-    <associate|code-label-process-chunk-tabs-1|<tuple|[process-chunk-tabs
-    1]|55>>
-    <associate|code-label-read-options-1|<tuple|[read-options 1]|59>>
-    <associate|code-label-recognize-chunk-1|<tuple|[recognize-chunk 1]|53>>
-    <associate|code-label-recognize-chunk-2|<tuple|[recognize-chunk 2]|54>>
-    <associate|code-label-recognize-chunk-3|<tuple|[recognize-chunk 3]|54>>
-    <associate|code-label-recognize-chunk-4|<tuple|[recognize-chunk 4]|54>>
-    <associate|code-label-recognize-chunk-5|<tuple|[recognize-chunk 5]|54>>
-    <associate|code-label-recognize-chunk-6|<tuple|[recognize-chunk 6]|55>>
-    <associate|code-label-recognize-chunk-7|<tuple|[recognize-chunk 7]|55>>
-    <associate|code-label-restore-counter-1|<tuple|[restore-counter 1]|76>>
-    <associate|code-label-save-counter-1|<tuple|[save-counter 1]|76>>
-    <associate|code-label-substitute-chunk-arg-1|<tuple|[substitute-chunk-arg
-    1]|39>>
-    <associate|code-label-substitute-chunk-args-1|<tuple|[substitute-chunk-args
-    1]|39>>
-    <associate|code-label-substitute-chunk-args-2|<tuple|[substitute-chunk-args
-    2]|39>>
-    <associate|code-label-substitute-chunk-args-3|<tuple|[substitute-chunk-args
-    3]|39>>
-    <associate|code-label-substitute-chunk-args-4|<tuple|[substitute-chunk-args
-    4]|?>>
-    <associate|code-label-t-1|<tuple|[t 1]|?>>
-    <associate|code-label-te-1|<tuple|[te 1]|?>>
-    <associate|code-label-tes-1|<tuple|[tes 1]|?>>
-    <associate|code-label-test-1|<tuple|[test 1]|?>>
-    <associate|code-label-test:-1|<tuple|[test: 1]|?>>
-    <associate|code-label-test:chunk-params-1|<tuple|[test:chunk-params
-    1]|85>>
-    <associate|code-label-test:chunk-params:result-1|<tuple|[test:chunk-params:result
-    1]|85>>
-    <associate|code-label-test:chunk-params:sub-1|<tuple|[test:chunk-params:sub
-    1]|85>>
-    <associate|code-label-test:chunk-params:sub:sub-1|<tuple|[test:chunk-params:sub:sub
-    1]|85>>
-    <associate|code-label-test:chunk-params:text-1|<tuple|[test:chunk-params:text
-    1]|85>>
-    <associate|code-label-test:comment-quote-1|<tuple|[test:comment-quote
-    1]|46>>
-    <associate|code-label-test:comment-quote:C-result-1|<tuple|[test:comment-quote:C-result
-    1]|46>>
-    <associate|code-label-test:comment-quote:result-1|<tuple|[test:comment-quote:result
-    1]|46>>
-    <associate|code-label-test:comment-text-1|<tuple|[test:comment-text
-    1]|46>>
-    <associate|code-label-test:cromulence-1|<tuple|[test:cromulence 1]|48>>
-    <associate|code-label-test:escapes-1|<tuple|[test:escapes 1]|52>>
-    <associate|code-label-test:helpers-1|<tuple|[test:helpers 1]|82>>
-    <associate|code-label-test:hidden-else-1|<tuple|[test:hidden-else 1]|48>>
-    <associate|code-label-test:mode-definitions-1|<tuple|[test:mode-definitions
-    1]|43>>
-    <associate|code-label-test:mode-definitions-2|<tuple|[test:mode-definitions
-    2]|44>>
-    <associate|code-label-test:mode-definitions-3|<tuple|[test:mode-definitions
-    3]|47>>
-    <associate|code-label-test:mode-definitions-4|<tuple|[test:mode-definitions
-    4]|47>>
-    <associate|code-label-test:p-1|<tuple|[test:p 1]|?>>
-    <associate|code-label-test:pa-1|<tuple|[test:pa 1]|?>>
-    <associate|code-label-test:par-1|<tuple|[test:par 1]|?>>
-    <associate|code-label-test:part-1|<tuple|[test:part 1]|?>>
-    <associate|code-label-test:parti-1|<tuple|[test:parti 1]|?>>
-    <associate|code-label-test:partia-1|<tuple|[test:partia 1]|?>>
-    <associate|code-label-test:partial--1|<tuple|[test:partial- 1]|?>>
-    <associate|code-label-test:partial-1|<tuple|[test:partial 1]|?>>
-    <associate|code-label-test:partial-c-1|<tuple|[test:partial-c 1]|?>>
-    <associate|code-label-test:partial-ch-1|<tuple|[test:partial-ch 1]|?>>
-    <associate|code-label-test:partial-chu-1|<tuple|[test:partial-chu 1]|?>>
-    <associate|code-label-test:partial-chun-1|<tuple|[test:partial-chun
-    1]|?>>
-    <associate|code-label-test:partial-chunk-1|<tuple|[test:partial-chunk
-    1]|48>>
-    <associate|code-label-test:run-tests-1|<tuple|[test:run-tests 1]|81>>
-    <associate|code-label-test:say-hello-1|<tuple|[test:say-hello 1]|48>>
-    <associate|code-label-test:whole-chunk-1|<tuple|[test:whole-chunk 1]|48>>
-    <associate|code-label-testwhole-chunk-1|<tuple|[testwhole-chunk 1]|?>>
-    <associate|code-label-teswhole-chunk-1|<tuple|[teswhole-chunk 1]|?>>
-    <associate|code-label-tewhole-chunk-1|<tuple|[tewhole-chunk 1]|?>>
-    <associate|code-label-twhole-chunk-1|<tuple|[twhole-chunk 1]|?>>
-    <associate|code-label-whole-chunk-1|<tuple|[whole-chunk 1]|?>>
-    <associate|code-label-write-chunklets-1|<tuple|[write-chunklets 1]|64>>
-    <associate|code-label-write-chunklets-2|<tuple|[write-chunklets 2]|64>>
-    <associate|code-label-write-chunklets-3|<tuple|[write-chunklets 3]|64>>
-    <associate|code-label-write-chunklets-4|<tuple|[write-chunklets 4]|64>>
-    <associate|code-label-write-chunklets-5|<tuple|[write-chunklets 5]|64>>
-    <associate|code-label-write-chunklets-6|<tuple|[write-chunklets 6]|65>>
-    <associate|code-label-write-file-line-1|<tuple|[write-file-line 1]|65>>
-    <associate|code-label-write-included-chunk-1|<tuple|[write-included-chunk
-    1]|63>>
-    <associate|code-label-write-part-1|<tuple|[write-part 1]|63>>
-    <associate|code-label-write_chunk()-1|<tuple|[write_chunk() 1]|62>>
-    <associate|code-label-write_chunk()-2|<tuple|[write_chunk() 2]|62>>
-    <associate|code-label-write_chunk()-3|<tuple|[write_chunk() 3]|62>>
-    <associate|code-label-write_chunk()-4|<tuple|[write_chunk() 4]|63>>
-    <associate|code-label-write_chunk()-5|<tuple|[write_chunk() 5]|63>>
-    <associate|code-label-wrote_chunk()-1|<tuple|[wrote_chunk() 1]|?>>
-    <associate|code-label-wrte_chunk()-1|<tuple|[wrte_chunk() 1]|?>>
-    <associate|code-ref-*-1|<tuple|29a|29>>
-    <associate|code-ref---1|<tuple|?a|?>>
-    <associate|code-ref--1|<tuple|?h|?>>
-    <associate|code-ref-.-1|<tuple|?v|?>>
-    <associate|code-ref-./-1|<tuple|?v|?>>
-    <associate|code-ref-./Makefile.inc-1|<tuple|23a|23>>
-    <associate|code-ref-./gen-www-1|<tuple|82a|82>>
-    <associate|code-ref-./n-1|<tuple|?v|?>>
-    <associate|code-ref-./ne-1|<tuple|?v|?>>
-    <associate|code-ref-./new-1|<tuple|?v|?>>
-    <associate|code-ref-./newangle.sty-1|<tuple|?ag|?>>
-    <associate|code-ref-./newf-1|<tuple|?v|?>>
-    <associate|code-ref-./newfa-1|<tuple|?v|?>>
-    <associate|code-ref-./newfan-1|<tuple|?v|?>>
-    <associate|code-ref-./newfang-1|<tuple|?v|?>>
-    <associate|code-ref-./newfangl-1|<tuple|?v|?>>
-    <associate|code-ref-./newfangle-1|<tuple|33a|33>>
-    <associate|code-ref-./newfangle-2|<tuple|33b|33>>
-    <associate|code-ref-./newfangle-3|<tuple|33c|33>>
-    <associate|code-ref-./newfangle-4|<tuple|36a|36>>
-    <associate|code-ref-./newfangle.module-1|<tuple|73a|73>>
-    <associate|code-ref-./newfangle.sty-1|<tuple|74d|74>>
-    <associate|code-ref-./newfangle.sty-10|<tuple|76c|76>>
-    <associate|code-ref-./newfangle.sty-11|<tuple|77a|77>>
-    <associate|code-ref-./newfangle.sty-12|<tuple|77b|77>>
-    <associate|code-ref-./newfangle.sty-13|<tuple|77c|77>>
-    <associate|code-ref-./newfangle.sty-14|<tuple|77d|77>>
-    <associate|code-ref-./newfangle.sty-15|<tuple|77e|77>>
-    <associate|code-ref-./newfangle.sty-16|<tuple|78a|78>>
-    <associate|code-ref-./newfangle.sty-17|<tuple|78b|78>>
-    <associate|code-ref-./newfangle.sty-18|<tuple|79a|79>>
-    <associate|code-ref-./newfangle.sty-19|<tuple|79b|79>>
-    <associate|code-ref-./newfangle.sty-2|<tuple|74e|74>>
-    <associate|code-ref-./newfangle.sty-3|<tuple|75a|75>>
-    <associate|code-ref-./newfangle.sty-4|<tuple|75b|75>>
-    <associate|code-ref-./newfangle.sty-5|<tuple|75c|75>>
-    <associate|code-ref-./newfangle.sty-6|<tuple|75d|75>>
-    <associate|code-ref-./newfangle.sty-7|<tuple|75e|75>>
-    <associate|code-ref-./newfangle.sty-8|<tuple|76a|76>>
-    <associate|code-ref-./newfangle.sty-9|<tuple|76b|76>>
-    <associate|code-ref-/-1|<tuple|?u|?>>
-    <associate|code-ref-/.-1|<tuple|?u|?>>
-    <associate|code-ref-/.n-1|<tuple|?u|?>>
-    <associate|code-ref-/.ne-1|<tuple|?u|?>>
-    <associate|code-ref-/.new-1|<tuple|?u|?>>
-    <associate|code-ref-Chunk: ./compile-log-lyx-1|<tuple|87a|87>>
-    <associate|code-ref-Chunk: getopt.awk-begin-1|<tuple|?x|?>>
-    <associate|code-ref-Chunk: test:chunk-params:sub-1|<tuple|?o|?>>
-    <associate|code-ref-Chunk: test:chunk-params:sub:sub-1|<tuple|?p|?>>
-    <associate|code-ref-Makefile.inc-targets-1|<tuple|24b|24>>
-    <associate|code-ref-Makefile.inc-targets-10|<tuple|28a|28>>
-    <associate|code-ref-Makefile.inc-targets-11|<tuple|28c|28>>
-    <associate|code-ref-Makefile.inc-targets-12|<tuple|28d|28>>
-    <associate|code-ref-Makefile.inc-targets-2|<tuple|24d|24>>
-    <associate|code-ref-Makefile.inc-targets-3|<tuple|25c|25>>
-    <associate|code-ref-Makefile.inc-targets-4|<tuple|25e|25>>
-    <associate|code-ref-Makefile.inc-targets-5|<tuple|26a|26>>
-    <associate|code-ref-Makefile.inc-targets-6|<tuple|26b|26>>
-    <associate|code-ref-Makefile.inc-targets-7|<tuple|27b|27>>
-    <associate|code-ref-Makefile.inc-targets-8|<tuple|27c|27>>
-    <associate|code-ref-Makefile.inc-targets-9|<tuple|27e|27>>
-    <associate|code-ref-Makefile.inc-vars-1|<tuple|23b|23>>
-    <associate|code-ref-Makefile.inc-vars-10|<tuple|26f|26>>
-    <associate|code-ref-Makefile.inc-vars-11|<tuple|26g|26>>
-    <associate|code-ref-Makefile.inc-vars-12|<tuple|27a|27>>
-    <associate|code-ref-Makefile.inc-vars-13|<tuple|27d|27>>
-    <associate|code-ref-Makefile.inc-vars-14|<tuple|27f|27>>
-    <associate|code-ref-Makefile.inc-vars-15|<tuple|28b|28>>
-    <associate|code-ref-Makefile.inc-vars-2|<tuple|24a|24>>
-    <associate|code-ref-Makefile.inc-vars-3|<tuple|24c|24>>
-    <associate|code-ref-Makefile.inc-vars-4|<tuple|25a|25>>
-    <associate|code-ref-Makefile.inc-vars-5|<tuple|25b|25>>
-    <associate|code-ref-Makefile.inc-vars-6|<tuple|25d|25>>
-    <associate|code-ref-Makefile.inc-vars-7|<tuple|26c|26>>
-    <associate|code-ref-Makefile.inc-vars-8|<tuple|26d|26>>
-    <associate|code-ref-Makefile.inc-vars-9|<tuple|26e|26>>
-    <associate|code-ref-a-1|<tuple|?x|?>>
-    <associate|code-ref-aw-1|<tuple|?x|?>>
-    <associate|code-ref-awk--1|<tuple|?x|?>>
-    <associate|code-ref-awk-1|<tuple|?x|?>>
-    <associate|code-ref-awk-d-1|<tuple|?x|?>>
-    <associate|code-ref-awk-de-1|<tuple|?x|?>>
-    <associate|code-ref-awk-del-1|<tuple|?x|?>>
-    <associate|code-ref-awk-dele-1|<tuple|?x|?>>
-    <associate|code-ref-awk-delet-1|<tuple|?x|?>>
-    <associate|code-ref-awk-delete--1|<tuple|?x|?>>
-    <associate|code-ref-awk-delete-1|<tuple|?x|?>>
-    <associate|code-ref-awk-delete-a-1|<tuple|?x|?>>
-    <associate|code-ref-awk-delete-ar-1|<tuple|?x|?>>
-    <associate|code-ref-awk-delete-arr-1|<tuple|?x|?>>
-    <associate|code-ref-awk-delete-arra-1|<tuple|?x|?>>
-    <associate|code-ref-awk-delete-array-1|<tuple|33d|33>>
-    <associate|code-ref-begin-1|<tuple|59d|59>>
-    <associate|code-ref-check-source-jump-1|<tuple|65c|65>>
-    <associate|code-ref-chunk-storage-functions-1|<tuple|67b|67>>
-    <associate|code-ref-chunk-storage-functions-2|<tuple|67c|67>>
-    <associate|code-ref-chunk-storage-functions-3|<tuple|68a|68>>
-    <associate|code-ref-chunk-storage-functions-4|<tuple|68b|68>>
-    <associate|code-ref-chunkref-1|<tuple|74c|74>>
-    <associate|code-ref-chunkstyle-1|<tuple|74a|74>>
-    <associate|code-ref-chunkstyle-2|<tuple|74b|74>>
-    <associate|code-ref-common-mode-definitions-1|<tuple|43a|43>>
-    <associate|code-ref-common-mode-definitions-2|<tuple|43b|43>>
-    <associate|code-ref-common-mode-definitions-3|<tuple|43d|43>>
-    <associate|code-ref-common-mode-definitions-4|<tuple|44f|44>>
-    <associate|code-ref-common-mode-definitions-5|<tuple|45a|45>>
-    <associate|code-ref-constants-1|<tuple|67a|67>>
-    <associate|code-ref-d--1|<tuple|?a|?>>
-    <associate|code-ref-d-1|<tuple|?y|?>>
-    <associate|code-ref-de-1|<tuple|?y|?>>
-    <associate|code-ref-debug-output-1|<tuple|61b|61>>
-    <associate|code-ref-default-options-1|<tuple|59a|59>>
-    <associate|code-ref-delatex-1|<tuple|56a|56>>
-    <associate|code-ref-deu-1|<tuple|?y|?>>
-    <associate|code-ref-deum-1|<tuple|?y|?>>
-    <associate|code-ref-deump-1|<tuple|?y|?>>
-    <associate|code-ref-do--1|<tuple|?a|?>>
-    <associate|code-ref-doc--1|<tuple|?a|?>>
-    <associate|code-ref-docu--1|<tuple|?a|?>>
-    <associate|code-ref-docum--1|<tuple|?a|?>>
-    <associate|code-ref-docume--1|<tuple|?a|?>>
-    <associate|code-ref-documen--1|<tuple|?a|?>>
-    <associate|code-ref-document--1|<tuple|?a|?>>
-    <associate|code-ref-document-p-1|<tuple|?a|?>>
-    <associate|code-ref-document-pr-1|<tuple|?a|?>>
-    <associate|code-ref-document-pre-1|<tuple|?a|?>>
-    <associate|code-ref-document-prea-1|<tuple|?a|?>>
-    <associate|code-ref-document-pream-1|<tuple|?a|?>>
-    <associate|code-ref-document-preamb-1|<tuple|?a|?>>
-    <associate|code-ref-document-preambl-1|<tuple|?a|?>>
-    <associate|code-ref-document-preamble-1|<tuple|19a|19>>
-    <associate|code-ref-du-1|<tuple|?y|?>>
-    <associate|code-ref-dum-1|<tuple|?y|?>>
-    <associate|code-ref-dump--1|<tuple|?y|?>>
-    <associate|code-ref-dump-1|<tuple|?y|?>>
-    <associate|code-ref-dump-a-1|<tuple|?y|?>>
-    <associate|code-ref-dump-ar-1|<tuple|?y|?>>
-    <associate|code-ref-dump-arr-1|<tuple|?y|?>>
-    <associate|code-ref-dump-arra-1|<tuple|?y|?>>
-    <associate|code-ref-dump-array-1|<tuple|33e|33>>
-    <associate|code-ref-e-1|<tuple|?z|?>>
-    <associate|code-ref-end-1|<tuple|61c|61>>
-    <associate|code-ref-er-1|<tuple|?z|?>>
-    <associate|code-ref-err-1|<tuple|?z|?>>
-    <associate|code-ref-erro-1|<tuple|?z|?>>
-    <associate|code-ref-error()-1|<tuple|34a|34>>
-    <associate|code-ref-error()-2|<tuple|34b|34>>
-    <associate|code-ref-error(-1|<tuple|?z|?>>
-    <associate|code-ref-error-1|<tuple|?z|?>>
-    <associate|code-ref-example-makefile-1|<tuple|42a|42>>
-    <associate|code-ref-example-perl,-1|<tuple|?a|?>>
-    <associate|code-ref-example-perl,language=perl-1|<tuple|?a|?>>
-    <associate|code-ref-example-perl-1|<tuple|41a|41>>
-    <associate|code-ref-example-sh-1|<tuple|41b|41>>
-    <associate|code-ref-expand_chunk_args()-1|<tuple|38b|38>>
-    <associate|code-ref-g--1|<tuple|?a|?>>
-    <associate|code-ref-g-1|<tuple|?c|?>>
-    <associate|code-ref-gca-test.awk-1|<tuple|37b|37>>
-    <associate|code-ref-gca-test.awk-results-1|<tuple|37c|37>>
-    <associate|code-ref-ge-1|<tuple|?c|?>>
-    <associate|code-ref-generate-output-1|<tuple|61a|61>>
-    <associate|code-ref-get-1|<tuple|?c|?>>
-    <associate|code-ref-get_-1|<tuple|?c|?>>
-    <associate|code-ref-get_c-1|<tuple|?c|?>>
-    <associate|code-ref-get_ch-1|<tuple|?c|?>>
-    <associate|code-ref-get_chu-1|<tuple|?c|?>>
-    <associate|code-ref-get_chun-1|<tuple|?c|?>>
-    <associate|code-ref-get_chunk+-1|<tuple|?c|?>>
-    <associate|code-ref-get_chunk-1|<tuple|?c|?>>
-    <associate|code-ref-get_chunk_-1|<tuple|?c|?>>
-    <associate|code-ref-get_chunk_a-1|<tuple|?c|?>>
-    <associate|code-ref-get_chunk_ar-1|<tuple|?c|?>>
-    <associate|code-ref-get_chunk_arg-1|<tuple|?c|?>>
-    <associate|code-ref-get_chunk_args()-1|<tuple|36b|36>>
-    <associate|code-ref-get_chunk_args()-2|<tuple|36c|36>>
-    <associate|code-ref-get_chunk_args(-1|<tuple|?c|?>>
-    <associate|code-ref-get_chunk_args-1|<tuple|?c|?>>
-    <associate|code-ref-getopt-1|<tuple|71d|71>>
-    <associate|code-ref-getopt.awk-1|<tuple|71c|71>>
-    <associate|code-ref-getopt.awk-begin-1|<tuple|71b|71>>
-    <associate|code-ref-getopt.awk-getopt()-1|<tuple|70c|70>>
-    <associate|code-ref-getopt.awk-getopt()-2|<tuple|71a|71>>
-    <associate|code-ref-getopt.awk-header-1|<tuple|70a|70>>
-    <associate|code-ref-getopt.awk-notes-1|<tuple|70b|70>>
-    <associate|code-ref-gp--1|<tuple|?a|?>>
-    <associate|code-ref-gpl--1|<tuple|?a|?>>
-    <associate|code-ref-gpl3--1|<tuple|?a|?>>
-    <associate|code-ref-gpl3-c-1|<tuple|?a|?>>
-    <associate|code-ref-gpl3-co-1|<tuple|?a|?>>
-    <associate|code-ref-gpl3-cop-1|<tuple|?a|?>>
-    <associate|code-ref-gpl3-copy-1|<tuple|?a|?>>
-    <associate|code-ref-gpl3-copyr-1|<tuple|?a|?>>
-    <associate|code-ref-gpl3-copyri-1|<tuple|?a|?>>
-    <associate|code-ref-gpl3-copyrig-1|<tuple|?a|?>>
-    <associate|code-ref-gpl3-copyrigh-1|<tuple|?a|?>>
-    <associate|code-ref-gpl3-copyright-1|<tuple|4a|4>>
-    <associate|code-ref-gpl3-copyright-2|<tuple|?a|?>>
-    <associate|code-ref-gpl3-copyright.hashed-1|<tuple|73b|73>>
-    <associate|code-ref-handle-options-1|<tuple|59c|59>>
-    <associate|code-ref-help()-1|<tuple|59e|59>>
-    <associate|code-ref-l-1|<tuple|?c|?>>
-    <associate|code-ref-ly-1|<tuple|?c|?>>
-    <associate|code-ref-lyx--1|<tuple|?c|?>>
-    <associate|code-ref-lyx-1|<tuple|?c|?>>
-    <associate|code-ref-lyx-b-1|<tuple|?c|?>>
-    <associate|code-ref-lyx-bu-1|<tuple|?c|?>>
-    <associate|code-ref-lyx-bui-1|<tuple|?c|?>>
-    <associate|code-ref-lyx-buil-1|<tuple|?c|?>>
-    <associate|code-ref-lyx-build--1|<tuple|?c|?>>
-    <associate|code-ref-lyx-build-1|<tuple|20a|20>>
-    <associate|code-ref-lyx-build-2|<tuple|81a|81>>
-    <associate|code-ref-lyx-build-3|<tuple|?a|?>>
-    <associate|code-ref-lyx-build-h-1|<tuple|?c|?>>
-    <associate|code-ref-lyx-build-he-1|<tuple|?c|?>>
-    <associate|code-ref-lyx-build-hel-1|<tuple|?c|?>>
-    <associate|code-ref-lyx-build-help-1|<tuple|?c|?>>
-    <associate|code-ref-lyx-build-helpe-1|<tuple|?c|?>>
-    <associate|code-ref-lyx-build-helper-1|<tuple|19b|19>>
-    <associate|code-ref-lyx-build-helper-2|<tuple|81c|81>>
-    <associate|code-ref-lyx-build-helper-3|<tuple|?a|?>>
-    <associate|code-ref-lyx-build-manual-1|<tuple|82b|82>>
-    <associate|code-ref-lyx-build=-1|<tuple|?c|?>>
-    <associate|code-ref-makefile-glue-1|<tuple|29b|29>>
-    <associate|code-ref-makefile-glue-2|<tuple|30a|30>>
-    <associate|code-ref-makefile-glue-3|<tuple|30b|30>>
-    <associate|code-ref-makefile-glue-4|<tuple|30c|30>>
-    <associate|code-ref-mode-definitions-1|<tuple|46a|46>>
-    <associate|code-ref-mode-definitions-2|<tuple|46g|46>>
-    <associate|code-ref-mode-definitions-3|<tuple|47a|47>>
-    <associate|code-ref-mode-tracker-1|<tuple|51b|51>>
-    <associate|code-ref-mode:add-escapes-1|<tuple|45c|45>>
-    <associate|code-ref-mode:add-hash-comments-1|<tuple|45f|45>>
-    <associate|code-ref-mode:add-hash-defines-1|<tuple|45g|45>>
-    <associate|code-ref-mode:add-naked-regex-1|<tuple|46f|46>>
-    <associate|code-ref-mode:add-submode-1|<tuple|45b|45>>
-    <associate|code-ref-mode:common-brackets-1|<tuple|44h|44>>
-    <associate|code-ref-mode:common-string-1|<tuple|44a|44>>
-    <associate|code-ref-mode:common-string-2|<tuple|44b|44>>
-    <associate|code-ref-mode:common-string-3|<tuple|44c|44>>
-    <associate|code-ref-mode:common-string-4|<tuple|44d|44>>
-    <associate|code-ref-mode:common-string-5|<tuple|44e|44>>
-    <associate|code-ref-mode:multi-line-comments-1|<tuple|45d|45>>
-    <associate|code-ref-mode:quote-dollar-escape-1|<tuple|45h|45>>
-    <associate|code-ref-mode:single-line-slash-comments-1|<tuple|45e|45>>
-    <associate|code-ref-mode_tracker()-1|<tuple|49a|49>>
-    <associate|code-ref-mode_tracker()-10|<tuple|51a|51>>
-    <associate|code-ref-mode_tracker()-2|<tuple|49b|49>>
-    <associate|code-ref-mode_tracker()-3|<tuple|49e|49>>
-    <associate|code-ref-mode_tracker()-4|<tuple|49f|49>>
-    <associate|code-ref-mode_tracker()-5|<tuple|49g|49>>
-    <associate|code-ref-mode_tracker()-6|<tuple|50a|50>>
-    <associate|code-ref-mode_tracker()-7|<tuple|50b|50>>
-    <associate|code-ref-mode_tracker()-8|<tuple|50c|50>>
-    <associate|code-ref-mode_tracker()-9|<tuple|50d|50>>
-    <associate|code-ref-mode_tracker(-1|<tuple|?a|?>>
-    <associate|code-ref-mode_tracker-1|<tuple|48a|48>>
-    <associate|code-ref-mode_tracker-2|<tuple|48b|48>>
-    <associate|code-ref-mode_tracker-3|<tuple|48c|48>>
-    <associate|code-ref-mode_tracker-4|<tuple|52a|52>>
-    <associate|code-ref-mode_tracker-5|<tuple|52b|52>>
-    <associate|code-ref-new-mode-tracker()-1|<tuple|47d|47>>
-    <associate|code-ref-new-mode-tracker-1|<tuple|47e|47>>
-    <associate|code-ref-new_mode_tracker-1|<tuple|?a|?>>
-    <associate|code-ref-output_chunk_names()-1|<tuple|61d|61>>
-    <associate|code-ref-output_chunks()-1|<tuple|62a|62>>
-    <associate|code-ref-p-1|<tuple|?e|?>>
-    <associate|code-ref-pa-1|<tuple|?e|?>>
-    <associate|code-ref-par-1|<tuple|?e|?>>
-    <associate|code-ref-pars-1|<tuple|?e|?>>
-    <associate|code-ref-parse--1|<tuple|?e|?>>
-    <associate|code-ref-parse-1|<tuple|?e|?>>
-    <associate|code-ref-parse-c-1|<tuple|?e|?>>
-    <associate|code-ref-parse-ch-1|<tuple|?e|?>>
-    <associate|code-ref-parse-chu-1|<tuple|?e|?>>
-    <associate|code-ref-parse-chun-1|<tuple|?e|?>>
-    <associate|code-ref-parse-chunk--1|<tuple|?e|?>>
-    <associate|code-ref-parse-chunk-1|<tuple|?e|?>>
-    <associate|code-ref-parse-chunk-a-1|<tuple|?e|?>>
-    <associate|code-ref-parse-chunk-ar-1|<tuple|?e|?>>
-    <associate|code-ref-parse-chunk-arg-1|<tuple|?e|?>>
-    <associate|code-ref-parse-chunk-args-1|<tuple|36d|36>>
-    <associate|code-ref-parse-chunk-args-2|<tuple|37a|37>>
-    <associate|code-ref-parse-chunk=-1|<tuple|?e|?>>
-    <associate|code-ref-parse_chunk_args-1|<tuple|38a|38>>
-    <associate|code-ref-parse_chunk_args-reset-modes-1|<tuple|49c|49>>
-    <associate|code-ref-parse_chunk_args-reset-modes-2|<tuple|49d|49>>
-    <associate|code-ref-pca-test.awk-1|<tuple|51c|51>>
-    <associate|code-ref-pca-test.awk-results-1|<tuple|51e|51>>
-    <associate|code-ref-pca-test.awk:summary-1|<tuple|51d|51>>
-    <associate|code-ref-process-chunk-1|<tuple|56b|56>>
-    <associate|code-ref-process-chunk-2|<tuple|56c|56>>
-    <associate|code-ref-process-chunk-3|<tuple|56d|56>>
-    <associate|code-ref-process-chunk-4|<tuple|56e|56>>
-    <associate|code-ref-process-chunk-5|<tuple|57a|57>>
-    <associate|code-ref-process-chunk-simple-1|<tuple|55c|55>>
-    <associate|code-ref-process-chunk-tabs-1|<tuple|55d|55>>
-    <associate|code-ref-read-options-1|<tuple|59b|59>>
-    <associate|code-ref-recognize-chunk-1|<tuple|53a|53>>
-    <associate|code-ref-recognize-chunk-2|<tuple|54a|54>>
-    <associate|code-ref-recognize-chunk-3|<tuple|54b|54>>
-    <associate|code-ref-recognize-chunk-4|<tuple|54c|54>>
-    <associate|code-ref-recognize-chunk-5|<tuple|54d|54>>
-    <associate|code-ref-recognize-chunk-6|<tuple|55a|55>>
-    <associate|code-ref-recognize-chunk-7|<tuple|55b|55>>
-    <associate|code-ref-restore-counter-1|<tuple|76e|76>>
-    <associate|code-ref-save-counter-1|<tuple|76d|76>>
-    <associate|code-ref-substitute-chunk-arg-1|<tuple|39d|39>>
-    <associate|code-ref-substitute-chunk-args-1|<tuple|39a|39>>
-    <associate|code-ref-substitute-chunk-args-2|<tuple|39b|39>>
-    <associate|code-ref-substitute-chunk-args-3|<tuple|39c|39>>
-    <associate|code-ref-substitute-chunk-args-4|<tuple|?a|?>>
-    <associate|code-ref-t-1|<tuple|?h|?>>
-    <associate|code-ref-te-1|<tuple|?h|?>>
-    <associate|code-ref-tes-1|<tuple|?h|?>>
-    <associate|code-ref-test-1|<tuple|?h|?>>
-    <associate|code-ref-test:-1|<tuple|?h|?>>
-    <associate|code-ref-test:chunk-params-1|<tuple|85e|85>>
-    <associate|code-ref-test:chunk-params:result-1|<tuple|85d|85>>
-    <associate|code-ref-test:chunk-params:sub-1|<tuple|85a|85>>
-    <associate|code-ref-test:chunk-params:sub:sub-1|<tuple|85b|85>>
-    <associate|code-ref-test:chunk-params:text-1|<tuple|85c|85>>
-    <associate|code-ref-test:comment-quote-1|<tuple|46b|46>>
-    <associate|code-ref-test:comment-quote:C-result-1|<tuple|46e|46>>
-    <associate|code-ref-test:comment-quote:result-1|<tuple|46d|46>>
-    <associate|code-ref-test:comment-text-1|<tuple|46c|46>>
-    <associate|code-ref-test:cromulence-1|<tuple|48h|48>>
-    <associate|code-ref-test:escapes-1|<tuple|52c|52>>
-    <associate|code-ref-test:helpers-1|<tuple|82c|82>>
-    <associate|code-ref-test:hidden-else-1|<tuple|48g|48>>
-    <associate|code-ref-test:mode-definitions-1|<tuple|43c|43>>
-    <associate|code-ref-test:mode-definitions-2|<tuple|44g|44>>
-    <associate|code-ref-test:mode-definitions-3|<tuple|47b|47>>
-    <associate|code-ref-test:mode-definitions-4|<tuple|47c|47>>
-    <associate|code-ref-test:p-1|<tuple|?h|?>>
-    <associate|code-ref-test:pa-1|<tuple|?h|?>>
-    <associate|code-ref-test:par-1|<tuple|?h|?>>
-    <associate|code-ref-test:part-1|<tuple|?h|?>>
-    <associate|code-ref-test:parti-1|<tuple|?h|?>>
-    <associate|code-ref-test:partia-1|<tuple|?h|?>>
-    <associate|code-ref-test:partial--1|<tuple|?h|?>>
-    <associate|code-ref-test:partial-1|<tuple|?h|?>>
-    <associate|code-ref-test:partial-c-1|<tuple|?h|?>>
-    <associate|code-ref-test:partial-ch-1|<tuple|?h|?>>
-    <associate|code-ref-test:partial-chu-1|<tuple|?h|?>>
-    <associate|code-ref-test:partial-chun-1|<tuple|?h|?>>
-    <associate|code-ref-test:partial-chunk-1|<tuple|48f|48>>
-    <associate|code-ref-test:run-tests-1|<tuple|81b|81>>
-    <associate|code-ref-test:say-hello-1|<tuple|48e|48>>
-    <associate|code-ref-test:whole-chunk-1|<tuple|48d|48>>
-    <associate|code-ref-testwhole-chunk-1|<tuple|?f|?>>
-    <associate|code-ref-teswhole-chunk-1|<tuple|?f|?>>
-    <associate|code-ref-tewhole-chunk-1|<tuple|?f|?>>
-    <associate|code-ref-twhole-chunk-1|<tuple|?f|?>>
-    <associate|code-ref-whole-chunk-1|<tuple|?f|?>>
-    <associate|code-ref-write-chunklets-1|<tuple|64a|64>>
-    <associate|code-ref-write-chunklets-2|<tuple|64b|64>>
-    <associate|code-ref-write-chunklets-3|<tuple|64c|64>>
-    <associate|code-ref-write-chunklets-4|<tuple|64d|64>>
-    <associate|code-ref-write-chunklets-5|<tuple|64e|64>>
-    <associate|code-ref-write-chunklets-6|<tuple|65a|65>>
-    <associate|code-ref-write-file-line-1|<tuple|65b|65>>
-    <associate|code-ref-write-included-chunk-1|<tuple|63d|63>>
-    <associate|code-ref-write-part-1|<tuple|63c|63>>
-    <associate|code-ref-write_chunk()-1|<tuple|62b|62>>
-    <associate|code-ref-write_chunk()-2|<tuple|62c|62>>
-    <associate|code-ref-write_chunk()-3|<tuple|62d|62>>
-    <associate|code-ref-write_chunk()-4|<tuple|63a|63>>
-    <associate|code-ref-write_chunk()-5|<tuple|63b|63>>
-    <associate|code-ref-wrote_chunk()-1|<tuple|?d|?>>
-    <associate|code-ref-wrte_chunk()-1|<tuple|?d|?>>
-    <associate|common-mode-definitions|<tuple|45a|45>>
-    <associate|constants|<tuple|67a|67>>
-    <associate|d|<tuple|?y|?>>
-    <associate|d-|<tuple|?a|?>>
-    <associate|de|<tuple|?y|?>>
-    <associate|debug-output|<tuple|61b|61>>
-    <associate|default-options|<tuple|59a|59>>
-    <associate|delatex|<tuple|56a|56>>
-    <associate|deu|<tuple|?y|?>>
-    <associate|deum|<tuple|?y|?>>
-    <associate|deump|<tuple|?y|?>>
-    <associate|do-|<tuple|?a|?>>
-    <associate|doc-|<tuple|?a|?>>
-    <associate|docu-|<tuple|?a|?>>
-    <associate|docum-|<tuple|?a|?>>
-    <associate|docume-|<tuple|?a|?>>
-    <associate|documen-|<tuple|?a|?>>
-    <associate|document-|<tuple|?a|?>>
-    <associate|document-p|<tuple|?a|?>>
-    <associate|document-pr|<tuple|?a|?>>
-    <associate|document-pre|<tuple|?a|?>>
-    <associate|document-prea|<tuple|?a|?>>
-    <associate|document-pream|<tuple|?a|?>>
-    <associate|document-preamb|<tuple|?a|?>>
-    <associate|document-preambl|<tuple|?a|?>>
-    <associate|document-preamble|<tuple|19a|19>>
-    <associate|du|<tuple|?y|?>>
-    <associate|dum|<tuple|?y|?>>
-    <associate|dump|<tuple|?y|?>>
-    <associate|dump-|<tuple|?y|?>>
-    <associate|dump-a|<tuple|?y|?>>
-    <associate|dump-ar|<tuple|?y|?>>
-    <associate|dump-arr|<tuple|?y|?>>
-    <associate|dump-arra|<tuple|?y|?>>
-    <associate|dump-array|<tuple|33e|33>>
-    <associate|e|<tuple|?z|?>>
-    <associate|end|<tuple|61c|61>>
-    <associate|er|<tuple|?z|?>>
-    <associate|err|<tuple|?z|?>>
-    <associate|erro|<tuple|?z|?>>
-    <associate|error|<tuple|?z|?>>
-    <associate|error(|<tuple|?z|?>>
-    <associate|error()|<tuple|34a|34>>
-    <associate|example-makefile|<tuple|42a|42>>
-    <associate|example-perl|<tuple|41a|41>>
-    <associate|example-perl,|<tuple|?a|?>>
-    <associate|example-perl,language=perl|<tuple|?a|?>>
-    <associate|example-sh|<tuple|41b|41>>
-    <associate|expand_chunk_args()|<tuple|38b|38>>
-    <associate|footnote-1|<tuple|1|76>>
-    <associate|footnote-2|<tuple|2|53>>
-    <associate|footnote-3|<tuple|3|54>>
-    <associate|footnote-4|<tuple|4|55>>
-    <associate|footnote-5|<tuple|5|56>>
-    <associate|footnote-6|<tuple|6|30>>
-    <associate|footnr-1|<tuple|1|76>>
-    <associate|footnr-2|<tuple|2|53>>
-    <associate|footnr-3|<tuple|3|54>>
-    <associate|footnr-4|<tuple|4|55>>
-    <associate|footnr-5|<tuple|5|56>>
-    <associate|footnr-6|<tuple|6|29>>
-    <associate|g|<tuple|?c|?>>
-    <associate|g-|<tuple|?a|?>>
-    <associate|gca-test.awk|<tuple|37b|37>>
-    <associate|gca-test.awk-results|<tuple|37c|37>>
-    <associate|ge|<tuple|?c|?>>
-    <associate|generate-output|<tuple|61a|61>>
-    <associate|get|<tuple|?c|?>>
-    <associate|get_|<tuple|?c|?>>
-    <associate|get_c|<tuple|?c|?>>
-    <associate|get_ch|<tuple|?c|?>>
-    <associate|get_chu|<tuple|?c|?>>
-    <associate|get_chun|<tuple|?c|?>>
-    <associate|get_chunk|<tuple|?c|?>>
-    <associate|get_chunk+|<tuple|?c|?>>
-    <associate|get_chunk_|<tuple|?c|?>>
-    <associate|get_chunk_a|<tuple|?c|?>>
-    <associate|get_chunk_ar|<tuple|?c|?>>
-    <associate|get_chunk_arg|<tuple|?c|?>>
-    <associate|get_chunk_args|<tuple|?c|?>>
-    <associate|get_chunk_args(|<tuple|?c|?>>
-    <associate|get_chunk_args()|<tuple|36b|36>>
-    <associate|getopt|<tuple|71d|71>>
-    <associate|getopt.awk|<tuple|71c|71>>
-    <associate|getopt.awk-begin|<tuple|71b|71>>
-    <associate|getopt.awk-getopt()|<tuple|71a|71>>
-    <associate|getopt.awk-header|<tuple|70a|70>>
-    <associate|getopt.awk-notes|<tuple|70b|70>>
-    <associate|gp-|<tuple|?a|?>>
-    <associate|gpl-|<tuple|?a|?>>
-    <associate|gpl3-|<tuple|?a|?>>
-    <associate|gpl3-c|<tuple|?a|?>>
-    <associate|gpl3-co|<tuple|?a|?>>
-    <associate|gpl3-cop|<tuple|?a|?>>
-    <associate|gpl3-copy|<tuple|?a|?>>
-    <associate|gpl3-copyr|<tuple|?a|?>>
-    <associate|gpl3-copyri|<tuple|?a|?>>
-    <associate|gpl3-copyrig|<tuple|?a|?>>
-    <associate|gpl3-copyrigh|<tuple|?a|?>>
-    <associate|gpl3-copyright|<tuple|4a|4>>
-    <associate|gpl3-copyright.hashed|<tuple|73b|73>>
-    <associate|handle-options|<tuple|59c|59>>
-    <associate|help()|<tuple|59e|59>>
-    <associate|l|<tuple|?c|?>>
-    <associate|latex-source|<tuple|15|73>>
-    <associate|lone-newline|<tuple|5|56>>
-    <associate|ly|<tuple|?c|?>>
-    <associate|lyx|<tuple|?c|?>>
-    <associate|lyx-|<tuple|?c|?>>
-    <associate|lyx-b|<tuple|?c|?>>
-    <associate|lyx-bu|<tuple|?c|?>>
-    <associate|lyx-bui|<tuple|?c|?>>
-    <associate|lyx-buil|<tuple|?c|?>>
-    <associate|lyx-build|<tuple|81a|81>>
-    <associate|lyx-build-|<tuple|?c|?>>
-    <associate|lyx-build-h|<tuple|?c|?>>
-    <associate|lyx-build-he|<tuple|?c|?>>
-    <associate|lyx-build-hel|<tuple|?c|?>>
-    <associate|lyx-build-help|<tuple|?c|?>>
-    <associate|lyx-build-helpe|<tuple|?c|?>>
-    <associate|lyx-build-helper|<tuple|81c|81>>
-    <associate|lyx-build-manual|<tuple|82b|82>>
-    <associate|lyx-build-script|<tuple|16.1|81>>
-    <associate|lyx-build=|<tuple|?c|?>>
-    <associate|makefile-glue|<tuple|30a|30>>
-    <associate|makefile.inc|<tuple|6|23>>
-    <associate|mode-definitions|<tuple|47a|47>>
-    <associate|mode-tracker|<tuple|51b|51>>
-    <associate|mode:add-escapes|<tuple|45c|45>>
-    <associate|mode:add-hash-comments|<tuple|45f|45>>
-    <associate|mode:add-hash-defines|<tuple|45g|45>>
-    <associate|mode:add-naked-regex|<tuple|46f|46>>
-    <associate|mode:add-submode|<tuple|45b|45>>
-    <associate|mode:common-brackets|<tuple|44h|44>>
-    <associate|mode:common-string|<tuple|44a|44>>
-    <associate|mode:multi-line-comments|<tuple|45d|45>>
-    <associate|mode:quote-dollar-escape|<tuple|45h|45>>
-    <associate|mode:single-line-slash-comments|<tuple|45e|45>>
-    <associate|mode_tracker|<tuple|52a|52>>
-    <associate|mode_tracker(|<tuple|?a|?>>
-    <associate|mode_tracker()|<tuple|51a|51>>
-    <associate|modes|<tuple|9|41>>
-    <associate|new-mode-tracker|<tuple|47e|47>>
-    <associate|new-mode-tracker()|<tuple|47d|47>>
-    <associate|new_mode_tracker|<tuple|?a|?>>
-    <associate|noweb heading|<tuple|1|76>>
-    <associate|output_chunk_names()|<tuple|61d|61>>
-    <associate|output_chunks()|<tuple|62a|62>>
-    <associate|p|<tuple|?e|?>>
-    <associate|pa|<tuple|?e|?>>
-    <associate|par|<tuple|?e|?>>
-    <associate|pars|<tuple|?e|?>>
-    <associate|parse|<tuple|?e|?>>
-    <associate|parse-|<tuple|?e|?>>
-    <associate|parse-c|<tuple|?e|?>>
-    <associate|parse-ch|<tuple|?e|?>>
-    <associate|parse-chu|<tuple|?e|?>>
-    <associate|parse-chun|<tuple|?e|?>>
-    <associate|parse-chunk|<tuple|?e|?>>
-    <associate|parse-chunk-|<tuple|?e|?>>
-    <associate|parse-chunk-a|<tuple|?e|?>>
-    <associate|parse-chunk-ar|<tuple|?e|?>>
-    <associate|parse-chunk-arg|<tuple|?e|?>>
-    <associate|parse-chunk-args|<tuple|37a|37>>
-    <associate|parse-chunk=|<tuple|?e|?>>
-    <associate|parse_chunk_args|<tuple|38a|38>>
-    <associate|parse_chunk_args-reset-modes|<tuple|49c|49>>
-    <associate|pca-test.awk|<tuple|51c|51>>
-    <associate|pca-test.awk-results|<tuple|51e|51>>
-    <associate|pca-test.awk:summary|<tuple|51d|51>>
-    <associate|process-chunk|<tuple|57a|57>>
-    <associate|process-chunk-simple|<tuple|55c|55>>
-    <associate|process-chunk-tabs|<tuple|55d|55>>
-    <associate|read-options|<tuple|59b|59>>
-    <associate|recognize-chunk|<tuple|55a|55>>
-    <associate|restore-counter|<tuple|76e|76>>
-    <associate|save-counter|<tuple|76d|76>>
-    <associate|sec:Latex-Macros|<tuple|15.2|74>>
-    <associate|sub:Chunk-parts|<tuple|12.1.1|62>>
-    <associate|sub:ORS-chunk-text|<tuple|10.3|55>>
-    <associate|sub:The-chunk-command|<tuple|15.2.1|75>>
-    <associate|sub:lst-listings-includes|<tuple|10.3.1|55>>
-    <associate|substitute-chunk-arg|<tuple|39d|39>>
-    <associate|substitute-chunk-args|<tuple|39a|39>>
-    <associate|t|<tuple|?h|?>>
-    <associate|te|<tuple|?h|?>>
-    <associate|tes|<tuple|?h|?>>
-    <associate|test|<tuple|?h|?>>
-    <associate|test:|<tuple|?h|?>>
-    <associate|test:chunk-params|<tuple|85e|85>>
-    <associate|test:chunk-params:result|<tuple|85d|85>>
-    <associate|test:chunk-params:sub|<tuple|85a|85>>
-    <associate|test:chunk-params:sub:sub|<tuple|85b|85>>
-    <associate|test:chunk-params:text|<tuple|85c|85>>
-    <associate|test:comment-quote|<tuple|46b|46>>
-    <associate|test:comment-quote:C-result|<tuple|46e|46>>
-    <associate|test:comment-quote:result|<tuple|46d|46>>
-    <associate|test:comment-text|<tuple|46c|46>>
-    <associate|test:cromulence|<tuple|48h|48>>
-    <associate|test:escapes|<tuple|52c|52>>
-    <associate|test:helpers|<tuple|82c|82>>
-    <associate|test:hidden-else|<tuple|48g|48>>
-    <associate|test:mode-definitions|<tuple|47b|47>>
-    <associate|test:p|<tuple|?h|?>>
-    <associate|test:pa|<tuple|?h|?>>
-    <associate|test:par|<tuple|?h|?>>
-    <associate|test:part|<tuple|?h|?>>
-    <associate|test:parti|<tuple|?h|?>>
-    <associate|test:partia|<tuple|?h|?>>
-    <associate|test:partial|<tuple|?h|?>>
-    <associate|test:partial-|<tuple|?h|?>>
-    <associate|test:partial-c|<tuple|?h|?>>
-    <associate|test:partial-ch|<tuple|?h|?>>
-    <associate|test:partial-chu|<tuple|?h|?>>
-    <associate|test:partial-chun|<tuple|?h|?>>
-    <associate|test:partial-chunk|<tuple|48f|48>>
-    <associate|test:run-tests|<tuple|81b|81>>
-    <associate|test:say-hello|<tuple|48e|48>>
-    <associate|test:whole-chunk|<tuple|48d|48>>
-    <associate|testwhole-chunk|<tuple|?f|?>>
-    <associate|teswhole-chunk|<tuple|?f|?>>
-    <associate|tewhole-chunk|<tuple|?f|?>>
-    <associate|twhole-chunk|<tuple|?f|?>>
-    <associate|whole-chunk|<tuple|?f|?>>
-    <associate|write-chunklets|<tuple|65a|65>>
-    <associate|write-file-line|<tuple|65b|65>>
-    <associate|write-included-chunk|<tuple|63d|63>>
-    <associate|write-part|<tuple|63c|63>>
-    <associate|write_chunk()|<tuple|63a|63>>
-    <associate|wrote_chunk()|<tuple|?d|?>>
-    <associate|wrte_chunk()|<tuple|?d|?>>
-  </collection>
-</references>
-
-<\auxiliary>
-  <\collection>
-    <\associate|figure>
-      <tuple|normal|Noweb Heading<label|noweb heading>|<pageref|auto-90>>
-    </associate>
-    <\associate|toc>
-      Introduction <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-1>
-
-      <new-page*>License <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-2>
-
-      <vspace*|2fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|font-size|<quote|1.19>|I<space|2spc>Using
-      Newfangle> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-3><vspace|1fn>
-
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|1<space|2spc>Introduction
-      to Literate Programming> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-4><vspace|0.5fn>
-
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|2<space|2spc>Running
-      Newfangle> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-5><vspace|0.5fn>
-
-      2.1<space|2spc>Listing roots <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-6>
-
-      2.2<space|2spc>Extracting roots <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-7>
-
-      2.3<space|2spc>Formatting the document
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-8>
-
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|3<space|2spc>Using
-      Newfangle with L<rsup|<space|-0.8spc><move|A|0fn|-0.1fn>><space|-0.2spc>T<rsub|<space|-0.4spc><move|<resize|<with|math-level|<quote|0>|E>||||0.5fn|>|0fn|-0.1fn>><space|-0.4spc>X>
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-9><vspace|0.5fn>
-
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|4<space|2spc>Using
-      Newfangle with L<space|-0.1667em><move|Y|0fn|-0.25em><space|-0.125em>X>
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-10><vspace|0.5fn>
-
-      4.1<space|2spc>Installing the L<space|-0.1667em><move|Y|0fn|-0.25em><space|-0.125em>X
-      module <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-11>
-
-      4.2<space|2spc>Obtaining a decent mono font
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-12>
-
-      <with|par-left|<quote|1.5fn>|4.2.1<space|2spc>txfonts
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-13>>
-
-      <with|par-left|<quote|1.5fn>|4.2.2<space|2spc>ams pmb
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-14>>
-
-      <with|par-left|<quote|1.5fn>|4.2.3<space|2spc>Luximono
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-15>>
-
-      4.3<space|2spc>Formatting your Lyx document
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-16>
-
-      <with|par-left|<quote|1.5fn>|4.3.1<space|2spc>Customising the listing
-      appearance <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-17>>
-
-      <with|par-left|<quote|1.5fn>|4.3.2<space|2spc>Global customisations
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-18>>
-
-      4.4<space|2spc>Configuring the build script
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-19>
-
-      <with|par-left|<quote|1.5fn>|4.4.1<space|2spc>...
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-20>>
-
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|5<space|2spc>Using
-      Newfangle with T<rsub|<space|-0.4spc><move|<resize|<with|math-level|<quote|0>|E>||||0.5fn|>|0fn|-0.1fn>><space|-0.4spc>X<rsub|<space|-0.4spc><move|<resize|M<space|-0.2spc>A<space|-0.4spc>CS||||0.5fn|>|0fn|-0.1fn>>>
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-21><vspace|0.5fn>
-
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|6<space|2spc>Newfangle
-      with Makefiles> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-22><vspace|0.5fn>
-
-      6.1<space|2spc>A word about makefiles formats
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-23>
-
-      6.2<space|2spc>Extracting Sources <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-24>
-
-      <with|par-left|<quote|1.5fn>|6.2.1<space|2spc>Converting from
-      L<space|-0.1667em><move|Y|0fn|-0.25em><space|-0.125em>X to
-      L<rsup|<space|-0.8spc><move|A|0fn|-0.1fn>><space|-0.2spc>T<rsub|<space|-0.4spc><move|<resize|<with|math-level|<quote|0>|E>||||0.5fn|>|0fn|-0.1fn>><space|-0.4spc>X
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-25>>
-
-      <with|par-left|<quote|1.5fn>|6.2.2<space|2spc>Converting from
-      T<rsub|<space|-0.4spc><move|<resize|<with|math-level|<quote|0>|E>||||0.5fn|>|0fn|-0.1fn>><space|-0.4spc>X<rsub|<space|-0.4spc><move|<resize|M<space|-0.2spc>A<space|-0.4spc>CS||||0.5fn|>|0fn|-0.1fn>>
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-26>>
-
-      6.3<space|2spc>Extracting Program Source
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-27>
-
-      6.4<space|2spc>Extracting Source Files
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-28>
-
-      6.5<space|2spc>Extracting Documentation
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-29>
-
-      <with|par-left|<quote|1.5fn>|6.5.1<space|2spc>Formatting
-      T<rsub|<space|-0.4spc><move|<resize|<with|math-level|<quote|0>|E>||||0.5fn|>|0fn|-0.1fn>><space|-0.4spc>X
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-30>>
-
-      <with|par-left|<quote|3fn>|6.5.1.1<space|2spc>Running pdflatex
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-31>>
-
-      <with|par-left|<quote|1.5fn>|6.5.2<space|2spc>Formatting
-      T<rsub|<space|-0.4spc><move|<resize|<with|math-level|<quote|0>|E>||||0.5fn|>|0fn|-0.1fn>><space|-0.4spc>X<rsub|<space|-0.4spc><move|<resize|M<space|-0.2spc>A<space|-0.4spc>CS||||0.5fn|>|0fn|-0.1fn>>
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-32>>
-
-      <with|par-left|<quote|1.5fn>|6.5.3<space|2spc>Building the
-      Documentation as a Whole <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-33>>
-
-      6.6<space|2spc>Other helpers <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-34>
-
-      6.7<space|2spc>Boot-strapping the extraction
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-35>
-
-      6.8<space|2spc>Incorporating Makefile.inc into existing projects
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-36>
-
-      <with|par-left|<quote|6fn>|Example <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-37><vspace|0.15fn>>
-
-      <vspace*|2fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|font-size|<quote|1.19>|II<space|2spc>Source
-      Code> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-38><vspace|1fn>
-
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|7<space|2spc>Newfangle
-      awk source code> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-39><vspace|0.5fn>
-
-      7.1<space|2spc>AWK tricks <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-40>
-
-      7.2<space|2spc>Catching errors <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-41>
-
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|8<space|2spc>L<rsup|<space|-0.8spc><move|A|0fn|-0.1fn>><space|-0.2spc>T<rsub|<space|-0.4spc><move|<resize|<with|math-level|<quote|0>|E>||||0.5fn|>|0fn|-0.1fn>><space|-0.4spc>X
-      and lstlistings> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-42><vspace|0.5fn>
-
-      8.1<space|2spc>Additional lstlstings parameters
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-43>
-
-      8.2<space|2spc>Parsing chunk arguments
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-44>
-
-      8.3<space|2spc>Expanding parameters in the text
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-45>
-
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|9<space|2spc>Language
-      Modes & Quoting> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-46><vspace|0.5fn>
-
-      9.1<space|2spc>Modes <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-47>
-
-      <with|par-left|<quote|1.5fn>|9.1.1<space|2spc>Modes to keep code
-      together <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-48>>
-
-      <with|par-left|<quote|1.5fn>|9.1.2<space|2spc>Modes affect included
-      chunks <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-49>>
-
-      9.2<space|2spc>Language Mode Definitions
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-50>
-
-      <with|par-left|<quote|1.5fn>|9.2.1<space|2spc>Backslash
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-51>>
-
-      <with|par-left|<quote|1.5fn>|9.2.2<space|2spc>Strings
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-52>>
-
-      <with|par-left|<quote|1.5fn>|9.2.3<space|2spc>Parentheses, Braces and
-      Brackets <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-53>>
-
-      <with|par-left|<quote|1.5fn>|9.2.4<space|2spc>Customizing Standard
-      Modes <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-54>>
-
-      <with|par-left|<quote|1.5fn>|9.2.5<space|2spc>Comments
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-55>>
-
-      <with|par-left|<quote|1.5fn>|9.2.6<space|2spc>Regex
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-56>>
-
-      <with|par-left|<quote|1.5fn>|9.2.7<space|2spc>Perl
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-57>>
-
-      <with|par-left|<quote|1.5fn>|9.2.8<space|2spc>sh
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-58>>
-
-      9.3<space|2spc>Some tests <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-59>
-
-      9.4<space|2spc>A non-recursive mode tracker
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-60>
-
-      <with|par-left|<quote|1.5fn>|9.4.1<space|2spc>Constructor
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-61>>
-
-      <with|par-left|<quote|1.5fn>|9.4.2<space|2spc>Management
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-62>>
-
-      <with|par-left|<quote|1.5fn>|9.4.3<space|2spc>Tracker
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-63>>
-
-      <with|par-left|<quote|3fn>|9.4.3.1<space|2spc>One happy chunk
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-64>>
-
-      <with|par-left|<quote|3fn>|9.4.3.2<space|2spc>Tests
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-65>>
-
-      9.5<space|2spc>Escaping and Quoting
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-66>
-
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|10<space|2spc>Recognizing
-      Chunks> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-67><vspace|0.5fn>
-
-      10.1<space|2spc>Chunk start <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-68>
-
-      <with|par-left|<quote|1.5fn>|10.1.1<space|2spc>lstlistings
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-69>>
-
-      <with|par-left|<quote|1.5fn>|10.1.2<space|2spc>Noweb
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-70>>
-
-      10.2<space|2spc>Chunk end <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-71>
-
-      <with|par-left|<quote|1.5fn>|10.2.1<space|2spc>lstlistings
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-72>>
-
-      <with|par-left|<quote|1.5fn>|10.2.2<space|2spc>noweb
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-73>>
-
-      10.3<space|2spc>Chunk contents <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-74>
-
-      <with|par-left|<quote|1.5fn>|10.3.1<space|2spc>lstlistings
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-75>>
-
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|11<space|2spc>Processing
-      Options> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-76><vspace|0.5fn>
-
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|12<space|2spc>Generating
-      the Output> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-77><vspace|0.5fn>
-
-      12.1<space|2spc>Assembling the Chunks
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-78>
-
-      <with|par-left|<quote|1.5fn>|12.1.1<space|2spc>Chunk Parts
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-79>>
-
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|13<space|2spc>Storing
-      Chunks> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-80><vspace|0.5fn>
-
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|14<space|2spc>getopt>
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-81><vspace|0.5fn>
-
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|15<space|2spc>Newfangle
-      LaTeX source code> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-82><vspace|0.5fn>
-
-      15.1<space|2spc>newfangle module <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-83>
-
-      <with|par-left|<quote|1.5fn>|15.1.1<space|2spc>The Chunk style
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-84>>
-
-      <with|par-left|<quote|1.5fn>|15.1.2<space|2spc>The chunkref style
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-85>>
-
-      15.2<space|2spc>Latex Macros <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-86>
-
-      <with|par-left|<quote|1.5fn>|15.2.1<space|2spc>The chunk command
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-87>>
-
-      <with|par-left|<quote|3fn>|15.2.1.1<space|2spc>Chunk parameters
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-88>>
-
-      <with|par-left|<quote|1.5fn>|15.2.2<space|2spc>The noweb styled caption
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-89>>
-
-      <with|par-left|<quote|1.5fn>|15.2.3<space|2spc>The chunk counter
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-91>>
-
-      <with|par-left|<quote|1.5fn>|15.2.4<space|2spc>Cross references
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-92>>
-
-      <with|par-left|<quote|1.5fn>|15.2.5<space|2spc>The end
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-93>>
-
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|16<space|2spc>Extracting
-      newfangle> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-94><vspace|0.5fn>
-
-      16.1<space|2spc>Extracting from Lyx
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-95>
-
-      16.2<space|2spc>Extracting documentation
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-96>
-
-      16.3<space|2spc>Extracting from the command line
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-97>
-
-      16.4<space|2spc>Testing <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-98>
-
-      <vspace*|2fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|font-size|<quote|1.19>|III<space|2spc>Tests>
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-99><vspace|1fn>
-
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|17<space|2spc>Chunk
-      Parameters> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-100><vspace|0.5fn>
-
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|18<space|2spc>Compile-log-lyx>
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-101><vspace|0.5fn>
-    </associate>
-  </collection>
-</auxiliary>
