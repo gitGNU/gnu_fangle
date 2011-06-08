@@ -1,4 +1,4 @@
-<TeXmacs|1.0.7.4>
+<TeXmacs|1.0.7.6>
 
 <style|source>
 
@@ -25,7 +25,17 @@
     </src-title>
   </active*>
 
-  <use-package|std|env|title-generic|header-generic|section-generic|tmdoc-markup>
+  <use-package|std|env|tmdoc-markup>
+
+  <assign|filename|<macro|name|<verbatim|<arg|name>>>>
+
+  <assign|old-code|<value|code>>
+
+  <assign|code|<macro|x|<with|par-par-sep|0fn|<compound|old-code|<arg|x>>>>>
+
+  <assign|old-verbatim|<value|verbatim>>
+
+  <assign|verbatim|<macro|x|<with|par-par-sep|0fn|<compound|old-verbatim|<arg|x>>>>>
 
   <\active*>
     <\src-comment>
@@ -86,8 +96,20 @@
     </src-comment>
   </active*>
 
+  <assign|nf-cell-border|0.5ln>
+
+  <assign|nf-cell-no-border|0.0ln>
+
+  <assign|nf-cell-top-border|<value|nf-cell-border>>
+
+  <assign|nf-cell-left-border|<value|nf-cell-border>>
+
+  <assign|nf-cell-bottom-border|<value|nf-cell-no-border>>
+
+  <assign|nf-cell-right-border|<value|nf-cell-border>>
+
   <assign|nf-framed-table|<macro|x|<with|color|dark
-  grey|<tformat|<twith|table-width|1par>|<cwith|1|-1|1|-1|cell-hyphen|t>|<cwith|1|-1|1|-1|cell-bsep|1spc>|<cwith|1|-1|1|-1|cell-tsep|1spc>|<cwith|1|-1|1|-1|cell-background|white>|<cwith|1|-1|1|-1|cell-lborder|0.5ln>|<cwith|1|-1|1|-1|cell-rborder|0.0ln>|<cwith|1|-1|1|-1|cell-bborder|0.0ln>|<cwith|1|-1|1|-1|cell-tborder|0.5ln>|<arg|x>>>>>
+  grey|<tformat|<twith|table-width|1par>|<cwith|1|-1|1|-1|cell-hyphen|t>|<cwith|1|-1|1|-1|cell-bsep|1spc>|<cwith|1|-1|1|-1|cell-tsep|1spc>|<cwith|1|-1|1|-1|cell-background|white>|<cwith|1|-1|1|-1|cell-lborder|<value|nf-cell-left-border>>|<cwith|1|-1|1|-1|cell-rborder|<value|nf-cell-right-border>>|<cwith|1|-1|1|-1|cell-bborder|<value|nf-cell-bottom-border>>|<cwith|1|-1|1|-1|cell-tborder|<value|nf-cell-top-border>>|<arg|x>>>>>
 
   <\active*>
     <\src-comment>
@@ -116,8 +138,10 @@
     </src-comment>
   </active*>
 
-  <assign|prog-fragment|<\macro|lang|x>
-    <indent|<nf-framed-fragment|<compound|prog-f|<arg|lang>|<arg|x>>>>
+  <assign|nf-border-if|<macro|x|<if|<arg|x>|<value|nf-cell-border>|<value|nf-cell-no-border>>>>
+
+  <assign|prog-fragment|<\macro|name|lang|x>
+    <with|nf-cell-top-border|<nf-border-if|<compound|nf-first-chunklet?|<arg|name>>>|nf-cell-bottom-border|<nf-border-if|<nf-last-chunklet?|<arg|name>>>|<nf-framed-fragment|<compound|prog-f|<arg|lang>|<arg|x>>>>
   </macro>>
 
   <\active*>
@@ -125,6 +149,8 @@
       Numbering the listing
     </src-comment>
   </active*>
+
+  <assign|nflp|<macro|x|<arg|x>>>
 
   <\active*>
     <\src-comment>
@@ -148,12 +174,22 @@
       listing - which means on each line. We insert an \<less\>item\<gtr\>
       tag at the start which will emit the line number (as it is within an
       enumerate environment). We also define the label text to refer to the
-      line number within the listing.
+      line number within the listing. I would rather use the-item not item-nr
+      but the-item comes out in a smaller font size.
     </src-comment>
   </active*>
 
+  <assign|nf-line-string|<macro|x|[STRING:(<value|nf-len>)=<arg|x><assign|nf-len|<plus|<value|nf-len>|<length|<arg|x>>>>;<value|nf-len>]>>
+
+  <assign|nf-line-concat|<macro|x|<with|end|<get-arity|<arg|x>>|i|0|<if|<greater|<value|end>|0>|<while|<less|<value|i>|<value|end>>|[(<length|<look-up|<arg|x>|<value|i>>>)<look-up|<arg|x>|<value|i>>]<assign|i|<plus|<value|i>|1>>>|\<less\>\<less\><get-label|<arg|x>>\<gtr\>\<gtr\><arg|x>>>>>
+
+  <assign|nf-render-tags|<macro|x|<case|<equal|<get-label|<arg|x>>|string>|<nf-line-string|<arg|x>>|<equal|<get-label|<arg|x>>|concat>|<nf-line-concat|<arg|x>>|<arg|x>>>>
+
   <assign|itemly|<macro|x|<item><assign|the-label|<value|the-chunk-label>
-  <localize|line> <the-item>><arg|x>>>
+  <localize|line> <item-nr>><with|nf-len|0|<arg|x>>>>
+
+  <assign|nitemly|<macro|x|<assign|the-label|<value|the-chunk-label>
+  <localize|line> <item-nr>><with|nf-len|0|<arg|x>>>>
 
   <\active*>
     <\src-comment>
@@ -248,6 +284,8 @@
 
   <assign|nf-first-chunklet?|<macro|name|<equal|<compound|<merge|the-code-chunk-|<unquote|<arg|name>>>>|1>>>
 
+  <assign|nf-last-chunklet?|<macro|name|<not|<compound|nf-chunklet-exists?|<nf-chunk-id|<arg|name>|ref|<plus|<compound|<merge|the-code-chunk-|<unquote|<arg|name>>>>|1>>>>>>
+
   <\active*>
     <\src-comment>
       Simple way to discover if a chunklet (probably) exists - which is
@@ -279,10 +317,22 @@
     </src-comment>
   </active*>
 
-  <assign|nf-header|<macro|name|lang|<with|par-first|-1fn|<yes-indent>><resize|<value|the-label>
-  |r-1.5fn||r+0.5fn|><with|mode|math|<left|langle>><label|<arg|name>><with|color|blue|<arg|name>>[<compound|<merge|the-code-chunk-|<unquote|<arg|name>>>>]<if|<not|<compound|nf-first-chunklet?|<arg|name>>>|
-  <math|\<Uparrow\>><reference|<nf-chunk-id|<arg|name>|ref|1>>>,
-  lang=<with|color|blue|<arg|lang>><with|mode|math|<right|rangle>><math|<if|<not|<nf-first-chunklet?|<arg|name>>>|+>\<equiv\>><htab|0pt><nf-nav|<arg|name>>>>
+  <assign|nf-render-commas|<macro|x|<with|color|blue|<arg|x>>>>
+
+  <assign|nf-commas|<macro|items|<if|<equal|<get-label|<arg|items>>|tuple>|<if|<less|<length|<arg|items>>|1>||<nf-render-commas|<look-up|<arg|items>|0>><if|<greater|<length|<arg|items>>|1>|,
+  <nf-commas|<range|<arg|items>|1|<length|<arg|items>>>>>>|<arg|items>>>>
+
+  <assign|nf-commaxy|<macro|x|, (<arg|x>)>>
+
+  <assign|nf-commax|<xmacro|args|[<arg|args|0><map-args|nf-commaxy|concat|args|1>]>>
+
+  <assign|bla|<xmacro|args|<arg|args|0>:<arg|args|1>(<arg|args>)>>
+
+  <assign|nf-header|<macro|name|lang|args|<with|par-first|-2fn|<yes-indent>><resize|<value|the-label>
+  |r-1.5fn||r+0.5fn|><with|mode|math|<left|langle>><label|<arg|name>><with|color|blue|<arg|name>>[<compound|<merge|the-code-chunk-|<unquote|<arg|name>>>><style-with|src-compact|none|]><if|<not|<compound|nf-first-chunklet?|<arg|name>>>|<if|<not|<equal|<value|<merge|code-args-|<unquote|<arg|name>>>>|<uninit>>>|(<with|nf-render-commas|<macro|x|<arg|x>>|<nf-commas|<value|<merge|code-args-|<unquote|<arg|name>>>>>>)>
+  <math|\<Uparrow\>><reference|<nf-chunk-id|<arg|name>|ref|1>>|(<compound|nf-commas|<arg|args>>)>,
+  lang=<with|color|blue|<arg|lang>><with|mode|math|<right|rangle>>
+  <math|<if|<not|<nf-first-chunklet?|<arg|name>>>|+>\<equiv\>><htab|0pt><nf-nav|<arg|name>>>>
 
   <\active*>
     <\src-comment>
@@ -296,7 +346,7 @@
     </src-comment>
   </active*>
 
-  <assign|nf-gather|<macro|name|x|lang|<if|<provides|<arg|name>>|<assign|<unquote|<arg|name>>|<value|<arg|name>><unquote|<arg|x>>>|<assign|<unquote|<arg|name>>|<unquote|<arg|x>>>>>>
+  <assign|nf-gather|<macro|name|x|lang|<if|<provides|<arg|name>>|<assign|<unquote|<arg|name>>|<value|<arg|name>><unquote|<arg|x>>>|<assign|<unquote|<arg|name>>|<quote|<arg|x>>>>>>
 
   <\active*>
     <\src-comment>
@@ -306,7 +356,7 @@
     </src-comment>
   </active*>
 
-  <assign|nf-chunk-new|<macro|name|<new-counter|<merge|code-chunk-|<unquote|<arg|name>>>><new-counter|<merge|code-line-|<unquote|<arg|name>>>><compound|<merge|inc-code-chunk-|<unquote|<arg|name>>>>>>
+  <assign|nf-chunk-new|<macro|name|args|<new-counter|<merge|code-chunk-|<unquote|<arg|name>>>><new-counter|<merge|code-line-|<unquote|<arg|name>>>><compound|<merge|inc-code-chunk-|<unquote|<arg|name>>>><assign|<merge|code-args-|<unquote|<arg|name>>>|<arg|args>>>>
 
   <\active*>
     <\src-comment>
@@ -345,7 +395,7 @@
 
       The ref tagged label is to be used in preference to the label-tagged
       label created in nf-chunk-label whose only purpose is to find out what
-      page a chunk starts on so that the chunk ref label can be created.
+      page a chunk starts on so that the chunk ref label can be created
     </src-comment>
   </active*>
 
@@ -361,7 +411,12 @@
     </src-comment>
   </active*>
 
-  <assign|nf-render-line-no|<macro|x|<with|mode|text|<with|font-family|tt|<resize|<with|font-base-size|7|<arg|x><specific|verbatim|\|
+  <assign|specific-verbatim|<macro|x|<with|color|white|magnification|0.01|<arg|x>>>>
+
+  <assign|nf-pad|<macro|w|<if|<not|<less|<arg|w>|1>>|
+  <nf-pad|<minus|<arg|w>|1>>>>>
+
+  <assign|nf-render-line-no|<macro|x|<with|mode|text|<with|font-family|tt|<resize|<with|font-base-size|7|<specific-verbatim|<nf-pad|<minus|3|<length|<value|item-nr>>>>><arg|x><specific-verbatim|\|
   >>|r+2.2fn||r+0.7fn|>>>>>
 
   <\active*>
@@ -373,7 +428,7 @@
     </src-comment>
   </active*>
 
-  <assign|nf-chunk-label|<macro|name|<assign|the-label|[<arg|name>
+  <assign|nf-chunk-label|<macro|name|<assign|nf-last-chunk|<arg|name>><assign|the-label|[<arg|name>
   <compound|<merge|the-code-chunk-|<unquote|<arg|name>>>>]><label|<nf-this-chunk-id|<arg|name>|label>>>>
 
   <\active*>
@@ -387,26 +442,47 @@
     </src-comment>
   </active*>
 
-  <assign|nf-chunk-init|<macro|name|<if|<not|<provides|<merge|code-chunk-|<unquote|<arg|name>>|-nr>>>|<nf-chunk-new|<arg|name>>|<nf-chunk-next|<arg|name>>><nf-chunk-label|<arg|name>><nf-chunk-ref|<arg|name>>>>
+  <assign|nf-chunk-init|<macro|name|args|<with|nf-same-chunk|<equal|<value|nf-last-chunk>|<arg|name>>|<if|<not|<provides|<merge|code-chunk-|<unquote|<arg|name>>|-nr>>>|<nf-chunk-new|<arg|name>|<arg|args>>|<nf-chunk-next|<arg|name>>><nf-chunk-label|<arg|name>><nf-chunk-ref|<arg|name>><assign|nf-continues|<and|<value|nf-same-chunk>|<not|<equal|<number|<the-nf-chunk>|alpha>|a>>>>>>>
 
   <\active*>
     <\src-comment>
       nf-chunk is the first public macro. It shows a named listing with all
-      the trimmings
+      the trimmings. We disable header if previous chunk on this page had
+      same name and this is not the first chunk on a page
     </src-comment>
   </active*>
 
-  <assign|nf-chunk|<\macro|name|x|lang>
-    \;
-
+  <assign|nflp|<\macro|name|x|lang|args>
     <\with|the-label|>
-      <nf-chunk-init|<arg|name>><nf-gather|<arg|name>|<arg|x>|<arg|lang>><no-page-break><small|<nf-header|<arg|name>|<arg|lang>>>
+      <nf-chunk-init|<arg|name>|<arg|args>><nf-gather|<arg|name>|<arg|x>|<arg|lang>><no-page-break><if|<not|<value|nf-continues>>|<small|<nf-header|<arg|name>|<arg|lang>|<arg|args>>>|<small|<arg|name>>>
 
       <\small>
-        <prog-fragment|<arg|lang>|<list|<macro|x|<nf-render-line-no|<arg|x>>>|<macro|x|<smaller|<arg|x>>>|<assign|item-nr|<value|<merge|code-line-|<unquote|<arg|name>>|-nr>>><if|<equal|<get-label|<arg|x>>|document>|<map-args|itemly|document|x>|<arg|x>><assign|<merge|code-line-|<unquote|<arg|name>>|-nr>|<value|item-nr>>>>
+        <prog-fragment|<arg|name>|<arg|lang>|<list|<macro|x|<nf-render-line-no|<arg|x>>>|<macro|x|<smaller|<arg|x>>>|><assign|item-nr|<value|<merge|code-line-|<unquote|<arg|name>>|-nr>>><if|<equal|<get-label|<arg|x>>|document>|<map-args|nitemly|document|x>|<arg|x>><assign|<merge|code-line-|<unquote|<arg|name>>|-nr>|<value|item-nr>>>
       </small>
+    </with>
+  </macro>>
 
-      <vspace|0.5fn>
+  <assign|nf-chunk|<\macro|name|x|lang|args>
+    <\with|the-label|>
+      <nf-chunk-init|<arg|name>|<arg|args>><nf-gather|<arg|name>|<arg|x>|<arg|lang>><no-page-break><if|<not|<value|nf-continues>>|<small|<nf-header|<arg|name>|<arg|lang>|<arg|args>>>|<small|<arg|name>>>
+
+      <\small>
+        <prog-fragment|<arg|name>|<arg|lang>|<list|<macro|x|<nf-render-line-no|<arg|x>>>|<macro|x|<smaller|<arg|x>>>|<assign|item-nr|<value|<merge|code-line-|<unquote|<arg|name>>|-nr>>><if|<equal|<get-label|<arg|x>>|document>|<map-args|itemly|document|x>|<arg|x>><assign|<merge|code-line-|<unquote|<arg|name>>|-nr>|<value|item-nr>>>>
+      </small>
+    </with>
+  </macro>>
+
+  <drd-props|nf-chunk|accessible|all>
+
+  <assign|nf-last-chunk|>
+
+  <assign|nf-chunk-more|<\macro|x>
+    <\with|the-label|>
+      <nf-chunk-init|<value|nf-last-chunk>>
+
+      <\small>
+        <prog-fragment|<value|nf-last-chunk>|<arg|lang>|<list|<macro|x|<nf-render-line-no|<arg|x>>>|<macro|x|<smaller|<arg|x>>>|<assign|item-nr|<value|<merge|code-line-|<unquote|<value|nf-last-chunk>>|-nr>>><if|<equal|<get-label|<arg|x>>|document>|<map-args|itemly|document|x>|<arg|x>><assign|<merge|code-line-|<unquote|<value|nf-last-chunk>>|-nr>|<value|item-nr>>>>
+      </small>
     </with>
   </macro>>
 
@@ -414,9 +490,7 @@
     <\src-comment>
       nf-ref is the second public macro. It may be inserted into a chunk
       listing to signify that another listing should be included at that
-      point. As \\ doesn't work in listings you'll have to type it in a
-      regular program block and cut-n-paste into the listing until I work out
-      how to assign a short-cut key to do it for you.
+      point. As \\ doesn't work in listings you'll have to type meta-\\ \ 
 
       This will become an xmacro or something so that it can take optional
       arguments (like C macros) which will be expanded when the programs are
@@ -424,7 +498,18 @@
     </src-comment>
   </active*>
 
-  <assign|nf-ref|<style-with|src-compact|none|<macro|name|\S<hlink|<arg|name>|<merge|#|<arg|name>>>\T<flag|<arg|name>|red><if|<equal|0|1>|<compound|<quote-arg|name>>>>>>
+  <assign|nf-ref|<style-with|src-compact|none|<macro|name|args|\S<arg|name><if|<equal|<get-label|<arg|args>>|tuple>|(<nf-commas|<arg|args>>)>
+  <reference|<nf-chunk-id|<arg|name>|ref|1>>\T<flag|<arg|name>|red><if|<equal|0|1>|<compound|<quote-arg|name>>>>>>
+
+  <\active*>
+    <\src-comment>
+      nf-arg is a public macro. It will be replaced by the value of the chunk
+      argument when the code is extracted
+    </src-comment>
+  </active*>
+
+  <assign|nf-arg|<macro|name|<with|mode|math|<left|langle>><specific-verbatim|${><with|color|dark
+  green|<with|prog-font-shape|italic|<arg|name>>><specific-verbatim|}><with|mode|math|<right|rangle>>>>
 
   <\active*>
     <\src-comment>
@@ -442,6 +527,23 @@
 
   <\active*>
     <\src-comment>
+      One day nf-tab will manage proper tab stops and emit a literal TAB
+      character in text mode.
+
+      Until then, it equals 8 spaces and the sequence 0xE2 0x86 0xA6 must be
+      converted to a tab during untangling
+    </src-comment>
+  </active*>
+
+  <assign|nf-tab-stop|8>
+
+  <assign|nf-tab|<macro|<resize|<with|mode|math|\<mapsto\>>|||<merge|c+|<minus|<value|nf-tab-stop>|<mod|<value|nf-len>|<value|nf-tab-stop>>>|spc>|>>>
+
+  <assign|nf-ht|<macro|<extern|(lambda () `(concat "[" ,(string #\\ht)
+  "]"))>>>
+
+  <\active*>
+    <\src-comment>
       Trash Bin - contains half-thought out or no-longer-needed code that I
       don't want to delete yet.
     </src-comment>
@@ -456,13 +558,24 @@
   <assign|global-put|<macro|key|value|<with|the-label|<arg|value>|<label|<arg|key>>>>>
 
   <assign|global-get|<macro|key|<get-binding|<arg|key>|0>>>
+
+  <\active*>
+    <\src-comment>
+      Todo:
+
+      references to code chunk labels have the line number small
+
+      non-nf-header continue chunks don't have a 4e shown but this is still
+      used for the references.
+    </src-comment>
+  </active*>
 </body>
 
 <\initial>
   <\collection>
     <associate|page-medium|automatic>
-    <associate|page-screen-height|614400tmpt>
-    <associate|page-screen-width|798720tmpt>
+    <associate|page-screen-height|708864tmpt>
+    <associate|page-screen-width|1209600tmpt>
     <associate|preamble|true>
   </collection>
 </initial>
