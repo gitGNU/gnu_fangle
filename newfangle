@@ -26,7 +26,6 @@
 # Initial version: March, 1991
 # Revised: May, 1993
 
-
 function getopt(argc, argv, options,    thisopt, i)
 {
     if (length(options) == 0)    # no options given
@@ -222,6 +221,10 @@ else {
   if (length(item)) context[cindex, "values", ++context[cindex, "values"]] = item;
   return text;
 }
+function untab(text) {
+  gsub("[[:space:]]*\xE2\x86\xA4","", text);
+  return text;
+}
 function transform_escape(s, r, text,
     # optional
     max, 
@@ -277,6 +280,7 @@ function new_chunk(chunk_name, params,
     chunk_names[chunk_name];
     for (p in params) {
       chunks[chunk_name, p] = params[p];
+      if (debug) print "chunks[" chunk_name "," p "] = " params[p]
     }
     if ("append" in params) {
       append=params["append"];
@@ -330,7 +334,7 @@ function output_chunk_names(   c, prefix, suffix)
 function output_chunks(  a) 
 {
   for (a in chunk_names) {
-    output_chunk(chunk_names[a]);
+    output_chunk(a);
   }
 }
 
@@ -353,6 +357,7 @@ function write_chunk_r(chunk_name, context, indent, tail,
   chunk_params, part, max_part, part_line, frag, max_frag, text, 
   chunklet, only_part, call_chunk_args, new_context)
 {
+  if (debug) print "write_chunk_r(", chunk_name, ")"
   if (match(chunk_name, "^(.*)\\[([0-9]*)\\]$", chunk_name_parts)) {
     chunk_name = chunk_name_parts[1];
     only_part = chunk_name_parts[2];
@@ -426,7 +431,7 @@ function write_chunk_r(chunk_name, context, indent, tail,
 
           text = text tail;
           mode_tracker(context, text);
-          print transform_escape(s, r, text, src);
+          print untab(transform_escape(s, r, text, src));
           if (linenos) {
             lineno_suppressed = substr(lastline, length(lastline)) == "\\";
           }
@@ -465,6 +470,7 @@ function expand_chunk_args(text, params, args,
 BEGIN {
   part_type_chunk=1;
   SUBSEP=",";
+  #RS="\n\n\n|\n\n";
   modes["c-like", "",  "submodes" ]="\\\\|\"|'|{|\\(|\\[";
   modes["c-like", "",  "delimiters"]=" *, *";
   modes["c-like", "\\", "terminators"]=".";
@@ -656,6 +662,39 @@ BEGIN {
   }
   for (i=1; i<Optind; i++) { ARGV[i]=""; }
 }
+
+#/\n/ {
+#  gsub("\n*$","");
+#  gsub("\n", " ");
+#}
+#===
+/\xE2\x86\xA6/ {
+  gsub("\\xE2\\x86\\xA6", "\x09");
+}
+
+/\xE2\x80\x98/ {
+  gsub("\\xE2\\x80\\x98", "`");
+}
+
+/\xE2\x89\xA1/ {
+  if (match($0, "^([^[ ]* |)<([^[ ]*)\\[[0-9]*\\][(](.*)[)].*, lang=([^ ]*)", line)) {
+    next_chunk_name=line[2];
+    gsub(",",";",line[3]);
+    params="params=" line[3];
+    if ((line[4])) {
+      params = params ",language=" line[4]
+    }
+    get_chunk_args(params, next_chunk_args);
+    new_chunk(next_chunk_name, next_chunk_args);
+    texmacs_chunking = 1;
+  } else {
+print "Unexpected pattern:"
+print 
+exit 1
+  }
+  next;
+}
+#===
 /^\\Chunk{/ {
   if (match($0, "^\\\\Chunk{ *([^ ,}]*),?(.*)}", line)) {
     next_chunk_name = line[1];
@@ -672,6 +711,20 @@ BEGIN {
   chunking=1;
   next;
 }
+#===
+texmacs_chunk=0;
+/^ *[1-9][0-9]*\| / {
+  if (texmacs_chunking) {
+    chunking=1;
+    texmacs_chunk=1;
+    gsub("^ *[1-9][0-9]*\\| ", "")
+  }
+}
+! texmacs_chunk {
+#  texmacs_chunking=0;
+  chunking=0;
+}
+#===
 /^[<]<.*[>]>=/ {
   if (match($0, "^[<]<(.*)[>]>= *$", line)) {
     chunking=1;
@@ -696,7 +749,8 @@ length(active_chunk) {
   }
   chunk = $0;
   indent = 0;
-  while(match(chunk, 
+  while(match(chunk,"(\xC2\xAB)([^\xC2 ]*)[^\xC2]*\xC2\xBB", line) ||
+        match(chunk, 
               "([=]<\\\\chunkref{([^}>]*)}(\\(.*\\)|)>|<<([a-zA-Z_][-a-zA-Z0-9_]*)>>)", 
               line)\
   ) {
@@ -713,6 +767,8 @@ length(active_chunk) {
       chunk_include(active_chunk, line[2] line[3], indent);
     } else if (substr(line[1], 1, 1) == "<") {
       chunk_include(active_chunk, line[4], indent);
+    } else if (line[1] == "\xC2\xAB") {
+      chunk_include(active_chunk, line[2], indent);
     } else {
       error("Unknown chunk fragment: " line[1]);
     }
