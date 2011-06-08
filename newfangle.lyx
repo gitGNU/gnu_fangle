@@ -1,4 +1,4 @@
-#LyX 1.6.4 created this file. For more info see http://www.lyx.org/
+#LyX 1.6.5 created this file. For more info see http://www.lyx.org/
 \lyxformat 345
 \begin_document
 \begin_header
@@ -221,71 +221,6 @@ Newfangle is written in awk for portability reasons, awk being available
 As an extension to many literate-programming styles, Newfangle permits code
  chunks to take parameters and thus operate somewhat like C pre-processor
  macros, or like C++ templates.
-\end_layout
-
-\begin_layout Section*
-Todo
-\end_layout
-
-\begin_layout Enumerate
-^^ is always going to be a problem, see texbytopic 1.2.2 (Work out what I
- meant by this).
-\end_layout
-
-\begin_layout Enumerate
-copy over up to date Makefile guide from noweb-lyx document
-\end_layout
-
-\begin_layout Enumerate
-Make chunk-name settings only apply to chunks with that name
-\end_layout
-
-\begin_layout Enumerate
-indent of multi-line chunks may be mode dependant (i.e.
- not in string literals)
-\end_layout
-
-\begin_layout Enumerate
-add support for other commands in =<...>, starting with 
-\backslash
-label which takes the line-number within the chunk, and maybe should also
- take the chunk name/page
-\end_layout
-
-\begin_layout Enumerate
-cant have listing inside a ruled box
-\end_layout
-
-\begin_layout Enumerate
-when a parameterized chunk is included as well as the #line emission, say
- what the paremeters were for that invocation.
-\end_layout
-
-\begin_layout Enumerate
-
-\backslash
-chunkref[3]{preamble} to include a certain chunk needs to work in newfangle.awk
- instead of failing to be recognized at all
-\end_layout
-
-\begin_layout Enumerate
-make in-listins labels track the chunk ref too, and make 
-\backslash
-chunref{[2],thing}> resolve to 41c (or d, or whatever chunk the 2nd chunk
- of thing is
-\end_layout
-
-\begin_layout Enumerate
-
-\backslash
-chunkref in text needs a trailing space maybe, it keeps butting up to the
- next word
-\end_layout
-
-\begin_layout Enumerate
-because the white-space indent is output by the parent chunk, the #line
- is that of the parent chunk.
- White space indents must be passed to the child chunk
 \end_layout
 
 \begin_layout Chapter*
@@ -3485,7 +3420,7 @@ AWK
  associated array, perhaps using a recursive parser into a multi-dimensional
  hash
 \begin_inset Foot
-status collapsed
+status open
 
 \begin_layout Plain Layout
 as AWK doesn't have nested-hash support
@@ -3630,7 +3565,7 @@ a[etc]
 \end_layout
 
 \begin_layout Standard
-Oon reflection it seems that sometimes such nesting is not desirable, as
+On reflection it seems that sometimes such nesting is not desirable, as
  the braces are also used to delimit values that contain commas --- we may
  consider that
 \end_layout
