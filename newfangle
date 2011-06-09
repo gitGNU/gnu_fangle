@@ -314,7 +314,8 @@ function chunk_line(chunk_name, line){
 }
 
 function chunk_include(chunk_name, chunk_ref, indent, tail)
-{
+{ # hee hee
+  debug_log(sprintf("Chunk include [%s] [%s]", chunk_name, chunk_ref));
   chunks[chunk_name, "part", ++chunks[chunk_name, "part"] ] = chunk_ref;
   chunks[chunk_name, "part", chunks[chunk_name, "part"], "type" ] = part_type_chunk;
   chunks[chunk_name, "part", chunks[chunk_name, "part"], "indent" ] = indent_string(indent);
@@ -692,9 +693,9 @@ BEGIN {
     new_chunk(next_chunk_name, next_chunk_args);
     texmacs_chunking = 1;
   } else {
-print "Unexpected pattern:"
-print 
-exit 1
+#print "Unexpected 
+#print 
+#exit 1
   }
   next;
 }
@@ -779,7 +780,8 @@ length(active_chunk) {
   }
   chunk = $0;
   indent = 0;
-  while(match(chunk,"(\xC2\xAB)([^\xC2 ]*)[^\xC2]*\xC2\xBB", line) ||
+#                        <<                          >>
+  while(match(chunk,"(\xC2\xAB)([^\xC2]*) [^\xC2]*\xC2\xBB", line) ||
         match(chunk, 
               "([=]<\\\\chunkref{([^}>]*)}(\\(.*\\)|)>|<<([a-zA-Z_][-a-zA-Z0-9_]*)>>)", 
               line)\

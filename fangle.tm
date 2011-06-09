@@ -1,6 +1,6 @@
 <TeXmacs|1.0.7.10>
 
-<style|<tuple|book|fangle|header-book>>
+<style|<tuple|book|fangle|header-book|tmdoc-keyboard>>
 
 <\body>
   <hide-preamble|<assign|LyX|<macro|L<space|-0.1667em><move|Y|0fn|-0.25em><space|-0.125em>X>><assign|par-first|0fn><assign|par-par-sep|0.5fn>>
@@ -81,40 +81,40 @@
   not be too hard.
 
   <\nf-chunk|gpl3-copyright>
-    <item>fangle - fully featured notangle replacement in awk
+    <item># fangle - fully featured notangle replacement in awk
 
-    <item>
+    <item>#
 
-    <item>Copyright (C) 2009-2010 Sam Liddicott
+    <item># Copyright (C) 2009-2010 Sam Liddicott
     \<less\>sam@liddicott.com\<gtr\>
 
-    <item>
+    <item>#
 
-    <item>This program is free software: you can redistribute it and/or
+    <item># This program is free software: you can redistribute it and/or
     modify
 
-    <item>it under the terms of the GNU General Public License as published
+    <item># it under the terms of the GNU General Public License as published
     by
 
-    <item>the Free Software Foundation, either version 3 of the License, or
+    <item># the Free Software Foundation, either version 3 of the License, or
 
-    <item>(at your option) any later version.
+    <item># (at your option) any later version.
 
-    <item>
+    <item>#
 
-    <item>This program is distributed in the hope that it will be useful,
+    <item># This program is distributed in the hope that it will be useful,
 
-    <item>but WITHOUT ANY WARRANTY; without even the implied warranty of
+    <item># but WITHOUT ANY WARRANTY; without even the implied warranty of
 
-    <item>MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. \ See the
+    <item># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. \ See the
 
-    <item>GNU General Public License for more details.
+    <item># GNU General Public License for more details.
 
-    <item>
+    <item>#
 
-    <item>You should have received a copy of the GNU General Public License
+    <item># You should have received a copy of the GNU General Public License
 
-    <item>along with this program. \ If not, see
+    <item># along with this program. \ If not, see
     \<less\>http://www.gnu.org/licenses/\<gtr\>.
   </nf-chunk|text|>
 
@@ -386,127 +386,135 @@
     10.1<space|2spc>Chunk start <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-68>
 
-    <with|par-left|1.5fn|10.1.1<space|2spc>lstlistings
-    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <with|par-left|1.5fn|10.1.1<space|2spc>T<rsub|<space|-0.4spc><move|<resize|<with|math-level|0|E>||||0.5fn>|0fn|-0.1fn>><space|-0.4spc>X<rsub|<space|-0.4spc><move|<resize|M<space|-0.2spc>A<space|-0.4spc>CS||||0.5fn>|0fn|-0.1fn>>
+    hackery <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-69>>
 
-    <with|par-left|1.5fn|10.1.2<space|2spc>Noweb
+    <with|par-left|1.5fn|10.1.2<space|2spc>lstlistings
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-70>>
 
-    10.2<space|2spc>Chunk end <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-71>
+    <with|par-left|1.5fn|10.1.3<space|2spc>T<rsub|<space|-0.4spc><move|<resize|<with|math-level|0|E>||||0.5fn>|0fn|-0.1fn>><space|-0.4spc>X<rsub|<space|-0.4spc><move|<resize|M<space|-0.2spc>A<space|-0.4spc>CS||||0.5fn>|0fn|-0.1fn>>
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-71>>
 
-    <with|par-left|1.5fn|10.2.1<space|2spc>lstlistings
+    <with|par-left|1.5fn|10.1.4<space|2spc>Noweb
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-72>>
 
-    <with|par-left|1.5fn|10.2.2<space|2spc>noweb
+    10.2<space|2spc>Chunk end <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-73>
+
+    <with|par-left|1.5fn|10.2.1<space|2spc>lstlistings
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-73>>
+    <no-break><pageref|auto-74>>
 
-    10.3<space|2spc>Chunk contents <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-74>
-
-    <with|par-left|1.5fn|10.3.1<space|2spc>lstlistings
+    <with|par-left|1.5fn|10.2.2<space|2spc>noweb
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-75>>
 
+    10.3<space|2spc>Chunk contents <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-76>
+
+    <with|par-left|1.5fn|10.3.1<space|2spc>lstlistings
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-77>>
+
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|11<space|2spc>Processing
     Options> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-76><vspace|0.5fn>
+    <no-break><pageref|auto-78><vspace|0.5fn>
 
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|12<space|2spc>Generating
     the Output> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-77><vspace|0.5fn>
+    <no-break><pageref|auto-79><vspace|0.5fn>
 
     12.1<space|2spc>Assembling the Chunks
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-78>
+    <no-break><pageref|auto-80>
 
     <with|par-left|1.5fn|12.1.1<space|2spc>Chunk Parts
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-79>>
+    <no-break><pageref|auto-81>>
 
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|13<space|2spc>Storing
     Chunks> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-80><vspace|0.5fn>
+    <no-break><pageref|auto-82><vspace|0.5fn>
 
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|14<space|2spc>getopt>
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-81><vspace|0.5fn>
+    <no-break><pageref|auto-83><vspace|0.5fn>
 
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|15<space|2spc>Fangle
     LaTeX source code> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-82><vspace|0.5fn>
+    <no-break><pageref|auto-84><vspace|0.5fn>
 
     15.1<space|2spc>fangle module <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-83>
+    <no-break><pageref|auto-85>
 
     <with|par-left|1.5fn|15.1.1<space|2spc>The Chunk style
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-84>>
+    <no-break><pageref|auto-86>>
 
     <with|par-left|1.5fn|15.1.2<space|2spc>The chunkref style
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-85>>
+    <no-break><pageref|auto-87>>
 
     15.2<space|2spc>Latex Macros <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-86>
+    <no-break><pageref|auto-88>
 
     <with|par-left|1.5fn|15.2.1<space|2spc>The chunk command
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-87>>
+    <no-break><pageref|auto-89>>
 
     <with|par-left|3fn|15.2.1.1<space|2spc>Chunk parameters
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-88>>
+    <no-break><pageref|auto-90>>
 
     <with|par-left|1.5fn|15.2.2<space|2spc>The noweb styled caption
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-89>>
+    <no-break><pageref|auto-91>>
 
     <with|par-left|1.5fn|15.2.3<space|2spc>The chunk counter
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-91>>
+    <no-break><pageref|auto-93>>
 
     <with|par-left|1.5fn|15.2.4<space|2spc>Cross references
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-92>>
+    <no-break><pageref|auto-94>>
 
     <with|par-left|1.5fn|15.2.5<space|2spc>The end
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-93>>
+    <no-break><pageref|auto-95>>
 
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|16<space|2spc>Extracting
     fangle> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-94><vspace|0.5fn>
+    <no-break><pageref|auto-96><vspace|0.5fn>
 
     16.1<space|2spc>Extracting from Lyx <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-95>
+    <no-break><pageref|auto-97>
 
     16.2<space|2spc>Extracting documentation
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-96>
+    <no-break><pageref|auto-98>
 
     16.3<space|2spc>Extracting from the command line
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-97>
+    <no-break><pageref|auto-99>
 
     16.4<space|2spc>Testing <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-98>
+    <no-break><pageref|auto-100>
 
     <vspace*|2fn><with|font-series|bold|math-font-series|bold|font-size|1.19|III<space|2spc>Tests>
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-99><vspace|1fn>
+    <no-break><pageref|auto-101><vspace|1fn>
 
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|17<space|2spc>Chunk
     Parameters> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-100><vspace|0.5fn>
+    <no-break><pageref|auto-102><vspace|0.5fn>
 
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|18<space|2spc>Compile-log-lyx>
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-101><vspace|0.5fn>
+    <no-break><pageref|auto-103><vspace|0.5fn>
   </table-of-contents>
 
   <part|Using Fangle>
@@ -1515,13 +1523,9 @@
   this appropriately.
 
   <\nf-chunk|./fangle>
-    <item>
-
     <item># NOTE: Arnold Robbins public domain getopt for awk is also used:
 
     <item><nf-ref|getopt.awk-header|>
-
-    <item>
 
     <item><nf-ref|getopt.awk-getopt()|>
 
@@ -1562,7 +1566,9 @@
   The portable way to erase an array in awk is to split the empty string, so
   we define a fangle macro that can split an array, like this:
 
-  <nf-chunk|awk-delete-array|split("", <nf-arg|ARRAY>);|awk|<tuple|ARRAY>>
+  <\nf-chunk|awk-delete-array>
+    <item>split("", <nf-arg|ARRAY>);
+  </nf-chunk|awk|<tuple|ARRAY>>
 
   For debugging it is sometimes convenient to be able to dump the contents of
   an array to <verbatim|stderr>, and so this macro is also useful.
@@ -1612,7 +1618,24 @@
     <item>}
   </nf-chunk|awk|>
 
+  and debug output too:
+
+  <\nf-chunk|error()>
+    <item>function debug_log(message)
+
+    <item>{
+
+    <item> \ print "DEBUG: " FILENAME ":" FNR " " message \<gtr\>
+    "/dev/stderr";
+
+    <item>}
+  </nf-chunk|awk|>
+
   <todo|append=helper-functions>
+
+  <\nf-chunk|helper-functions>
+    <item><nf-ref|error()|>
+  </nf-chunk||>
 
   <chapter|<LaTeX> and lstlistings>
 
@@ -1935,7 +1958,7 @@
 
     <item> \ if (split(text, text_array, "\\\\${")) {
 
-    <item> \ \ \ =\<less\>\\chunkref{substitute-chunk-args}\<gtr\>
+    <item> \ \ \ <nf-ref|substitute-chunk-args|>
 
     <item> \ }
 
@@ -1964,9 +1987,9 @@
   reference, so we assign this directly to the result kept in
   <verbatim|$text>.
 
-  <\nf-chunk-more>
+  <\nf-chunk|substitute-chunk-args>
     <item>text=text_array[1];
-  </nf-chunk-more>
+  </nf-chunk||>
 
   We then iterate over the remaining values in the array<\footnote>
     I don't know why I think that it will enumerate the array in order, but
@@ -2047,8 +2070,8 @@
 
   \;
 
-  Mode nesting prevents the close parenthesis in quote mode (part 3) from
-  terminating the parenthesis mode (part 2).
+  Mode nesting prevents the close parenthesis in the quoted string (part 3)
+  from terminating the parenthesis mode (part 2).
 
   Each language has a set of modes, the default mode being the null mode.
   Each mode can lead to other modes.
@@ -2063,7 +2086,7 @@
 
   <nf-chunk|example-sh|perl -e "=\<less\>\\chunkref{example-perl}\<gtr\>"|sh|>
 
-  fangle would need to generate output like this:
+  fangle would <em|want> to generate output like this:
 
   <verbatim|perl -e "print \\"hello world \\$0\\\\n\\";" >
 
@@ -2152,12 +2175,13 @@
   <verbatim|{> <verbatim|(> <verbatim|[> <verbatim|/*>
 
   <\nf-chunk|common-mode-definitions>
-    <item>modes[${language}, "", \ "submodes"
-    ]="\\\\\\\\\|\\"\|'\|{\|\\\\(\|\\\\[";
-  </nf-chunk||language>
+    <item>modes[${language}, "", \ "submodes"]="\\\\\\\\\|\\"\|'\|{\|\\\\(\|\\\\[";
+  </nf-chunk||<tuple|language>>
 
   In the default mode, a comma surrounded by un-important white space is a
-  delimiter of language items.
+  delimiter of language items<\footnote>
+    whatever a <em|language item> might be
+  </footnote>.
 
   <\nf-chunk|common-mode-definitions>
     <item>modes[${language}, "", \ "delimiters"]=" *, *";
@@ -2224,8 +2248,9 @@
   pre-processor statement; and so the newline will be consumed by the
   backslash however it is to be interpreted.
 
-  <nf-chunk|common-mode-definitions|modes[${language}, "\\\\",
-  "terminators"]=".";||>
+  <\nf-chunk|common-mode-definitions>
+    <item>modes[${language}, "\\\\", "terminators"]=".";
+  </nf-chunk||>
 
   <subsection|Strings>
 
@@ -2237,8 +2262,8 @@
   the string.
 
   <\nf-chunk|mode:common-string>
-    <item>modes[${language}, "\\\\", "terminators"]=".";
-  </nf-chunk||language>
+    <item>modes[${language}, ${quote}, "submodes"]="\\\\\\\\";
+  </nf-chunk||<tuple|language|quote>>
 
   Otherwise, the string will be terminated by the same character that
   commenced it.
@@ -2260,34 +2285,34 @@
   replacement string, hence we are replacing a literal <verbatim|\\> with a
   literal <verbatim|\\\\>.
 
-  <\nf-chunk-more>
+  <\nf-chunk|mode:common-string>
     <item>escapes[${language}, ${quote}, ++escapes[${language}, ${quote}],
     "s"]="\\\\\\\\";
 
     <item>escapes[${language}, ${quote}, \ \ escapes[${language}, ${quote}],
     "r"]="\\\\\\\\";
-  </nf-chunk-more>
+  </nf-chunk||language>
 
   If the quote character occurs in the text, it should be preceded by a
   backslash, otherwise it would terminate the string unexpectedly.
 
-  <\nf-chunk-more>
+  <\nf-chunk|mode:common-string>
     <item>escapes[${language}, ${quote}, ++escapes[${language}, ${quote}],
     "s"]=${quote};
 
     <item>escapes[${language}, ${quote}, \ \ escapes[${language}, ${quote}],
     "r"]="\\\\" ${quote};
-  </nf-chunk-more>
+  </nf-chunk||language>
 
   Any newlines in the string, must be replaced by <verbatim|\\n>.
 
-  <\nf-chunk-more>
+  <\nf-chunk|mode:common-string>
     <item>escapes[${language}, ${quote}, ++escapes[${language}, ${quote}],
     "s"]="\\n";
 
     <item>escapes[${language}, ${quote}, \ \ escapes[${language}, ${quote}],
     "r"]="\\\\n";
-  </nf-chunk-more>
+  </nf-chunk||language>
 
   For the common modes, we define this string handling for double and single
   quotes.
@@ -2447,7 +2472,7 @@
 
   The awk definitions should allow a comment block like this:
 
-  <nf-chunk|test:comment-quote|# Comment:
+  <nf-chunk|test:comment-quote|<item># Comment:
   =\<less\>\\chunkref{test:comment-text}\<gtr\>|awk|>
 
   <\nf-chunk|test:comment-text>
@@ -2567,10 +2592,10 @@
 
   <subsection|Constructor>
 
-  The mode tracker holds its state in a stack based on a hash. This function,
-  when passed an empty hash will intialize it.
+  The mode tracker holds its state in a stack based on a numerically indexed
+  hash. This function, when passed an empty hash, will intialize it.
 
-  <\nf-chunk|new-mode-tracker()>
+  <\nf-chunk|new_mode_tracker()>
     <item>function new_mode_tracker(context, language, mode) {
 
     <item> \ context[""] = 0;
@@ -2586,7 +2611,7 @@
   first and pass it in, so we have a fangle macro to do this:
 
   <\nf-chunk|new-mode-tracker>
-    <item>=\<less\>\\chunkref{awk-delete-array}(${context})\<gtr\>
+    <item><nf-ref|awk-delete-array|<tuple|context>>
 
     <item>new_mode_tracker(${context}, ${language}, ${mode});
   </nf-chunk|awk|<tuple|context|language|mode>>
@@ -2607,8 +2632,7 @@
 
     <item> \ if (! ("" in context)) {
 
-    <item> \ \ \ =\<less\>\\chunkref{new-mode-tracker}(context, language,
-    mode)\<gtr\>
+    <item> \ \ \ <nf-ref|new-mode-tracker|<tuple|context|language|mode>>
 
     <item> \ } else {
 
@@ -2963,9 +2987,9 @@
   All the mode tracker chunks are referred to here:
 
   <\nf-chunk|mode-tracker>
-    <item>=\<less\>\\chunkref{new_mode_tracker()}\<gtr\>
+    <item><nf-ref|new_mode_tracker()|>
 
-    <item>=\<less\>\\chunkref{mode_tracker()}\<gtr\>
+    <item><nf-ref|mode_tracker()|>
   </nf-chunk||>
 
   <subsubsection|Tests>
@@ -3030,6 +3054,30 @@
 
   <section|Escaping and Quoting>
 
+  For the time being and to get around <TeXmacs> inability to export a
+  <kbd|TAB> character, the right arrow whose UTF-8 sequence is ...
+
+  <todo|complete>
+
+  Another special character is used, the left-arrow with UTF-8 sequence 0xE2
+  0x86 0xA4 is used to strip any preceding white space as a way of un-tabbing
+  and removing indent that has been applied <emdash> this is important for
+  bash here documents, and the like. It's a filthy hack.
+
+  <todo|remove the hack>
+
+  <\nf-chunk|mode_tracker>
+    \;
+
+    <item>function untab(text) {
+
+    <item> \ gsub("[[:space:]]*\\xE2\\x86\\xA4","", text);
+
+    <item> \ return text;
+
+    <item>}
+  </nf-chunk||>
+
   Each nested mode can optionally define a set of transforms to be applied to
   any text that is included from another language.
 
@@ -3069,32 +3117,31 @@
 
     <item>{
 
-    <item> \ \ \ \ \ \ \ for(c = context[""]; c \<gtr\>= 0; c--) {
+    <item> \ for(c = context[""]; c \<gtr\>= 0; c--) {
 
-    <item> \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ if ( (context[c, "language"],
-    context[c, "mode"]) in escapes) {
+    <item> \ \ \ if ( (context[c, "language"], context[c, "mode"]) in
+    escapes) {
 
-    <item> \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ cpl =
-    escapes[context[c, "language"], context[c, "mode"]];
+    <item> \ \ \ \ \ cpl = escapes[context[c, "language"], context[c,
+    "mode"]];
 
-    <item> \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ for (cp = 1; cp
-    \<less\>= cpl; cp ++) {
+    <item> \ \ \ \ \ for (cp = 1; cp \<less\>= cpl; cp ++) {
 
-    <item> \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ++src;
+    <item> \ \ \ \ \ \ \ ++src;
 
-    <item> \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ s[src]
-    = escapes[context[c, "language"], context[c, "mode"], cp, "s"];
+    <item> \ \ \ \ \ \ \ s[src] = escapes[context[c, "language"], context[c,
+    "mode"], cp, "s"];
 
     <item> \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ r[src]
     = escapes[context[c, "language"], context[c, "mode"], cp, "r"];
 
-    <item> \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+    <item> \ \ \ \ \ }
 
-    <item> \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+    <item> \ \ \ }
 
-    <item> \ \ \ \ \ \ \ }
+    <item> \ }
 
-    <item> \ \ \ \ \ \ \ return src;
+    <item> \ return src;
 
     <item>}
 
@@ -3141,6 +3188,82 @@
   The variable chunking is used to signify that we are processing a code
   chunk and not document. In such a state, input lines will be assigned to
   the current chunk; otherwise they are ignored.
+
+  <subsection|<TeXmacs> hackery>
+
+  We don't handle <TeXmacs> files natively but instead emit unicode character
+  sequences to mark up the text-export file which we work on.
+
+  These hacks detect such sequences and retro-fit in the old <TeX> parsing.
+
+  <\nf-chunk|recognize-chunk>
+    \;
+
+    <item>#/\\n/ {
+
+    <item># \ gsub("\\n*$","");
+
+    <item># \ gsub("\\n", " ");
+
+    <item>#}
+
+    <item>#===
+
+    <item>/\\xE2\\x86\\xA6/ {
+
+    <item> \ gsub("\\\\xE2\\\\x86\\\\xA6", "\\x09");
+
+    <item>}
+
+    <item>
+
+    <item>/\\xE2\\x80\\x98/ {
+
+    <item> \ gsub("\\\\xE2\\\\x80\\\\x98", "\0");
+
+    <item>}
+
+    <item>
+
+    <item>/\\xE2\\x89\\xA1/ {
+
+    <item> \ if (match($0, "^ *([^[ ]* \|)\<less\>([^[
+    ]*)\\\\[[0-9]*\\\\][(](.*)[)].*, lang=([^ ]*)", line)) {
+
+    <item> \ \ \ next_chunk_name=line[2];
+
+    <item> \ \ \ gsub(",",";",line[3]);
+
+    <item> \ \ \ params="params=" line[3];
+
+    <item> \ \ \ if ((line[4])) {
+
+    <item> \ \ \ \ \ params = params ",language=" line[4]
+
+    <item> \ \ \ }
+
+    <item> \ \ \ get_chunk_args(params, next_chunk_args);
+
+    <item> \ \ \ new_chunk(next_chunk_name, next_chunk_args);
+
+    <item> \ \ \ texmacs_chunking = 1;
+
+    <item> \ } else {
+
+    <item>#print "Unexpected\ 
+
+    <item>#print\ 
+
+    <item>#exit 1
+
+    <item> \ }
+
+    <item> \ next;
+
+    <item>}
+
+    <item>#===
+  </nf-chunk||>
 
   <subsection|lstlistings>
 
@@ -3200,6 +3323,90 @@
     <item> \ next;
 
     <item>}
+  </nf-chunk||>
+
+  <subsection|<TeXmacs>>
+
+  \;
+
+  <\nf-chunk|recognize-chunk>
+    <item>#===
+
+    <item>/^ *\\\|____________*/ && texmacs_chunking {
+
+    <item> \ active_chunk="";
+
+    <item> \ texmacs_chunking=0;
+
+    <item> \ chunking=0;
+
+    <item>}
+
+    <item>/^ *\\\|\\/\\\\/ && texmacs_chunking {
+
+    <item> \ texmacs_chunking=0;
+
+    <item> \ chunking=0;
+
+    <item> \ active_chunk="";
+
+    <item>}
+
+    <item>texmacs_chunk=0;
+
+    <item>/^ *[1-9][0-9]* *\\\| / {
+
+    <item> \ if (texmacs_chunking) {
+
+    <item> \ \ \ chunking=1;
+
+    <item> \ \ \ texmacs_chunk=1;
+
+    <item> \ \ \ gsub("^ *[1-9][0-9]* *\\\\\| ", "")
+
+    <item> \ }
+
+    <item>}
+
+    <item>/^ *\\.\\/\\\\/ && texmacs_chunking {
+
+    <item> \ next;
+
+    <item>}
+
+    <item>/^ *__*$/ && texmacs_chunking {
+
+    <item> \ next;
+
+    <item>}
+
+    <item>
+
+    <item>texmacs_chunking {
+
+    <item> \ if (! texmacs_chunk) {
+
+    <item> \ \ \ # must be a texmacs continued line
+
+    <item> \ \ \ chunking=1;
+
+    <item> \ \ \ texmacs_chunk=1;
+
+    <item> \ }
+
+    <item>}
+
+    <item>! texmacs_chunk {
+
+    <item># \ texmacs_chunking=0;
+
+    <item> \ chunking=0;
+
+    <item>}
+
+    <item>
+
+    <item>#===
   </nf-chunk||>
 
   <subsection|Noweb>
@@ -3373,7 +3580,10 @@
 
     <item>indent = 0;
 
-    <item>while(match(chunk,\ 
+    <item>while(match(chunk,"(\\xC2\\xAB)([^\\xC2]*) [^\\xC2]*\\xC2\\xBB",
+    line) \|\|
+
+    <item> \ \ \ \ \ match(chunk,\ 
 
     <item> \ \ \ \ \ \ \ \ \ \ \ "([=]\<less\>\\\\\\\\chunkref{([^}\<gtr\>]*)}(\\\\(.*\\\\)\|)\<gtr\>\|\<less\>\<less\>([a-zA-Z_][-a-zA-Z0-9_]*)\<gtr\>\<gtr\>)",\ 
 
@@ -3421,6 +3631,10 @@
 
     <item> \ \ \ chunk_include(active_chunk, line[4], indent);
 
+    <item> \ } else if (line[1] == "\\xC2\\xAB") {
+
+    <item> \ \ \ chunk_include(active_chunk, line[2], indent);
+
     <item> \ } else {
 
     <item> \ \ \ error("Unknown chunk fragment: " line[1]);
@@ -3428,8 +3642,6 @@
     <item> \ }
   <|nf-chunk>
     \;
-
-    <item>
   </nf-chunk|>
 
   The loop will continue until there are no more chunkref statements in the
@@ -3446,7 +3658,7 @@
   processing the output.
 
   <\nf-chunk|process-chunk>
-    <item>chunk_line(active_chunk, "\n");
+    <item>chunk_line(active_chunk, "\\n");
   <|nf-chunk>
     \;
   </nf-chunk|>
@@ -3654,7 +3866,7 @@
 
     <item> \ for (a in chunk_names) {
 
-    <item> \ \ \ output_chunk(chunk_names[a]);
+    <item> \ \ \ output_chunk(a);
 
     <item> \ }
 
@@ -3700,7 +3912,7 @@
 
     <item> \ # optional vars
 
-    <item> \ <with|font-shape|italic|chunk-path>, chunk_args,\ 
+    <item> \ <with|font-shape|italic|chunk_path>, chunk_args,\ 
 
     <item> \ s, r, src, new_src,\ 
 
@@ -3711,6 +3923,8 @@
     <item> \ chunklet, only_part, call_chunk_args, new_context)
 
     <item>{
+
+    <item> \ if (debug) debug_log("write_chunk_r(", chunk_name, ")");
   </nf-chunk||>
 
   <subsection|Chunk Parts><label|sub:Chunk-parts>
@@ -3953,7 +4167,7 @@
 
     <item> \ mode_tracker(context, text);
 
-    <item> \ print transform_escape(s, r, text, src);
+    <item> \ print untab(transform_escape(s, r, text, src));
   </nf-chunk||>
 
   If a line ends in a backslash --- suggesting continuation --- then we
@@ -4051,6 +4265,9 @@
     <item> \ \ \ for (p in params) {
 
     <item> \ \ \ \ \ chunks[chunk_name, p] = params[p];
+
+    <item> \ \ \ \ \ if (debug) print "chunks[" chunk_name "," p "] = "
+    params[p];
 
     <item> \ \ \ }
 
@@ -5215,7 +5432,7 @@
 
   <chapter|Compile-log-lyx><label|Compile-log-lyx>
 
-  <\nf-chunk|Chunk: ./compile-log-lyx>
+  <\nf-chunk|Chunk:./compile-log-lyx>
     <item>#! /bin/sh
 
     <item># can't use gtkdialog -i, cos it uses the "source" command which
