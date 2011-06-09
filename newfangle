@@ -81,6 +81,10 @@ function warning(message)
   print "WARNING: " FILENAME ":" FNR " " message > "/dev/stderr";
   warnings++;
 }
+function debug_log(message)
+{
+  print "DEBUG: " FILENAME ":" FNR " " message > "/dev/stderr";
+}
 function new_mode_tracker(context, language, mode) {
   context[""] = 0;
   context[0, "language"] = language;
@@ -677,7 +681,7 @@ BEGIN {
 }
 
 /\xE2\x89\xA1/ {
-  if (match($0, "^([^[ ]* |)<([^[ ]*)\\[[0-9]*\\][(](.*)[)].*, lang=([^ ]*)", line)) {
+  if (match($0, "^ *([^[ ]* |)<([^[ ]*)\\[[0-9]*\\][(](.*)[)].*, lang=([^ ]*)", line)) {
     next_chunk_name=line[2];
     gsub(",",";",line[3]);
     params="params=" line[3];
@@ -712,18 +716,43 @@ exit 1
   next;
 }
 #===
+/^ *\|____________*/ && texmacs_chunking {
+  active_chunk="";
+  texmacs_chunking=0;
+  chunking=0;
+}
+/^ *\|\/\\/ && texmacs_chunking {
+  texmacs_chunking=0;
+  chunking=0;
+  active_chunk="";
+}
 texmacs_chunk=0;
-/^ *[1-9][0-9]*\| / {
+/^ *[1-9][0-9]* *\| / {
   if (texmacs_chunking) {
     chunking=1;
     texmacs_chunk=1;
-    gsub("^ *[1-9][0-9]*\\| ", "")
+    gsub("^ *[1-9][0-9]* *\\| ", "")
+  }
+}
+/^ *\.\/\\/ && texmacs_chunking {
+  next;
+}
+/^ *__*$/ && texmacs_chunking {
+  next;
+}
+
+texmacs_chunking {
+  if (! texmacs_chunk) {
+    # must be a texmacs continued line
+    chunking=1;
+    texmacs_chunk=1;
   }
 }
 ! texmacs_chunk {
 #  texmacs_chunking=0;
   chunking=0;
 }
+
 #===
 /^[<]<.*[>]>=/ {
   if (match($0, "^[<]<(.*)[>]>= *$", line)) {
@@ -742,6 +771,7 @@ texmacs_chunk=0;
   chunking=0;
   active_chunk="";
 }
+
 ! chunking { next; }
 length(active_chunk) {
   if (length(tabs)) {
