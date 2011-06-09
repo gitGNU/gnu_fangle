@@ -646,8 +646,8 @@
     </src-comment>
   </active*>
 
-  <assign|nf-arg|<macro|name|<nv-langle><specific-verbatim|${><with|color|dark
-  green|<with|prog-font-shape|italic|<arg|name>>><specific-verbatim|}><nv-rangle>>>
+  <assign|nf-arg|<macro|name|<with|nv-langle-subst||nv-rangle-subst||<nv-langle><specific-verbatim|${><with|color|dark
+  green|<with|prog-font-shape|italic|<arg|name>>><specific-verbatim|}><nv-rangle>>>>
 
   <\active*>
     <\src-comment>
@@ -695,7 +695,7 @@
   <\collection>
     <associate|page-medium|automatic>
     <associate|page-screen-height|746496tmpt>
-    <associate|page-screen-width|1274880tmpt>
+    <associate|page-screen-width|1265664tmpt>
     <associate|preamble|true>
   </collection>
 </initial>
