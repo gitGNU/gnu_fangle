@@ -1,14 +1,14 @@
-#\DeclareLyXModule{Newfangle Literate Listings}
+#\DeclareLyXModule{Fangle Literate Listings}
 #DescriptionBegin
-#  Newfangle literate listings allow one to write
+#  Fangle literate listings allow one to write
 #   literate programs after the fashion of noweb, but without having
 #   to use noweave to generate the documentation. Instead the listings
 #   package is extended in conjunction with the noweb package to implement
 #   to code formating directly as latex.
-#  The newfangle awk script
+#  The fangle awk script
 #DescriptionEnd
 
-#newfangle - fully featured notangle replacement in awk
+#fangle - fully featured notangle replacement in awk
 #
 # Copyright (C) 2009 Sam Liddicott <sam@liddicott.com>
 #
@@ -42,33 +42,33 @@ AddToPreamble
 %\makeatletter
 %somehow re-defining maketitle gives us a left-aligned title
 %which is extactly what our specially formatted title needs!
-\global\let\newfangle@lst@maketitle\lst@maketitle%
+\global\let\fangle@lst@maketitle\lst@maketitle%
 \global\def\lst@maketitle{}%
 \def\Chunk#1{%
-  \lstset{title={\newfanglecaption},name=#1}%
+  \lstset{title={\fanglecaption},name=#1}%
   \global\edef\lst@chunkname{\lst@intname}%
 }%
 \def\lst@chunkname{\empty}%
-\lst@Key{params}\relax{\def\newfangle@chunk@params{#1}}%
-\lst@Key{append}\relax{\def\newfangle@chunk@append{#1}}%
-\def\newfanglecaption{\protect\newfangle@caption}%
-\newcounter{newfangle@chunkcounter}%
-\def\newfangle@caption{%
+\lst@Key{params}\relax{\def\fangle@chunk@params{#1}}%
+\lst@Key{append}\relax{\def\fangle@chunk@append{#1}}%
+\def\fanglecaption{\protect\fangle@caption}%
+\newcounter{fangle@chunkcounter}%
+\def\fangle@caption{%
   \edef\chunkcount{lst-chunk-\lst@intname}%
   \@ifundefined{\chunkcount}{%
     \expandafter\gdef\csname \chunkcount\endcsname{0}%
-    \setcounter{newfangle@chunkcounter}{\csname \chunkcount\endcsname}%
+    \setcounter{fangle@chunkcounter}{\csname \chunkcount\endcsname}%
     \let\prevchunkname\relax%
   }{%
-    \setcounter{newfangle@chunkcounter}{\csname \chunkcount\endcsname}%
-    \edef\prevchunkname{\lst@intname-\arabic{newfangle@chunkcounter}}%
+    \setcounter{fangle@chunkcounter}{\csname \chunkcount\endcsname}%
+    \edef\prevchunkname{\lst@intname-\arabic{fangle@chunkcounter}}%
   }%
-  \addtocounter{newfangle@chunkcounter}{1}%
-  \global\expandafter\edef\csname \chunkcount\endcsname{\arabic{newfangle@chunkcounter}}%
-  \edef\chunkname{\lst@intname-\arabic{newfangle@chunkcounter}}%
+  \addtocounter{fangle@chunkcounter}{1}%
+  \global\expandafter\edef\csname \chunkcount\endcsname{\arabic{fangle@chunkcounter}}%
+  \edef\chunkname{\lst@intname-\arabic{fangle@chunkcounter}}%
   \edef\firstchunkname{\lst@intname-1}%
-  \addtocounter{newfangle@chunkcounter}{1}%
-  \edef\nextchunkname{\lst@intname-\arabic{newfangle@chunkcounter}}%
+  \addtocounter{fangle@chunkcounter}{1}%
+  \edef\nextchunkname{\lst@intname-\arabic{fangle@chunkcounter}}%
   \@ifundefined{r@label-\nextchunkname}{\let\nextchunkname\relax}{}%
   \sublabel{\chunkname}%
 % define this label for every chunk instance, so we
@@ -86,18 +86,18 @@ AddToPreamble
     {\lst@name}%
     {%
       \nwtagstyle{}\/%
-      \@ifundefined{newfangle@chunk@params}{}{%
-        (\newfangle@chunk@params)%
+      \@ifundefined{fangle@chunk@params}{}{%
+        (\fangle@chunk@params)%
       }%
       [\csname \chunkcount\endcsname]~%
       \subpageref{\firstchunkname}%
     }%
-    \@ifundefined{newfangle@chunk@append}{}{%
-    \ifx{}\newfangle@chunk@append{x}\else%
-        ,~add~to~\newfangle@chunk@append%
+    \@ifundefined{fangle@chunk@append}{}{%
+    \ifx{}\fangle@chunk@append{x}\else%
+        ,~add~to~\fangle@chunk@append%
     \fi%
     }%
-\global\def\newfangle@chunk@append{}%
+\global\def\fangle@chunk@append{}%
 \lstset{append=x}%
   }%
 %
@@ -106,10 +106,10 @@ AddToPreamble
   \nwprevnextdefs{\prevchunkname}{\nextchunkname}%
 %  \nwenddeflinemarkup%
 }%
-%\lst@BeginAspect{newfangle}
-%\lst@Key{newfangle}{true}[t]{\lstKV@SetIf{#1}{true}}
+%\lst@BeginAspect{fangle}
+%\lst@Key{fangle}{true}[t]{\lstKV@SetIf{#1}{true}}
 \lst@AddToHookExe{PreSet}{\global\let\lst@intname\lst@chunkname}
-\lst@AddToHook{Init}{}%\newfangle@caption}
+\lst@AddToHook{Init}{}%\fangle@caption}
 %\lst@EndAspect
 \def\chunkref@args#1,{%
   \def\arg{#1}%
