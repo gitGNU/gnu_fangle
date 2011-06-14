@@ -3,7 +3,7 @@
 body {
 	font-family: trebuchet ms, verdana, arial, tahoma;
 	font-size: 90%;
-	color: #888;
+	color: #555
 	background-color: white;
 	line-height: 180%;
 	margin: 0;
@@ -71,9 +71,9 @@ body {
 	margin: 0 20px;
 	padding: 0;
 	height: 192px;
-	line-height: 3em;
-	color: #ccc;
-	font-size: 130%;
+	line-height: 2em;
+	color: #777;
+	font-size: 400%;
 }
 
 #wrapper-content { background: white url('images/bg02-white-left.png') no-repeat left top; }
@@ -115,7 +115,7 @@ body {
 	letter-spacing: 0.15em;
 }
 
-#menu-page a:link, #menu-page a:visited { color: #888; }
+#menu-page a:link, #menu-page a:visited { color: #555; }
 #menu-page a:hover { color: #5b8fbe; }
 
 #wrapper-footer {

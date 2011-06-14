@@ -1,75 +1,39 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
-<!--
-    The text of this document
-    Copyright (C) 2010  Sam Liddicott
-    Permission is granted to copy, distribute and/or modify this document
-    under the terms of the GNU Free Documentation License, Version 1.3
-    or any later version published by the Free Software Foundation;
-    with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
-    A copy of the license is available at http://www.gnu.org/licenses/fdl.html
--->
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-  <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
-  <title>Newfangle - Literate programming for Lyx and Latex</title>
-  <link rel="stylesheet" href="styles.css" type="text/css" />
-</head>
-
-<body>
-
-<div id="header">
-<h1>newfangle</h1>
-
-<p>newfangled literate programming - using lyx and latex</p>
-</div>
-
-<div id="nav">
-<ul>
-  <li><a href="http://www.nongnu.org/newfangle/" class="selected"
-    title="home page">home</a></li>
-  <li><a href="https://savannah.nongnu.org/p/newfangle"
-    title="CSS and XHTML web templates">project</a></li>
-  <li><a href="https://savannah.nongnu.org/mail/?group=newfangle"
-    title="web scripts">mailing list</a></li>
-  <li><a href="https://savannah.nongnu.org/bugs/?group=newfangle"
-    title="php, mysql, css and javascript code snippets">bugs</a></li>
-</ul>
-</div>
-
-<div id="content">
-
-<div id="page">
+<!--#if expr="! ${template}" --><!--#include virtual="/fangle/template.shtml" --><!--#else -->
 <h2>Introduction</h2>
 
-<p>Newfangle is a <a href="docs/literate/literate.html">literate
-programming</a> technique for Lyx (or Latex) inspired by <a
-href="http://www.eecs.harvard.edu/nr/noweb/dist">notangle</a>.</p>
+<p><em>Fangle</em> is a <a href="docs/literate/literate.html">literate
+programming</a> technique for <a href="http://www.texmacs.org">TeXmacs</a>, <a
+href="http://www.lyx.org">Lyx</a> and Latex inspired by <a
+href="http://www.eecs.harvard.edu/nr/noweb/dist">notangle</a>. </p>
 
-<p>It comes in two parts. The <strong>weave</strong> part that produces the
-formatted document is implemented entirely in Latex, and the
-<strong>tangle</strong> that generates the source code is implemented in awk
-for portability.</p>
+<p>Literate programming helps one to write good code, because if one can't
+write a good justification or explanation for one's code, it makes one think
+again and write something that one can explain.</p>
 
-<p>Naturally, newfangle is written using literate programming techniques, using
+<p>Fangle comes in two parts. </p>
+
+<p>The <strong>weave</strong> part produces the formatted document is
+implemented entirely in TeXmacs macros (for TeXmacs) and Latex macros for
+Lyx.</p>
+
+<p>The <strong>tangle</strong> part generates the source code is implemented in
+awk for portability across most unix-like or windows systems.</p>
+
+<p>Naturally, fangle is written using literate programming techniques, using
 itself, and so the source is also the <a
-href="docs/newfangle.e/newfangle.html">documentation</a>.</p>
+href="docs/fangle.e/fangle.html">documentation</a>.</p>
 
-<p>The source is written using the <a href="http://www.lyx.org/">Lyx</a>
-document editor - an excellent front end to Latex. Lyx is not required, but
-newfangle provides formatting support for Lyx.</p>
-
-<p>Literate programming makes you write good code, because if you can't write a
-good justification or explanation for your code, it makes you think again and
-write something that you can explain.</p>
+<p>The source was written using the <a href="http://www.lyx.org/">Lyx</a>
+document editor (an excellent front end to Latex) and then converted for
+TeXmacs which has a better WYSIWYG macro rendering system. TeXmacs and Lyx are
+not required, but fangle provides formatting support for TeXmacs and Lyx.</p>
 
 <h2>Features</h2>
 <ul>
-  <li>Generics / macros. Newfangle macros accept parameters, so generic
-    algorithms can be expressed, and then invoked in the code using any
-    particular types or parameters - like C macros, but with all the literate
-    goodness and without all the backslash ugliness.</li>
+  <li>Generics / macros. Fangle macros accept parameters, so generic algorithms
+    can be expressed, and then invoked in the code using any particular types
+    or parameters - like C macros, but with all the literate goodness and
+    without all the backslash ugliness.</li>
   <li>Latex lstlistings used for code chunk formatting, with automatic markup
     for dozens of language types.</li>
   <li>Automatic escaping and quoting. You can include a shell-script chunk in a
@@ -77,55 +41,8 @@ write something that you can explain.</p>
     source. You can include a text file in a // comment or a " string and have
     the appropriate escaping done automatically!</li>
   <li>Never worry about code documentation again!</li>
-  <li>Newfangle has a makefile stub, Makefile.inc that will automatically
-    extract all project sources, making newfangle easy to integrate with
-    standard Makefileprojects (including automake and autoconf). </li>
-</ul>
-</div>
-
-<div id="sidebar">
-<h4>About Newfangle</h4>
-
-<p>Newfangle is a <a href="docs/literate/literate.html">literate
-programming</a> technique for Lyx (and Latex) inspired by <a
-href="http://www.eecs.harvard.edu/nr/noweb/dist">notangle</a>. </p>
-
-<p>Literate programming makes you write good code, because if you can't write a
-good justification or explanation for your code, it makes you think again and
-write something that you can explain.</p>
-
-<h4>Releases</h4>
-<ul>
-  <li><a href="http://git.savannah.nongnu.org/cgit/newfangle.git"
-    title="spyka Webmaster resources">Browse bleeding edge</a></li>
-  <li><a
-    href="http://git.savannah.gnu.org/cgit/newfangle.git/snapshot/latest.tar.gz"
-    title="free web templates">Download latest release</a></li>
-  <li><a href="https://savannah.nongnu.org/p/newfangle"
-    title="free web templates">Project Page</a></li>
+  <li>Fangle has a makefile stub, Makefile.inc that will automatically extract
+    all project sources, making fangle easy to integrate with standard
+    Makefileprojects (including automake and autoconf). </li>
 </ul>
 
-<h4>Related projects</h4>
-<ul>
-  <li><a href="http://www.lyx.org/"
-  title="spyka web group community">Lyx</a></li>
-  <li><a href="http://www.latex-project.org/"
-    title="webhosting offers">Latex</a></li>
-  <li><a href="http://www.gnu.org/software/gawk/" title="spyka web group">GNU
-    Awk</a></li>
-</ul>
-</div>
-
-<div class="clear">
-</div>
-</div>
-
-<div id="footer">
-<p>Copyright © 2010 Sam Liddicott. Permission is granted to copy,
-distribute and/or modify this document under the terms of the <a
-href="http://www.gnu.org/licenses/fdl.html">GNU Free Documentation License,
-Version 1.3</a> or any later version published by the Free Software Foundation;
-with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts. </p>
-</div>
-</body>
-</html>

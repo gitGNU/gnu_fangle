@@ -5,13 +5,13 @@
 <meta name="generator" content="http://www.nongnu.org/elyxer/">
 <meta name="create-date" content="2010-02-20">
 <link rel="stylesheet" href="lyx.css" type="text/css" media="screen">
-<title>newfangle</title>
+<title>fangle</title>
 </head>
 <body>
 <div id="globalWrapper">
-
+ 
 <h1 class="title">
-newfangle
+fangle
 </h1>
 <h2 class="author">
 Sam Liddicott
@@ -23,10 +23,10 @@ August 2009
 <a class="toc" name="toc-Chapter*-1"></a>Introduction
 </h1>
 <div class="Standard">
-<span class="versalitas">Newfangle</span> is a tool for newfangled literate programming. Newfangled is defined as <i>New and often needlessly novel</i> by <span class="versalitas">TheFreeDictionary.com</span>.
+<span class="versalitas">Fangle</span> is a tool for fangled literate programming. Newfangled is defined as <i>New and often needlessly novel</i> by <span class="versalitas">TheFreeDictionary.com</span>.
 </div>
 <div class="Standard">
-In this case, newfangled means yet another new and improved method for literate programming.
+In this case, fangled means yet another new and improved method for literate programming.
 </div>
 <div class="Standard">
 <span class="versalitas">Literate Programming</span> has a long history starting with the great <span class="versalitas">Donald Knuth</span> himself, whose literate programming tools seem to make use of as many escape sequences for semantic markup as TeX itself.
@@ -41,16 +41,16 @@ While using the LyX editor for LaTeX editing I had various troubles with the now
 <span class="versalitas">Noweb</span> generally brought literate programming to the masses through removing some of the complexity of the original literate programming, but this would be of no advantage to me if the LyX / LaTeX combination brought more complications in their place.
 </div>
 <div class="Standard">
-<span class="versalitas">Newfangle</span> was thus born &#x2014; as an awk replacement for notangle, adding some important features, like better integration with LyX and LaTeX, multiple output format conversions, and fixing notangle bugs like indentation when using -L for line numbers.
+<span class="versalitas">Fangle</span> was thus born &#x2014; as an awk replacement for notangle, adding some important features, like better integration with LyX and LaTeX, multiple output format conversions, and fixing notangle bugs like indentation when using -L for line numbers.
 </div>
 <div class="Standard">
-Significantly, newfangle is just one program which replaces various programs in Noweb. Noweave is done away with and implemented directly as LaTeX macros, and noroots is implemented as a function of the untangler <span class="versalitas">newfangle</span>.
+Significantly, fangle is just one program which replaces various programs in Noweb. Noweave is done away with and implemented directly as LaTeX macros, and noroots is implemented as a function of the untangler <span class="versalitas">newfangle</span>.
 </div>
 <div class="Standard">
-Newfangle is written in awk for portability reasons, awk being available for most platforms. A python conversion will probably be attempted for the benefit of LyX. (Hasn&#x2019;t anyone implemented awk in python yet?)
+Fangle is written in awk for portability reasons, awk being available for most platforms. A python conversion will probably be attempted for the benefit of LyX. (Hasn&#x2019;t anyone implemented awk in python yet?)
 </div>
 <div class="Standard">
-As an extension to many literate-programming styles, Newfangle permits code chunks to take parameters and thus operate somewhat like C pre-processor macros, or like C++ templates.
+As an extension to many literate-programming styles, Fangle permits code chunks to take parameters and thus operate somewhat like C pre-processor macros, or like C++ templates.
 </div>
 <h2 class="Section-">
 <a class="toc" name="toc-Section*-1"></a>Todo
@@ -79,7 +79,7 @@ cant have listing inside a ruled box
 when a parameterized chunk is included as well as the #line emission, say what the paremeters were for that invocation.
 </li>
 <li>
-\chunkref[3]{preamble} to include a certain chunk needs to work in newfangle.awk instead of failing to be recognized at all
+\chunkref[3]{preamble} to include a certain chunk needs to work in fangle.awk instead of failing to be recognized at all
 </li>
 <li>
 make in-listins labels track the chunk ref too, and make \chunref{[2],thing}&gt; resolve to 41c (or d, or whatever chunk the 2nd chunk of thing is
@@ -95,10 +95,10 @@ because the white-space indent is output by the parent chunk, the #line is that 
 <a class="toc" name="toc-Chapter*-2"></a>License
 </h1>
 <div class="Standard">
-<a class="Label" name="cha:License"> </a>Newfangle is licensed under the GPL 3<sup><a class="bibliocite" name="cite-1" href="#biblio-1">1</a></sup> (or later). This doesn&#x2019;t mean that you can&#x2019;t use or distribute newfangle with sources of an incompatible license, but it means you must make the source of newfangle available too.
+<a class="Label" name="cha:License"> </a>Fangle is licensed under the GPL 3<sup><a class="bibliocite" name="cite-1" href="#biblio-1">1</a></sup> (or later). This doesn&#x2019;t mean that you can&#x2019;t use or distribute fangle with sources of an incompatible license, but it means you must make the source of newfangle available too.
 </div>
 <div class="Standard">
-As newfangle is currently written in <span class="versalitas">awk</span>, an interpreted language, this should not be too hard.
+As fangle is currently written in <span class="versalitas">awk</span>, an interpreted language, this should not be too hard.
 </div>
 <div class="chunk">
 <span class="chunkleft"><a class="chunk" name="chunk:1">1</a></span>
@@ -109,7 +109,7 @@ As newfangle is currently written in <span class="versalitas">awk</span>, an int
 <div class="Standard">
 
 <div class="listing">
-<pre class="listing"><span class="number-left">1</span>newfangle - fully featured notangle replacement in awk
+<pre class="listing"><span class="number-left">1</span>fangle - fully featured notangle replacement in awk
 <span class="number-left">2</span>&#x200b;
 <span class="number-left">3</span>Copyright (C) 2009 Sam Liddicott &lt;sam@liddicott.com&gt;
 <span class="number-left">4</span>&#x200b;
@@ -150,11 +150,11 @@ Table of Contents
 </div></div>
 
 <div class="toc">
-<a class="Link" href="#toc-Part-1">Part 1:&emsp;Using Newfangle</a>
+<a class="Link" href="#toc-Part-1">Part 1:&emsp;Using Fangle</a>
 </div><div class="tocindent">
 
 <div class="toc">
-<a class="Link" href="#toc-Chapter-1">Chapter 1:&emsp;Running Newfangle</a>
+<a class="Link" href="#toc-Chapter-1">Chapter 1:&emsp;Running Fangle</a>
 </div><div class="tocindent">
 
 <div class="toc">
@@ -168,10 +168,10 @@ Table of Contents
 </div></div>
 
 <div class="toc">
-<a class="Link" href="#toc-Chapter-2">Chapter 2:&emsp;Literate Programming with Newfangle</a>
+<a class="Link" href="#toc-Chapter-2">Chapter 2:&emsp;Literate Programming with Fangle</a>
 </div>
 <div class="toc">
-<a class="Link" href="#toc-Chapter-3">Chapter 3:&emsp;Using Newfangle with LyX</a>
+<a class="Link" href="#toc-Chapter-3">Chapter 3:&emsp;Using Fangle with LyX</a>
 </div><div class="tocindent">
 
 <div class="toc">
@@ -207,7 +207,7 @@ Table of Contents
 </div></div>
 
 <div class="toc">
-<a class="Link" href="#toc-Chapter-4">Chapter 4:&emsp;Newfangle with Makefiles</a>
+<a class="Link" href="#toc-Chapter-4">Chapter 4:&emsp;Fangle with Makefiles</a>
 </div><div class="tocindent">
 
 <div class="toc">
@@ -265,7 +265,7 @@ Table of Contents
 </div><div class="tocindent">
 
 <div class="toc">
-<a class="Link" href="#toc-Chapter-5">Chapter 5:&emsp;Newfangle awk source code</a>
+<a class="Link" href="#toc-Chapter-5">Chapter 5:&emsp;Fangle awk source code</a>
 </div><div class="tocindent">
 
 <div class="toc">
@@ -420,11 +420,11 @@ Table of Contents
 <a class="Link" href="#toc-Chapter-12">Chapter 12:&emsp;getopt</a>
 </div>
 <div class="toc">
-<a class="Link" href="#toc-Chapter-13">Chapter 13:&emsp;Newfangle LaTeX source code</a>
+<a class="Link" href="#toc-Chapter-13">Chapter 13:&emsp;Fangle LaTeX source code</a>
 </div><div class="tocindent">
 
 <div class="toc">
-<a class="Link" href="#toc-Section-13.1">Section 13.1:&emsp;newfangle module</a>
+<a class="Link" href="#toc-Section-13.1">Section 13.1:&emsp;fangle module</a>
 </div><div class="tocindent">
 
 <div class="toc">
@@ -461,7 +461,7 @@ Table of Contents
 </div>
 
 <div class="toc">
-<a class="Link" href="#toc-Chapter-14">Chapter 14:&emsp;Extracting newfangle</a>
+<a class="Link" href="#toc-Chapter-14">Chapter 14:&emsp;Extracting fangle</a>
 </div><div class="tocindent">
 
 <div class="toc">
@@ -492,13 +492,13 @@ Table of Contents
 </div>
 </div>
 <h1 class="Part">
-<a class="toc" name="toc-Part-1">Part 1.</a>&emsp;Using Newfangle
+<a class="toc" name="toc-Part-1">Part 1.</a>&emsp;Using Fangle
 </h1>
 <h1 class="Chapter">
-<a class="toc" name="toc-Chapter-1">1</a>&emsp;Running Newfangle
+<a class="toc" name="toc-Chapter-1">1</a>&emsp;Running Fangle
 </h1>
 <div class="Standard">
-Newfangle is a replacement for noweb, which consists of <span class="code">notangle</span>, <span class="code">noroots</span> and <span class="code">noweave</span>.
+Fangle is a replacement for noweb, which consists of <span class="code">notangle</span>, <span class="code">noroots</span> and <span class="code">noweave</span>.
 </div>
 <div class="Standard">
 Like <span class="code">notangle</span> and <span class="code">noroots</span> it can read multiple named files, or from stdin.
@@ -507,13 +507,13 @@ Like <span class="code">notangle</span> and <span class="code">noroots</span> it
 <a class="toc" name="toc-Section-1.1">1.1</a>&emsp;Listing roots
 </h2>
 <div class="Standard">
-The -r option causes newfangle to behave like noroots.
+The -r option causes fangle to behave like noroots.
 </div>
 <pre class="LyX-Code">
-newfangle -r filename.tex
+fangle -r filename.tex
 </pre>
 <div class="Standard">
-will print out the newfangle roots of a tex file. 
+will print out the fangle roots of a tex file. 
 </div>
 <div class="Standard">
 Unlike the <span class="code">noroots</span> command, the roots are not enclosed in <span class="code">&lt;&lt;name&gt;&gt;</span>, unless at least one of the roots is defined using the <span class="code">notangle</span> style <span class="code">&lt;&lt;name&gt;&gt;=</span>.
@@ -537,7 +537,7 @@ notangle&#x2019;s <span class="code">-R</span> and <span class="code">-L</span> 
 The standard way to extract a file would be:
 </div>
 <pre class="LyX-Code">
-newfangle -R./Makefile.inc newfangle.tex &gt; ./Makefile.inc
+fangle -R./Makefile.inc newfangle.tex &gt; ./Makefile.inc
 </pre>
 <div class="Standard">
 Unlike the <span class="code">noroots</span> command, the <span class="code">-L</span> option does not break indenting.
@@ -555,10 +555,10 @@ This does mean that sometimes the compiler might calculate the source line wrong
 The noweave replacement is a set of LaTeX macros dependant upon <i>noweb.sty</i>, and which can be included with:
 </div>
 <pre class="LyX-Code">
-\usepackage{newfangle.sty}
+\usepackage{fangle.sty}
 </pre>
 <div class="Standard">
-The LaTeX macros are shown in section <a class="Reference" href="#sec:Latex-Macros">13.2&#x2193;</a>, and are part of a LyX module file <span class="code">newfangle.module</span>, which automatically includes the macros in the document pre-amble when the newfangle LyX module is used.
+The LaTeX macros are shown in section <a class="Reference" href="#sec:Latex-Macros">13.2&#x2193;</a>, and are part of a LyX module file <span class="code">fangle.module</span>, which automatically includes the macros in the document pre-amble when the newfangle LyX module is used.
 </div>
 <div class="Standard">
 Because the noweave replacement is impemented in LaTeX, there is no processing stage required before running the <span class="code">latex</span> command. LaTeX may need running two or more times, so that the code chunk references can be fully calculated.
@@ -573,13 +573,13 @@ The <span class="code">listings.sty</span> package is also required, as it is us
 The <span class="code">xargs.sty</span> package is also required.
 </div>
 <h1 class="Chapter">
-<a class="toc" name="toc-Chapter-2">2</a>&emsp;Literate Programming with Newfangle
+<a class="toc" name="toc-Chapter-2">2</a>&emsp;Literate Programming with Fangle
 </h1>
 <div class="Standard">
 Todo. Should really follow on from a part-0 explanation of what literate programming is.
 </div>
 <h1 class="Chapter">
-<a class="toc" name="toc-Chapter-3">3</a>&emsp;Using Newfangle with LyX
+<a class="toc" name="toc-Chapter-3">3</a>&emsp;Using Fangle with LyX
 </h1>
 <h2 class="Section">
 <a class="toc" name="toc-Section-3.1">3.1</a>&emsp;Setting up Lyx
@@ -588,7 +588,7 @@ Todo. Should really follow on from a part-0 explanation of what literate program
 <a class="toc" name="toc-Subsection-3.1.1">3.1.1</a>&emsp;Installing the LyX module
 </h3>
 <div class="Standard">
-Copy <span class="code">newfangle.module</span> to your LyX layouts directory, which for unix users will be <span class="code">~/.lyx/layouts</span>
+Copy <span class="code">fangle.module</span> to your LyX layouts directory, which for unix users will be <span class="code">~/.lyx/layouts</span>
 </div>
 <div class="Standard">
 You will need to reconfigure LyX by clicking Tools&nbsp;&#x25b7;&nbsp;Reconfigure, and then re-start LyX.
@@ -603,7 +603,7 @@ Make sure you don&#x2019;t have a conversion defined for Lyx &#x2192; Program
 From the menu Tools&nbsp;&#x25b7;&nbsp;Preferences, add a conversion from Latex(Plain) &#x2192; Program as:
 </div>
 <pre class="LyX-Code">
-set -x ; newfangle -Rlyx-build $$i | 
+set -x ; fangle -Rlyx-build $$i | 
 </pre>
 <pre class="LyX-Code">
   env LYX_b=$$b LYX_i=$$i LYX_o=$$o LYX_p=$$p LYX_r=$$r bash
@@ -630,7 +630,7 @@ parselog=/usr/share/lyx/scripts/listerrors
 Now, a shell script chunk called <span class="code">lyx-build</span> will be extracted and run whenever you choose the Document&nbsp;&#x25b7;&nbsp;Build Program menu item.
 </div>
 <div class="Standard">
-The lyx-build script for this document is in section <a class="Reference" href="#lyx-build-script">14.1&#x2193;</a> and on a unix system will extract <span class="code">newfangle.module</span> and the <span class="code">newfangle</span> awk script, and run some basic tests. 
+The lyx-build script for this document is in section <a class="Reference" href="#lyx-build-script">14.1&#x2193;</a> and on a unix system will extract <span class="code">fangle.module</span> and the <span class="code">newfangle</span> awk script, and run some basic tests. 
 </div>
 <h3 class="Subsection">
 <a class="toc" name="toc-Subsection-3.1.3">3.1.3</a>&emsp;Preparing your Lyx document
@@ -639,7 +639,7 @@ The lyx-build script for this document is in section <a class="Reference" href="
 It is not necessary to base your literate document on any of the original LyX literate classes; so select a regular class for your document type.
 </div>
 <div class="Standard">
-Add the new module <i>Newfangle Literate</i> <i>Listings</i> and possibly also <i>Logical Markup</i>.
+Add the new module <i>Fangle Literate</i> <i>Listings</i> and possibly also <i>Logical Markup</i>.
 </div>
 <div class="Standard">
 In the drop-down style listbox you should notice a new style defined, called <i>Chunk</i>.
@@ -756,7 +756,7 @@ is required.
 It looks fine in PDF and PS view but still looks rotten in dvi view.
 </div>
 <h1 class="Chapter">
-<a class="toc" name="toc-Chapter-4">4</a>&emsp;Newfangle with Makefiles
+<a class="toc" name="toc-Chapter-4">4</a>&emsp;Fangle with Makefiles
 </h1>
 <div class="Standard">
 <a class="Label" name="cha:makefile.inc"> </a>
@@ -823,11 +823,11 @@ Therefore we will have a minimal root fragment, which, when extracted, can cope 
 <span class="number-left">5</span>NOWEB_SRC="${2:-${NOWEB_SRC:-$MAKE_SRC.lyx}}"
 <span class="number-left">6</span>lyx -e latex $MAKE_SRC
 <span class="number-left">7</span>&#x200b;
-<span class="number-left">8</span>newfangle -R./Makefile.inc ${MAKE_SRC}.tex \
-<span class="number-left">9</span>  | sed "/NEWFANGLE_SOURCE=/s/^/#/;T;aNOWEB_SOURCE=$NEWFANGLE_SRC" \
+<span class="number-left">8</span>fangle -R./Makefile.inc ${MAKE_SRC}.tex \
+<span class="number-left">9</span>  | sed "/FANGLE_SOURCE=/s/^/#/;T;aNOWEB_SOURCE=$NEWFANGLE_SRC" \
 <span class="number-left">10</span>  | cpif ./Makefile.inc
 <span class="number-left">11</span>&#x200b;
-<span class="number-left">12</span>make -f ./Makefile.inc newfangle_sources
+<span class="number-left">12</span>make -f ./Makefile.inc fangle_sources
 </pre>
 </div>
 </div>
@@ -838,13 +838,13 @@ The general Makefile can be invoked with <i>./autoboot</i> and can also be inclu
 The <i>autoboot</i> can be extracted with this command:
 </div>
 <pre class="LyX-Code">
-lyx -e latex newfangle.lyx &amp;&amp; \
+lyx -e latex fangle.lyx &amp;&amp; \
 </pre>
 <pre class="LyX-Code">
-newfangle newfangle.lyx &gt; ./autoboot
+fangle newfangle.lyx &gt; ./autoboot
 </pre>
 <div class="Standard">
-This looks simple enough, but as mentioned, newfangle has to be had from somewhere before it can be extracted.
+This looks simple enough, but as mentioned, fangle has to be had from somewhere before it can be extracted.
 </div>
 <h3 class="Subsection">
 <a class="toc" name="toc-Subsection-4.2.2">4.2.2</a>&emsp;&#x2026;
@@ -887,12 +887,12 @@ And then we can define a lyx-build fragment similar to the autoboot fragment
 <span class="number-left">2</span>&#x27e8;lyx-build-helper <a class="chunk" href="#chunk:4">4</a>&#x27e9;
 <span class="number-left">3</span>cd $PROJECT_DIR || exit 1
 <span class="number-left">4</span>&#x200b;
-<span class="number-left">5</span>#/usr/bin/newfangle -filter ./notanglefix-filter \
+<span class="number-left">5</span>#/usr/bin/fangle -filter ./notanglefix-filter \
 <span class="number-left">6</span>#  -R./Makefile.inc "../../noweb-lyx/noweb-lyx3.lyx" \
 <span class="number-left">7</span>#  | sed &#x2019;/NOWEB_SOURCE=/s/=.*/=samba4-dfs.lyx/&#x2019; \
 <span class="number-left">8</span>#  &gt; ./Makefile.inc
 <span class="number-left">9</span>#
-<span class="number-left">10</span>#make -f ./Makefile.inc newfangle_sources
+<span class="number-left">10</span>#make -f ./Makefile.inc fangle_sources
 </pre>
 </div>
 </div>
@@ -984,7 +984,7 @@ The target for this new pre-requisite is generated by a recursive make using Mak
 <div class="listing">
 <pre class="listing"><span class="number-left">2</span>$(example_srcdir)/example.tex.stamp: $(example_srcdir)/example.tex ; \
 <span class="number-left">3</span>        cd $(example_srcdir) &amp;&amp; \
-<span class="number-left">4</span>        $(MAKE) -f Makefile.inc newfangle_sources
+<span class="number-left">4</span>        $(MAKE) -f Makefile.inc fangle_sources
 </pre>
 </div>
 </div>
@@ -1024,7 +1024,7 @@ We could do similarly for install targets to install the generated docs.
 <a class="toc" name="toc-Subsection-4.3.3">4.3.3</a>&emsp;<a class="Label" name="sub:Converting-from-Lyx"> </a>Converting from Lyx to LaTeX
 </h3>
 <div class="Standard">
-The first stage will always be to convert the Lyx file to a LaTeX file; this must be so not only because newfangle needs to to run on a TeX file, but also because the Lyx command <i>server-goto-file-line<span class="FootMarker"> [D&#x2192;] </span>
+The first stage will always be to convert the Lyx file to a LaTeX file; this must be so not only because fangle needs to to run on a TeX file, but also because the Lyx command <i>server-goto-file-line<span class="FootMarker"> [D&#x2192;] </span>
 <span class="Foot">
 <span class="FootMarker">[&#x2192;D] </span>The Lyx command <i>server-goto-file-line</i> is used to position the Lyx cursor at the compiler errors.
 </span></i> insists that the line number provided is a line in the TeX file, and always reverse maps this to derive the line in the Lyx docment.
@@ -1064,7 +1064,7 @@ The command [[lyx -e literate noweb-lyx.lyx]] will produce [[noweb-lyx.nw]] a te
 <a class="toc" name="toc-Subsection-4.3.4">4.3.4</a>&emsp;Extracting Program Source
 </h3>
 <div class="Standard">
-The program source is extracted using newfangle, which is designed to operate on a LaTeX document. 
+The program source is extracted using fangle, which is designed to operate on a LaTeX document. 
 </div>
 <div class="chunk">
 <span class="chunkleft"><a class="chunk" name="chunk:13">13</a></span>
@@ -1075,7 +1075,7 @@ The program source is extracted using newfangle, which is designed to operate on
 <div class="Standard">
 
 <div class="listing">
-<pre class="listing"><span class="number-left">4</span>NEWFANGLE_SOURCE=$(TEX_SOURCE)
+<pre class="listing"><span class="number-left">4</span>FANGLE_SOURCE=$(TEX_SOURCE)
 </pre>
 </div>
 </div>
@@ -1094,7 +1094,7 @@ To solve this problem we use a stamp file which is always updated each time the 
 <div class="Standard">
 
 <div class="listing">
-<pre class="listing"><span class="number-left">5</span>NEWFANGLE_SOURCE_STAMP=$(NEWFANGLE_SOURCE).stamp
+<pre class="listing"><span class="number-left">5</span>FANGLE_SOURCE_STAMP=$(NEWFANGLE_SOURCE).stamp
 </pre>
 </div>
 </div>
@@ -1107,10 +1107,10 @@ To solve this problem we use a stamp file which is always updated each time the 
 <div class="Standard">
 
 <div class="listing">
-<pre class="listing"><span class="number-left">4</span>$(NEWFANGLE_SOURCE_STAMP): $(NEWFANGLE_SOURCE) \
-<span class="number-left">5</span>                           $(NEWFANGLE_SOURCES) ; \
-<span class="number-left">6</span>        echo &gt; $(NEWFANGLE_SOURCE_STAMP)
-<span class="number-left">7</span>clean_stamp: ; rm -f $(NEWFANGLE_SOURCE_STAMP)
+<pre class="listing"><span class="number-left">4</span>$(FANGLE_SOURCE_STAMP): $(NEWFANGLE_SOURCE) \
+<span class="number-left">5</span>                           $(FANGLE_SOURCES) ; \
+<span class="number-left">6</span>        echo &gt; $(FANGLE_SOURCE_STAMP)
+<span class="number-left">7</span>clean_stamp: ; rm -f $(FANGLE_SOURCE_STAMP)
 <span class="number-left">8</span>clean: clean_stamp
 </pre>
 </div>
@@ -1119,7 +1119,7 @@ To solve this problem we use a stamp file which is always updated each time the 
 <a class="toc" name="toc-Subsection-4.3.5">4.3.5</a>&emsp;Extracting C sources
 </h3>
 <div class="Standard">
-We compute <span class="code">NEWFANGLE_SOURCES</span> to hold the names of all the C source files defined in this document. We compute this only once, by means of := in assignent. The sed deletes the any &lt;&lt; and &gt;&gt; which may surround the roots names (for noroots compatibility). 
+We compute <span class="code">FANGLE_SOURCES</span> to hold the names of all the C source files defined in this document. We compute this only once, by means of := in assignent. The sed deletes the any &lt;&lt; and &gt;&gt; which may surround the roots names (for noroots compatibility). 
 </div>
 <div class="Standard">
 As we use chunk names beginning with ./ to denote top level fragments that should be extracted, we filter out all fragments that do not begin with ./
@@ -1133,11 +1133,11 @@ As we use chunk names beginning with ./ to denote top level fragments that shoul
 <div class="Standard">
 
 <div class="listing">
-<pre class="listing"><span class="number-left">6</span>NEWFANGLE_PREFIX:=\.\/
-<span class="number-left">7</span>NEWFANGLE_SOURCES:=$(shell \
-<span class="number-left">8</span>  newfangle -r $(NEWFANGLE_SOURCE) |\
-<span class="number-left">9</span>  sed -e &#x2019;s/^[&lt;][&lt;]//;s/[&gt;][&gt;]$$//;/^$(NEWFANGLE_PREFIX)/!d&#x2019; \
-<span class="number-left">10</span>      -e &#x2019;s/^$(NEWFANGLE_PREFIX)/\.\//&#x2019; )
+<pre class="listing"><span class="number-left">6</span>FANGLE_PREFIX:=\.\/
+<span class="number-left">7</span>FANGLE_SOURCES:=$(shell \
+<span class="number-left">8</span>  fangle -r $(FANGLE_SOURCE) |\
+<span class="number-left">9</span>  sed -e &#x2019;s/^[&lt;][&lt;]//;s/[&gt;][&gt;]$$//;/^$(FANGLE_PREFIX)/!d&#x2019; \
+<span class="number-left">10</span>      -e &#x2019;s/^$(FANGLE_PREFIX)/\.\//&#x2019; )
 <span class="number-left">11</span>@
 </pre>
 </div>
@@ -1151,13 +1151,13 @@ As we use chunk names beginning with ./ to denote top level fragments that shoul
 <div class="Standard">
 
 <div class="listing">
-<pre class="listing"><span class="number-left">9</span>.PHONY: echo_newfangle_sources
-<span class="number-left">10</span>echo_newfangle_sources: ; @echo $(NEWFANGLE_SOURCES)
+<pre class="listing"><span class="number-left">9</span>.PHONY: echo_fangle_sources
+<span class="number-left">10</span>echo_fangle_sources: ; @echo $(FANGLE_SOURCES)
 </pre>
 </div>
 </div>
 <div class="Standard">
-We define a convenient target called <span class="code">newfangle_sources</span> to re-extract the source if the LaTeX file has been updated.
+We define a convenient target called <span class="code">fangle_sources</span> to re-extract the source if the LaTeX file has been updated.
 </div>
 <div class="chunk">
 <span class="chunkleft"><a class="chunk" name="chunk:18">18</a></span>
@@ -1168,8 +1168,8 @@ We define a convenient target called <span class="code">newfangle_sources</span>
 <div class="Standard">
 
 <div class="listing">
-<pre class="listing"><span class="number-left">11</span>.PHONY: newfangle_sources
-<span class="number-left">12</span>newfangle_sources: $(NEWFANGLE_SOURCE_STAMP)
+<pre class="listing"><span class="number-left">11</span>.PHONY: fangle_sources
+<span class="number-left">12</span>fangle_sources: $(FANGLE_SOURCE_STAMP)
 </pre>
 </div>
 </div>
@@ -1185,9 +1185,9 @@ And also a convenient target to remove extracted sources.
 <div class="Standard">
 
 <div class="listing">
-<pre class="listing"><span class="number-left">13</span>.PHONY: clean_newfangle_sources
-<span class="number-left">14</span>clean_newfangle_sources: ; \
-<span class="number-left">15</span>        rm -f &#x2014; $(NEWFANGLE_SOURCE_STAMP) $(NEWFANGLE_SOURCES)
+<pre class="listing"><span class="number-left">13</span>.PHONY: clean_fangle_sources
+<span class="number-left">14</span>clean_fangle_sources: ; \
+<span class="number-left">15</span>        rm -f &#x2014; $(FANGLE_SOURCE_STAMP) $(NEWFANGLE_SOURCES)
 </pre>
 </div>
 </div>
@@ -1227,7 +1227,7 @@ To make this easier we define the file extensions for which we want to do this.
 </div>
 </div>
 <div class="Standard">
-We can then use the if_extensions macro to define a macro which expands out to the <span class="code">-L</span> option if newfangle is being invoked in a C source file, so that C compile errors will refer to the line number in the Lyx document. 
+We can then use the if_extensions macro to define a macro which expands out to the <span class="code">-L</span> option if fangle is being invoked in a C source file, so that C compile errors will refer to the line number in the Lyx document. 
 </div>
 <div class="chunk">
 <span class="chunkleft"><a class="chunk" name="chunk:22">22</a></span>
@@ -1240,14 +1240,14 @@ We can then use the if_extensions macro to define a macro which expands out to t
 <div class="listing">
 <pre class="listing"><span class="number-left">14</span>TABS=8
 <span class="number-left">15</span>nf_line=-L -T$(TABS)
-<span class="number-left">16</span>newfangle=newfangle \
+<span class="number-left">16</span>fangle=newfangle \
 <span class="number-left">17</span>  $(call if_extension,$(2),$(C_EXTENSIONS),$(nf_line)) \
 <span class="number-left">18</span>    -R"$(2)" $(1)
 </pre>
 </div>
 </div>
 <div class="Standard">
-We can use a similar trick to define an <i>indent</i> macro which takes just the filename as an argument and can return a pipeline stage calling the indent command. Indent can be turned off with <span class="code">make newfangle_sources indent=</span>
+We can use a similar trick to define an <i>indent</i> macro which takes just the filename as an argument and can return a pipeline stage calling the indent command. Indent can be turned off with <span class="code">make fangle_sources indent=</span>
 </div>
 <div class="chunk">
 <span class="chunkleft"><a class="chunk" name="chunk:23">23</a></span>
@@ -1279,8 +1279,8 @@ We now define the pattern for extracting a file. The files are written using now
 <div class="Standard">
 
 <div class="listing">
-<pre class="listing"><span class="number-left">22</span>newfangle_extract=@mkdir -p $(dir $(1)) &amp;&amp; \
-<span class="number-left">23</span>  $(call newfangle,$(2),$(1)) &gt; "$(1).tmp" &amp;&amp; \
+<pre class="listing"><span class="number-left">22</span>fangle_extract=@mkdir -p $(dir $(1)) &amp;&amp; \
+<span class="number-left">23</span>  $(call fangle,$(2),$(1)) &gt; "$(1).tmp" &amp;&amp; \
 <span class="number-left">24</span>  cat "$(1).tmp" $(indent) | cpif "$(1)" \
 <span class="number-left">25</span>  &amp;&amp; rm &#x2014; "$(1).tmp" || \
 <span class="number-left">26</span>  (echo error newfangling $(1) from $(2) ; exit 1)
@@ -1299,10 +1299,10 @@ We define a target which will extract or update all sources. To do this we first
 <div class="Standard">
 
 <div class="listing">
-<pre class="listing"><span class="number-left">27</span>define NEWFANGLE_template
+<pre class="listing"><span class="number-left">27</span>define FANGLE_template
 <span class="number-left">28</span>  $(1): $(2); \
-<span class="number-left">29</span>    $$(call newfangle_extract,$(1),$(2))
-<span class="number-left">30</span>  NEWFANGLE_TARGETS+=$(1)
+<span class="number-left">29</span>    $$(call fangle_extract,$(1),$(2))
+<span class="number-left">30</span>  FANGLE_TARGETS+=$(1)
 <span class="number-left">31</span>endef
 </pre>
 </div>
@@ -1319,14 +1319,14 @@ We then enumerate the discovered <span class="code">NEWTANGLE_SOURCES</span> to 
 <div class="Standard">
 
 <div class="listing">
-<pre class="listing"><span class="number-left">16</span>$(foreach source,$(NEWFANGLE_SOURCES),\
-<span class="number-left">17</span>  $(eval $(call NEWFANGLE_template,$(source),$(NEWFANGLE_SOURCE))) \
+<pre class="listing"><span class="number-left">16</span>$(foreach source,$(FANGLE_SOURCES),\
+<span class="number-left">17</span>  $(eval $(call FANGLE_template,$(source),$(NEWFANGLE_SOURCE))) \
 <span class="number-left">18</span>)
 </pre>
 </div>
 </div>
 <div class="Standard">
-These will all be built with NEWFANGLE_SOURCE_STAMP.
+These will all be built with FANGLE_SOURCE_STAMP.
 </div>
 <div class="Standard">
 We also remove the generated sources on a <i>make distclean</i>.
@@ -1340,7 +1340,7 @@ We also remove the generated sources on a <i>make distclean</i>.
 <div class="Standard">
 
 <div class="listing">
-<pre class="listing"><span class="number-left">19</span>_distclean: clean_newfangle_sources
+<pre class="listing"><span class="number-left">19</span>_distclean: clean_fangle_sources
 </pre>
 </div>
 </div>
@@ -1365,7 +1365,7 @@ We produce a pdf file from the tex file.
 <div class="Standard">
 
 <div class="listing">
-<pre class="listing"><span class="number-left">32</span>NEWFANGLE_PDF=$(TEX_SOURCE:.tex=.pdf)
+<pre class="listing"><span class="number-left">32</span>FANGLE_PDF=$(TEX_SOURCE:.tex=.pdf)
 </pre>
 </div>
 </div>
@@ -1381,8 +1381,8 @@ We run pdflatex twice to be sure that the contents and aux files are up to date.
 <div class="Standard">
 
 <div class="listing">
-<pre class="listing"><span class="number-left">20</span>$(NEWFANGLE_PDF): $(TEX_SOURCE); pdflatex $&lt; &amp;&amp; pdflatex $&lt;
-<span class="number-left">21</span>clean_pdf: ; rm -f &#x2014; $(NEWFANGLE_PDF) \
+<pre class="listing"><span class="number-left">20</span>$(FANGLE_PDF): $(TEX_SOURCE); pdflatex $&lt; &amp;&amp; pdflatex $&lt;
+<span class="number-left">21</span>clean_pdf: ; rm -f &#x2014; $(FANGLE_PDF) \
 <span class="number-left">22</span>                      $(TEX_SOURCE:.tex=.toc) \
 <span class="number-left">23</span>                      $(TEX_SOURCE:.tex=.log) \
 <span class="number-left">24</span>                      $(TEX_SOURCE:.tex=.aux)
@@ -1393,7 +1393,7 @@ We run pdflatex twice to be sure that the contents and aux files are up to date.
 <a class="toc" name="toc-Subsubsection-4.3.6.2">4.3.6.2</a>&emsp;The docs as a whole
 </h4>
 <div class="Standard">
-Currently we only build pdf as a final format, but NEWFANGLE_DOCS may later hold other output formats.
+Currently we only build pdf as a final format, but FANGLE_DOCS may later hold other output formats.
 </div>
 <div class="chunk">
 <span class="chunkleft"><a class="chunk" name="chunk:30">30</a></span>
@@ -1404,12 +1404,12 @@ Currently we only build pdf as a final format, but NEWFANGLE_DOCS may later hold
 <div class="Standard">
 
 <div class="listing">
-<pre class="listing"><span class="number-left">33</span>NEWFANGLE_DOCS=$(NEWFANGLE_PDF)
+<pre class="listing"><span class="number-left">33</span>FANGLE_DOCS=$(NEWFANGLE_PDF)
 </pre>
 </div>
 </div>
 <div class="Standard">
-We also define newfangle_docs as a convenient phony target&lt;
+We also define fangle_docs as a convenient phony target&lt;
 </div>
 <div class="chunk">
 <span class="chunkleft"><a class="chunk" name="chunk:31">31</a></span>
@@ -1420,9 +1420,9 @@ We also define newfangle_docs as a convenient phony target&lt;
 <div class="Standard">
 
 <div class="listing">
-<pre class="listing"><span class="number-left">25</span>.PHONY: newfangle_docs
-<span class="number-left">26</span>newfangle_docs: $(NEWFANGLE_DOCS)
-<span class="number-left">27</span>docs: newfangle_docs
+<pre class="listing"><span class="number-left">25</span>.PHONY: fangle_docs
+<span class="number-left">26</span>fangle_docs: $(FANGLE_DOCS)
+<span class="number-left">27</span>docs: fangle_docs
 </pre>
 </div>
 </div>
@@ -1438,12 +1438,12 @@ And define a convenient clean_noweb_docs which we add to the regular clean targe
 <div class="Standard">
 
 <div class="listing">
-<pre class="listing"><span class="number-left">28</span>.PHONEY: clean_newfangle_docs
-<span class="number-left">29</span>clean_newfangle_docs: clean_tex clean_pdf
-<span class="number-left">30</span>clean: clean_newfangle_docs
+<pre class="listing"><span class="number-left">28</span>.PHONEY: clean_fangle_docs
+<span class="number-left">29</span>clean_fangle_docs: clean_tex clean_pdf
+<span class="number-left">30</span>clean: clean_fangle_docs
 <span class="number-left">31</span>&#x200b;
-<span class="number-left">32</span>distclean_newfangle_docs: clean_tex clean_newfangle_docs
-<span class="number-left">33</span>distclean: clean distclean_newfangle_docs
+<span class="number-left">32</span>distclean_fangle_docs: clean_tex clean_newfangle_docs
+<span class="number-left">33</span>distclean: clean distclean_fangle_docs
 </pre>
 </div>
 </div>
@@ -1454,19 +1454,19 @@ And define a convenient clean_noweb_docs which we add to the regular clean targe
 If Makefile.inc is included into Makefile, then extracted files can be updated with this command:
 </div>
 <pre class="LyX-Code">
-make newfangle_sources
+make fangle_sources
 </pre>
 <div class="Standard">
 otherwise, with:
 </div>
 <pre class="LyX-Code">
-make -f Makefile.inc newfangle_sources
+make -f Makefile.inc fangle_sources
 </pre>
 <h1 class="Part">
 <a class="toc" name="toc-Part-2">Part 2.</a>&emsp;Source Code
 </h1>
 <h1 class="Chapter">
-<a class="toc" name="toc-Chapter-5">5</a>&emsp;Newfangle awk source code
+<a class="toc" name="toc-Chapter-5">5</a>&emsp;Fangle awk source code
 </h1>
 <div class="Standard">
 We use the copyright notice from chapter <a class="Reference" href="#cha:License">&#x2191;</a>.
@@ -1474,7 +1474,7 @@ We use the copyright notice from chapter <a class="Reference" href="#cha:License
 <div class="chunk">
 <span class="chunkleft"><a class="chunk" name="chunk:33">33</a></span>
 <span class="chunkdecl">
-&#x27e8;./newfangle[1] <a class="chunk" href="#chunk:33">33</a>&#x27e9;&#x2261;
+&#x27e8;./fangle[1] <a class="chunk" href="#chunk:33">33</a>&#x27e9;&#x2261;
 </span><span class="chunkright"><a class="chunk" name="chunkback:33" href="#chunkforward:34">34&#x2192;</a></span>
 </div>
 <div class="Standard">
@@ -1507,7 +1507,7 @@ And include the following chunks
 <div class="chunk">
 <span class="chunkleft"><a class="chunk" name="chunk:34">34</a></span>
 <span class="chunkdecl">
-&#x27e8;./newfangle[2] <a class="chunk" href="#chunk:33">33</a>&#x27e9;+&#x2261;
+&#x27e8;./fangle[2] <a class="chunk" href="#chunk:33">33</a>&#x27e9;+&#x2261;
 </span><span class="chunkright"><a class="chunk" name="chunkforward:34" href="#chunkback:33">&#x2190;33&emsp;</a><a class="chunk" name="chunkback:34" href="#chunkforward:39">39&#x2192;</a></span>
 </div>
 <div class="Standard">
@@ -1712,7 +1712,7 @@ Further on we define a <span class="code">\Chunk</span> LaTeX macro whose argume
 There will be other arguments supported too; 
 </div>
 <div class="Description">
-<span class="Description-entry">params&emsp;</span>As an extension to many literate-programming styles, newfangle permits code chunks to take parameters and thus operate somewhat like C pre-processor macros, or like C++ templates. Chunk parameters are declared with a chunk argument called <span class="code">params</span>, which holds a semi-colon separated list of parameters, like this:
+<span class="Description-entry">params&emsp;</span>As an extension to many literate-programming styles, fangle permits code chunks to take parameters and thus operate somewhat like C pre-processor macros, or like C++ templates. Chunk parameters are declared with a chunk argument called <span class="code">params</span>, which holds a semi-colon separated list of parameters, like this:
 </div>
 <pre class="LyX-Code">
 achunk,language=C,params=name;address
@@ -1729,7 +1729,7 @@ Function
 <div class="chunk">
 <span class="chunkleft"><a class="chunk" name="chunk:39">39</a></span>
 <span class="chunkdecl">
-&#x27e8;./newfangle[3] <a class="chunk" href="#chunk:33">33</a>&#x27e9;+&#x2261;
+&#x27e8;./fangle[3] <a class="chunk" href="#chunk:33">33</a>&#x27e9;+&#x2261;
 </span><span class="chunkright"><a class="chunk" name="chunkforward:39" href="#chunkback:34">&#x2190;34&emsp;</a></span>
 </div>
 <div class="Standard">
@@ -2117,10 +2117,10 @@ A valid looking reference that is not actually the name of a parameter will be a
 <a class="toc" name="toc-Section-7.1">7.1</a>&emsp;Modes
 </h2>
 <div class="Standard">
-lstlistings and newfangle both recognize source languages, and perform some basic parsing. lstlistings can detect strings and comments within a language definition and perform suitable rendering, such as italics for comments, and visible-spaces within strings.
+lstlistings and fangle both recognize source languages, and perform some basic parsing. lstlistings can detect strings and comments within a language definition and perform suitable rendering, such as italics for comments, and visible-spaces within strings.
 </div>
 <div class="Standard">
-Newfangle similarly can recognize strings, and comments, etc, within a language, so that any chunks included with <span class="code">\chunkref</span> can be suitably escape or quoted.
+Fangle similarly can recognize strings, and comments, etc, within a language, so that any chunks included with <span class="code">\chunkref</span> can be suitably escape or quoted.
 </div>
 <h3 class="Subsection">
 <a class="toc" name="toc-Subsection-7.1.1">7.1.1</a>&emsp;Modes to keep code together
@@ -2182,7 +2182,7 @@ If it were included in a chunk with <span class="code">language=sh</span>, like 
 </div>
 </div>
 <div class="Standard">
-newfangle would need to generate output like this if it were to work: 
+fangle would need to generate output like this if it were to work: 
 </div>
 <pre class="LyX-Code">
 perl -e "print \"hello world $0\\n\";" 
@@ -2715,7 +2715,7 @@ The C definition for such a block should have it come out like this:
 This pattern is in-complete, but meant to detect naked regular expressions in awk and perl; e.g. <span class="code">/.*$/</span>, however required capabilities are not present.
 </div>
 <div class="Standard">
-Current it only detects regexes anchored with <span class="code">^</span> as used in newfangle.
+Current it only detects regexes anchored with <span class="code">^</span> as used in fangle.
 </div>
 <div class="Standard">
 For full regex support, modes need to be named not after their starting character, but some other more fully qualified name.
@@ -2848,7 +2848,7 @@ The mode tracker holds its state in a stack based on a hash. This function, when
 </div>
 </div>
 <div class="Standard">
-Because awk functions cannot return an array, we must create the array first and pass it in, so we have a newfangle macro to do this:
+Because awk functions cannot return an array, we must create the array first and pass it in, so we have a fangle macro to do this:
 </div>
 <div class="chunk">
 <span class="chunkleft"><a class="chunk" name="chunk:77">77</a></span>
@@ -3004,8 +3004,8 @@ These tests will check for correct behaviour:
 
 <div class="listing">
 <pre class="listing"><span class="number-left">1</span>echo Cromulence test
-<span class="number-left">2</span>passtest $NEWFANGLE -Rtest:whole-chunk $TEX_SRC &amp;&gt;/dev/null || ( echo "Whole chunk failed" &amp;&amp; exit 1 )
-<span class="number-left">3</span>failtest $NEWFANGLE -Rtest:partial-chunk $TEX_SRC &amp;&gt;/dev/null || ( echo "Partial chunk failed" &amp;&amp; exit 1 )
+<span class="number-left">2</span>passtest $FANGLE -Rtest:whole-chunk $TEX_SRC &amp;&gt;/dev/null || ( echo "Whole chunk failed" &amp;&amp; exit 1 )
+<span class="number-left">3</span>failtest $FANGLE -Rtest:partial-chunk $TEX_SRC &amp;&gt;/dev/null || ( echo "Partial chunk failed" &amp;&amp; exit 1 )
 </pre>
 </div>
 </div>
@@ -3379,7 +3379,7 @@ This function must append from index <span class="code">c</span> onwards, and es
 
 <div class="listing">
 <pre class="listing"><span class="number-left">1</span>echo escapes test
-<span class="number-left">2</span>passtest $NEWFANGLE -Rtest:comment-quote $TEX_SRC &amp;&gt;/dev/null || ( echo "Comment-quote failed" &amp;&amp; exit 1 )
+<span class="number-left">2</span>passtest $FANGLE -Rtest:comment-quote $TEX_SRC &amp;&gt;/dev/null || ( echo "Comment-quote failed" &amp;&amp; exit 1 )
 </pre>
 </div>
 </div>
@@ -3387,7 +3387,7 @@ This function must append from index <span class="code">c</span> onwards, and es
 <a class="toc" name="toc-Chapter-8">8</a>&emsp;Recognizing Chunks
 </h1>
 <div class="Standard">
-Newfangle recognizes noweb chunks, but as we also want better LaTeX integration we will recognize any of these:
+Fangle recognizes noweb chunks, but as we also want better LaTeX integration we will recognize any of these:
 </div>
 <ul>
 
@@ -3636,7 +3636,7 @@ and also because lstlistings doesn&#x2019;t like <span class="code">&gt;&gt;</sp
 </li>
 </ol>
 <div class="Standard">
-Unfortunately  the <span class="code">=&lt;&#x2026;&gt;</span> that we use re-enters a LaTeX parsing mode in which some characters are special, e.g. <span class="code"># \</span>, and so these cause trouble if used in arguments to <span class="code">\chunkref</span>. At some point I must fix the LaTeX command <span class="code">\chunkref</span> so that it can accept these literally, but until then, when writing chunkref argumemts that need these characters, I must use the forms <span class="code">\textbackslash{}</span> and <span class="code">\#</span>; so I also define a hacky chunk <span class="code">delatex</span> whose purpose it is to remove these from any arguments parsed by newfangle, and used further on.
+Unfortunately  the <span class="code">=&lt;&#x2026;&gt;</span> that we use re-enters a LaTeX parsing mode in which some characters are special, e.g. <span class="code"># \</span>, and so these cause trouble if used in arguments to <span class="code">\chunkref</span>. At some point I must fix the LaTeX command <span class="code">\chunkref</span> so that it can accept these literally, but until then, when writing chunkref argumemts that need these characters, I must use the forms <span class="code">\textbackslash{}</span> and <span class="code">\#</span>; so I also define a hacky chunk <span class="code">delatex</span> whose purpose it is to remove these from any arguments parsed by fangle, and used further on.
 </div>
 <div class="chunk">
 <span class="chunkleft"><a class="chunk" name="chunk:101">101</a></span>
@@ -3698,10 +3698,10 @@ We then process this first part literal text, and set the chunk which is still t
 </div>
 </div>
 <div class="Standard">
-We then consider the type of chunk command we have found, whether it is the newfangle style command beginning with <span class="code">=&lt;</span> or the older notangle style beginning with <span class="code">&lt;&lt;</span>. 
+We then consider the type of chunk command we have found, whether it is the fangle style command beginning with <span class="code">=&lt;</span> or the older notangle style beginning with <span class="code">&lt;&lt;</span>. 
 </div>
 <div class="Standard">
-Newfangle chunks may have parameters contained within square brackets. These will be matched in <span class="code">line[3]</span> and are considered at this stage of processing to be part of the name of the chunk to be included.
+Fangle chunks may have parameters contained within square brackets. These will be matched in <span class="code">line[3]</span> and are considered at this stage of processing to be part of the name of the chunk to be included.
 </div>
 <div class="Standard">
 
@@ -3858,8 +3858,8 @@ And have a simple help function
 <div class="listing">
 <pre class="listing"><span class="number-left">1</span>function help() {
 <span class="number-left">2</span>  print "Usage:"
-<span class="number-left">3</span>  print "  newfangle [-L] -R&lt;rootname&gt; [source.tex ...]"
-<span class="number-left">4</span>  print "  newfangle -r [source.tex ...]"
+<span class="number-left">3</span>  print "  fangle [-L] -R&lt;rootname&gt; [source.tex ...]"
+<span class="number-left">4</span>  print "  fangle -r [source.tex ...]"
 <span class="number-left">5</span>  print "  If the filename, source.tex is not specified then stdin is used"
 <span class="number-left">6</span>  print
 <span class="number-left">7</span>  print "-L causes the C statement: #line &lt;lineno&gt; \"filename\"" to be issued"
@@ -4614,34 +4614,34 @@ Although we only want the header and function:
 </div>
 </div>
 <h1 class="Chapter">
-<a class="toc" name="toc-Chapter-13">13</a>&emsp;Newfangle LaTeX source code
+<a class="toc" name="toc-Chapter-13">13</a>&emsp;Fangle LaTeX source code
 </h1>
 <h2 class="Section">
-<a class="toc" name="toc-Section-13.1">13.1</a>&emsp;newfangle module
+<a class="toc" name="toc-Section-13.1">13.1</a>&emsp;fangle module
 </h2>
 <div class="Standard">
 Here we define a Lyx .module file that makes it convenient to use LyX for writing such literate programs.
 </div>
 <div class="Standard">
-This file <span class="code">./newfangle.module</span> can be installed in your personal <span class="code">.lyx/layouts folder</span>. You will need to Tools Reconfigure so that LyX notices it. It adds a new format Chunk, which should precede every listing and contain the chunk name. 
+This file <span class="code">./fangle.module</span> can be installed in your personal <span class="code">.lyx/layouts folder</span>. You will need to Tools Reconfigure so that LyX notices it. It adds a new format Chunk, which should precede every listing and contain the chunk name. 
 </div>
 <div class="chunk">
 <span class="chunkleft"><a class="chunk" name="chunk:129">129</a></span>
 <span class="chunkdecl">
-&#x27e8;./newfangle.module[1] <a class="chunk" href="#chunk:129">129</a>&#x27e9;&#x2261;
+&#x27e8;./fangle.module[1] <a class="chunk" href="#chunk:129">129</a>&#x27e9;&#x2261;
 </span><span class="chunkright"></span>
 </div>
 <div class="Standard">
 
 <div class="listing">
-<pre class="listing"><span class="number-left">1</span>#\DeclareLyXModule{Newfangle Literate Listings}
+<pre class="listing"><span class="number-left">1</span>#\DeclareLyXModule{Fangle Literate Listings}
 <span class="number-left">2</span>#DescriptionBegin
-<span class="number-left">3</span>#  Newfangle literate listings allow one to write
+<span class="number-left">3</span>#  Fangle literate listings allow one to write
 <span class="number-left">4</span>#   literate programs after the fashion of noweb, but without having
 <span class="number-left">5</span>#   to use noweave to generate the documentation. Instead the listings
 <span class="number-left">6</span>#   package is extended in conjunction with the noweb package to implement
 <span class="number-left">7</span>#   to code formating directly as latex.
-<span class="number-left">8</span>#  The newfangle awk script
+<span class="number-left">8</span>#  The fangle awk script
 <span class="number-left">9</span>#DescriptionEnd
 <span class="number-left">10</span>&#x200b;
 <span class="number-left">11</span>&#x27e8;gpl3-copyright.hashed <a class="chunk" href="#chunk:130">130</a>&#x27e9;
@@ -4649,7 +4649,7 @@ This file <span class="code">./newfangle.module</span> can be installed in your 
 <span class="number-left">13</span>Format 11
 <span class="number-left">14</span>&#x200b;
 <span class="number-left">15</span>AddToPreamble
-<span class="number-left">16</span>&#x27e8;./newfangle.sty <a class="chunk" href="#chunk:133">133</a>&#x27e9;
+<span class="number-left">16</span>&#x27e8;./fangle.sty <a class="chunk" href="#chunk:133">133</a>&#x27e9;
 <span class="number-left">17</span>EndPreamble
 <span class="number-left">18</span>&#x200b;
 <span class="number-left">19</span>&#x27e8;chunkstyle <a class="chunk" href="#chunk:131">131</a>&#x27e9;
@@ -4659,7 +4659,7 @@ This file <span class="code">./newfangle.module</span> can be installed in your 
 </div>
 </div>
 <div class="Standard">
-Because LyX modules are not yet a language supported by newfangle or lstlistings, we resort to this fake awk chunk below in order to have each line of the GPL3 license commence with a #
+Because LyX modules are not yet a language supported by fangle or lstlistings, we resort to this fake awk chunk below in order to have each line of the GPL3 license commence with a #
 </div>
 <div class="chunk">
 <span class="chunkleft"><a class="chunk" name="chunk:130">130</a></span>
@@ -4682,7 +4682,7 @@ Because LyX modules are not yet a language supported by newfangle or lstlistings
 The purpose of the <span class="versalitas">chunk</span> style is to make it easier for LyX users to provide the name to <span class="code">\lstlistings</span>. Normally this requires right-clicking on the listing, choosing settings, advanced, and then typing <span class="code">name=chunk-name</span>. This has the further disadvantage that the name (and other options) are not generally visible during document editing.
 </div>
 <div class="Standard">
-The chunk style is defined as a LaTeX command, so that all text on the same line is passed to the LaTeX command <span class="code">Chunk</span>. This makes it easy to parse using <span class="code">newfangle</span>, and easy to pass these options on to the listings package. The first word in a chunk section should be the chunk name, and will have <span class="code">name=</span> prepended to it. Any other words are accepted arguments to <span class="code">\lstset</span>.
+The chunk style is defined as a LaTeX command, so that all text on the same line is passed to the LaTeX command <span class="code">Chunk</span>. This makes it easy to parse using <span class="code">fangle</span>, and easy to pass these options on to the listings package. The first word in a chunk section should be the chunk name, and will have <span class="code">name=</span> prepended to it. Any other words are accepted arguments to <span class="code">\lstset</span>.
 </div>
 <div class="Standard">
 We set PassThru to 1 because the user is actually entering raw latex.
@@ -4764,7 +4764,7 @@ We require the <span class="versalitas">listings</span>, <span class="versalitas
 <div class="chunk">
 <span class="chunkleft"><a class="chunk" name="chunk:133">133</a></span>
 <span class="chunkdecl">
-&#x27e8;./newfangle.sty[1] <a class="chunk" href="#chunk:133">133</a>&#x27e9;&#x2261;
+&#x27e8;./fangle.sty[1] <a class="chunk" href="#chunk:133">133</a>&#x27e9;&#x2261;
 </span><span class="chunkright"><a class="chunk" name="chunkback:133" href="#chunkforward:136">136&#x2192;</a></span>
 </div>
 <div class="Standard">
@@ -4800,7 +4800,7 @@ We also define a suitable <span class="code">\lstset</span> of parameters that s
 </div>
 </div>
 <div class="Standard">
-We also define a notangle-like mechanism for <i>escaping</i> to LaTeX from the listing, and by which we can refer to other listings. We declare the <span class="code">=&lt;&#x2026;&gt;</span> sequence to contain LaTeX code, and include another like this chunk: <span class="code">=&lt;\chunkref{chunkname}&gt;</span>. However, because <span class="code">=&lt;&#x2026;&gt;</span> is already defined to contain LaTeX code for this document &#x2014; this is a <span class="versalitas">newfangle</span> document after all &#x2014; the code fragment below effectively contains the LaTeX code: <span class="code">}{</span>. To avoid problems with document generation, I had to declare an lstlistings property: <span class="code">escapeinside={}</span> for this listing only; which in LyX was done by right-clicking the listings inset, choosing <span class="code">settings</span>&nbsp;&#x25b7;&nbsp;<span class="code">advanced</span>.
+We also define a notangle-like mechanism for <i>escaping</i> to LaTeX from the listing, and by which we can refer to other listings. We declare the <span class="code">=&lt;&#x2026;&gt;</span> sequence to contain LaTeX code, and include another like this chunk: <span class="code">=&lt;\chunkref{chunkname}&gt;</span>. However, because <span class="code">=&lt;&#x2026;&gt;</span> is already defined to contain LaTeX code for this document &#x2014; this is a <span class="versalitas">fangle</span> document after all &#x2014; the code fragment below effectively contains the LaTeX code: <span class="code">}{</span>. To avoid problems with document generation, I had to declare an lstlistings property: <span class="code">escapeinside={}</span> for this listing only; which in LyX was done by right-clicking the listings inset, choosing <span class="code">settings</span>&nbsp;&#x25b7;&nbsp;<span class="code">advanced</span>.
 </div>
 <div class="Standard">
 
@@ -4821,7 +4821,7 @@ Although our macros will contain the @ symbol, they will be included in a <span 
 <pre class="listing"><span class="number-left">10</span>%\makeatletter
 <span class="number-left">11</span>%somehow re-defining maketitle gives us a left-aligned title
 <span class="number-left">12</span>%which is extactly what our specially formatted title needs!
-<span class="number-left">13</span>\global\let\newfangle@lst@maketitle\lst@maketitle%
+<span class="number-left">13</span>\global\let\fangle@lst@maketitle\lst@maketitle%
 <span class="number-left">14</span>\global\def\lst@maketitle{}%
 </pre>
 </div>
@@ -4836,7 +4836,7 @@ Our chunk command accepts one argument, and calls <span class="code">\ltset</spa
 
 <div class="listing">
 <pre class="listing"><span class="number-left">15</span>\def\Chunk#1{%
-<span class="number-left">16</span>  \lstset{title={\newfanglecaption},name=#1}%
+<span class="number-left">16</span>  \lstset{title={\fanglecaption},name=#1}%
 <span class="number-left">17</span>  \global\edef\lst@chunkname{\lst@intname}%
 <span class="number-left">18</span>}%
 <span class="number-left">19</span>\def\lst@chunkname{\empty}%
@@ -4847,12 +4847,12 @@ Our chunk command accepts one argument, and calls <span class="code">\ltset</spa
 <a class="toc" name="toc-Subsubsection-13.2.1.1">13.2.1.1</a>&emsp;Chunk parameters
 </h4>
 <div class="Standard">
-Newfangle permits parameterized chunks, and requires the paramters to be specified as listings options. The newfangle script uses this, and although we don&#x2019;t do anything with these in the LaTeX code right now, we need to stop the listings package complaining.
+Fangle permits parameterized chunks, and requires the paramters to be specified as listings options. The fangle script uses this, and although we don&#x2019;t do anything with these in the LaTeX code right now, we need to stop the listings package complaining.
 </div>
 <div class="Standard">
 
 <div class="listing">
-<pre class="listing"><span class="number-left">20</span>\lst@Key{params}\relax{\def\newfangle@chunk@params{#1}}%
+<pre class="listing"><span class="number-left">20</span>\lst@Key{params}\relax{\def\fangle@chunk@params{#1}}%
 </pre>
 </div>
 </div>
@@ -4862,7 +4862,7 @@ As it is common to define a chunk which then needs appending to another chunk, a
 <div class="Standard">
 
 <div class="listing">
-<pre class="listing"><span class="number-left">21</span>\lst@Key{append}\relax{\def\newfangle@chunk@append{#1}}%
+<pre class="listing"><span class="number-left">21</span>\lst@Key{append}\relax{\def\fangle@chunk@append{#1}}%
 </pre>
 </div>
 </div>
@@ -4870,12 +4870,12 @@ As it is common to define a chunk which then needs appending to another chunk, a
 <a class="toc" name="toc-Subsection-13.2.2">13.2.2</a>&emsp;The noweb styled caption
 </h3>
 <div class="Standard">
-We define a public macro <span class="code">\newfanglecaption</span> which can be set as a regular title. By means of <span class="code">\protect</span>, It expands to <span class="code">\newfangle@caption</span> at the appriate time when the caption is emitted.
+We define a public macro <span class="code">\fanglecaption</span> which can be set as a regular title. By means of <span class="code">\protect</span>, It expands to <span class="code">\newfangle@caption</span> at the appriate time when the caption is emitted.
 </div>
 <div class="Standard">
 
 <div class="listing">
-<pre class="listing"><span class="number-left">22</span>\def\newfanglecaption{\protect\newfangle@caption}%
+<pre class="listing"><span class="number-left">22</span>\def\fanglecaption{\protect\newfangle@caption}%
 </pre>
 </div>
 </div>
@@ -4909,7 +4909,7 @@ It would be natural to have a counter for each chunk name, but TeX would soon ru
 <div class="Standard">
 
 <div class="listing">
-<pre class="listing"><span class="number-left">23</span>\newcounter{newfangle@chunkcounter}%
+<pre class="listing"><span class="number-left">23</span>\newcounter{fangle@chunkcounter}%
 </pre>
 </div>
 </div>
@@ -4928,7 +4928,7 @@ We save the counter like this:
 <div class="Standard">
 
 <div class="listing">
-<pre class="listing"><span class="number-left">1</span>\global\expandafter\edef\csname \chunkcount\endcsname{\arabic{newfangle@chunkcounter}}%
+<pre class="listing"><span class="number-left">1</span>\global\expandafter\edef\csname \chunkcount\endcsname{\arabic{fangle@chunkcounter}}%
 </pre>
 </div>
 </div>
@@ -4944,14 +4944,14 @@ and restore the counter like this:
 <div class="Standard">
 
 <div class="listing">
-<pre class="listing"><span class="number-left">1</span>\setcounter{newfangle@chunkcounter}{\csname \chunkcount\endcsname}%
+<pre class="listing"><span class="number-left">1</span>\setcounter{fangle@chunkcounter}{\csname \chunkcount\endcsname}%
 </pre>
 </div>
 </div>
 <div class="chunk">
 <span class="chunkleft"><a class="chunk" name="chunk:136">136</a></span>
 <span class="chunkdecl">
-&#x27e8;./newfangle.sty[2] <a class="chunk" href="#chunk:133">133</a>&#x27e9;+&#x2261;
+&#x27e8;./fangle.sty[2] <a class="chunk" href="#chunk:133">133</a>&#x27e9;+&#x2261;
 </span><span class="chunkright"><a class="chunk" name="chunkforward:136" href="#chunkback:133">&#x2190;133&emsp;</a></span>
 </div>
 <div class="Standard">
@@ -4966,15 +4966,15 @@ We also calculate the name of the previous chunk if we can (before we increment 
 <div class="Standard">
 
 <div class="listing">
-<pre class="listing"><span class="number-left">24</span>\def\newfangle@caption{%
+<pre class="listing"><span class="number-left">24</span>\def\fangle@caption{%
 <span class="number-left">25</span>  \edef\chunkcount{lst-chunk-\lst@intname}%
 <span class="number-left">26</span>  \@ifundefined{\chunkcount}{%
 <span class="number-left">27</span>    \expandafter\gdef\csname \chunkcount\endcsname{0}%
-<span class="number-left">28</span>    \setcounter{newfangle@chunkcounter}{\csname \chunkcount\endcsname}%
+<span class="number-left">28</span>    \setcounter{fangle@chunkcounter}{\csname \chunkcount\endcsname}%
 <span class="number-left">29</span>    \let\prevchunkname\relax%
 <span class="number-left">30</span>  }{%
-<span class="number-left">31</span>    \setcounter{newfangle@chunkcounter}{\csname \chunkcount\endcsname}%
-<span class="number-left">32</span>    \edef\prevchunkname{\lst@intname-\arabic{newfangle@chunkcounter}}%
+<span class="number-left">31</span>    \setcounter{fangle@chunkcounter}{\csname \chunkcount\endcsname}%
+<span class="number-left">32</span>    \edef\prevchunkname{\lst@intname-\arabic{fangle@chunkcounter}}%
 <span class="number-left">33</span>  }%
 </pre>
 </div>
@@ -4985,9 +4985,9 @@ After incrementing the chunk counter, we then define the name of this chunk, as 
 <div class="Standard">
 
 <div class="listing">
-<pre class="listing"><span class="number-left">34</span>  \addtocounter{newfangle@chunkcounter}{1}%
-<span class="number-left">35</span>  \global\expandafter\edef\csname \chunkcount\endcsname{\arabic{newfangle@chunkcounter}}%
-<span class="number-left">36</span>  \edef\chunkname{\lst@intname-\arabic{newfangle@chunkcounter}}%
+<pre class="listing"><span class="number-left">34</span>  \addtocounter{fangle@chunkcounter}{1}%
+<span class="number-left">35</span>  \global\expandafter\edef\csname \chunkcount\endcsname{\arabic{fangle@chunkcounter}}%
+<span class="number-left">36</span>  \edef\chunkname{\lst@intname-\arabic{fangle@chunkcounter}}%
 <span class="number-left">37</span>  \edef\firstchunkname{\lst@intname-1}%
 </pre>
 </div>
@@ -4998,8 +4998,8 @@ We now need to calculate the name of the next chunk. We do this by temporarily s
 <div class="Standard">
 
 <div class="listing">
-<pre class="listing"><span class="number-left">38</span>  \addtocounter{newfangle@chunkcounter}{1}%
-<span class="number-left">39</span>  \edef\nextchunkname{\lst@intname-\arabic{newfangle@chunkcounter}}%
+<pre class="listing"><span class="number-left">38</span>  \addtocounter{fangle@chunkcounter}{1}%
+<span class="number-left">39</span>  \edef\nextchunkname{\lst@intname-\arabic{fangle@chunkcounter}}%
 <span class="number-left">40</span>  \@ifundefined{r@label-\nextchunkname}{\let\nextchunkname\relax}{}%
 </pre>
 </div>
@@ -5047,18 +5047,18 @@ We then call the noweb output macros in the same way that noweave generates them
 <span class="number-left">54</span>    {\lst@name}%
 <span class="number-left">55</span>    {%
 <span class="number-left">56</span>      \nwtagstyle{}\/%
-<span class="number-left">57</span>      \@ifundefined{newfangle@chunk@params}{}{%
-<span class="number-left">58</span>        (\newfangle@chunk@params)%
+<span class="number-left">57</span>      \@ifundefined{fangle@chunk@params}{}{%
+<span class="number-left">58</span>        (\fangle@chunk@params)%
 <span class="number-left">59</span>      }%
 <span class="number-left">60</span>      [\csname \chunkcount\endcsname]~%
 <span class="number-left">61</span>      \subpageref{\firstchunkname}%
 <span class="number-left">62</span>    }%
-<span class="number-left">63</span>    \@ifundefined{newfangle@chunk@append}{}{%
-<span class="number-left">64</span>    \ifx{}\newfangle@chunk@append{x}\else%
-<span class="number-left">65</span>        ,~add~to~\newfangle@chunk@append%
+<span class="number-left">63</span>    \@ifundefined{fangle@chunk@append}{}{%
+<span class="number-left">64</span>    \ifx{}\fangle@chunk@append{x}\else%
+<span class="number-left">65</span>        ,~add~to~\fangle@chunk@append%
 <span class="number-left">66</span>    \fi%
 <span class="number-left">67</span>    }%
-<span class="number-left">68</span>\global\def\newfangle@chunk@append{}%
+<span class="number-left">68</span>\global\def\fangle@chunk@append{}%
 <span class="number-left">69</span>\lstset{append=x}%
 <span class="number-left">70</span>  }%
 <span class="number-left">71</span>%
@@ -5076,10 +5076,10 @@ Originally this was developed as a <span class="code">listings</span> aspect, in
 <div class="Standard">
 
 <div class="listing">
-<pre class="listing"><span class="number-left">77</span>%\lst@BeginAspect{newfangle}
-<span class="number-left">78</span>%\lst@Key{newfangle}{true}[t]{\lstKV@SetIf{#1}{true}}
+<pre class="listing"><span class="number-left">77</span>%\lst@BeginAspect{fangle}
+<span class="number-left">78</span>%\lst@Key{fangle}{true}[t]{\lstKV@SetIf{#1}{true}}
 <span class="number-left">79</span>\lst@AddToHookExe{PreSet}{\global\let\lst@intname\lst@chunkname}
-<span class="number-left">80</span>\lst@AddToHook{Init}{}%\newfangle@caption}
+<span class="number-left">80</span>\lst@AddToHook{Init}{}%\fangle@caption}
 <span class="number-left">81</span>%\lst@EndAspect
 </pre>
 </div>
@@ -5191,7 +5191,7 @@ Chunkref can also be used within a code chunk to include another code chunk. The
 </div>
 </div>
 <h1 class="Chapter">
-<a class="toc" name="toc-Chapter-14">14</a>&emsp;Extracting newfangle
+<a class="toc" name="toc-Chapter-14">14</a>&emsp;Extracting fangle
 </h1>
 <h2 class="Section">
 <a class="toc" name="toc-Section-14.1">14.1</a>&emsp;Extracting from Lyx
@@ -5200,7 +5200,7 @@ Chunkref can also be used within a code chunk to include another code chunk. The
 To extract from LyX, you will need to configure LyX as explained in section <a class="Reference" href="#sub:Configuring-the-build">3.1.2&#x2191;</a>.
 </div>
 <div class="Standard">
-<a class="Label" name="lyx-build-script"> </a>And this lyx-build scrap will extract newfangle for me.
+<a class="Label" name="lyx-build-script"> </a>And this lyx-build scrap will extract fangle for me.
 </div>
 <div class="chunk">
 <span class="chunkleft"><a class="chunk" name="chunk:137">137</a></span>
@@ -5217,16 +5217,16 @@ To extract from LyX, you will need to configure LyX as explained in section <a c
 <span class="number-left">14</span>&#x27e8;lyx-build-helper <a class="chunk" href="#chunk:4">4</a>&#x27e9;
 <span class="number-left">15</span>cd $PROJECT_DIR || exit 1
 <span class="number-left">16</span>&#x200b;
-<span class="number-left">17</span>/usr/local/bin/newfangle -R./newfangle $TEX_SRC &gt; ./newfangle
-<span class="number-left">18</span>/usr/local/bin/newfangle -R./newfangle.module $TEX_SRC &gt; ./newfangle.module
+<span class="number-left">17</span>/usr/local/bin/fangle -R./newfangle $TEX_SRC &gt; ./newfangle
+<span class="number-left">18</span>/usr/local/bin/fangle -R./newfangle.module $TEX_SRC &gt; ./newfangle.module
 <span class="number-left">19</span>&#x200b;
 <span class="number-left">20</span>&#x27e8;test:helpers <a class="chunk" href="#chunk:142">142</a>&#x27e9;
-<span class="number-left">21</span>export NEWFANGLE=./newfangle
+<span class="number-left">21</span>export FANGLE=./fangle
 <span class="number-left">22</span>export TMP=${TMP:-/tmp}
 <span class="number-left">23</span>&#x27e8;test:run-tests <a class="chunk" href="#chunk:138">138</a>&#x27e9;
-<span class="number-left">24</span># Now check that we can extract a newfangle that also passes the tests!
-<span class="number-left">25</span>$NEWFANGLE -R./newfangle $TEX_SRC &gt; ./new-newfangle
-<span class="number-left">26</span>export NEWFANGLE=./new-newfangle
+<span class="number-left">24</span># Now check that we can extract a fangle that also passes the tests!
+<span class="number-left">25</span>$FANGLE -R./fangle $TEX_SRC &gt; ./new-newfangle
+<span class="number-left">26</span>export FANGLE=./new-fangle
 <span class="number-left">27</span>&#x27e8;test:run-tests <a class="chunk" href="#chunk:138">138</a>&#x27e9;
 </pre>
 </div>
@@ -5241,7 +5241,7 @@ To extract from LyX, you will need to configure LyX as explained in section <a c
 
 <div class="listing">
 <pre class="listing"><span class="number-left">1</span># run tests
-<span class="number-left">2</span>$NEWFANGLE -Rpca-test.awk $TEX_SRC | awk -f - || exit 1
+<span class="number-left">2</span>$FANGLE -Rpca-test.awk $TEX_SRC | awk -f - || exit 1
 <span class="number-left">3</span>&#x27e8;test:cromulence <a class="chunk" href="#chunk:83">83</a>&#x27e9;
 <span class="number-left">4</span>&#x27e8;test:escapes <a class="chunk" href="#chunk:92">92</a>&#x27e9;
 <span class="number-left">5</span>&#x27e8;test:chunk-params <a class="chunk" href="#chunk:147">147</a>&#x27e9;
@@ -5281,14 +5281,14 @@ With a lyx-build-helper
 <div class="listing">
 <pre class="listing"><span class="number-left">1</span>#python -m elyxer --css lyx.css $LYX_SRC | \
 <span class="number-left">2</span>#  iconv -c -f utf-8 -t ISO-8859-1//TRANSLIT | \
-<span class="number-left">3</span>#  sed &#x2019;s/UTF-8"\(.\)&gt;/ISO-8859-1"\1&gt;/&#x2019; &gt; www/docs/newfangle.html
+<span class="number-left">3</span>#  sed &#x2019;s/UTF-8"\(.\)&gt;/ISO-8859-1"\1&gt;/&#x2019; &gt; www/docs/fangle.html
 <span class="number-left">4</span>&#x200b;
-<span class="number-left">5</span>python -m elyxer --css lyx.css --iso885915 --html --destdirectory www/docs/newfangle.e newfangle.lyx &gt; www/docs/newfangle.e/newfangle.html
+<span class="number-left">5</span>python -m elyxer --css lyx.css --iso885915 --html --destdirectory www/docs/fangle.e newfangle.lyx &gt; www/docs/newfangle.e/newfangle.html
 <span class="number-left">6</span>&#x200b;
-<span class="number-left">7</span>( mkdir -p www/docs/newfangle &amp;&amp; cd www/docs/newfangle &amp;&amp; \
-<span class="number-left">8</span>  lyx -e latex ../../../newfangle.lyx &amp;&amp; \
-<span class="number-left">9</span>  htlatex ../../../newfangle.tex "xhtml,fn-in" &amp;&amp; \
-<span class="number-left">10</span>  sed -i -e &#x2019;s/&lt;!--l\. [0-9][0-9]* *--&gt;//g&#x2019; newfangle.html
+<span class="number-left">7</span>( mkdir -p www/docs/fangle &amp;&amp; cd www/docs/newfangle &amp;&amp; \
+<span class="number-left">8</span>  lyx -e latex ../../../fangle.lyx &amp;&amp; \
+<span class="number-left">9</span>  htlatex ../../../fangle.tex "xhtml,fn-in" &amp;&amp; \
+<span class="number-left">10</span>  sed -i -e &#x2019;s/&lt;!--l\. [0-9][0-9]* *--&gt;//g&#x2019; fangle.html
 <span class="number-left">11</span>)
 <span class="number-left">12</span>&#x200b;
 <span class="number-left">13</span>( mkdir -p www/docs/literate &amp;&amp; cd www/docs/literate &amp;&amp; \
@@ -5314,9 +5314,9 @@ First you will need the tex output, then you can extract:
 <div class="Standard">
 
 <div class="listing">
-<pre class="listing"><span class="number-left">1</span>lyx -e latex newfangle.lyx
-<span class="number-left">2</span>newfangle -R./newfangle newfangle.tex &gt; ./newfangle
-<span class="number-left">3</span>newfangle -R./newfangle.module newfangle.tex &gt; ./newfangle.module
+<pre class="listing"><span class="number-left">1</span>lyx -e latex fangle.lyx
+<span class="number-left">2</span>fangle -R./newfangle newfangle.tex &gt; ./newfangle
+<span class="number-left">3</span>fangle -R./newfangle.module newfangle.tex &gt; ./newfangle.module
 </pre>
 </div>
 </div>
@@ -5429,8 +5429,8 @@ And this chunk will perform the test:
 <div class="Standard">
 
 <div class="listing">
-<pre class="listing"><span class="number-left">1</span>$NEWFANGLE -Rtest:chunk-params:result $TEX_SRC &gt; $TMP/answer || exit 1
-<span class="number-left">2</span>$NEWFANGLE -Rtest:chunk-params:text $TEX_SRC &gt; $TMP/result || exit 1
+<pre class="listing"><span class="number-left">1</span>$FANGLE -Rtest:chunk-params:result $TEX_SRC &gt; $TMP/answer || exit 1
+<span class="number-left">2</span>$FANGLE -Rtest:chunk-params:text $TEX_SRC &gt; $TMP/result || exit 1
 <span class="number-left">3</span>passtest diff $TMP/answer $TMP/result || (echo test:chunk-params:text failed ; exit 1)
 </pre>
 </div>
