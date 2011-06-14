@@ -121,38 +121,40 @@ II Source Code   31
 9.5 Escaping and Quoting   52
 10 Recognizing Chunks   55
 10.1 Chunk start   55
-10.1.1 lstlistings   55
-10.1.2 Noweb   56
-10.2 Chunk end   56
-10.2.1 lstlistings   57
-10.2.2 noweb   57
+10.1.1 T_ E X_( M A CS) hackery   55
+10.1.2 lstlistings   56
+10.1.3 T_ E X_( M A CS)   56
+10.1.4 Noweb   57
+10.2 Chunk end   57
+10.2.1 lstlistings   58
+10.2.2 noweb   58
 10.3 Chunk contents   58
-10.3.1 lstlistings   58
-11 Processing Options   58
-12 Generating the Output   59
-12.1 Assembling the Chunks   61
-12.1.1 Chunk Parts   63
-13 Storing Chunks   64
-14 getopt   64
-15 Fangle LaTeX source code   69
-15.1 fangle module   71
+10.3.1 lstlistings   59
+11 Processing Options   61
+12 Generating the Output   63
+12.1 Assembling the Chunks   64
+12.1.1 Chunk Parts   64
+13 Storing Chunks   69
+14 getopt   71
+15 Fangle LaTeX source code   75
+15.1 fangle module   75
 15.1.1 The Chunk style   75
-15.1.2 The chunkref style   75
-15.2 Latex Macros   75
-15.2.1 The chunk command   76
-15.2.1.1 Chunk parameters   76
-15.2.2 The noweb styled caption   77
+15.1.2 The chunkref style   76
+15.2 Latex Macros   76
+15.2.1 The chunk command   77
+15.2.1.1 Chunk parameters   78
+15.2.2 The noweb styled caption   78
 15.2.3 The chunk counter   78
-15.2.4 Cross references   78
-15.2.5 The end   78
-16 Extracting fangle   81
-16.1 Extracting from Lyx   82
+15.2.4 Cross references   81
+15.2.5 The end   82
+16 Extracting fangle   83
+16.1 Extracting from Lyx   83
 16.2 Extracting documentation   83
-16.3 Extracting from the command line   83
-16.4 Testing   83
-III Tests   84
-17 Chunk Parameters   84
-18 Compile-log-lyx   85
+16.3 Extracting from the command line   84
+16.4 Testing   84
+III Tests   85
+17 Chunk Parameters   87
+18 Compile-log-lyx   89
 Part I  Using Fangle 
 Chapter 1Introduction to Literate Programming
 Todo: Should really follow on from a part-0 explanation of what literate programming is.
@@ -578,7 +580,7 @@ To do: De-lyxify
   1  | #! /bin/sh
   2  | 
   3  | MAKE_SRC="${1:-${NW_LYX:-../../noweb-lyx/noweb-lyx3.lyx}}"
-  4  | MAKE_SRC=`dirname "$MAKE_SRC"`/`basename "$MAKE_SRC" .lyx`
+  4  | MAKE_SRC=‘dirname "$MAKE_SRC"‘/‘basename "$MAKE_SRC" .lyx‘
   5  | NOWEB_SRC="${2:-${NOWEB_SRC:-$MAKE_SRC.lyx}}"
   6  | lyx -e latex $MAKE_SRC
   7  | 
@@ -670,7 +672,7 @@ And include the following chunks (which are explained further on) to make up the
   33c <./fangle[3]() ⇑33a, lang=> +≡ ▵33b 36a⊳
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   7  | «helper-functions 34d»
-  8  | «mode-tracker 52b»
+  8  | «mode-tracker 52a»
   9  | «parse_chunk_args 38a»
   10  | «chunk-storage-functions 69b»
   11  | «output_chunk_names() 63d»
@@ -1014,9 +1016,9 @@ s/\\/\\\\/g;s/$/\\$/g;s/"/\\"/g;
 which protects \ $ ".
 To do: I don't think this example is true
 The mode tracker must also track nested mode-changes, as in this sh example.
-echo "hello `id ...`"
+echo "hello ‘id ...‘"
 ↑
-Any characters inserted at the point marked ↑ would need to be escaped, including ` | * among others. First it would need escaping for the back-ticks `, and then for the double-quotes ".
+Any characters inserted at the point marked ↑ would need to be escaped, including ‘ | * among others. First it would need escaping for the back-ticks ‘, and then for the double-quotes ".
 To do: MAYBE
 Escaping need not occur if the format and mode of the included chunk matches that of the including chunk.
 As each chunk is output a new mode tracker for that language is initialized in it's normal state. As text is output for that chunk the output mode is tracked. When a new chunk is included, a transformation appropriate to that mode is selected and pushed onto a stack of transformations. Any text to be output is first passed through this stack of transformations.
@@ -1038,7 +1040,7 @@ Submodes are entered by the characters  " ' { ( [ /*
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 In the default mode, a comma surrounded by un-important white space is a delimiter of language items1. whatever a language item might be  ^1.
 
-  43b <common-mode-definitions[2](language) ⇑43a, lang=> +≡ ▵43a 44a▿
+  43b <common-mode-definitions[2](language) ⇑43a, lang=> +≡ ▵43a 43d▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   2  | modes[${language}, "",  "delimiters"]=" *, *";
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
@@ -1046,7 +1048,7 @@ and should pass this test:
 To do: Why do the tests run in ?(? mode and not ?? mode
 
 
-  43c <test:mode-definitions[1](), lang=> ≡  44h⊳
+  43c <test:mode-definitions[1](), lang=> ≡  44g⊳
       ________________________________________________________________________
   1  | parse_chunk_args("c-like", "1,2,3", a, "");
   2  | if (a[1] != "1") e++;
@@ -1071,7 +1073,7 @@ For each of these sub-modes modes we must also identify at a mode terminator, an
 9.2.1 Backslash 
 The backslash mode has no submodes or delimiters, and is terminated by any character. Note that we are not so much interested in evaluating or interpolating content as we are in delineating content. It is no matter that a double backslash (\\) may represent a single backslash while a backslash-newline may represent white space, but it does matter that the newline in a backslash newline should not be able to terminate a C pre-processor statement; and so the newline will be consumed by the backslash however it is to be interpreted.
 
-  43d <common-mode-definitions[3](language) ⇑43a, lang=> +≡ ▵43b 44g⊳
+  43d <common-mode-definitions[3](language) ⇑43a, lang=> +≡ ▵43b 44f⊳
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   3  | modes[${language}, "\\", "terminators"]=".";
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
@@ -1079,13 +1081,13 @@ The backslash mode has no submodes or delimiters, and is terminated by any chara
 Common languages support two kinds of strings quoting, double quotes and single quotes.
 In a string we have one special mode, which is the backslash. This may escape an embedded quote and prevent us thinking that it should terminate the string.
 
-  44a <mode:common-string[1](language, quote), lang=> ≡  44c▿
+  44a <mode:common-string[1](language, quote), lang=> ≡  44b▿
       ________________________________________________________________________
   1  | modes[${language}, ${quote}, "submodes"]="\\\\";
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 Otherwise, the string will be terminated by the same character that commenced it.
 
-  44b <mode:common-string[2](language, quote) ⇑44b, lang=> +≡ ▵44b 44d▿
+  44b <mode:common-string[2](language, quote) ⇑44a, lang=> +≡ ▵44a 44c▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   2  | modes[${language}, ${quote}, "terminators"]=${quote};
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
@@ -1093,21 +1095,21 @@ In C type languages, certain escape sequences exist in strings. We need to defin
 The first substitution is to replace a backslash with a double backslash. We do this first as other substitutions may introduce a backslash which we would not then want to escape again here.
 Note: Backslashes need double-escaping in the search pattern but not in the replacement string, hence we are replacing a literal \ with a literal \\.
 
-  44c <mode:common-string[3](language, quote) ⇑44b, lang=> +≡ ▵44c 44e▿
+  44c <mode:common-string[3](language, quote) ⇑44a, lang=> +≡ ▵44b 44d▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   3  | escapes[${language}, ${quote}, ++escapes[${language}, ${quote}], "s"]="\\\\";
   4  | escapes[${language}, ${quote},   escapes[${language}, ${quote}], "r"]="\\\\";
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 If the quote character occurs in the text, it should be preceded by a backslash, otherwise it would terminate the string unexpectedly.
 
-  44d <mode:common-string[4](language, quote) ⇑44b, lang=> +≡ ▵44d 44f▿
+  44d <mode:common-string[4](language, quote) ⇑44a, lang=> +≡ ▵44c 44e▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   5  | escapes[${language}, ${quote}, ++escapes[${language}, ${quote}], "s"]=${quote};
   6  | escapes[${language}, ${quote},   escapes[${language}, ${quote}], "r"]="\\" ${quote};
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 Any newlines in the string, must be replaced by \n.
 
-  44e <mode:common-string[5](language, quote) ⇑44b, lang=> +≡ ▵44e
+  44e <mode:common-string[5](language, quote) ⇑44a, lang=> +≡ ▵44d
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   7  | escapes[${language}, ${quote}, ++escapes[${language}, ${quote}], "s"]="\n";
   8  | escapes[${language}, ${quote},   escapes[${language}, ${quote}], "r"]="\\n";
@@ -1116,7 +1118,7 @@ Any newlines in the string, must be replaced by \n.
 
 For the common modes, we define this string handling for double and single quotes.
 
-  44f <common-mode-definitions[4](language) ⇑43a, lang=> +≡ ⊲44a 45b⊳
+  44f <common-mode-definitions[4](language) ⇑43a, lang=> +≡ ⊲43d 45b⊳
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   4  | =<\chunkref{mode:common-string}(${language}, "\textbackslash{}"")>
   5  | =<\chunkref{mode:common-string}(${language}, "'")>
@@ -1146,7 +1148,7 @@ Note that the open is NOT a regex but the close token IS.
 To do: When we can quote regex we won't have to put the slashes in here
 
 
-  45b <common-mode-definitions[5](language) ⇑43a, lang=> +≡ ⊲44g
+  45b <common-mode-definitions[5](language) ⇑43a, lang=> +≡ ⊲44f
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   6  | =<\chunkref{mode:common-brackets}(${language}, "{", "}")>
   7  | =<\chunkref{mode:common-brackets}(${language}, "[", "\textbackslash{}\textbackslash{}]")>
@@ -1287,7 +1289,7 @@ For full regex support, modes need to be named not after their starting characte
 
 9.2.7 Perl 
 
-  47b <mode-definitions[2]() ⇑46d, lang=> +≡ ⊲46d 47c▿
+  47b <mode-definitions[2]() ⇑46c, lang=> +≡ ⊲46c 47c▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   11  | =<\chunkref{common-mode-definitions}("perl")>
   12  | =<\chunkref{mode:multi-line-comments}("perl")>
@@ -1296,7 +1298,7 @@ For full regex support, modes need to be named not after their starting characte
 Still need to add add s/, submode /, terminate both with //. This is likely to be impossible as perl regexes can contain perl.
 9.2.8 sh 
 
-  47c <mode-definitions[3]() ⇑46d, lang=> +≡ ▵47b
+  47c <mode-definitions[3]() ⇑46c, lang=> +≡ ▵47b
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   14  | =<\chunkref{common-mode-definitions}("sh")>
   15  | #<\chunkref{mode:common-string}("sh", "\textbackslash{}"")>
@@ -1309,7 +1311,7 @@ Still need to add add s/, submode /, terminate both with //. This is likely to b
 9.3 Some tests 
 Also, the parser must return any spare text at the end that has not been processed due to a mode terminator being found.
 
-  47d <test:mode-definitions[3]() ⇑43c, lang=> +≡ ⊲44h 47e▿
+  47d <test:mode-definitions[3]() ⇑43c, lang=> +≡ ⊲44g 47e▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   23  | rest = parse_chunk_args("c-like", "1, 2, 3) spare", a, "(");
   24  | if (a[1] != 1) e++;
@@ -1377,7 +1379,7 @@ And for tracking modes, we dispatch to a mode-tracker action based on the curren
   15  | }
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 
-  48d <mode_tracker[2]() ⇑48c, lang=> +≡ ▵48c 49a▿
+  48d <mode_tracker[2]() ⇑48c, lang=> +≡ ▵48c 48e▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   16  | function dump_mode_tracker(context,  
   17  |   c, d)
@@ -1416,7 +1418,7 @@ This implies that any chunk must be syntactically whole; for instance, this is f
      |________________________________________________________________________
 
 
-But this is not fine; the chunk <test:hidden-else 49e> is not properly cromulent.
+But this is not fine; the chunk <test:hidden-else 49d> is not properly cromulent.
 
   49c <test:partial-chunk[1](), lang=> ≡ 
       ________________________________________________________________________
@@ -1448,7 +1450,7 @@ These tests will check for correct behaviour:
 9.4.3 Tracker 
 We must avoid recursion as a language construct because we intend to employ mode-tracking to track language mode of emitted code, and the code is emitted from a function which is itself recursive, so instead we implement psuedo-recursion using our own stack based on a hash.
 
-  49f <mode_tracker()[1](), lang=awk> ≡  50a▿
+  49f <mode_tracker()[1](), lang=awk> ≡  49g▿
       ________________________________________________________________________
   1  | function mode_tracker(context, text, values, 
   2  |   # optional parameters
@@ -1460,7 +1462,7 @@ We must avoid recursion as a language construct because we intend to employ mode
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 We could be re-commencing with a valid context, so we need to setup the state according to the last context.
 
-  49g <mode_tracker()[2]() ⇑49g, lang=> +≡ ▵49g 50d⊳
+  49g <mode_tracker()[2]() ⇑49f, lang=> +≡ ▵49f 50c⊳
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   8  |   cindex = context[""] + 0;
   9  |   mode = context[cindex, "mode"];
@@ -1468,7 +1470,7 @@ We could be re-commencing with a valid context, so we need to setup the state ac
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 First we construct a single large regex combining the possible sub-modes for the current mode along with the terminators for the current mode.
 
-  50a <parse_chunk_args-reset-modes[1](), lang=> ≡  50c▿
+  50a <parse_chunk_args-reset-modes[1](), lang=> ≡  50b▿
       ________________________________________________________________________
   1  |   submodes=modes[language, mode, "submodes"];
   2  | 
@@ -1485,27 +1487,27 @@ First we construct a single large regex combining the possible sub-modes for the
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 If we don't find anything to match on --- probably because the language is not supported --- then we return the entire text without matching anything.
 
-  50b <parse_chunk_args-reset-modes[2]() ⇑50b, lang=> +≡ ▵50b
+  50b <parse_chunk_args-reset-modes[2]() ⇑50a, lang=> +≡ ▵50a
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   13  |  if (! length(submodes)) return text;
      |________________________________________________________________________
 
 
 
-  50c <mode_tracker()[3]() ⇑49g, lang=> +≡ ⊲50a 50e▿
+  50c <mode_tracker()[3]() ⇑49f, lang=> +≡ ⊲49g 50d▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   11  | =<\chunkref{parse_chunk_args-reset-modes}>
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 We then iterate the text (until there is none left) looking for sub-modes or terminators in the regex.
 
-  50d <mode_tracker()[4]() ⇑49g, lang=> +≡ ▵50d 50f▿
+  50d <mode_tracker()[4]() ⇑49f, lang=> +≡ ▵50c 50e▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   12  |   while((cindex >= 0) && length(text)) {
   13  |     if (match(text, "(" submodes ")", a)) {
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 A bug that creeps in regularly during development is bad regexes of zero length which result in an infinite loop (as no text is consumed), so I catch that right away with this test.
 
-  50e <mode_tracker()[5]() ⇑49g, lang=> +≡ ▵50e 51a▿
+  50e <mode_tracker()[5]() ⇑49f, lang=> +≡ ▵50d 50f▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   14  |       if (RLENGTH<1) {
   15  |         error(sprintf("Internal error, matched zero length submode, should be impossible - likely regex computation error\n" \
@@ -1515,14 +1517,14 @@ A bug that creeps in regularly during development is bad regexes of zero length 
 part is defined as the text up to the sub-mode or terminator, and this is appended to item --- which is the current text being gathered. If a mode has a delimiter, then item is reset each time a delimiter is found.
 ("hello_item, there_item")<wide-overbrace>^item,  (he said.)<wide-overbrace>^item
 
-  50f <mode_tracker()[6]() ⇑49g, lang=> +≡ ▵50f 51b⊳
+  50f <mode_tracker()[6]() ⇑49f, lang=> +≡ ▵50e 50g▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   18  |       part = substr(text, 1, RSTART -1);
   19  |       item = item part;
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 We must now determine what was matched. If it was a terminator, then we must restore the previous mode.
 
-  51a <mode_tracker()[7]() ⇑49g, lang=> +≡ ⊲51a 51c▿
+  50g <mode_tracker()[7]() ⇑49f, lang=> +≡ ▵50f 51a⊳
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   20  |       if (match(a[1], "^" terminators "$")) {
   21  | #printf("%2d EXIT  MODE [%s] by [%s] [%s]\n", cindex, mode, a[1], text) > "/dev/stderr"
@@ -1540,7 +1542,7 @@ We must now determine what was matched. If it was a terminator, then we must res
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 If a delimiter was matched, then we must store the current item in the parsed values array, and reset the item.
 
-  51b <mode_tracker()[8]() ⇑49g, lang=> +≡ ▵51b 51d▿
+  51a <mode_tracker()[8]() ⇑49f, lang=> +≡ ⊲50g 51b▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   33  |       else if (match(a[1], "^" delimiters "$")) {
   34  |         if (cindex==0) {
@@ -1554,7 +1556,7 @@ If a delimiter was matched, then we must store the current item in the parsed va
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 otherwise, if a new submode is detected (all submodes have terminators), we must create a nested parse context until we find the terminator for this mode.
 
-  51c <mode_tracker()[9]() ⇑49g, lang=> +≡ ▵51c 52a▿
+  51b <mode_tracker()[9]() ⇑49f, lang=> +≡ ▵51a 51c▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   42  |  else if ((language, a[1], "terminators") in modes) {
   43  |         #check if new_mode is defined
@@ -1574,7 +1576,7 @@ otherwise, if a new submode is detected (all submodes have terminators), we must
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 In the final case, we parsed to the end of the string. If the string was entire, then we should have no nested mode context, but if the string was just a fragment we may have a mode context which must be preserved for the next fragment. Todo: Consideration ought to be given if sub-mode strings are split over two fragments.
 
-  51d <mode_tracker()[10]() ⇑49g, lang=> +≡ ▵51d
+  51c <mode_tracker()[10]() ⇑49f, lang=> +≡ ▵51b
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   57  | else {
   58  |       context[cindex, "values", ++context[cindex, "values"]] = item text;
@@ -1597,7 +1599,7 @@ All the mode tracker chunks are referred to here:
   52a <mode-tracker[1](), lang=> ≡ 
       ________________________________________________________________________
   1  | «new_mode_tracker() 48a»
-  2  | «mode_tracker() 49g»
+  2  | «mode_tracker() 49f»
      |________________________________________________________________________
 
 
@@ -1654,7 +1656,7 @@ Another special character is used, the left-arrow with UTF-8 sequence 0xE2 0x86 
 To do: remove the hack
 
 
-  53a <mode_tracker[4]() ⇑48c, lang=> +≡ ⊲49a 53b▿
+  53a <mode_tracker[4]() ⇑48c, lang=> +≡ ⊲48e 53b▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
 
   31  | function untab(text) {
@@ -1738,7 +1740,7 @@ These hacks detect such sequences and retro-fit in the old TeX parsing.
   8  | }
   9  | 
   10  | /\xE2\x80\x98/ {
-  11  |   gsub("\\xE2\\x80\\x98", "`");
+  11  |   gsub("\\xE2\\x80\\x98", "‘");
   12  | }
   13  | 
   14  | /\xE2\x89\xA1/ {
@@ -3112,8 +3114,8 @@ Chapter 18Compile-log-lyx
   37  | lyxgoto() {
   38  |   file="${LINE%:*}"
   39  |   line="${LINE##*:}"
-  40  |   extraline=`cat $file | head -n $line | tac | sed '/^\\\\begin{lstlisting}/q' | wc -l`
-  41  |   extraline=`expr $extraline - 1`
+  40  |   extraline=‘cat $file | head -n $line | tac | sed '/^\\\\begin{lstlisting}/q' | wc -l‘
+  41  |   extraline=‘expr $extraline - 1‘
   42  |   lyxclient -c "LYXCMD:command-sequence server-goto-file-row $file $line ; char-forward ; repeat $extraline paragraph-down ; paragraph-up-select"
   43  | }
   44  | 
