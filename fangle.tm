@@ -1372,7 +1372,7 @@
 
     <item>MAKE_SRC="${1:-${NW_LYX:-../../noweb-lyx/noweb-lyx3.lyx}}"
 
-    <item>MAKE_SRC=\0dirname "$MAKE_SRC"\0/\0basename "$MAKE_SRC" .lyx\0
+    <item>MAKE_SRC=`dirname "$MAKE_SRC"`/`basename "$MAKE_SRC" .lyx`
 
     <item>NOWEB_SRC="${2:-${NOWEB_SRC:-$MAKE_SRC.lyx}}"
 
@@ -2126,13 +2126,13 @@
   <todo|I don't think this example is true>The mode tracker must also track
   nested mode-changes, as in this sh example.
 
-  <verbatim|echo "hello \0id ...\0">
+  <verbatim|echo "hello `id ...`">
 
-  <phantom|<verbatim|echo "hello \0id >><math|\<uparrow\>>
+  <phantom|<verbatim|echo "hello `id >><math|\<uparrow\>>
 
   Any characters inserted at the point marked <math|\<uparrow\>> would need
-  to be escaped, including <verbatim|\0> <verbatim|\|> <verbatim|*> among
-  others. First it would need escaping for the back-ticks <verbatim|\0>, and
+  to be escaped, including <verbatim|`> <verbatim|\|> <verbatim|*> among
+  others. First it would need escaping for the back-ticks <verbatim|`>, and
   then for the double-quotes <verbatim|">.
 
   <todo|MAYBE>Escaping need not occur if the format and mode of the included
@@ -3219,7 +3219,7 @@
 
     <item>/\\xE2\\x80\\x98/ {
 
-    <item> \ gsub("\\\\xE2\\\\x80\\\\x98", "\0");
+    <item> \ gsub("\\\\xE2\\\\x80\\\\x98", "`");
 
     <item>}
 
@@ -5518,10 +5518,10 @@
 
     <item> \ line="${LINE##*:}"
 
-    <item> \ extraline=\0cat $file \| head -n $line \| tac \| sed
-    '/^\\\\\\\\begin{lstlisting}/q' \| wc -l\0
+    <item> \ extraline=`cat $file \| head -n $line \| tac \| sed
+    '/^\\\\\\\\begin{lstlisting}/q' \| wc -l`
 
-    <item> \ extraline=\0expr $extraline - 1\0
+    <item> \ extraline=`expr $extraline - 1`
 
     <item> \ lyxclient -c "LYXCMD:command-sequence server-goto-file-row $file
     $line ; char-forward ; repeat $extraline paragraph-down ;
@@ -5554,3 +5554,5 @@
     <associate|sfactor|5>
   </collection>
 </initial>
+
+

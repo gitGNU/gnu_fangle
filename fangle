@@ -1,23 +1,20 @@
 #! /usr/bin/awk -f
-# newfangle - fully featured notangle replacement in awk
-#
-#  Copyright (C) 2009 Sam Liddicott <sam@liddicott.com>
-#
-#  This program is free software: you can redistribute it and/or modify
-#  it under the terms of the GNU General Public License as published by
-#  the Free Software Foundation, either version 3 of the License, or
-#  (at your option) any later version.
-#
-#  This program is distributed in the hope that it will be useful,
-#  but WITHOUT ANY WARRANTY; without even the implied warranty of
-#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#  GNU General Public License for more details.
-#
-#  You should have received a copy of the GNU General Public License
-#  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
-
-
+# # fangle - fully featured notangle replacement in awk
+  #
+  # Copyright (C) 2009-2010 Sam Liddicott <sam@liddicott.com>
+  #
+  # This program is free software: you can redistribute it and/or modify
+  # it under the terms of the GNU General Public License as published by
+  # the Free Software Foundation, either version 3 of the License, or
+  # (at your option) any later version.
+  #
+  # This program is distributed in the hope that it will be useful,
+  # but WITHOUT ANY WARRANTY; without even the implied warranty of
+  # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  # GNU General Public License for more details.
+  #
+  # You should have received a copy of the GNU General Public License
+  # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 # NOTE: Arnold Robbins public domain getopt for awk is also used:
 # getopt.awk --- do C library getopt(3) function in awk
 #
@@ -143,12 +140,12 @@ function mode_tracker(context, text, values,
     if (length(submodes)>0) submodes = submodes "|";
     submodes=submodes terminators;
   } else terminators="";
-  if (! length(submodes)) return text; 
+ if (! length(submodes)) return text;
   while((cindex >= 0) && length(text)) {
     if (match(text, "(" submodes ")", a)) {
       if (RLENGTH<1) {
         error(sprintf("Internal error, matched zero length submode, should be impossible - likely regex computation error\n" \
-		"Language=%s\nmode=%s\nmatch=%s\n", language, mode, submodes));
+                "Language=%s\nmode=%s\nmatch=%s\n", language, mode, submodes));
       }
       part = substr(text, 1, RSTART -1);
       item = item part;
@@ -172,7 +169,7 @@ function mode_tracker(context, text, values,
               if (length(submodes)>0) submodes = submodes "|";
               submodes=submodes terminators;
             } else terminators="";
-            if (! length(submodes)) return text; 
+           if (! length(submodes)) return text;
         }
         item = item a[1];
         text = substr(text, 1 + length(part) + length(a[1]));
@@ -207,7 +204,7 @@ function mode_tracker(context, text, values,
             if (length(submodes)>0) submodes = submodes "|";
             submodes=submodes terminators;
           } else terminators="";
-          if (! length(submodes)) return text; 
+         if (! length(submodes)) return text;
       } else {
         error(sprintf("Submode '%s' set unknown mode in text: %s\nLanguage %s Mode %s\n", a[1], text, language, mode));
         text = substr(text, 1 + length(part) + length(a[1]));
@@ -225,6 +222,7 @@ else {
   if (length(item)) context[cindex, "values", ++context[cindex, "values"]] = item;
   return text;
 }
+
 function untab(text) {
   gsub("[[:space:]]*\xE2\x86\xA4","", text);
   return text;
@@ -232,8 +230,8 @@ function untab(text) {
 function transform_escape(s, r, text,
     # optional
     max, 
-	# local vars
-	c)
+        # local vars
+        c)
 {
   for(c=1; c <= max && (c in s); c++) {
     gsub(s[c], r[c], text);
@@ -243,17 +241,17 @@ function transform_escape(s, r, text,
 function mode_escaper(context, s, r, src,
   c, cp, cpl)
 {
-	for(c = context[""]; c >= 0; c--) {
-		if ( (context[c, "language"], context[c, "mode"]) in escapes) {
-			cpl = escapes[context[c, "language"], context[c, "mode"]];
-			for (cp = 1; cp <= cpl; cp ++) {
-				++src;
-				s[src] = escapes[context[c, "language"], context[c, "mode"], cp, "s"];
-				r[src] = escapes[context[c, "language"], context[c, "mode"], cp, "r"];
-			}
-		}
-	}
-	return src;
+  for(c = context[""]; c >= 0; c--) {
+    if ( (context[c, "language"], context[c, "mode"]) in escapes) {
+      cpl = escapes[context[c, "language"], context[c, "mode"]];
+      for (cp = 1; cp <= cpl; cp ++) {
+        ++src;
+        s[src] = escapes[context[c, "language"], context[c, "mode"], cp, "s"];
+                                r[src] = escapes[context[c, "language"], context[c, "mode"], cp, "r"];
+      }
+    }
+  }
+  return src;
 }
 function dump_escaper(c, s, r, cc) {
   for(cc=1; cc<=c; cc++) {
@@ -284,7 +282,7 @@ function new_chunk(chunk_name, params,
     chunk_names[chunk_name];
     for (p in params) {
       chunks[chunk_name, p] = params[p];
-      if (debug) print "chunks[" chunk_name "," p "] = " params[p]
+      if (debug) print "chunks[" chunk_name "," p "] = " params[p];
     }
     if ("append" in params) {
       append=params["append"];
@@ -314,8 +312,7 @@ function chunk_line(chunk_name, line){
 }
 
 function chunk_include(chunk_name, chunk_ref, indent, tail)
-{ # hee hee
-  debug_log(sprintf("Chunk include [%s] [%s]", chunk_name, chunk_ref));
+{
   chunks[chunk_name, "part", ++chunks[chunk_name, "part"] ] = chunk_ref;
   chunks[chunk_name, "part", chunks[chunk_name, "part"], "type" ] = part_type_chunk;
   chunks[chunk_name, "part", chunks[chunk_name, "part"], "indent" ] = indent_string(indent);
@@ -354,6 +351,7 @@ function write_chunk(chunk_name) {
   split("", context);
   return write_chunk_r(chunk_name, context);
 }
+
 function write_chunk_r(chunk_name, context, indent, tail,
   # optional vars
   chunk_path, chunk_args, 
@@ -362,14 +360,14 @@ function write_chunk_r(chunk_name, context, indent, tail,
   chunk_params, part, max_part, part_line, frag, max_frag, text, 
   chunklet, only_part, call_chunk_args, new_context)
 {
-  if (debug) print "write_chunk_r(", chunk_name, ")"
+  if (debug) debug_log("write_chunk_r(", chunk_name, ")");
   if (match(chunk_name, "^(.*)\\[([0-9]*)\\]$", chunk_name_parts)) {
     chunk_name = chunk_name_parts[1];
     only_part = chunk_name_parts[2];
   }
-  split("", context);
-  new_mode_tracker(context, chunks[chunk_name, "language"], "");
-  split(chunks[chunk_name, "params"], chunk_params, " *; *");
+ split("", context);
+ new_mode_tracker(context, chunks[chunk_name, "language"], "");
+ split(chunks[chunk_name, "params"], chunk_params, " *; *");
   if (! (chunk_name in chunk_names)) {
     error(sprintf(_"The root module <<%s>> was not defined.\nUsed by: %s",\
                   chunk_name, chunk_path));
@@ -405,7 +403,7 @@ function write_chunk_r(chunk_name, context, indent, tail,
                     chunks[chunk_name, "part", part, "tail"],
                     chunk_path "\n         " chunk_name,
                     call_chunk_args,
-        			s, r, new_src);
+                    s, r, new_src);
       } else if (chunklet SUBSEP "line" in chunks) {
         max_frag = chunks[chunklet, "line"];
         for(frag = 1; frag <= max_frag; frag++) {
@@ -472,14 +470,14 @@ function expand_chunk_args(text, params, args,
 
   return text;
 }
+
 BEGIN {
   part_type_chunk=1;
   SUBSEP=",";
-  #RS="\n\n\n|\n\n";
-  modes["c-like", "",  "submodes" ]="\\\\|\"|'|{|\\(|\\[";
+  modes["c-like", "",  "submodes"]="\\\\|\"|'|{|\\(|\\[";
   modes["c-like", "",  "delimiters"]=" *, *";
   modes["c-like", "\\", "terminators"]=".";
-  modes["c-like", "\"", "submodes" ]="\\\\";
+  modes["c-like", "\"", "submodes"]="\\\\";
   modes["c-like", "\"", "terminators"]="\"";
   escapes["c-like", "\"", ++escapes["c-like", "\""], "s"]="\\\\";
   escapes["c-like", "\"",   escapes["c-like", "\""], "r"]="\\\\";
@@ -487,7 +485,7 @@ BEGIN {
   escapes["c-like", "\"",   escapes["c-like", "\""], "r"]="\\" "\"";
   escapes["c-like", "\"", ++escapes["c-like", "\""], "s"]="\n";
   escapes["c-like", "\"",   escapes["c-like", "\""], "r"]="\\n";
-  modes["c-like", "'", "submodes" ]="\\\\";
+  modes["c-like", "'", "submodes"]="\\\\";
   modes["c-like", "'", "terminators"]="'";
   escapes["c-like", "'", ++escapes["c-like", "'"], "s"]="\\\\";
   escapes["c-like", "'",   escapes["c-like", "'"], "r"]="\\\\";
@@ -505,10 +503,10 @@ BEGIN {
   modes["c-like", "(",  "delimiters"]=" *, *";
   modes["c-like", "(",  "terminators"]="\\)";
 
-  modes["c", "",  "submodes" ]="\\\\|\"|'|{|\\(|\\[";
+  modes["c", "",  "submodes"]="\\\\|\"|'|{|\\(|\\[";
   modes["c", "",  "delimiters"]=" *, *";
   modes["c", "\\", "terminators"]=".";
-  modes["c", "\"", "submodes" ]="\\\\";
+  modes["c", "\"", "submodes"]="\\\\";
   modes["c", "\"", "terminators"]="\"";
   escapes["c", "\"", ++escapes["c", "\""], "s"]="\\\\";
   escapes["c", "\"",   escapes["c", "\""], "r"]="\\\\";
@@ -516,7 +514,7 @@ BEGIN {
   escapes["c", "\"",   escapes["c", "\""], "r"]="\\" "\"";
   escapes["c", "\"", ++escapes["c", "\""], "s"]="\n";
   escapes["c", "\"",   escapes["c", "\""], "r"]="\\n";
-  modes["c", "'", "submodes" ]="\\\\";
+  modes["c", "'", "submodes"]="\\\\";
   modes["c", "'", "terminators"]="'";
   escapes["c", "'", ++escapes["c", "'"], "s"]="\\\\";
   escapes["c", "'",   escapes["c", "'"], "r"]="\\\\";
@@ -545,10 +543,10 @@ BEGIN {
   escapes["c", "#", ++escapes["c", "#"], "s"]="\n";
   escapes["c", "#",   escapes["c", "#"], "r"]="\\\\\n";
 
-  modes["awk", "",  "submodes" ]="\\\\|\"|'|{|\\(|\\[";
+  modes["awk", "",  "submodes"]="\\\\|\"|'|{|\\(|\\[";
   modes["awk", "",  "delimiters"]=" *, *";
   modes["awk", "\\", "terminators"]=".";
-  modes["awk", "\"", "submodes" ]="\\\\";
+  modes["awk", "\"", "submodes"]="\\\\";
   modes["awk", "\"", "terminators"]="\"";
   escapes["awk", "\"", ++escapes["awk", "\""], "s"]="\\\\";
   escapes["awk", "\"",   escapes["awk", "\""], "r"]="\\\\";
@@ -556,7 +554,7 @@ BEGIN {
   escapes["awk", "\"",   escapes["awk", "\""], "r"]="\\" "\"";
   escapes["awk", "\"", ++escapes["awk", "\""], "s"]="\n";
   escapes["awk", "\"",   escapes["awk", "\""], "r"]="\\n";
-  modes["awk", "'", "submodes" ]="\\\\";
+  modes["awk", "'", "submodes"]="\\\\";
   modes["awk", "'", "terminators"]="'";
   escapes["awk", "'", ++escapes["awk", "'"], "s"]="\\\\";
   escapes["awk", "'",   escapes["awk", "'"], "r"]="\\\\";
@@ -579,10 +577,10 @@ BEGIN {
   escapes["awk", "#",   escapes["awk", "#"], "r"]="\n#";
   modes["awk", "", "submodes"] = modes["awk", "", "submodes"] "|" "/\\^";
   modes["awk", "/^", "terminators"]="/";
-  modes["perl", "",  "submodes" ]="\\\\|\"|'|{|\\(|\\[";
+  modes["perl", "",  "submodes"]="\\\\|\"|'|{|\\(|\\[";
   modes["perl", "",  "delimiters"]=" *, *";
   modes["perl", "\\", "terminators"]=".";
-  modes["perl", "\"", "submodes" ]="\\\\";
+  modes["perl", "\"", "submodes"]="\\\\";
   modes["perl", "\"", "terminators"]="\"";
   escapes["perl", "\"", ++escapes["perl", "\""], "s"]="\\\\";
   escapes["perl", "\"",   escapes["perl", "\""], "r"]="\\\\";
@@ -590,7 +588,7 @@ BEGIN {
   escapes["perl", "\"",   escapes["perl", "\""], "r"]="\\" "\"";
   escapes["perl", "\"", ++escapes["perl", "\""], "s"]="\n";
   escapes["perl", "\"",   escapes["perl", "\""], "r"]="\\n";
-  modes["perl", "'", "submodes" ]="\\\\";
+  modes["perl", "'", "submodes"]="\\\\";
   modes["perl", "'", "terminators"]="'";
   escapes["perl", "'", ++escapes["perl", "'"], "s"]="\\\\";
   escapes["perl", "'",   escapes["perl", "'"], "r"]="\\\\";
@@ -613,10 +611,10 @@ BEGIN {
   modes["perl", "#", "terminators"]="\n";
   escapes["perl", "#", ++escapes["perl", "#"], "s"]="\n";
   escapes["perl", "#",   escapes["perl", "#"], "r"]="\n#";
-  modes["sh", "",  "submodes" ]="\\\\|\"|'|{|\\(|\\[";
+  modes["sh", "",  "submodes"]="\\\\|\"|'|{|\\(|\\[";
   modes["sh", "",  "delimiters"]=" *, *";
   modes["sh", "\\", "terminators"]=".";
-  modes["sh", "\"", "submodes" ]="\\\\";
+  modes["sh", "\"", "submodes"]="\\\\";
   modes["sh", "\"", "terminators"]="\"";
   escapes["sh", "\"", ++escapes["sh", "\""], "s"]="\\\\";
   escapes["sh", "\"",   escapes["sh", "\""], "r"]="\\\\";
@@ -624,7 +622,7 @@ BEGIN {
   escapes["sh", "\"",   escapes["sh", "\""], "r"]="\\" "\"";
   escapes["sh", "\"", ++escapes["sh", "\""], "s"]="\n";
   escapes["sh", "\"",   escapes["sh", "\""], "r"]="\\n";
-  modes["sh", "'", "submodes" ]="\\\\";
+  modes["sh", "'", "submodes"]="\\\\";
   modes["sh", "'", "terminators"]="'";
   escapes["sh", "'", ++escapes["sh", "'"], "s"]="\\\\";
   escapes["sh", "'",   escapes["sh", "'"], "r"]="\\\\";
@@ -772,7 +770,6 @@ texmacs_chunking {
   chunking=0;
   active_chunk="";
 }
-
 ! chunking { next; }
 length(active_chunk) {
   if (length(tabs)) {
@@ -780,7 +777,6 @@ length(active_chunk) {
   }
   chunk = $0;
   indent = 0;
-#                        <<                          >>
   while(match(chunk,"(\xC2\xAB)([^\xC2]*) [^\xC2]*\xC2\xBB", line) ||
         match(chunk, 
               "([=]<\\\\chunkref{([^}>]*)}(\\(.*\\)|)>|<<([a-zA-Z_][-a-zA-Z0-9_]*)>>)", 
@@ -792,10 +788,10 @@ length(active_chunk) {
     chunk = substr(chunk, RSTART + RLENGTH);
     if (substr(line[1], 1, 1) == "=") {
       # chunk name up to }
-  	# FILTHY HACK
-   gsub("\\\\#", "#", line[3]);
-   gsub("\\\\textbackslash{}", "\\", line[3]);
-   gsub("\\\\\\^", "^", line[3]);
+          # FILTHY HACK
+          gsub("\\\\#", "#", line[3]);
+          gsub("\\\\textbackslash{}", "\\", line[3]);
+          gsub("\\\\\\^", "^", line[3]);
       chunk_include(active_chunk, line[2] line[3], indent);
     } else if (substr(line[1], 1, 1) == "<") {
       chunk_include(active_chunk, line[4], indent);
