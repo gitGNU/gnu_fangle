@@ -1,0 +1,3 @@
+#! /bin/sed -f
+
+/^\( *<.table-of-contents\|<.references\|<.auxiliary\)/{h;/<\\/p};x;/^ *<\\/{x;d};x
