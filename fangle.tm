@@ -2659,14 +2659,16 @@
   <section|Escaping and Quoting>
 
   For the time being and to get around <TeXmacs> inability to export a
-  <kbd|TAB> character, the right arrow whose UTF-8 sequence is ...
+  <kbd|TAB> character, the right arrow <with|mode|math|\<mapsto\>> whose
+  UTF-8 sequence is ...
 
   <todo|complete>
 
-  Another special character is used, the left-arrow with UTF-8 sequence 0xE2
-  0x86 0xA4 is used to strip any preceding white space as a way of un-tabbing
-  and removing indent that has been applied <emdash> this is important for
-  bash here documents, and the like. It's a filthy hack.
+  Another special character is used, the left-arrow
+  <with|mode|math|\<mapsfrom\>> with UTF-8 sequence 0xE2 0x86 0xA4 is used to
+  strip any preceding white space as a way of un-tabbing and removing indent
+  that has been applied <emdash> this is important for bash here documents,
+  and the like. It's a filthy hack.
 
   <todo|remove the hack>
 
@@ -5159,4 +5161,8 @@
   </collection>
 </initial>
 
+<\references>
+</references>
 
+<\auxiliary>
+</auxiliary>
