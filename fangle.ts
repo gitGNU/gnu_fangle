@@ -133,6 +133,12 @@
     <arg|l>
   </footnote>>>
 
+  <assign|old-render-footnote|<value|render-footnote>>
+
+  <assign|render-footnote|<macro|nr|x|<specific|html|\<less\>table
+  width="30%" align="right"\<gtr\>\<less\>tr\<gtr\>\<less\>td\<gtr\>><assign|zz|<arg|nr>><with|footnote-sep|<macro|<specific|html|<value|zz>>.
+  >|<old-render-footnote|<arg|nr>|<arg|x>>><specific|html|\<less\>/td\<gtr\>\<less\>/tr\<gtr\>\<less\>/table\<gtr\>>>>
+
   <\active*>
     <\src-comment>
       Now, some extensions to standard <TeXmacs> functionality.
@@ -402,8 +408,8 @@
 
   <assign|nf-render-commas|<macro|x|<with|color|blue|<arg|x>>>>
 
-  <assign|nf-commas|<macro|items|<if|<equal|<get-label|<arg|items>>|tuple>|<if|<less|<length|<arg|items>>|1>||<nf-render-commas|<look-up|<arg|items>|0>><if|<greater|<length|<arg|items>>|1>|,
-  <nf-commas|<range|<arg|items>|1|<length|<arg|items>>>>>>|<arg|items>>>>
+  <assign|nf-commas|<macro|items|<if|<equal|<get-label|<arg|items>>|tuple>|<if|<less|<length|<arg|items>>|1>|<specific-verbatim|\<#000B\>>|<nf-render-commas|<look-up|<arg|items>|0>><if|<greater|<length|<arg|items>>|1>|,
+  <specific-verbatim|\<#000B\>><nf-commas|<range|<arg|items>|1|<length|<arg|items>>>>|<specific-verbatim|\<#000B\><specific-verbatim|\<#000B\>>>>>|<arg|items><if|<not|<equal|<length|<arg|items>>|0>>|<specific-verbatim|\<#000B\>>>>>>
 
   <assign|nf-commaxy|<macro|x|, (<arg|x>)>>
 
@@ -614,6 +620,16 @@
     </surround>
   </with>>>>>>
 
+  <assign|nf-fake-chunk|<macro|name|x|lang|args|is_last|is_first|<with|the-label||xnv-langle-subst||xnv-rangle-subst||nf-name|<unquote|<arg|name>>|y|<value|pob>|<small|<surround|<wide-underlined|<nf-border-if|<nf-first-chunklet?|<value|nf-name>>>|1ln|<no-page-break*><label|<arg|name>><small|<nf-header|<arg|name>|<arg|lang>|<arg|args>>><no-page-break>>|<if|<arg|is_last>|<wide-bothlined|<nf-border-if|<is-last>>|0ln|1ln|0ln|<htab|5mm*|last>>|<nf-jags>>|<\with|item|<value|<merge|code-item-|<unquote|<arg|name>>>>|item-vsep|0fn|current-item|<value|nf-render-line-no>|transform-item|<value|identity>>
+    <\surround||<nf-chunk-outit|<arg|name>><if|<and|<not|<equal|<value|nf-page>|<pagerefpage|<nf-this-chunk-id|<arg|name>|end>>>>|<ispageref?|<nf-this-chunk-id|<arg|name>|end>>>|<set-this-page-header|<with|nv-langle|<macro|<with|mode|math|<left|langle>>>|nv-rangle|<macro|<with|mode|math|<right|rangle>>>|<small|<nf-header|<arg|name>|<arg|lang>|<arg|args>>>>>>>
+      <no-page-break><nf-verbatim-top|<nf-first-chunklet?|<value|nf-name>>>
+
+      <with|nv-langle-subst|\S|nv-rangle-subst|\T|<nf-pf|<value|nf-name>|<arg|lang>|<arg|x>>>
+
+      <no-page-break*><if|<nf-last-chunklet?|<value|nf-name>>|<assign|<merge|code-line-|<value|nf-name>|-nr>|0>><nf-verbatim-bottom|<nf-last-chunklet?|<value|nf-name>>>
+    </surround>
+  </with>>>>>>
+
   <new-list|nfl|<value|aligned-dot-item>|<value|identity>>
 
   <drd-props|nf-chunk|accessible|all>
@@ -695,7 +711,7 @@
   <\collection>
     <associate|page-medium|automatic>
     <associate|page-screen-height|746496tmpt>
-    <associate|page-screen-width|1265664tmpt>
+    <associate|page-screen-width|1268736tmpt>
     <associate|preamble|true>
   </collection>
 </initial>
