@@ -271,7 +271,7 @@ function parse_chunk_args(language, text, values, mode,
   }
   return rest;
 }
-function new_chunk(chunk_name, params, args,
+function new_chunk(chunk_name, opts, args,
   # local vars
   p, append )
 {
@@ -280,15 +280,15 @@ function new_chunk(chunk_name, params, args,
   if (! (chunk_name in chunk_names)) {
     if (debug) print "New chunk " chunk_name;
     chunk_names[chunk_name];
-    for (p in params) {
-      chunks[chunk_name, p] = params[p];
-      if (debug) print "chunks[" chunk_name "," p "] = " params[p];
+    for (p in opts) {
+      chunks[chunk_name, p] = opts[p];
+      if (debug) print "chunks[" chunk_name "," p "] = " opts[p];
     }
     for (p in args) {
       chunks[chunk_name, "params", p] = args[p];
     }
-    if ("append" in params) {
-      append=params["append"];
+    if ("append" in opts) {
+      append=opts["append"];
       if (! (append in chunk_names)) {
         warning("Chunk " chunk_name " is appended to chunk " append " which is not defined yet");
         new_chunk(append);
@@ -478,6 +478,7 @@ function expand_chunk_args(text, params, args,
 }
 
 BEGIN {
+  ARG_SEPARATOR=sprintf("%c", 11);
   part_type_chunk=1;
   SUBSEP=",";
   modes["c-like", "",  "submodes"]="\\\\|\"|'|{|\\(|\\[";
@@ -688,16 +689,14 @@ BEGIN {
 /\xE2\x89\xA1/ {
   if (match($0, "^ *([^[ ]* |)<([^[ ]*)\\[[0-9]*\\][(](.*)[)].*, lang=([^ ]*)", line)) {
     next_chunk_name=line[2];
-gsub(sprintf("%c",11), "", line[3]);
-gsub(",", ";", line[3]);
-#    get_texmacs_chunk_args(line[3], next_chunk_params);
-#    gsub(ARG_SEPARATOR ",? ?", ";", line[3]);
+    get_texmacs_chunk_args(line[3], next_chunk_params);
+    gsub(ARG_SEPARATOR ",? ?", ";", line[3]);
     params = "params=" line[3];
     if ((line[4])) {
-      params = params ",language=" line[4]
+      params = params "language=" line[4]
     }
-    get_tex_chunk_args(params, next_chunk_args); # next_chunk_args is to be next_chunk_options
-    new_chunk(next_chunk_name, next_chunk_args); #, next_chunk_params);
+    get_tex_chunk_args(params, next_chunk_opts);
+    new_chunk(next_chunk_name, next_chunk_opts, next_chunk_params);
     texmacs_chunking = 1;
   } else {
     warning(sprintf("Unexpected chunk match: %s\n", $_))
@@ -707,7 +706,7 @@ gsub(",", ";", line[3]);
 /^\\Chunk{/ {
   if (match($0, "^\\\\Chunk{ *([^ ,}]*),?(.*)}", line)) {
     next_chunk_name = line[1];
-    get_tex_chunk_args(line[2], next_chunk_args);
+    get_tex_chunk_args(line[2], next_chunk_opts);
   }
   next;
 }
@@ -715,7 +714,7 @@ gsub(",", ";", line[3]);
   if (match($0, "}.*[[,] *name= *{? *([^], }]*)", line)) {
     new_chunk(line[1]);
   } else {
-    new_chunk(next_chunk_name, next_chunk_args);
+    new_chunk(next_chunk_name, next_chunk_opts);
   }
   chunking=1;
   next;
@@ -825,15 +824,15 @@ function get_texmacs_chunk_args(text, args,   a, done) {
   split(text, args, ARG_SEPARATOR);
 
   done=0
-  for (a in args) if (a>1) {
-    if (substr(args[a], 1, 1) == ")") done=1;
+  for (a=1; (a in args); a++) if (a>1) {
+    if (args[a] == "" || substr(args[a], 1, 1) == ")") done=1;
     if (done) {
       delete args[a];
       break;
     }
 
     if (substr(args[a], 1, 2) == ", ") args[a]=substr(args[a], 3);
-    else if (substr(args[a], 1, 1) == ",") args[a]=substr(args[a], 2);    
+    else if (substr(args[a], 1, 1) == ",") args[a]=substr(args[a], 2);  
   }
 }
 function get_tex_chunk_args(text, values,
@@ -842,7 +841,7 @@ function get_tex_chunk_args(text, values,
   # local vars
   a, name)
 {
-  split("", next_chunk_args);
+  split("", values);
   while(length(text)) {
     if (match(text, "^ *}(.*)", a)) {
       return a[1];

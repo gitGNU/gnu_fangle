@@ -674,7 +674,7 @@ And include the following chunks (which are explained further on) to make up the
   7  | «helper-functions 34d»
   8  | «mode-tracker 54a»
   9  | «parse_chunk_args 40a»
-  10  | «chunk-storage-functions 73b»
+  10  | «chunk-storage-functions 73a»
   11  | «output_chunk_names() 67d»
   12  | «output_chunks() 67e»
   13  | «write_chunk() 68a»
@@ -753,7 +753,7 @@ Arguments commence after the opening parenthesis. The first argument runs up til
 If the following character is a , then another argument follows. If the next character after the , is a space character, then it is also eaten. The fangle stylesheet emits ^K,space as separators, but the fangle untangler will forgive a missing space.
 If the following character is ) then this is a terminator and there are no more arguments.
 
-  35a <contants[1](), lang=> ≡ 
+  73a <constants[1](), lang=> ≡ 
       ________________________________________________________________________
   1  | ARG_SEPARATOR=sprintf("%c", 11);
      |________________________________________________________________________
@@ -768,15 +768,15 @@ To process the text in this fashion, we split the string on ^K
   2  |   split(text, args, ARG_SEPARATOR);
   3  | 
   4  |   done=0
-  5  |   for (a in args) if (a>1) {
-  6  |     if (substr(args[a], 1, 1) == ")") done=1;
+  5  |   for (a=1; (a in args); a++) if (a>1) {
+  6  |     if (args[a] == "" || substr(args[a], 1, 1) == ")") done=1;
   7  |     if (done) {
   8  |       delete args[a];
   9  |       break;
   10  |     }
   11  | 
   12  |     if (substr(args[a], 1, 2) == ", ") args[a]=substr(args[a], 3);
-  13  |     else if (substr(args[a], 1, 1) == ",") args[a]=substr(args[a], 2);    
+  13  |     else if (substr(args[a], 1, 1) == ",") args[a]=substr(args[a], 2);  
   14  |   }
   15  | }
      |________________________________________________________________________
@@ -832,7 +832,7 @@ The strategy is to parse the name, and then look for a value. If the value begin
   38c <get_chunk_args()[2]() ⇑38b, lang=> +≡ ▵38b
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   6  | {
-  7  |   split("", next_chunk_args);
+  7  |   split("", values);
   8  |   while(length(text)) {
   9  |     if (match(text, "^ *}(.*)", a)) {
   10  |       return a[1];
@@ -1795,22 +1795,20 @@ We detect the the start of a TeXmacs chunk by detecting the ≡ symbol which occ
   14  | /\xE2\x89\xA1/ {
   15  |   if (match($0, "^ *([^[ ]* |)<([^[ ]*)\\[[0-9]*\\][(](.*)[)].*, lang=([^ ]*)", line)) {
   16  |     next_chunk_name=line[2];
-  17  | gsub(sprintf("%c",11), "", line[3]);
-  18  | gsub(",", ";", line[3]);
-  19  | #    get_texmacs_chunk_args(line[3], next_chunk_params);
-  20  | #    gsub(ARG_SEPARATOR ",? ?", ";", line[3]);
-  21  |     params = "params=" line[3];
-  22  |     if ((line[4])) {
-  23  |       params = params ",language=" line[4]
-  24  |     }
-  25  |     get_tex_chunk_args(params, next_chunk_args); # next_chunk_args is to be next_chunk_options
-  26  |     new_chunk(next_chunk_name, next_chunk_args); #, next_chunk_params);
-  27  |     texmacs_chunking = 1;
-  28  |   } else {
-  29  |     warning(sprintf("Unexpected chunk match: %s\n", $_))
-  30  |   }
-  31  |   next;
-  32  | }
+  17  |     get_texmacs_chunk_args(line[3], next_chunk_params);
+  18  |     gsub(ARG_SEPARATOR ",? ?", ";", line[3]);
+  19  |     params = "params=" line[3];
+  20  |     if ((line[4])) {
+  21  |       params = params "language=" line[4]
+  22  |     }
+  23  |     get_tex_chunk_args(params, next_chunk_opts);
+  24  |     new_chunk(next_chunk_name, next_chunk_opts, next_chunk_params);
+  25  |     texmacs_chunking = 1;
+  26  |   } else {
+  27  |     warning(sprintf("Unexpected chunk match: %s\n", $_))
+  28  |   }
+  29  |   next;
+  30  | }
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 11.1.2 lstlistings 
 Our current scheme is to recognize the new lstlisting chunks, but these may be preceded by a \Chunk command which in L Y X is a more convenient way to pass the chunk name to the \begin{lstlistings} command, and a more visible way to specify other lstset settings.
@@ -1818,27 +1816,27 @@ The arguments to the \Chunk command are a name, and then a comma-seperated list 
 
   58b <recognize-chunk[4]() ⇑57a, lang=awk> +≡ ▵58a 58c▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
-  33  | /^\\Chunk{/ {
-  34  |   if (match($0, "^\\\\Chunk{ *([^ ,}]*),?(.*)}", line)) {
-  35  |     next_chunk_name = line[1];
-  36  |     get_tex_chunk_args(line[2], next_chunk_args);
-  37  |   }
-  38  |   next;
-  39  | }
+  31  | /^\\Chunk{/ {
+  32  |   if (match($0, "^\\\\Chunk{ *([^ ,}]*),?(.*)}", line)) {
+  33  |     next_chunk_name = line[1];
+  34  |     get_tex_chunk_args(line[2], next_chunk_opts);
+  35  |   }
+  36  |   next;
+  37  | }
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 We also make a basic attempt to parse the name out of the \lstlistings[name=chunk-name] text, otherwise we fall back to the name found in the previous chunk command. This attempt is very basic and doesn't support commas or spaces or square brackets as part of the chunkname. We also recognize \begin{Chunk} which is convenient for some users3. but not yet supported in the LaTeX macros  ^3.
 
   58c <recognize-chunk[5]() ⇑57a, lang=> +≡ ▵58b 59a⊳
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
-  40  | /^\\begin{lstlisting}|^\\begin{Chunk}/ {
-  41  |   if (match($0, "}.*[[,] *name= *{? *([^], }]*)", line)) {
-  42  |     new_chunk(line[1]);
-  43  |   } else {
-  44  |     new_chunk(next_chunk_name, next_chunk_args);
-  45  |   }
-  46  |   chunking=1;
-  47  |   next;
-  48  | }
+  38  | /^\\begin{lstlisting}|^\\begin{Chunk}/ {
+  39  |   if (match($0, "}.*[[,] *name= *{? *([^], }]*)", line)) {
+  40  |     new_chunk(line[1]);
+  41  |   } else {
+  42  |     new_chunk(next_chunk_name, next_chunk_opts);
+  43  |   }
+  44  |   chunking=1;
+  45  |   next;
+  46  | }
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 11.2 Chunk Body 
 11.2.1 TeXmacs 
@@ -1846,23 +1844,23 @@ A chunk body in TeXmacs ends with |________... if it is the final chunklet of a 
 
   59a <recognize-chunk[6]() ⇑57a, lang=> +≡ ⊲58c 59b▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
-  49  | /^ *\|____________*/ && texmacs_chunking {
-  50  |   active_chunk="";
-  51  |   texmacs_chunking=0;
-  52  |   chunking=0;
-  53  | }
-  54  | /^ *\|\/\\/ && texmacs_chunking {
-  55  |   texmacs_chunking=0;
-  56  |   chunking=0;
-  57  |   active_chunk="";
-  58  | }
+  47  | /^ *\|____________*/ && texmacs_chunking {
+  48  |   active_chunk="";
+  49  |   texmacs_chunking=0;
+  50  |   chunking=0;
+  51  | }
+  52  | /^ *\|\/\\/ && texmacs_chunking {
+  53  |   texmacs_chunking=0;
+  54  |   chunking=0;
+  55  |   active_chunk="";
+  56  | }
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 It has been observed that not every line of output when a TeXmacs chunk is active is a line of chunk. This may no longer be true, but we set a variable texmacs_chunk if the current line is a chunk line.
 Initially we set this to zero...
 
   59b <recognize-chunk[7]() ⇑57a, lang=> +≡ ▵59a 59c▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
-  59  | texmacs_chunk=0;
+  57  | texmacs_chunk=0;
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 ...and then we look to see if the current line is a chunk line.
 TeXmacs lines look like this:   3 | main() { so we detect the lines by leading white space, digits, more whiter space and a vertical bar followed by at least once space.
@@ -1870,59 +1868,59 @@ If we find such a line, we remove this line-header and set texmacs_chunk=1 as we
 
   59c <recognize-chunk[8]() ⇑57a, lang=> +≡ ▵59b 59d▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
-  60  | /^ *[1-9][0-9]* *\| / {
-  61  |   if (texmacs_chunking) {
-  62  |     chunking=1;
-  63  |     texmacs_chunk=1;
-  64  |     gsub("^ *[1-9][0-9]* *\\| ", "")
-  65  |   }
-  66  | }
+  58  | /^ *[1-9][0-9]* *\| / {
+  59  |   if (texmacs_chunking) {
+  60  |     chunking=1;
+  61  |     texmacs_chunk=1;
+  62  |     gsub("^ *[1-9][0-9]* *\\| ", "")
+  63  |   }
+  64  | }
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 When TeXmacs chunking, lines that commence with \/ or __ are not chunk content but visual framing, and are skipped.
 
   59d <recognize-chunk[9]() ⇑57a, lang=> +≡ ▵59c 60a⊳
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
-  67  | /^ *\.\/\\/ && texmacs_chunking {
-  68  |   next;
-  69  | }
-  70  | /^ *__*$/ && texmacs_chunking {
-  71  |   next;
-  72  | }
+  65  | /^ *\.\/\\/ && texmacs_chunking {
+  66  |   next;
+  67  | }
+  68  | /^ *__*$/ && texmacs_chunking {
+  69  |   next;
+  70  | }
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 Any other line when TeXmacs chunking is considered to be a line-wrapped line.
 
   60a <recognize-chunk[10]() ⇑57a, lang=> +≡ ⊲59d 60b▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
-  73  | texmacs_chunking {
-  74  |   if (! texmacs_chunk) {
-  75  |     # must be a texmacs continued line
-  76  |     chunking=1;
-  77  |     texmacs_chunk=1;
-  78  |   }
-  79  | }
+  71  | texmacs_chunking {
+  72  |   if (! texmacs_chunk) {
+  73  |     # must be a texmacs continued line
+  74  |     chunking=1;
+  75  |     texmacs_chunk=1;
+  76  |   }
+  77  | }
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 This final chunklet seems bogus and probably stops L Y X working.
 
   60b <recognize-chunk[11]() ⇑57a, lang=> +≡ ▵60a 60c▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
-  80  | ! texmacs_chunk {
-  81  | #  texmacs_chunking=0;
-  82  |   chunking=0;
-  83  | }
+  78  | ! texmacs_chunk {
+  79  | #  texmacs_chunking=0;
+  80  |   chunking=0;
+  81  | }
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 11.2.2 Noweb 
 We recognize notangle style chunks too:
 
   60c <recognize-chunk[12]() ⇑57a, lang=awk> +≡ ▵60b 60d▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
-  84  | /^[<]<.*[>]>=/ {
-  85  |   if (match($0, "^[<]<(.*)[>]>= *$", line)) {
-  86  |     chunking=1;
-  87  |     notangle_mode=1;
-  88  |     new_chunk(line[1]);
-  89  |     next;
-  90  |   }
-  91  | }
+  82  | /^[<]<.*[>]>=/ {
+  83  |   if (match($0, "^[<]<(.*)[>]>= *$", line)) {
+  84  |     chunking=1;
+  85  |     notangle_mode=1;
+  86  |     new_chunk(line[1]);
+  87  |     next;
+  88  |   }
+  89  | }
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 11.3 Chunk end 
 Likewise, we need to recognize when a chunk ends.
@@ -1931,26 +1929,26 @@ The e in [e]nd{lislisting} is surrounded by square brackets so that when this do
 
   60d <recognize-chunk[13]() ⇑57a, lang=> +≡ ▵60c 61a⊳
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
-  92  | /^\\[e]nd{lstlisting}|^\\[e]nd{Chunk}/ {
-  93  |   chunking=0;
-  94  |   active_chunk="";
-  95  |   next;
-  96  | }
+  90  | /^\\[e]nd{lstlisting}|^\\[e]nd{Chunk}/ {
+  91  |   chunking=0;
+  92  |   active_chunk="";
+  93  |   next;
+  94  | }
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 11.3.2 noweb 
 
   61a <recognize-chunk[14]() ⇑57a, lang=> +≡ ⊲60d 61b▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
-  97  | /^@ *$/ {
-  98  |   chunking=0;
-  99  |   active_chunk="";
-  100  | }
+  95  | /^@ *$/ {
+  96  |   chunking=0;
+  97  |   active_chunk="";
+  98  | }
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 All other recognizers are only of effect if we are chunking; there's no point in looking at lines if they aren't part of a chunk, so we just ignore them as efficiently as we can.
 
   61b <recognize-chunk[15]() ⇑57a, lang=> +≡ ▵61a 61c▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
-  101  | ! chunking { next; }
+  99  | ! chunking { next; }
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 11.4 Chunk contents 
 Chunk contents are any lines read while chunking is true. Some chunk contents are special in that they refer to other chunks, and will be replaced by the contents of these chunks when the file is generated.
@@ -1960,10 +1958,10 @@ To do: This does't make sense
 
   61c <recognize-chunk[16]() ⇑57a, lang=> +≡ ▵61b
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
-  102  | length(active_chunk) {
-  103  |   «process-chunk-tabs 61e»
-  104  |   «process-chunk 62b»
-  105  | }
+  100  | length(active_chunk) {
+  101  |   «process-chunk-tabs 61e»
+  102  |   «process-chunk 62b»
+  103  | }
      |________________________________________________________________________
 
 
@@ -2422,8 +2420,8 @@ We check if a new file-line is needed by checking if the source line matches wha
 Chapter 14Storing Chunks
 Awk has pretty limited data structures, so we will use two main hashes. Uninterrupted sequences of a chunk will be stored in chunklets and the chunklets used in a chunk will be stored in chunks.
 
-  73a <constants[1](), lang=> ≡ 
-      ________________________________________________________________________
+   ?a <constants[2]() ⇑73a, lang=> +≡ ⊲73a
+     ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   1  | part_type_chunk=1;
   2  | SUBSEP=",";
      |________________________________________________________________________
@@ -2431,9 +2429,9 @@ Awk has pretty limited data structures, so we will use two main hashes. Uninterr
 
 The params mentioned are not chunk parameters for parameterized chunks, as mentioned in 9.2, but the lstlistings style parameters used in the \Chunk command1. The params parameter is used to hold the parameters for parameterized chunks  ^1.
 
-  73b <chunk-storage-functions[1](), lang=> ≡  73c▿
+  73a <chunk-storage-functions[1](), lang=> ≡  73b▿
       ________________________________________________________________________
-  1  | function new_chunk(chunk_name, params, args,
+  1  | function new_chunk(chunk_name, opts, args,
   2  |   # local vars
   3  |   p, append )
   4  | {
@@ -2442,15 +2440,15 @@ The params mentioned are not chunk parameters for parameterized chunks, as menti
   7  |   if (! (chunk_name in chunk_names)) {
   8  |     if (debug) print "New chunk " chunk_name;
   9  |     chunk_names[chunk_name];
-  10  |     for (p in params) {
-  11  |       chunks[chunk_name, p] = params[p];
-  12  |       if (debug) print "chunks[" chunk_name "," p "] = " params[p];
+  10  |     for (p in opts) {
+  11  |       chunks[chunk_name, p] = opts[p];
+  12  |       if (debug) print "chunks[" chunk_name "," p "] = " opts[p];
   13  |     }
   14  |     for (p in args) {
   15  |       chunks[chunk_name, "params", p] = args[p];
   16  |     }
-  17  |     if ("append" in params) {
-  18  |       append=params["append"];
+  17  |     if ("append" in opts) {
+  18  |       append=opts["append"];
   19  |       if (! (append in chunk_names)) {
   20  |         warning("Chunk " chunk_name " is appended to chunk " append " which is not defined yet");
   21  |         new_chunk(append);
@@ -2464,7 +2462,7 @@ The params mentioned are not chunk parameters for parameterized chunks, as menti
   29  | }
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 
-  73c <chunk-storage-functions[2]() ⇑73b, lang=> +≡ ▵73b 74a⊳
+  73b <chunk-storage-functions[2]() ⇑73a, lang=> +≡ ▵73a 74a⊳
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   30  | 
   31  | function prime_chunk(chunk_name)
@@ -2483,7 +2481,7 @@ The params mentioned are not chunk parameters for parameterized chunks, as menti
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 Chunk include represents a chunkref statement, and stores the requirement to include another chunk. The parameter indent represents the quanity of literal text characters that preceded this chunkref statement and therefore by how much additional lines of the included chunk should be indented.
 
-  74a <chunk-storage-functions[3]() ⇑73b, lang=> +≡ ⊲73c 74b▿
+  74a <chunk-storage-functions[3]() ⇑73a, lang=> +≡ ⊲73b 74b▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   44  | function chunk_include(chunk_name, chunk_ref, indent, tail)
   45  | {
@@ -2497,7 +2495,7 @@ Chunk include represents a chunkref statement, and stores the requirement to inc
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 The indent is calculated by indent_string, which may in future convert some spaces into tab characters. This function works by generating a printf padded format string, like %22s for an indent of 22, and then printing an empty string using that format.
 
-  74b <chunk-storage-functions[4]() ⇑73b, lang=> +≡ ▵74a
+  74b <chunk-storage-functions[4]() ⇑73a, lang=> +≡ ▵74a
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   53  | function indent_string(indent) {
   54  |   return sprintf("%" indent "s", "");

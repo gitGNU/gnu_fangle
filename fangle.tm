@@ -1263,7 +1263,7 @@
   If the following character is <key|)> then this is a terminator and there
   are no more arguments.
 
-  <\nf-chunk|contants>
+  <\nf-chunk|constants>
     <item>ARG_SEPARATOR=sprintf("%c", 11);
   </nf-chunk||>
 
@@ -1281,9 +1281,9 @@
 
     <item> \ done=0
 
-    <item> \ for (a in args) if (a\<gtr\>1) {
+    <item> \ for (a=1; (a in args); a++) if (a\<gtr\>1) {
 
-    <item> \ \ \ if (substr(args[a], 1, 1) == ")") done=1;
+    <item> \ \ \ if (args[a] == "" \|\| substr(args[a], 1, 1) == ")") done=1;
 
     <item> \ \ \ if (done) {
 
@@ -1299,7 +1299,7 @@
     3);
 
     <item> \ \ \ else if (substr(args[a], 1, 1) == ",")
-    args[a]=substr(args[a], 2); \ \ \ 
+    args[a]=substr(args[a], 2); \ 
 
     <item> \ }
 
@@ -1412,7 +1412,7 @@
   <\nf-chunk|get_chunk_args()>
     <item>{
 
-    <item> \ split("", next_chunk_args);
+    <item> \ split("", values);
 
     <item> \ while(length(text)) {
 
@@ -2925,26 +2925,21 @@
 
     <item> \ \ \ next_chunk_name=line[2];
 
-    <item>gsub(sprintf("%c",11), "", line[3]);
+    <item> \ \ \ get_texmacs_chunk_args(line[3], next_chunk_params);
 
-    <item>gsub(",", ";", line[3]);
-
-    <item># \ \ \ get_texmacs_chunk_args(line[3], next_chunk_params);
-
-    <item># \ \ \ gsub(ARG_SEPARATOR ",? ?", ";", line[3]);
+    <item> \ \ \ gsub(ARG_SEPARATOR ",? ?", ";", line[3]);
 
     <item> \ \ \ params = "params=" line[3];
 
     <item> \ \ \ if ((line[4])) {
 
-    <item> \ \ \ \ \ params = params ",language=" line[4]
+    <item> \ \ \ \ \ params = params "language=" line[4]
 
     <item> \ \ \ }
 
-    <item> \ \ \ get_tex_chunk_args(params, next_chunk_args); #
-    next_chunk_args is to be next_chunk_options
+    <item> \ \ \ get_tex_chunk_args(params, next_chunk_opts);
 
-    <item> \ \ \ new_chunk(next_chunk_name, next_chunk_args); #,
+    <item> \ \ \ new_chunk(next_chunk_name, next_chunk_opts,
     next_chunk_params);
 
     <item> \ \ \ texmacs_chunking = 1;
@@ -2982,7 +2977,7 @@
 
     <item> \ \ \ next_chunk_name = line[1];
 
-    <item> \ \ \ get_tex_chunk_args(line[2], next_chunk_args);
+    <item> \ \ \ get_tex_chunk_args(line[2], next_chunk_opts);
 
     <item> \ }
 
@@ -3009,7 +3004,7 @@
 
     <item> \ } else {
 
-    <item> \ \ \ new_chunk(next_chunk_name, next_chunk_args);
+    <item> \ \ \ new_chunk(next_chunk_name, next_chunk_opts);
 
     <item> \ }
 
@@ -3979,7 +3974,7 @@
   </footnote>.
 
   <\nf-chunk|chunk-storage-functions>
-    <item>function new_chunk(chunk_name, params, args,
+    <item>function new_chunk(chunk_name, opts, args,
 
     <item> \ # local vars
 
@@ -3997,12 +3992,12 @@
 
     <item> \ \ \ chunk_names[chunk_name];
 
-    <item> \ \ \ for (p in params) {
+    <item> \ \ \ for (p in opts) {
 
-    <item> \ \ \ \ \ chunks[chunk_name, p] = params[p];
+    <item> \ \ \ \ \ chunks[chunk_name, p] = opts[p];
 
     <item> \ \ \ \ \ if (debug) print "chunks[" chunk_name "," p "] = "
-    params[p];
+    opts[p];
 
     <item> \ \ \ }
 
@@ -4012,9 +4007,9 @@
 
     <item> \ \ \ }
 
-    <item> \ \ \ if ("append" in params) {
+    <item> \ \ \ if ("append" in opts) {
 
-    <item> \ \ \ \ \ append=params["append"];
+    <item> \ \ \ \ \ append=opts["append"];
 
     <item> \ \ \ \ \ if (! (append in chunk_names)) {
 
