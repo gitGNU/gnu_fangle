@@ -1241,6 +1241,71 @@
     <item><nf-ref|error()|>
   </nf-chunk||>
 
+  <chapter|<TeXmacs> args>
+
+  <TeXmacs> functions with arguments<\footnote>
+    or function declarations with parameters
+  </footnote> appear like this:
+
+  <math|<math-tt|blah(><wide*|<wide|<math-tt|I came, I saw, I
+  conquered>|\<wide-overbrace\>><rsup|argument 1><wide|<math-tt|<key|^K>>,
+  |\<wide-overbrace\>><rsup|sep.><wide|and then went home
+  asd|\<wide-overbrace\>><rsup|argument 3><wide|<math-tt|<key|^K>><math-tt|)>|\<wide-overbrace\>><rsup|term.>|\<wide-underbrace\>><rsub|arguments>>
+
+  Arguments commence after the opening parenthesis. The first argument runs
+  up till the next <key|^K>.\ 
+
+  If the following character is a <key|,> then another argument follows. If
+  the next character after the <key|,> is a space character, then it is also
+  eaten. The fangle stylesheet emits <key|^K><key|,><key|space> as
+  separators, but the fangle untangler will forgive a missing space.
+
+  If the following character is <key|)> then this is a terminator and there
+  are no more arguments.
+
+  <\nf-chunk|contants>
+    <item>ARG_SEPARATOR=sprintf("%c", 11);
+  </nf-chunk||>
+
+  To process the <verbatim|text> in this fashion, we split the string on
+  <key|^K>
+
+  \;
+
+  <\nf-chunk|get_chunk_args>
+    <item>function get_texmacs_chunk_args(text, args, \ \ a, done) {
+
+    <item> \ split(text, args, ARG_SEPARATOR);
+
+    <item>
+
+    <item> \ done=0
+
+    <item> \ for (a in args) if (a\<gtr\>1) {
+
+    <item> \ \ \ if (substr(args[a], 1, 1) == ")") done=1;
+
+    <item> \ \ \ if (done) {
+
+    <item> \ \ \ \ \ delete args[a];
+
+    <item> \ \ \ \ \ break;
+
+    <item> \ \ \ }
+
+    <item>
+
+    <item> \ \ \ if (substr(args[a], 1, 2) == ", ") args[a]=substr(args[a],
+    3);
+
+    <item> \ \ \ else if (substr(args[a], 1, 1) == ",")
+    args[a]=substr(args[a], 2); \ \ \ 
+
+    <item> \ }
+
+    <item>}
+  </nf-chunk||>
+
   <chapter|<LaTeX> and lstlistings>
 
   <todo|Split LyX and TeXmacs parts>
@@ -1325,7 +1390,7 @@
   </nf-chunk||>
 
   <\nf-chunk|get_chunk_args()>
-    <item>function get_chunk_args(text, values,
+    <item>function get_tex_chunk_args(text, values,
 
     <item> \ # optional parameters
 
@@ -1400,7 +1465,7 @@
 
     <item> \ if (substr(a[4],1,1) == "{") {
 
-    <item> \ \ \ text = get_chunk_args(substr(a[4],2), values, path name
+    <item> \ \ \ text = get_tex_chunk_args(substr(a[4],2), values, path name
     SUBSEP);
 
     <item> \ } else {
@@ -1431,8 +1496,8 @@
 
     <item>
 
-    <item> \ print get_chunk_args("name=freddie, foo={bar=baz, quux={quirk,
-    a=fleeg}}, etc", a);
+    <item> \ print get_tex_chunk_args("name=freddie, foo={bar=baz,
+    quux={quirk, a=fleeg}}, etc", a);
 
     <item> \ for (b in a) {
 
@@ -2795,12 +2860,16 @@
   chunk and not document. In such a state, input lines will be assigned to
   the current chunk; otherwise they are ignored.
 
-  <subsection|<TeXmacs> hackery>
+  <subsection|<TeXmacs>>
 
-  We don't handle <TeXmacs> files natively but instead emit unicode character
-  sequences to mark up the text-export file which we work on.
+  We don't handle <TeXmacs> files natively yet, but rather instead emit
+  unicode character sequences to mark up the text-export file which we do
+  process.
 
-  These hacks detect such sequences and retro-fit in the old <TeX> parsing.
+  These hacks detect the unicode character sequences and retro-fit in the old
+  <TeX> parsing.
+
+  We convert <math|\<mapsto\>> into a tab character.
 
   <\nf-chunk|recognize-chunk>
     \;
@@ -2820,7 +2889,14 @@
     <item> \ gsub("\\\\xE2\\\\x86\\\\xA6", "\\x09");
 
     <item>}
+  </nf-chunk||>
 
+  <TeXmacs> back-tick handling is obscure, and a cut-n-paste back-tick from a
+  shell window comes out as a unicode sequence<\footnote>
+    that won't export to html, except as a NULL character (literal 0x00)
+  </footnote> that is fixed-up here.
+
+  <\nf-chunk|recognize-chunk>
     <item>
 
     <item>/\\xE2\\x80\\x98/ {
@@ -2828,7 +2904,18 @@
     <item> \ gsub("\\\\xE2\\\\x80\\\\x98", "`");
 
     <item>}
+  </nf-chunk||>
 
+  In the <TeXmacs> output, the start of a chunk will appear like this:
+
+  <verbatim| \ 5b\<less\>example-chunk[1](arg1,^K arg2^K^K), lang=C\<gtr\>
+  <math|\<equiv\>>>
+
+  We detect the the start of a <TeXmacs> chunk by detecting the
+  <math|\<equiv\>> symbol which occurs near the end of the line. We obtain
+  the chunk name, the chunk parameters, and the chunk language.
+
+  <\nf-chunk|recognize-chunk>
     <item>
 
     <item>/\\xE2\\x89\\xA1/ {
@@ -2838,9 +2925,15 @@
 
     <item> \ \ \ next_chunk_name=line[2];
 
-    <item> \ \ \ gsub(",",";",line[3]);
+    <item>gsub(sprintf("%c",11), "", line[3]);
 
-    <item> \ \ \ params="params=" line[3];
+    <item>gsub(",", ";", line[3]);
+
+    <item># \ \ \ get_texmacs_chunk_args(line[3], next_chunk_params);
+
+    <item># \ \ \ gsub(ARG_SEPARATOR ",? ?", ";", line[3]);
+
+    <item> \ \ \ params = "params=" line[3];
 
     <item> \ \ \ if ((line[4])) {
 
@@ -2848,27 +2941,23 @@
 
     <item> \ \ \ }
 
-    <item> \ \ \ get_chunk_args(params, next_chunk_args);
+    <item> \ \ \ get_tex_chunk_args(params, next_chunk_args); #
+    next_chunk_args is to be next_chunk_options
 
-    <item> \ \ \ new_chunk(next_chunk_name, next_chunk_args);
+    <item> \ \ \ new_chunk(next_chunk_name, next_chunk_args); #,
+    next_chunk_params);
 
     <item> \ \ \ texmacs_chunking = 1;
 
     <item> \ } else {
 
-    <item>#print "Unexpected\ 
-
-    <item>#print\ 
-
-    <item>#exit 1
+    <item> \ \ \ warning(sprintf("Unexpected chunk match: %s\\n", $_))
 
     <item> \ }
 
     <item> \ next;
 
     <item>}
-
-    <item>#===
   </nf-chunk||>
 
   <subsection|lstlistings>
@@ -2893,7 +2982,7 @@
 
     <item> \ \ \ next_chunk_name = line[1];
 
-    <item> \ \ \ get_chunk_args(line[2], next_chunk_args);
+    <item> \ \ \ get_tex_chunk_args(line[2], next_chunk_args);
 
     <item> \ }
 
@@ -2931,13 +3020,16 @@
     <item>}
   </nf-chunk||>
 
+  <section|Chunk Body>
+
   <subsection|<TeXmacs>>
 
-  \;
+  A chunk body in <TeXmacs> ends with <verbatim|\|________>... if it is the
+  final chunklet of a chunk, or if there are further chunklets it ends with
+  <verbatim|\|\\/\\/\\/>... which is a depiction of a jagged line of torn
+  paper.
 
   <\nf-chunk|recognize-chunk>
-    <item>#===
-
     <item>/^ *\\\|____________*/ && texmacs_chunking {
 
     <item> \ active_chunk="";
@@ -2957,9 +3049,28 @@
     <item> \ active_chunk="";
 
     <item>}
+  </nf-chunk||>
 
+  It has been observed that not every line of output when a <TeXmacs> chunk
+  is active is a line of chunk. This may no longer be true, but we set a
+  variable <verbatim|texmacs_chunk> if the current line is a chunk line.
+
+  Initially we set this to zero...
+
+  <\nf-chunk|recognize-chunk>
     <item>texmacs_chunk=0;
+  </nf-chunk||>
 
+  ...and then we look to see if the current line is a chunk line.
+
+  <TeXmacs> lines look like this: <verbatim| \ 3 \| main() {> so we detect
+  the lines by leading white space, digits, more whiter space and a vertical
+  bar followed by at least once space.
+
+  If we find such a line, we remove this line-header and set
+  <verbatim|texmacs_chunk=1> as well as <verbatim|chunking=1>
+
+  <\nf-chunk|recognize-chunk>
     <item>/^ *[1-9][0-9]* *\\\| / {
 
     <item> \ if (texmacs_chunking) {
@@ -2973,7 +3084,12 @@
     <item> \ }
 
     <item>}
+  </nf-chunk||>
 
+  When <TeXmacs> chunking, lines that commence with <verbatim|\\/> or
+  <verbatim|__> are not chunk content but visual framing, and are skipped.
+
+  <\nf-chunk|recognize-chunk>
     <item>/^ *\\.\\/\\\\/ && texmacs_chunking {
 
     <item> \ next;
@@ -2985,9 +3101,12 @@
     <item> \ next;
 
     <item>}
+  </nf-chunk||>
 
-    <item>
+  Any other line when <TeXmacs> chunking is considered to be a line-wrapped
+  line.
 
+  <\nf-chunk|recognize-chunk>
     <item>texmacs_chunking {
 
     <item> \ if (! texmacs_chunk) {
@@ -3001,7 +3120,11 @@
     <item> \ }
 
     <item>}
+  </nf-chunk||>
 
+  This final chunklet seems bogus and probably stops <LyX> working.
+
+  <\nf-chunk|recognize-chunk>
     <item>! texmacs_chunk {
 
     <item># \ texmacs_chunking=0;
@@ -3009,10 +3132,6 @@
     <item> \ chunking=0;
 
     <item>}
-
-    <item>
-
-    <item>#===
   </nf-chunk||>
 
   <subsection|Noweb>
@@ -3100,9 +3219,9 @@
   <\nf-chunk|recognize-chunk>
     <item>length(active_chunk) {
 
-    <item> \ =\<less\>\\chunkref{process-chunk-tabs}\<gtr\>
+    <item> \ <nf-ref|process-chunk-tabs|>
 
-    <item> \ =\<less\>\\chunkref{process-chunk}\<gtr\>
+    <item> \ <nf-ref|process-chunk|>
 
     <item>}
   </nf-chunk||>
@@ -3119,7 +3238,7 @@
   but we support other variations, some of which are more suitable for
   particular editing systems.
 
-  However, we also process tabs at this point, a tab at input can be replaced
+  However, we also process tabs at this point. A tab at input can be replaced
   by a number of spaces defined by the <verbatim|tabs> variable, set by the
   <verbatim|-T> option. Of course this is poor tab behaviour, we should
   probably have the option to use proper counted tab-stops and process this
@@ -3180,6 +3299,10 @@
 
   First, as long as the chunk contains a <verbatim|\\chunkref> command we
   take as much as we can up to the first <verbatim|\\chunkref> command.
+
+  <TeXmacs> text output uses <math|\<langle\>>...<math|\<rangle\>> which
+  comes out as unicode sequences <verbatim|0xC2> <verbatim|0xAB> ...
+  <verbatim|0xC2> <verbatim|0xBB>
 
   <\nf-chunk|process-chunk>
     <item>chunk = $0;
@@ -3645,6 +3768,12 @@
 
     <item> \ chunklet = chunklet_parts[1];
 
+    <item># hack
+
+    <item>gsub(sprintf("%c",11), "", chunklet);
+
+    <item>gsub(sprintf("%c",11), "", chunklet_parts[2]);
+
     <item> \ parse_chunk_args("c-like", chunklet_parts[2], call_chunk_args,
     "(");
 
@@ -3850,7 +3979,7 @@
   </footnote>.
 
   <\nf-chunk|chunk-storage-functions>
-    <item>function new_chunk(chunk_name, params,
+    <item>function new_chunk(chunk_name, params, args,
 
     <item> \ # local vars
 
@@ -3874,6 +4003,12 @@
 
     <item> \ \ \ \ \ if (debug) print "chunks[" chunk_name "," p "] = "
     params[p];
+
+    <item> \ \ \ }
+
+    <item> \ \ \ for (p in args) {
+
+    <item> \ \ \ \ \ chunks[chunk_name, "params", p] = args[p];
 
     <item> \ \ \ }
 

@@ -408,8 +408,8 @@
 
   <assign|nf-render-commas|<macro|x|<with|color|blue|<arg|x>>>>
 
-  <assign|nf-commas|<macro|items|<if|<equal|<get-label|<arg|items>>|tuple>|<if|<less|<length|<arg|items>>|1>|<specific-verbatim|\<#000B\>>|<nf-render-commas|<look-up|<arg|items>|0>><if|<greater|<length|<arg|items>>|1>|,
-  <specific-verbatim|\<#000B\>><nf-commas|<range|<arg|items>|1|<length|<arg|items>>>>|<specific-verbatim|\<#000B\><specific-verbatim|\<#000B\>>>>>|<arg|items><if|<not|<equal|<length|<arg|items>>|0>>|<specific-verbatim|\<#000B\>>>>>>
+  <assign|nf-commas|<macro|items|<if|<equal|<get-label|<arg|items>>|tuple>|<if|<less|<length|<arg|items>>|1>|<specific-verbatim|\<#000B\>>|<nf-render-commas|<look-up|<arg|items>|0>><if|<greater|<length|<arg|items>>|1>|<specific-verbatim|\<#000B\>>,
+  <nf-commas|<range|<arg|items>|1|<length|<arg|items>>>>|<specific-verbatim|\<#000B\>>>>|<arg|items><if|<not|<equal|<length|<arg|items>>|0>>|<specific-verbatim|\<#000B\>>>>>>
 
   <assign|nf-commaxy|<macro|x|, (<arg|x>)>>
 
@@ -649,7 +649,7 @@
     </src-comment>
   </active*>
 
-  <assign|nf-ref|<style-with|src-compact|none|<macro|name|args|<nv-langle><arg|name><if|<equal|<get-label|<arg|args>>|tuple>|(<nf-commas|<arg|args>>)>
+  <assign|nf-ref|<style-with|src-compact|none|<macro|name|args|<nv-langle><arg|name><if|<equal|<get-label|<arg|args>>|tuple>|<specific-verbatim|\<#000B\>>(<nf-commas|<arg|args>>)>
   <reference|<nf-chunk-id|<arg|name>|ref|1>><nv-rangle><flag|<arg|name>|red><if|<equal|0|1>|<compound|<quote-arg|name>>>>>>
 
   <\active*>
