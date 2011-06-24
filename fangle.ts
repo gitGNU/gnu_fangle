@@ -129,15 +129,27 @@
 
   <assign|old-hlink|<value|hlink>>
 
-  <assign|hlink|<macro|t|l|<old-hlink|<arg|t>|<arg|l>><\footnote>
+  <assign|hlink|<macro|t|l|<old-hlink|<arg|t>|<arg|l>><if|<greater|<length|<arg|l>>|0>|<\footnote>
     <arg|l>
-  </footnote>>>
+  </footnote>>>>
 
   <assign|old-render-footnote|<value|render-footnote>>
 
   <assign|render-footnote|<macro|nr|x|<specific|html|\<less\>table
   width="30%" align="right"\<gtr\>\<less\>tr\<gtr\>\<less\>td\<gtr\>><assign|zz|<arg|nr>><with|footnote-sep|<macro|<specific|html|<value|zz>>.
   >|<old-render-footnote|<arg|nr>|<arg|x>>><specific|html|\<less\>/td\<gtr\>\<less\>/tr\<gtr\>\<less\>/table\<gtr\>>>>
+
+  <\active*>
+    <\src-comment>
+      This style makes it easy to render a sequence of keystrokes.
+
+      TODO: boundry from single-to multiple or back must have an extra space
+    </src-comment>
+  </active*>
+
+  <assign|keys|<xmacro|args|<with|c|0|m|<length|<map-args|identity|tuple|args>>|<while|<less|<value|c>|<value|m>>|<if|<greater|<value|c>|0>|<if|<greater|<length|<arg|args|<value|c>>>|1>|
+  >><key|<arg|args|<value|c>>><if|<less|<plus|<value|c>|1>|<value|m>>|<if|<and|<greater|<length|<arg|args|<value|c>>>|1>|<not|<greater|<length|<arg|args|<plus|<value|c>|1>>>|1>>>|
+  >><assign|c|<plus|<value|c>|1>>>>>>
 
   <\active*>
     <\src-comment>
