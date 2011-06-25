@@ -448,7 +448,7 @@
   lang=<with|color|blue|<arg|lang>><nv-rangle>
   <math|<if|<not|<nf-first-chunklet?|<arg|name>>>|+>\<equiv\>><htab|0pt><fangle-nav|<arg|name>>>>
 
-  <assign|nf-header|<macro|name|lang|args|<with|name|<arg|name>|lang|<arg|lang>|args|<if|<not|<equal|<value|<merge|code-args-|<unquote|<arg|name>>>>|<uninit>>>|<nf-commas|<value|<merge|code-args-|<unquote|<arg|name>>>>>|<arg|args>>|chunk_label|<value|the-label>|chunk_no|<compound|<merge|the-code-chunk-|<unquote|<arg|name>>>>|first_chunk_label|<reference|<nf-chunk-id|<arg|name>|ref|1>>|<fangle-header><htab|0pt><fangle-nav|<arg|name>>>>>
+  <assign|nf-header|<macro|name|lang|args|<with|name|<arg|name>|lang|<arg|lang>|args|<if|<not|<equal|<value|<merge|code-args-|<unquote|<arg|name>>>>|<uninit>>>|<nf-commas|<value|<merge|code-args-|<unquote|<arg|name>>>>>|<arg|args>>|chunk_label|<value|the-label>|chunk_no|<compound|<merge|the-code-chunk-|<unquote|<arg|name>>>>|first_chunk_label|<reference|<nf-chunk-id|<arg|name>|ref|1>>|<fangle-header><htab|0pt><xnf-nav|<arg|name>>>>>
 
   <assign|nf-render-commas|<macro|x|<with|color|blue|<arg|x>>>>
 
