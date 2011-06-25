@@ -1,0 +1,56 @@
+
+Literate Example
+
+by Sam Liddicott
+
+sam@liddicott.com
+
+
+
+
+Abstract 
+This is a simple example of how to use literate programming templates, using hello-world.
+Hello-world is a famous first program with a visible side effect.
+This example produces hello-world in multiple languages. 
+Table of contents 
+1 Hello World   1
+1.1 In French   1
+1.2 In German   1
+1 Hello World 
+The typical hello world program looks like this:
+
+1a <hello-world[1](message, language), lang=> ≡ 
+
+      ________________________________________________________________________
+  1  | /* The traditional hello-world program in ${language} 
+  2  |  * generated using fangle literate programming macros
+  3  |  */
+  4  | 
+  5  | #include stdio.c
+  6  | 
+  7  | main() {
+  8  |   printf("${message}\n");
+  9  | }
+     |________________________________________________________________________
+
+
+1.1 In French 
+
+We will derive the french hello-world program like this:
+
+?a <./hello-world.fr.c[1](), lang=> ≡ 
+
+      ________________________________________________________________________
+  1  | «hello-world(Bonjour tout le monde, french) 1a»
+     |________________________________________________________________________
+
+
+1.2 In German 
+We will derive the german hello-world program like this:
+
+?b <./hello-world.de.c[1](), lang=> ≡ 
+
+      ________________________________________________________________________
+  1  | «hello-world(Hallo welt, german) 1a»
+     |________________________________________________________________________
+

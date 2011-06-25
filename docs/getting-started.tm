@@ -89,7 +89,7 @@
 
   <verbatim|fangle> itself needs copying to where personal programs are kept.
   This could just be the git checkout directory or the place where you
-  un-tar'd latest.tar.gz
+  un-tar'd lateIf you have noweb installed then yst.tar.gz
 
   I keep my personal programs in a private <verbatim|.local/bin> directory
   which I keep in my path.
@@ -344,8 +344,9 @@
       </nf-fake-chunk|||1|1a|||||>
     </sub-page>
 
-    The text insertion point is represented by the three vertical dots
-    <fake-caret>
+    If the text insertion point (represented by the three vertical dots
+    <fake-caret>) does not appear as shown above, then press <key|left> so
+    that it does.
 
     <item>Type the name of your chunk: <keys|h|e|l|l|o|-|w|o|r|l|d>
 
@@ -375,8 +376,19 @@
 
   If chunk has parameters, they must be enclosed in a tuple. When I
   understand DRD's a bit better this will be done for you, but for now if you
-  want chunk parameters then you must type <keys|\\|t|u|p|l|e|enter>,
-  otherwise skip to the next step.
+  want chunk parameters then you create a tuple, otherwise skip to the next
+  step.
+
+  <subsubsection|Create a tuple>
+
+  Press <key|\\>. If this comes out as a backslash <with|color|red|\\>
+  (perhaps red) instead of in angle brackets like this
+  <with|color|blue|<math|\<langle\>\\\<rangle\>>> then press <key|backspace>
+  and enter a command-backslash using the meta key (probably the windows
+  button) by pressing <key|M-\\>.\ 
+
+  Once you have the <with|color|blue|<math|\<langle\>\\\<rangle\>>>, type
+  <keys|t|u|p|l|e|enter>.
 
   Type the first chunk argument, and then for additional arguments,
   <key|M-right> (windows key and right arrow).
@@ -386,7 +398,7 @@
 
   <\sub-page>
     <\nf-fake-chunk|hello-world>
-      <item>
+      \;
     </nf-fake-chunk||<tuple|message|language<fake-caret>>|1|1a|||||>
   </sub-page>
 
@@ -399,16 +411,20 @@
   should be able to do this by pressing <key|enter> or clicking the
   <image|<tuple|<#89504E470D0A1A0A0000000D49484452000000110000001108060000003B6D47FA000000017352474200AECE1CE900000006624B474400FF00FF00FFA0BDA793000000097048597300000B1300000B1301009A9C180000000774494D4507DB06120F0303780569BC0000001974455874436F6D6D656E74004372656174656420776974682047494D5057810E17000000924944415438CBBD94D10D80200C440FE3127E38846C0303EA3665083F1CA37E95102D52A2B17F90DCCB91BBE22811E3E50CF860C6F2E0176F1652221D020031C42660DDD6BA935EB119721532339C733688888FFDC877D33CD99C68620130731D52A67215B700B927129706E82A1B2552DFDC72A136B60459002A2486584DA16B77046471F11831805BA94C9072A97EFF0A4E5C193CCC5933FA210000000049454E44AE426082>|png>||||>
   icon on the toolbar. Sometimes the <image|<tuple|<#89504E470D0A1A0A0000000D49484452000000110000001108060000003B6D47FA000000017352474200AECE1CE900000006624B474400FF00FF00FFA0BDA793000000097048597300000B1300000B1301009A9C180000000774494D4507DB06120F0303780569BC0000001974455874436F6D6D656E74004372656174656420776974682047494D5057810E17000000924944415438CBBD94D10D80200C440FE3127E38846C0303EA3665083F1CA37E95102D52A2B17F90DCCB91BBE22811E3E50CF860C6F2E0176F1652221D020031C42660DDD6BA935EB119721532339C733688888FFDC877D33CD99C68620130731D52A67215B700B927129706E82A1B2552DFDC72A136B60459002A2486584DA16B77046471F11831805BA94C9072A97EFF0A4E5C193CCC5933FA210000000049454E44AE426082>|png>||||>
-  icon is absent and pressent enter does nothing <emdash> in which case I
-  don't know what you must do.
+  icon is absent and pressent enter does nothing <emdash> in which case try
+  the <inactive|<menu|Tools|Update|Styles>> and if that doesn't work then I
+  don't know what to do.
+
+  The code body is an enumerate style. Press <key|enter> to insert a new
+  numbered line. (You'll probably want to press <keys|left|backspace|right>
+  to delete the blank line that is somehow there. <todo|stop that from
+  happening>
 
   <\sub-page>
     <\nf-fake-chunk|hello-world>
       <item><fake-caret>
     </nf-fake-chunk||<tuple|message|language>|1|1a|||||>
   </sub-page>
-
-  \;
 
   At this point, start typing code.
 
@@ -440,7 +456,7 @@
   will produce: <inactive*|<nf-arg|>>
 
   To enter the name of the argument <with|color|blue|message>, type
-  <keys|m|e|s|s|a|g|e|enter> which will produce <nf-arg|message>
+  <keys|m|e|s|s|a|g|e|right> which will produce <nf-arg|message>
 
   Finish typing the code as shown below:
 
@@ -452,7 +468,7 @@
 
       <item>main() {
 
-      <item> \ printf("<nf-arg|hey>\\n");
+      <item> \ printf("<nf-arg|message>\\n");
 
       <item>}<fake-caret>
     </nf-fake-chunk||<tuple|message|language>|1|1a|||||>
@@ -487,7 +503,7 @@
   Then introduce the next code chunk, type:
   <keys|W|e|space|w|i|l|l|space|d|e|r|i|v|e|space|t|h|e|space|f|r|e|n|c|h|space|h|e|l|l|o|-|w|o|r|l|d|space|p|r|o|g|r|a|m|space|l|i|k|e|space|t|h|i|s|:|enter>
 
-  Then, create a chunk called hello-world.en.c, by typing:
+  Then, create a chunk called hello-world.fr.c, by typing:
   <keys|\\|n|f|-|c|h|u|n|k|enter> and then the chunk name
   <keys|.|/|h|e|l|l|o|-|w|o|r|l|d|.|f|r|.|c|right|right>
 
@@ -496,16 +512,17 @@
 
     We will derive the french hello-world program like this:<htab|0mm>
 
-    <\nf-fake-chunk|hello-world.fr.c>
+    <\nf-fake-chunk|./hello-world.fr.c>
       <item><fake-caret>
     </nf-fake-chunk||<tuple>|1|1b|||||>
   </sub-page>
 
   To include our previous chunk with the <verbatim|nf-ref> command, type
   <keys|M-\\|n|f|-|r|e|f|enter> and then type the name of our previous chunk,
-  <keys|h|e|l|l|o|-|w|o|r|l|d|right>
+  <keys|h|e|l|l|o|-|w|o|r|l|d>
 
-  Then type the argument <em|Bonjour tout le monde> in a tuple:
+  We then move to the arguments part of the <verbatim|nf-ref>, <key|right>,
+  and type the argument <em|Bonjour tout le monde> in a tuple:
 
   <keys|M-\\|t|u|p|l|e|enter|B|o|n|j|o|u|r|space|t|o|u|t|space|l|e|space|m|o|n|d|e|enter>
 
@@ -514,11 +531,14 @@
 
     We will derive the french hello-world program like this:<htab|0mm>
 
-    <\nf-fake-chunk|hello-world.fr.c>
+    <\nf-fake-chunk|./hello-world.fr.c>
       <item><nf-fake-ref|hello-world|<tuple|Bonjour tout le
       monde>|1a><fake-caret>
     </nf-fake-chunk||<tuple>|1|1b|||||>
   </sub-page>
+
+  Note that when there are no arguments to the reference, the parenthesis do
+  not appear, but they appear automatically when there are arguments.
 
   <subsubsection|German hello-world>
 
@@ -532,12 +552,16 @@
   Then introduce the next code chunk, type:
   <keys|W|e|space|w|i|l|l|space|d|e|r|i|v|e|space|t|h|e|space|g|e|r|m|a|n|space|h|e|l|l|o|-|w|o|r|l|d|space|p|r|o|g|r|a|m|space|l|i|k|e|space|t|h|i|s|:|enter>
 
+  Create a chunk called hello-world.de.c, by typing:
+  <keys|\\|n|f|-|c|h|u|n|k|enter> and then the chunk name
+  <keys|.|/|h|e|l|l|o|-|w|o|r|l|d|.|d|e|.|c|right|right>
+
   <\sub-page>
-    <strong|<small|1.1 In German>><htab|0mm>
+    <strong|<small|1.2 In German>><htab|0mm>
 
     We will derive the german hello-world program like this:<htab|0mm>
 
-    <\nf-fake-chunk|hello-world.de.c>
+    <\nf-fake-chunk|./hello-world.de.c>
       <item><nf-fake-ref|hello-world|<tuple|Hallo welt>|1a><fake-caret>
     </nf-fake-chunk||<tuple>|1|1c|||||>
   </sub-page>
@@ -557,6 +581,8 @@
 
       <item> */
 
+      <item>
+
       <item>#include stdio.c
 
       <item>
@@ -574,7 +600,7 @@
   typing: <key|f r e n c h>
 
   <\sub-page>
-    <\nf-fake-chunk|hello-world.fr.c>
+    <\nf-fake-chunk|./hello-world.fr.c>
       <item><nf-fake-ref|hello-world|<tuple|Bonjour tout le
       monde|french>|1a><fake-caret>
     </nf-fake-chunk||<tuple>|1|1b|||||>
@@ -583,7 +609,7 @@
   And doing similarly for the german:
 
   <\sub-page>
-    <\nf-fake-chunk|hello-world.de.c>
+    <\nf-fake-chunk|./hello-world.de.c>
       <item><nf-fake-ref|hello-world|<tuple|Hallo
       welt|german>|1a><fake-caret>
     </nf-fake-chunk||<tuple>|1|1c|||||>
@@ -646,7 +672,9 @@
 
     fangle -r hello-world.txt \| while read file
 
-    do fangle -R"$file" \<gtr\> "$file"
+    do fangle -R"$file" hello-world.txt \<gtr\> "$file"
+
+    done
   </verbatim>
 
   If you have <em|noweb> installed then you can use <verbatim|cpif> to avoid
@@ -657,7 +685,9 @@
 
     fangle -r hello-world.txt \| while read file
 
-    do fangle -R"$file" \| cpif "$file"
+    do fangle -R"$file" hello-world.txt \| cpif "$file"
+
+    done
   </verbatim>
 
   <subsection|The completed document>
@@ -691,11 +721,11 @@
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break>1
 
-      <with|par-left|1.5fn|1.1<space|2spc>In French
+      <with|par-left|1.5fn| \ \ \ 1.1<space|2spc>In French
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break>1><vspace|0.0fn>
 
-      <with|par-left|1.5fn|1.2<space|2spc>In German
+      <with|par-left|1.5fn| \ \ \ 1.2<space|2spc>In German
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break>1><vspace|0.5fn>
     </with>
@@ -728,7 +758,7 @@
 
     We will derive the french hello-world program like this:<htab|0mm>
 
-    <\nf-fake-chunk|hello-world.fr.c>
+    <\nf-fake-chunk|./hello-world.fr.c>
       <item><nf-fake-ref|hello-world|<tuple|Bonjour tout le monde|french>|1a>
     </nf-fake-chunk||<tuple>|1|1b|||||>
 
@@ -736,14 +766,15 @@
 
     We will derive the german hello-world program like this:<htab|0mm>
 
-    <\nf-fake-chunk|hello-world.de.c>
+    <\nf-fake-chunk|./hello-world.de.c>
       <item><nf-fake-ref|hello-world|<tuple|Hallo welt|german>|1a>
     </nf-fake-chunk||<tuple>|1|1c|||||>
 
     \;
   </sub-page>
 
-  <section|<LyX>>
+  Which demonstrates nicely how to use fangle in terms of function, but less
+  so in terms of style.
 </body>
 
 <\initial>

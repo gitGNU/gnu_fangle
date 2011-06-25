@@ -1,0 +1,10 @@
+
+/* The traditional hello-world program in  
+ * generated using fangle literate programming macros
+ */
+
+#include stdio.c
+
+main() {
+  printf("\n");
+}
