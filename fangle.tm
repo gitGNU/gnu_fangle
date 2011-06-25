@@ -2908,8 +2908,8 @@
 
   In the <TeXmacs> output, the start of a chunk will appear like this:
 
-  <verbatim| \ 5b\<less\>example-chunk[1](arg1,^K arg2^K^K), lang=C\<gtr\>
-  <math|\<equiv\>>>
+  <verbatim| \ 5b\<less\>example-chunk<key|^K>[1](arg1,<key|^K>
+  arg2<key|^K><key|^K>), lang=C\<gtr\> <math|\<equiv\>>>
 
   We detect the the start of a <TeXmacs> chunk by detecting the
   <math|\<equiv\>> symbol which occurs near the end of the line. We obtain
@@ -2933,7 +2933,7 @@
 
     <item> \ \ \ if ((line[4])) {
 
-    <item> \ \ \ \ \ params = params "language=" line[4]
+    <item> \ \ \ \ \ params = params ",language=" line[4]
 
     <item> \ \ \ }
 
@@ -3648,7 +3648,7 @@
 
     <item>{
 
-    <item> \ if (debug) debug_log("write_chunk_r(", chunk_name, ")");
+    <item> \ if (debug) debug_log("write_chunk_r(" chunk_name ")");
   </nf-chunk||>
 
   <subsection|Chunk Parts><label|sub:Chunk-parts>

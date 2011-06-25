@@ -1786,7 +1786,7 @@ TeXmacs back-tick handling is obscure, and a cut-n-paste back-tick from a shell 
   12  | }
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 In the TeXmacs output, the start of a chunk will appear like this:
-  5b<example-chunk[1](arg1,^K arg2^K^K), lang=C> ≡
+  5b<example-chunk^K[1](arg1,^K arg2^K^K), lang=C> ≡
 We detect the the start of a TeXmacs chunk by detecting the ≡ symbol which occurs near the end of the line. We obtain the chunk name, the chunk parameters, and the chunk language.
 
   58a <recognize-chunk[3]() ⇑57a, lang=> +≡ ⊲57b 58b▿
@@ -1799,7 +1799,7 @@ We detect the the start of a TeXmacs chunk by detecting the ≡ symbol which occ
   18  |     gsub(ARG_SEPARATOR ",? ?", ";", line[3]);
   19  |     params = "params=" line[3];
   20  |     if ((line[4])) {
-  21  |       params = params "language=" line[4]
+  21  |       params = params ",language=" line[4]
   22  |     }
   23  |     get_tex_chunk_args(params, next_chunk_opts);
   24  |     new_chunk(next_chunk_name, next_chunk_opts, next_chunk_params);
@@ -2231,7 +2231,7 @@ We first initialize the mode tracker for this chunk.
   11  |   chunk_params, part, max_part, part_line, frag, max_frag, text, 
   12  |   chunklet, only_part, call_chunk_args, new_context)
   13  | {
-  14  |   if (debug) debug_log("write_chunk_r(", chunk_name, ")");
+  14  |   if (debug) debug_log("write_chunk_r(" chunk_name ")");
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 13.1.1 Chunk Parts 
 As mentioned in section ?, a chunk name may contain a part specifier in square brackets, limiting the parts that should be emitted.

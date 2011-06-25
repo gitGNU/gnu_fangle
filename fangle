@@ -363,7 +363,7 @@ function write_chunk_r(chunk_name, context, indent, tail,
   chunk_params, part, max_part, part_line, frag, max_frag, text, 
   chunklet, only_part, call_chunk_args, new_context)
 {
-  if (debug) debug_log("write_chunk_r(", chunk_name, ")");
+  if (debug) debug_log("write_chunk_r(" chunk_name ")");
   if (match(chunk_name, "^(.*)\\[([0-9]*)\\]$", chunk_name_parts)) {
     chunk_name = chunk_name_parts[1];
     only_part = chunk_name_parts[2];
@@ -693,7 +693,7 @@ BEGIN {
     gsub(ARG_SEPARATOR ",? ?", ";", line[3]);
     params = "params=" line[3];
     if ((line[4])) {
-      params = params "language=" line[4]
+      params = params ",language=" line[4]
     }
     get_tex_chunk_args(params, next_chunk_opts);
     new_chunk(next_chunk_name, next_chunk_opts, next_chunk_params);
