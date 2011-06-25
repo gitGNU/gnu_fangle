@@ -394,7 +394,25 @@
 
   <assign|nf-next-chunk-id|<macro|name|<nf-chunk-id|<arg|name>|ref|<plus|<compound|<merge|the-code-chunk-|<unquote|<arg|name>>>>|1>>>>
 
-  <assign|nf-nav|<style-with|src-compact|none|<macro|name|<style-with|src-compact|all|<if|<not|<nf-first-chunklet?|<arg|name>>>|<if|<equal|<pagerefpage|<nf-prev-chunk-id|<arg|name>>>|<pagerefpage|<nf-this-chunk-id|<arg|name>|label>>>|<math|\<vartriangle\>>|<math|\<vartriangleleft\>>><reference|<nf-prev-chunk-id|<arg|name>>>>><if|<compound|nf-chunklet-exists?|<nf-next-chunk-id|<arg|name>>>|
+  <assign|fangle-nav-left|<math|\<vartriangleleft\>>>
+
+  <assign|fangle-nav-up|<math|\<vartriangle\>>>
+
+  <assign|fangle-nav-down|<math|\<triangledown\>>>
+
+  <assign|fangle-nav-right|<math|\<vartriangleright\>>>
+
+  <assign|render-fangle-nav|<style-with|src-compact|none|<macro|<style-with|src-compact|all|<if|<not|<equal|<length|<value|prev_label>>|0>>|<value|prev><value|prev_label>><style-with|src-compact|all|<if|<not|<equal|<length|<value|next_label>>|0>>|
+  <value|next_label><value|next>>>>>>>
+
+  <assign|fangle-nav|<style-with|src-compact|none|<\macro|name>
+    <with|prev|<if|<equal|<pagerefpage|<nf-prev-chunk-id|<arg|name>>>|<pagerefpage|<nf-this-chunk-id|<arg|name>|label>>>|<math|\<vartriangle\>>|<math|\<vartriangleleft\>>>|prev_label|<if|<not|<nf-first-chunklet?|<arg|name>>>|<reference|<nf-prev-chunk-id|<arg|name>>>>|next|<if|<nf-chunklet-exists?|<nf-next-chunk-id|<arg|name>>>|<if|<equal|<pagerefpage|<nf-next-chunk-id|<arg|name>>>|<pagerefpage|<nf-this-chunk-id|<arg|name>|label>>>|<math|\<triangledown\>>|<math|\<vartriangleright\>>>>|next_label|<if|<nf-chunklet-exists?|<nf-next-chunk-id|<arg|name>>>|
+    <reference|<nf-next-chunk-id|<arg|name>>>>|<render-fangle-nav>>
+
+    <style-with|src-compact|all|>
+  </macro>>>
+
+  <assign|xnf-nav|<style-with|src-compact|none|<macro|name|<style-with|src-compact|all|<if|<not|<nf-first-chunklet?|<arg|name>>>|<if|<equal|<pagerefpage|<nf-prev-chunk-id|<arg|name>>>|<pagerefpage|<nf-this-chunk-id|<arg|name>|label>>>|<math|\<vartriangle\>>|<math|\<vartriangleleft\>>><reference|<nf-prev-chunk-id|<arg|name>>>>><if|<nf-chunklet-exists?|<nf-next-chunk-id|<arg|name>>>|
   <reference|<nf-next-chunk-id|<arg|name>>><if|<equal|<pagerefpage|<nf-next-chunk-id|<arg|name>>>|<pagerefpage|<nf-this-chunk-id|<arg|name>|label>>>|<math|\<triangledown\>>|<math|\<vartriangleright\>>>>>>>
 
   <\active*>
@@ -409,14 +427,28 @@
     </src-comment>
   </active*>
 
+  <assign|render-fangle-header|<macro|<shift|<resize|<specific-verbatim|\<#000A\>><value|chunk_label>
+  |||0fn|>|-2.0fn|><nv-langle><with|color|blue|<value|name>>[<value|chunk_no><style-with|src-compact|none|]><if|<not|<equal|<value|chunk_no>|1>>|<if|<not|<equal|<length|<value|args>>|0>>|(<with|nf-render-commas|<macro|x|<arg|x>>|<nf-commas|<value|args>>>)>
+  <math|\<Uparrow\>><value|first_chunk_label>|(<nf-commas|<value|args>>)>,
+  lang=<with|color|blue|<value|lang>><nv-rangle>
+  <math|<if|<not|<equal|<value|chunk_no>|1>>|+>\<equiv\>>>>
+
+  <assign|if-provides|<macro|x|<if|<provides|<arg|x>>|<arg|x>>>>
+
+  <assign|fangle-header|<macro|name|lang|args|<with|<render-fangle-header|<arg|name>|<arg|lang>|<arg|args>|<if-provides|<compound|<merge|the-code-chunk-|<unquote|<arg|name>>>>>|<value|the-label>>>>>
+
+  <assign|draw-fangle-header|<macro|name|lang|args|chunk_no|chunk_label|first_chunk_label|prev|prev_label|next|next_label|<with|name|<arg|name>|lang|<arg|lang>|args|<arg|args>|chunk_no|<arg|chunk_no>|chunk_label|<arg|chunk_label>|first_chunk_label|<arg|first_chunk_label>|prev|<arg|prev>|prev_label|<arg|prev_label>|next_label|<arg|next_label>|next|<arg|next>|<render-fangle-header><htab|0pt><render-fangle-nav>>>>
+
   <assign|nf-pad|<macro|w|<if|<not|<less|<arg|w>|1>>|
   <nf-pad|<minus|<arg|w>|1>>>>>
 
-  <assign|nf-header|<macro|name|lang|args|<shift|<resize|<specific-verbatim|\<#000A\><nf-pad|<minus|5|<length|<merge|<pagerefpage|<nf-this-chunk-id|<arg|name>|label>>|<number|<the-nf-chunk>|alpha>>>>>><value|the-label>
+  <assign|nf-header|<macro|name|lang|args|<shift|<resize|<specific-verbatim|\<#000A\>><value|the-label>
   |||0fn|>|-2.0fn|><nv-langle><with|color|blue|<arg|name>>[<compound|<merge|the-code-chunk-|<unquote|<arg|name>>>><style-with|src-compact|none|]><if|<not|<nf-first-chunklet?|<arg|name>>>|<if|<not|<equal|<value|<merge|code-args-|<unquote|<arg|name>>>>|<uninit>>>|(<with|nf-render-commas|<macro|x|<arg|x>>|<nf-commas|<value|<merge|code-args-|<unquote|<arg|name>>>>>>)>
   <math|\<Uparrow\>><reference|<nf-chunk-id|<arg|name>|ref|1>>|(<nf-commas|<arg|args>>)>,
   lang=<with|color|blue|<arg|lang>><nv-rangle>
-  <math|<if|<not|<nf-first-chunklet?|<arg|name>>>|+>\<equiv\>><htab|0pt><nf-nav|<arg|name>>>>
+  <math|<if|<not|<nf-first-chunklet?|<arg|name>>>|+>\<equiv\>><htab|0pt><fangle-nav|<arg|name>>>>
+
+  <assign|nf-header|<macro|name|lang|args|<with|name|<arg|name>|lang|<arg|lang>|args|<if|<not|<equal|<value|<merge|code-args-|<unquote|<arg|name>>>>|<uninit>>>|<nf-commas|<value|<merge|code-args-|<unquote|<arg|name>>>>>|<arg|args>>|chunk_label|<value|the-label>|chunk_no|<compound|<merge|the-code-chunk-|<unquote|<arg|name>>>>|first_chunk_label|<reference|<nf-chunk-id|<arg|name>|ref|1>>|<fangle-header><htab|0pt><fangle-nav|<arg|name>>>>>
 
   <assign|nf-render-commas|<macro|x|<with|color|blue|<arg|x>>>>
 
@@ -632,19 +664,19 @@
     </surround>
   </with>>>>>>
 
-  <assign|nf-fake-chunk|<macro|name|x|lang|args|is_last|is_first|<with|the-label||xnv-langle-subst||xnv-rangle-subst||nf-name|<unquote|<arg|name>>|y|<value|pob>|<small|<surround|<wide-underlined|<nf-border-if|<nf-first-chunklet?|<value|nf-name>>>|1ln|<no-page-break*><label|<arg|name>><small|<nf-header|<arg|name>|<arg|lang>|<arg|args>>><no-page-break>>|<if|<arg|is_last>|<wide-bothlined|<nf-border-if|<is-last>>|0ln|1ln|0ln|<htab|5mm*|last>>|<nf-jags>>|<\with|item|<value|<merge|code-item-|<unquote|<arg|name>>>>|item-vsep|0fn|current-item|<value|nf-render-line-no>|transform-item|<value|identity>>
-    <\surround||<nf-chunk-outit|<arg|name>><if|<and|<not|<equal|<value|nf-page>|<pagerefpage|<nf-this-chunk-id|<arg|name>|end>>>>|<ispageref?|<nf-this-chunk-id|<arg|name>|end>>>|<set-this-page-header|<with|nv-langle|<macro|<with|mode|math|<left|langle>>>|nv-rangle|<macro|<with|mode|math|<right|rangle>>>|<small|<nf-header|<arg|name>|<arg|lang>|<arg|args>>>>>>>
-      <no-page-break><nf-verbatim-top|<nf-first-chunklet?|<value|nf-name>>>
+  <assign|nf-fake-chunk|<macro|name|x|lang|args|chunk_no|chunk_label|chunk_first_label|prev|prev_label|next|next_label|line-no|<with|the-label||xnv-langle-subst||xnv-rangle-subst||nf-name|<unquote|<arg|name>>|name|<arg|name>|lang|<arg|lang>|args|<arg|args>|chunk_no|<arg|chunk_no>|chunk_label|<arg|chunk_label>|chunk_first_label|<arg|chunk_first_label>|prev|<arg|prev>|prev_label|<arg|prev_label>|next|<arg|next>|next_label|<arg|next_label>|<small|<surround|<wide-underlined|<nf-border-if|<equal|<value|chunk_no>|1>>|1ln|<no-page-break*><small|<render-fangle-header><htab|0pt><render-fangle-nav>><no-page-break>>|<if|<not|<equal|<length|<value|next>>|0>>|<wide-bothlined|<nf-border-if|<is-last>>|0ln|1ln|0ln|<htab|5mm*|last>>|<nf-jags>>|<\with|xitem|<arg|line-no>|item-nr|0|item-vsep|0fn|current-item|<value|nf-render-line-no>|transform-item|<value|identity>>
+    <no-page-break><nf-verbatim-top|<nf-first-chunklet?|<value|nf-name>>>
 
-      <with|nv-langle-subst|\S|nv-rangle-subst|\T|<nf-pf|<value|nf-name>|<arg|lang>|<arg|x>>>
+    <with|nv-langle-subst|\S|nv-rangle-subst|\T|<nf-pf|<value|nf-name>|<arg|lang>|<arg|x>>>
 
-      <no-page-break*><if|<nf-last-chunklet?|<value|nf-name>>|<assign|<merge|code-line-|<value|nf-name>|-nr>|0>><nf-verbatim-bottom|<nf-last-chunklet?|<value|nf-name>>>
-    </surround>
+    <no-page-break*><if|<nf-last-chunklet?|<value|nf-name>>|<assign|<merge|code-line-|<value|nf-name>|-nr>|0>><nf-verbatim-bottom|<nf-last-chunklet?|<value|nf-name>>>
   </with>>>>>>
 
   <new-list|nfl|<value|aligned-dot-item>|<value|identity>>
 
   <drd-props|nf-chunk|accessible|all>
+
+  <drd-props|nf-fake-chunk|accessible|all>
 
   <assign|nf-comment|<macro|x|<with|mode|text|<specific-verbatim|/*
   ><arg|x><specific-verbatim| */>>>>
@@ -663,6 +695,13 @@
 
   <assign|nf-ref|<style-with|src-compact|none|<macro|name|args|<nv-langle><arg|name><if|<equal|<get-label|<arg|args>>|tuple>|<specific-verbatim|\<#000B\>>(<nf-commas|<arg|args>>)>
   <reference|<nf-chunk-id|<arg|name>|ref|1>><nv-rangle><flag|<arg|name>|red><if|<equal|0|1>|<compound|<quote-arg|name>>>>>>
+
+  <assign|nf-fake-ref|<style-with|src-compact|none|<macro|name|args|ref|<nv-langle><arg|name><if|<equal|<get-label|<arg|args>>|tuple>|<specific-verbatim|\<#000B\>>(<nf-commas|<arg|args>>)>
+  <arg|ref><nv-rangle><flag|<arg|name>|red><if|<equal|0|1>|<compound|<quote-arg|name>>>>>>
+
+  <drd-props|nf-ref|accessible|all>
+
+  <drd-props|nf-fake-ref|accessible|all>
 
   <\active*>
     <\src-comment>
