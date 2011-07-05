@@ -3297,15 +3297,20 @@
 
   <TeXmacs> text output uses <math|\<langle\>>...<math|\<rangle\>> which
   comes out as unicode sequences <verbatim|0xC2> <verbatim|0xAB> ...
-  <verbatim|0xC2> <verbatim|0xBB>
+  <verbatim|0xC2> <verbatim|0xBB>. Modern awk will interpret
+  <verbatim|[^\\xC2\\xBB]> as a single unicode character if <verbatim|LANG>
+  is set correctly to the sub-type <verbatim|UTF-8>, e.g.
+  <verbatim|LANG=en_GB.UTF-8>, otherwise <verbatim|[^\\xC2\\xBB]> will be
+  treated as a two character negated match <emdash> but this should not
+  interfere with the function.
 
   <\nf-chunk|process-chunk>
     <item>chunk = $0;
 
     <item>indent = 0;
 
-    <item>while(match(chunk,"(\\xC2\\xAB)([^\\xC2]*) [^\\xC2]*\\xC2\\xBB",
-    line) \|\|
+    <item>while(match(chunk,"(\\xC2\\xAB)([^\\xC2\\xBB]*)
+    [^\\xC2\\xBB]*\\xC2\\xBB", line) \|\|
 
     <item> \ \ \ \ \ match(chunk,\ 
 
