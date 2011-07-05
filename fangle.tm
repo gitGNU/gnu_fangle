@@ -5291,6 +5291,7 @@
     <associate|page-screen-height|982016tmpt>
     <associate|page-screen-margin|false>
     <associate|page-screen-width|1686528tmpt>
+    <associate|page-show-hf|true>
     <associate|preamble|false>
     <associate|sfactor|5>
   </collection>
