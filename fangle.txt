@@ -310,20 +310,27 @@ This requires that the literate programming environment have the ability to repr
 We also adopt a convention that code chunks whose names beginning with ./ should always be automatically extracted from the document. Code chunks whose names do not begin with ./ are for internal reference. Such chunks may be extracted directly, but will not be automatically extracted by this Makefile.
 6.2 Extracting Sources 
 Our makefile has two parts; variables must be defined before the targets that use them.
-As we progress through this chapter, explaining concepts, we will be adding lines to <Makefile.inc-vars 23b> and <Makefile.inc-targets 24b> which are included in <./Makefile.inc 23a> below.
+As we progress through this chapter, explaining concepts, we will be adding lines to <Makefile.inc-vars 23b> and <Makefile.inc-targets 24c> which are included in <./Makefile.inc 23a> below.
 
 23a <./Makefile.inc[1](), lang=make> ≡ 
       ________________________________________________________________________
   1  | «Makefile.inc-vars 23b»
-  2  | «Makefile.inc-targets 24b»
+  2  | «Makefile.inc-default-targets ?a»
+  3  | «Makefile.inc-targets 24c»
      |________________________________________________________________________
 
 
-We first define a placeholder for LITERATE_SOURCE to hold the name of this document. This will normally be passed on the command line.
+We first define a placeholder for the tool fangle in case it cannot be found in the path.
 
 23b <Makefile.inc-vars[1](), lang=> ≡  24a⊳
       ________________________________________________________________________
-  1  | LITERATE_SOURCE=
+  1  | FANGLE=fangle
+     |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
+We also define a placeholder for LITERATE_SOURCE to hold the name of this document. This will normally be passed on the command line.
+
+24a <Makefile.inc-vars[2]() ⇑23b, lang=> +≡ ⊲23b 24b▿
+     ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+  2  | LITERATE_SOURCE=
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 Fangle cannot process L Y X or TeXmacs documents directly, so the first stage is to convert these to more suitable text based formats1. L Y X and TeXmacs formats are text-based, but not suitable for fangle  ^1.
 6.2.1 Converting from L Y X to LaTeX 
@@ -331,67 +338,72 @@ The first stage will always be to convert the L Y X file to a LaTeX file. Fangle
 The command lyx -e literate fangle.lyx will produce fangle.tex, a TeX file; so we define a make target to be the same as the L Y X file but with the .tex extension.
 The EXTRA_DIST is for automake support so that the TeX files will automaticaly be distributed with the source, to help those who don't have L Y X installed.
 
-24a <Makefile.inc-vars[2]() ⇑23b, lang=> +≡ ⊲23b 24c▿
+24b <Makefile.inc-vars[3]() ⇑23b, lang=> +≡ ▵24a 25a⊳
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
-  2  | TEX_SOURCE=$(LYX_SOURCE:.lyx=.tex)
-  3  | EXTRA_DIST+=$(TEX_SOURCE)
+  3  | LYX_SOURCE=$(LITERATE_SOURCE) # but only the .lyx files
+  4  | TEX_SOURCE=$(LYX_SOURCE:.lyx=.tex)
+  5  | EXTRA_DIST+=$(TEX_SOURCE)
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 We then specify that the TeX source is to be generated from the L Y X source.
 
-24b <Makefile.inc-targets[1](), lang=> ≡  24d▿
+24c <Makefile.inc-targets[1](), lang=> ≡  24a▿
       ________________________________________________________________________
-  1  | $(TEX_SOURCE): $(LYX_SOURCE)
-  2  | ↦lyx -e latex $<
-  3  | clean_tex:
-  4  | ↦rm -f -- $(TEX_SOURCE)
-  5  | clean: clean_tex
+  1  | .SUFFIXES: .tex .lyx
+  2  | .lyx.tex:
+  3  | ↦lyx -e latex $<
+  4  | clean_tex:
+  5  | ↦rm -f -- $(TEX_SOURCE)
+  6  | clean: clean_tex
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 6.2.2 Converting from TeXmacs 
 Fangle cannot process TeXmacs files directly3. but this is planned when TeXmacs uses xml as it's native format  ^3, but must first convert them to text files.
 The command texmacs -c fangle.tm fangle.txt -q will produce fangle.txt, a text file; so we define a make target to be the same as the TeXmacs file but with the .txt extension.
 The EXTRA_DIST is for automake support so that the TeX files will automaticaly be distributed with the source, to help those who don't have L Y X installed.
 
-24c <Makefile.inc-vars[3]() ⇑23b, lang=> +≡ ▵24a 25a⊳
+25a <Makefile.inc-vars[4]() ⇑23b, lang=> +≡ ⊲24b 25a▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
-  4  | TXT_SOURCE=$(LITERATE_SOURCE:.tm=.txt)
-  5  | EXTRA_DIST+=$(TXT_SOURCE)
+  6  | TEXMACS_SOURCE=$(LITERATE_SOURCE) # but only the .tm files
+  7  | TXT_SOURCE=$(LITERATE_SOURCE:.tm=.txt)
+  8  | EXTRA_DIST+=$(TXT_SOURCE)
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 To do: Add loop around each $< so multiple targets can be specified
 
 
-24d <Makefile.inc-targets[2]() ⇑24b, lang=> +≡ ▵24b 25c⊳
+24a <Makefile.inc-targets[2]() ⇑24c, lang=> +≡ ▵24c 25a⊳
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
-  6  | $(TXT_SOURCE): $(LITERATE_SOURCE)
-  7  | ↦texmacs -c $< $(TXT_SOURCE) -q
-  8  | clean_txt:
-  9  | ↦rm -f -- $(TXT_SOURCE)
-  10  | clean: clean_txt
+  7  | .SUFFIXES: .txt .tm
+  8  | .tm.txt:
+  9  | ↦texmacs -s -c $< $@ -q
+  10  | .PHONEY: clean_txt
+  11  | clean_txt:
+  12  | ↦rm -f -- $(TXT_SOURCE)
+  13  | clean: clean_txt
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 6.3 Extracting Program Source 
 The program source is extracted using fangle, which is designed to operate on text or a LaTeX documents4. LaTeX documents are just slightly special text documents  ^4.
 
-25a <Makefile.inc-vars[4]() ⇑23b, lang=> +≡ ⊲24c 25b▿
+25a <Makefile.inc-vars[5]() ⇑23b, lang=> +≡ ▵25a 26a⊳
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
-  6  | FANGLE_SOURCE=$(TEX_SOURCE) $(TXT_SOURCE)
+  9  | FANGLE_SOURCE=$(TXT_SOURCE)
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 The literate document can result in any number of source files, but not all of these will be changed each time the document is updated. We certainly don't want to update the timestamps of these files and cause the whole source tree to be recompiled just because the literate explanation was revised. We use CPIF from the Noweb tools to avoid updating the file if the content has not changed, but should probably write our own.
 However, if a source file is not updated, then the fangle file will always have a newer time-stamp and the makefile would always re-attempt to extact a newer source file which would be a waste of time.
 Because of this, we use a stamp file which is always updated each time the sources are fully extracted from the LaTeX document. If the stamp file is newer than the document, then we can avoid an attempt to re-extract any of the sources. Because this stamp file is only updated when extraction is complete, it is safe for the user to interrupt the build-process mid-extraction.
-We use echo rather than touch to update the stamp file beause the touch command does not work very well over an sshfsmount  that I was using.
+We use echo rather than touch to update the stamp file beause the touch command does not work very well over an sshfs mount  that I was using.
 
-25b <Makefile.inc-vars[5]() ⇑23b, lang=> +≡ ▵25a 26a⊳
+26a <Makefile.inc-vars[6]() ⇑23b, lang=> +≡ ⊲25a 26a▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
-  7  | FANGLE_SOURCE_STAMP=$(FANGLE_SOURCE).stamp
+  10  | FANGLE_SOURCE_STAMP=$(FANGLE_SOURCE).stamp
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 
-25c <Makefile.inc-targets[3]() ⇑24b, lang=> +≡ ⊲24d 26b⊳
+25a <Makefile.inc-targets[3]() ⇑24c, lang=> +≡ ⊲24a 26b⊳
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
-  11  | $(FANGLE_SOURCE_STAMP): $(FANGLE_SOURCE) \
-  12  | ↦                $(FANGLE_SOURCES) ; \
-  13  | ↦echo -n > $(FANGLE_SOURCE_STAMP)
-  14  | clean_stamp:
-  15  | ↦rm -f $(FANGLE_SOURCE_STAMP)
-  16  | clean: clean_stamp
+  14  | $(FANGLE_SOURCE_STAMP): $(FANGLE_SOURCE) \
+  15  | ↦                $(FANGLE_SOURCES) ; \
+  16  | ↦echo -n > $(FANGLE_SOURCE_STAMP)
+  17  | clean_stamp:
+  18  | ↦rm -f $(FANGLE_SOURCE_STAMP)
+  19  | clean: clean_stamp
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 6.4 Extracting Source Files 
 We compute FANGLE_SOURCES to hold the names of all the source files defined in the document. We compute this only once, by means of := in assignent. The sed deletes the any << and >> which may surround the roots names (for compatibility with Noweb's noroots command).
@@ -400,168 +412,181 @@ Note 1. FANGLE_PREFIX is set to ./ by default, but whatever it may be overridden
 To do: This doesn't work though, because it loses the full name and doesn't know what to extact!
 
 
-26a <Makefile.inc-vars[6]() ⇑23b, lang=> +≡ ⊲25b 26e▿
+26a <Makefile.inc-vars[7]() ⇑23b, lang=> +≡ ▵26a 26e▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
-  8  | FANGLE_PREFIX:=\.\/
-  9  | FANGLE_SOURCES:=$(shell \
-  10  |   fangle -r $(FANGLE_SOURCE) |\
-  11  |   sed -e 's/^[<][<]//;s/[>][>]$$//;/^$(FANGLE_PREFIX)/!d' \
-  12  |       -e 's/^$(FANGLE_PREFIX)/\.\//' )
+  11  | FANGLE_PREFIX:=\.\/
+  12  | FANGLE_SOURCES:=$(shell \
+  13  |   $(FANGLE) -r $(FANGLE_SOURCE) |\
+  14  |   sed -e 's/^[<][<]//;s/[>][>]$$//;/^$(FANGLE_PREFIX)/!d' \
+  15  |       -e 's/^$(FANGLE_PREFIX)/\.\//' )
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 The target below, echo_fangle_sources is a helpful debugging target and shows the names of the files that would be extracted.
 
-26b <Makefile.inc-targets[4]() ⇑24b, lang=> +≡ ⊲25c 26c▿
+26b <Makefile.inc-targets[4]() ⇑24c, lang=> +≡ ⊲25a 26c▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
-  17  | .PHONY: echo_fangle_sources
-  18  | echo_fangle_sources: ; @echo $(FANGLE_SOURCES)
+  20  | .PHONY: echo_fangle_sources
+  21  | echo_fangle_sources: ; @echo $(FANGLE_SOURCES)
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 We define a convenient target called fangle_sources so that make -f fangle_sources will re-extract the source if the literate document has been updated. 
 
-26c <Makefile.inc-targets[5]() ⇑24b, lang=> +≡ ▵26b 26d▿
+26c <Makefile.inc-targets[5]() ⇑24c, lang=> +≡ ▵26b 26d▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
-  19  | .PHONY: fangle_sources
-  20  | fangle_sources: $(FANGLE_SOURCE_STAMP)
+  22  | .PHONY: fangle_sources
+  23  | fangle_sources: $(FANGLE_SOURCE_STAMP)
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 And also a convenient target to remove extracted sources.
 
-26d <Makefile.inc-targets[6]() ⇑24b, lang=> +≡ ▵26c 27d⊳
+26d <Makefile.inc-targets[6]() ⇑24c, lang=> +≡ ▵26c 27a⊳
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
-  21  | .PHONY: clean_fangle_sources
-  22  | clean_fangle_sources: ; \
-  23  |         rm -f -- $(FANGLE_SOURCE_STAMP) $(FANGLE_SOURCES)
+  24  | .PHONY: clean_fangle_sources
+  25  | clean_fangle_sources: ; \
+  26  |         rm -f -- $(FANGLE_SOURCE_STAMP) $(FANGLE_SOURCES)
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 We now look at the extraction of the source files.
 This makefile macro if_extension takes 4 arguments: the filename $(1), some extensions to match $(2) and a shell command to return if the filename does match the exensions $(3), and a shell command to return if it does not match the extensions $(4).
 
-26e <Makefile.inc-vars[7]() ⇑23b, lang=> +≡ ▵26a 26f▿
+26e <Makefile.inc-vars[8]() ⇑23b, lang=> +≡ ▵26a 26f▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
-  13  | if_extension=$(if $(findstring $(suffix $(1)),$(2)),$(3),$(4))
+  16  | if_extension=$(if $(findstring $(suffix $(1)),$(2)),$(3),$(4))
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 For some source files like C files, we want to output the line number and filename of the original LaTeX document from which the source came5. I plan to replace this option with a separate mapping file so as not to pollute the generated source, and also to allow a code pretty-printing reformatter like indent be able to re-format the file and adjust for changes through comparing the character streams.  ^5.
 To make this easier we define the file extensions for which we want to do this.
 
-26f <Makefile.inc-vars[8]() ⇑23b, lang=> +≡ ▵26e 26g▿
+26f <Makefile.inc-vars[9]() ⇑23b, lang=> +≡ ▵26e 27a⊳
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
-  14  | C_EXTENSIONS=.c .h
+  17  | C_EXTENSIONS=.c .h
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 We can then use the if_extensions macro to define a macro which expands out to the -L option if fangle is being invoked in a C source file, so that C compile errors will refer to the line number in the TeX document. 
 
-26g <Makefile.inc-vars[9]() ⇑23b, lang=> +≡ ▵26f 27a⊳
+27a <Makefile.inc-vars[10]() ⇑23b, lang=> +≡ ⊲26f 27b▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
-  15  | TABS=8
-  16  | nf_line=-L -T$(TABS)
-  17  | fangle=fangle $(call if_extension,$(2),$(C_EXTENSIONS),$(nf_line)) -R"$(2)" $(1)
+  18  | TABS=8
+  19  | nf_line=-L -T$(TABS)
+  20  | fangle=$(FANGLE) $(call if_extension,$(2),$(C_EXTENSIONS),$(nf_line)) -R"$(2)" $(1)
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 We can use a similar trick to define an indent macro which takes just the filename as an argument and can return a pipeline stage calling the indent command. Indent can be turned off with make fangle_sources indent=
 
-27a <Makefile.inc-vars[10]() ⇑23b, lang=> +≡ ⊲26g 27b▿
+27b <Makefile.inc-vars[11]() ⇑23b, lang=> +≡ ▵27a 27c▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
-  18  | indent_options=-npro -kr -i8 -ts8 -sob -l80 -ss -ncs
-  19  | indent=$(call if_extension,$(1),$(C_EXTENSIONS), | indent $(indent_options))
+  21  | indent_options=-npro -kr -i8 -ts8 -sob -l80 -ss -ncs
+  22  | indent=$(call if_extension,$(1),$(C_EXTENSIONS), | indent $(indent_options))
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 We now define the pattern for extracting a file. The files are written using noweb's cpif so that the file timestamp will not be touched if the contents haven't changed. This avoids the need to rebuild the entire project because of a typographical change in the documentation, or if none or a few C source files have changed.
 
-27b <Makefile.inc-vars[11]() ⇑23b, lang=> +≡ ▵27a 27c▿
+27c <Makefile.inc-vars[12]() ⇑23b, lang=> +≡ ▵27b 28a⊳
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
-  20  | fangle_extract=@mkdir -p $(dir $(1)) && \
-  21  |   $(call fangle,$(2),$(1)) > "$(1).tmp" && \
-  22  |   cat "$(1).tmp" $(indent) | cpif "$(1)" \
-  23  |   && rm -- "$(1).tmp" || \
-  24  |   (echo error newfangling $(1) from $(2) ; exit 1)
+  23  | fangle_extract=@mkdir -p $(dir $(1)) && \
+  24  |   $(call fangle,$(2),$(1)) > "$(1).tmp" && \
+  25  |   cat "$(1).tmp" $(indent) | cpif "$(1)" \
+  26  |   && rm -f -- "$(1).tmp" || \
+  27  |   (echo error fangling $(1) from $(2) ; exit 1)
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 We define a target which will extract or update all sources. To do this we first defined a makefile template that can do this for any source file in the LaTeX document.
 
-27c <Makefile.inc-vars[12]() ⇑23b, lang=> +≡ ▵27b 28a⊳
+28a <Makefile.inc-vars[13]() ⇑23b, lang=> +≡ ⊲27c 28a▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
-  25  | define FANGLE_template
-  26  |   $(1): $(2)
-  27  | ↦$$(call fangle_extract,$(1),$(2))
-  28  |   FANGLE_TARGETS+=$(1)
-  29  | endef
+  28  | define FANGLE_template
+  29  |   $(1): $(2)
+  30  | ↦$$(call fangle_extract,$(1),$(2))
+  31  |   FANGLE_TARGETS+=$(1)
+  32  | endef
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 We then enumerate the discovered FANGLE_SOURCES to generate a makefile rule for each one using the makefile template we defined above.
 
-27d <Makefile.inc-targets[7]() ⇑24b, lang=> +≡ ⊲26d 27e▿
+27a <Makefile.inc-targets[7]() ⇑24c, lang=> +≡ ⊲26d 27b▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
-  24  | $(foreach source,$(FANGLE_SOURCES),\
-  25  |   $(eval $(call FANGLE_template,$(source),$(FANGLE_SOURCE))) \
-  26  | )
+  27  | $(foreach source,$(FANGLE_SOURCES),\
+  28  |   $(eval $(call FANGLE_template,$(source),$(FANGLE_SOURCE))) \
+  29  | )
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 These will all be built with FANGLE_SOURCE_STAMP.
 We also remove the generated sources on a make distclean.
 
-27e <Makefile.inc-targets[8]() ⇑24b, lang=> +≡ ▵27d 28b⊳
+27b <Makefile.inc-targets[8]() ⇑24c, lang=> +≡ ▵27a 28b⊳
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
-  27  | _distclean: clean_fangle_sources
+  30  | _distclean: clean_fangle_sources
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 6.5 Extracting Documentation 
 We then identify the intermediate stages of the documentation and their build and clean targets.
+
+?a <Makefile.inc-default-targets[1](), lang=> ≡ 
+      ________________________________________________________________________
+  1  | .PHONEY : clean_pdf
+     |________________________________________________________________________
+
+
 6.5.1 Formatting TeX 
 6.5.1.1 Running pdflatex 
 We produce a pdf file from the tex file.
 
-28a <Makefile.inc-vars[13]() ⇑23b, lang=> +≡ ⊲27c 28c▿
+28a <Makefile.inc-vars[14]() ⇑23b, lang=> +≡ ▵28a 28c▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
-  30  | FANGLE_PDF=$(TEX_SOURCE:.tex=.pdf)
+  33  | FANGLE_PDF+=$(TEX_SOURCE:.tex=.pdf)
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 We run pdflatex twice to be sure that the contents and aux files are up to date. We certainly are required to run pdflatex at least twice if these files do not exist.
 
-28b <Makefile.inc-targets[9]() ⇑24b, lang=> +≡ ⊲27e 28d▿
+28b <Makefile.inc-targets[9]() ⇑24c, lang=> +≡ ⊲27b 28d▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
-  28  | $(FANGLE_PDF): $(TEX_SOURCE)
-  29  | ↦pdflatex $< && pdflatex $<
-  30  | 
-  31  | clean_pdf:
-  32  | ↦rm -f -- $(FANGLE_PDF) $(TEX_SOURCE:.tex=.toc) \
-  33  | ↦  $(TEX_SOURCE:.tex=.log) $(TEX_SOURCE:.tex=.aux)
+  31  | .SUFFIXES: .tex .pdf
+  32  | .tex.pdf:
+  33  | ↦pdflatex $< && pdflatex $<
+  34  | 
+  35  | clean_pdf_tex:
+  36  | ↦rm -f -- $(FANGLE_PDF) $(TEX_SOURCE:.tex=.toc) \
+  37  | ↦  $(TEX_SOURCE:.tex=.log) $(TEX_SOURCE:.tex=.aux)
+  38  | clean_pdf: clean_pdf_tex
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 6.5.2 Formatting TeXmacs 
 TeXmacs can produce a PDF file directly.
 
-28c <Makefile.inc-vars[14]() ⇑23b, lang=> +≡ ▵28a 28e▿
+28c <Makefile.inc-vars[15]() ⇑23b, lang=> +≡ ▵28a
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
-  31  | FANGLE_PDF=$(TEX_SOURCE:.tm=.pdf)
-     |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
+  34  | FANGLE_PDF+=$(LITERATE_SOURCE:.tm=.pdf)
+     |________________________________________________________________________
+
+
 To do: Outputting the PDF may not be enough to update the links and page references. I think
 we need to update twice, generate a pdf, update twice mode and generate a new PDF.
 Basically the PDF export of TeXmacs is pretty rotten and doesn't work properly from the CLI
 
 
-28d <Makefile.inc-targets[10]() ⇑24b, lang=> +≡ ▵28b 28f▿
+28d <Makefile.inc-targets[10]() ⇑24c, lang=> +≡ ▵28b 28a▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
-  34  | $(FANGLE_PDF): $(TEXMACS_SOURCE)
-  35  | ↦texmacs -c $(TEXMACS_SOURCE) $< -q
-  36  | 
-  37  | clean_pdf:
-  38  | ↦rm -f -- $(FANGLE_PDF)
+  39  | .SUFFIXES: .tm .pdf
+  40  | .tm.pdf:
+  41  | ↦texmacs -s -c $< $@ -q
+  42  | 
+  43  | clean_pdf_texmacs:
+  44  | ↦rm -f -- $(FANGLE_PDF)
+  45  | clean_pdf: clean_pdf_texmacs
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 6.5.3 Building the Documentation as a Whole 
 Currently we only build pdf as a final format, but FANGLE_DOCS may later hold other output formats.
 
-28e <Makefile.inc-vars[15]() ⇑23b, lang=> +≡ ▵28c
+?a <Makefile.inc-vars[16]() ⇑23b, lang=> +≡ ⊲28c
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
-  32  | FANGLE_DOCS=$(FANGLE_PDF)
+  1  | FANGLE_DOCS=$(FANGLE_PDF)
      |________________________________________________________________________
 
 
 We also define fangle_docs as a convenient phony target.
 
-28f <Makefile.inc-targets[11]() ⇑24b, lang=> +≡ ▵28d 28g▿
+28a <Makefile.inc-targets[11]() ⇑24c, lang=> +≡ ▵28d 28b▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
-  39  | .PHONY: fangle_docs
-  40  | fangle_docs: $(FANGLE_DOCS)
-  41  | docs: fangle_docs
+  46  | .PHONY: fangle_docs
+  47  | fangle_docs: $(FANGLE_DOCS)
+  48  | docs: fangle_docs
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 And define a convenient clean_fangle_docs which we add to the regular clean target
 
-28g <Makefile.inc-targets[12]() ⇑24b, lang=> +≡ ▵28f
+28b <Makefile.inc-targets[12]() ⇑24c, lang=> +≡ ▵28a
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
-  42  | .PHONEY: clean_fangle_docs
-  43  | clean_fangle_docs: clean_tex clean_pdf
-  44  | clean: clean_fangle_docs
-  45  | 
-  46  | distclean_fangle_docs: clean_tex clean_fangle_docs
-  47  | distclean: clean distclean_fangle_docs
+  49  | .PHONEY: clean_fangle_docs
+  50  | clean_fangle_docs: clean_tex clean_pdf
+  51  | clean: clean_fangle_docs
+  52  | 
+  53  | distclean_fangle_docs: clean_tex clean_fangle_docs
+  54  | distclean: clean distclean_fangle_docs
      |________________________________________________________________________
 
 
@@ -3028,7 +3053,7 @@ And this lyx-build scrap will extract fangle for me.
   2  | $FANGLE -Rpca-test.awk $TEX_SRC | awk -f - || exit 1
   3  | «test:cromulence 51e»
   4  | «test:escapes 55d»
-  5  | «test:chunk-params 91a»
+  5  | «test:chunk-params 91e»
      |________________________________________________________________________
 
 
@@ -3121,7 +3146,7 @@ Chapter 18Chunk Parameters
 
 
 
-91c <test:chunk-params:text[1](), lang=> ≡  ?a⊳
+91c <test:chunk-params:text[1](), lang=> ≡  92a⊳
       ________________________________________________________________________
   1  | What do you see? "=<\chunkref{test:lyx:chunk-params:sub}(joe, red)>"
   2  | Well, fancy!
@@ -3139,7 +3164,7 @@ Should generate output:
 
 And this chunk will perform the test:
 
-91e <test:chunk-params[1](), lang=> ≡  ?a⊳
+91e <test:chunk-params[1](), lang=> ≡  92c⊳
       ________________________________________________________________________
   1  | $FANGLE -Rtest:lyx:chunk-params:result $TEX_SRC > $TMP/answer || exit 1
   2  | $FANGLE -Rtest:lyx:chunk-params:text $TEX_SRC > $TMP/result || exit 1
@@ -3151,7 +3176,7 @@ And this chunk will perform the test:
       ________________________________________________________________________
   1  | I see a ${THING}
   2  | a ${THING} of colour ${colour}, 
-  3  | and looking closer «test:chunk-params:sub:sub(${colour}) 91c»
+  3  | and looking closer «test:chunk-params:sub:sub(${colour}) 91g»
      |________________________________________________________________________
 
 
@@ -3163,9 +3188,9 @@ And this chunk will perform the test:
 
 
 
-92a <test:chunk-params:text[2]() ⇑91a, lang=> +≡ ⊲91a
+92a <test:chunk-params:text[2]() ⇑91c, lang=> +≡ ⊲91c
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
-  3  | What do you see? "«test:chunk-params:sub(joe, red) 91b»
+  3  | What do you see? "«test:chunk-params:sub(joe, red) 91f»
   4  | Well, fancy!
      |________________________________________________________________________
 
@@ -3183,7 +3208,7 @@ Should generate output:
 
 And this chunk will perform the test:
 
-92c <test:chunk-params[2]() ⇑91a, lang=> +≡ ⊲91a
+92c <test:chunk-params[2]() ⇑91e, lang=> +≡ ⊲91e
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   4  | $FANGLE -Rtest:chunk-params:result $TEX_SRC > $TMP/answer || exit 1
   5  | $FANGLE -Rtest:chunk-params:text $TEX_SRC > $TMP/result || exit 1

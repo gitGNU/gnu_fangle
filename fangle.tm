@@ -526,10 +526,19 @@
   <\nf-chunk|./Makefile.inc>
     <item><nf-ref|Makefile.inc-vars|>
 
+    <item><nf-ref|Makefile.inc-default-targets|>
+
     <item><nf-ref|Makefile.inc-targets|>
   </nf-chunk|make|>
 
-  We first define a placeholder for <verbatim|LITERATE_SOURCE> to hold the
+  We first define a placeholder for the tool <verbatim|fangle> in case it
+  cannot be found in the path.
+
+  <\nf-chunk|Makefile.inc-vars>
+    <item>FANGLE=fangle
+  </nf-chunk||>
+
+  We also define a placeholder for <verbatim|LITERATE_SOURCE> to hold the
   name of this document. This will normally be passed on the command line.
 
   <\nf-chunk|Makefile.inc-vars>
@@ -562,6 +571,8 @@
   have <LyX> installed.
 
   <\nf-chunk|Makefile.inc-vars>
+    <item>LYX_SOURCE=$(LITERATE_SOURCE) # but only the .lyx files
+
     <item>TEX_SOURCE=$(LYX_SOURCE:.lyx=.tex)
 
     <item>EXTRA_DIST+=$(TEX_SOURCE)
@@ -571,7 +582,9 @@
   source.
 
   <\nf-chunk|Makefile.inc-targets>
-    <item>$(TEX_SOURCE): $(LYX_SOURCE)
+    <item>.SUFFIXES: .tex .lyx
+
+    <item>.lyx.tex:
 
     <item><nf-tab>lyx -e latex $\<less\>
 
@@ -597,6 +610,8 @@
   have <LyX> installed.
 
   <\nf-chunk|Makefile.inc-vars>
+    <item>TEXMACS_SOURCE=$(LITERATE_SOURCE) # but only the .tm files
+
     <item>TXT_SOURCE=$(LITERATE_SOURCE:.tm=.txt)
 
     <item>EXTRA_DIST+=$(TXT_SOURCE)
@@ -605,9 +620,13 @@
   <todo|Add loop around each $\<less\> so multiple targets can be specified>
 
   <\nf-chunk|Makefile.inc-targets>
-    <item>$(TXT_SOURCE): $(LITERATE_SOURCE)
+    <item>.SUFFIXES: .txt .tm
 
-    <item><nf-tab>texmacs -c $\<less\> $(TXT_SOURCE) -q
+    <item>.tm.txt:
+
+    <item><nf-tab>texmacs -s -c $\<less\> $@ -q
+
+    <item>.PHONEY: clean_txt
 
     <item>clean_txt:
 
@@ -624,7 +643,7 @@
   </footnote>.
 
   <\nf-chunk|Makefile.inc-vars>
-    <item>FANGLE_SOURCE=$(TEX_SOURCE) $(TXT_SOURCE)
+    <item>FANGLE_SOURCE=$(TXT_SOURCE)
   </nf-chunk||>
 
   The literate document can result in any number of source files, but not all
@@ -647,7 +666,7 @@
 
   We use <verbatim|echo> rather than <verbatim|touch> to update the stamp
   file beause the <verbatim|touch> command does not work very well over an
-  <verbatim|sshfs>mount \ that I was using.
+  <verbatim|sshfs> mount \ that I was using.
 
   <\nf-chunk|Makefile.inc-vars>
     <item>FANGLE_SOURCE_STAMP=$(FANGLE_SOURCE).stamp
@@ -696,7 +715,7 @@
 
     <item>FANGLE_SOURCES:=$(shell \\
 
-    <item> \ fangle -r $(FANGLE_SOURCE) \|\\
+    <item> \ $(FANGLE) -r $(FANGLE_SOURCE) \|\\
 
     <item> \ sed -e 's/^[\<less\>][\<less\>]//;s/[\<gtr\>][\<gtr\>]$$//;/^$(FANGLE_PREFIX)/!d'
     \\
@@ -771,7 +790,7 @@
 
     <item>nf_line=-L -T$(TABS)
 
-    <item>fangle=fangle $(call if_extension,$(2),$(C_EXTENSIONS),$(nf_line))
+    <item>fangle=$(FANGLE) $(call if_extension,$(2),$(C_EXTENSIONS),$(nf_line))
     -R"$(2)" $(1)
   </nf-chunk||>
 
@@ -800,9 +819,9 @@
 
     <item> \ cat "$(1).tmp" $(indent) \| cpif "$(1)" \\
 
-    <item> \ && rm -- "$(1).tmp" \|\| \\
+    <item> \ && rm -f -- "$(1).tmp" \|\| \\
 
-    <item> \ (echo error newfangling $(1) from $(2) ; exit 1)
+    <item> \ (echo error fangling $(1) from $(2) ; exit 1)
   </nf-chunk||>
 
   We define a target which will extract or update all sources. To do this we
@@ -845,6 +864,10 @@
   We then identify the intermediate stages of the documentation and their
   build and clean targets.
 
+  <\nf-chunk|Makefile.inc-default-targets>
+    <item>.PHONEY : clean_pdf
+  </nf-chunk||>
+
   <subsection|Formatting <TeX>>
 
   <subsubsection|Running pdflatex>
@@ -852,7 +875,7 @@
   We produce a pdf file from the tex file.
 
   <\nf-chunk|Makefile.inc-vars>
-    <item>FANGLE_PDF=$(TEX_SOURCE:.tex=.pdf)
+    <item>FANGLE_PDF+=$(TEX_SOURCE:.tex=.pdf)
   </nf-chunk||>
 
   We run pdflatex twice to be sure that the contents and aux files are up to
@@ -860,17 +883,21 @@
   these files do not exist.
 
   <\nf-chunk|Makefile.inc-targets>
-    <item>$(FANGLE_PDF): $(TEX_SOURCE)
+    <item>.SUFFIXES: .tex .pdf
+
+    <item>.tex.pdf:
 
     <item><nf-tab>pdflatex $\<less\> && pdflatex $\<less\>
 
     <item>
 
-    <item>clean_pdf:
+    <item>clean_pdf_tex:
 
     <item><nf-tab>rm -f -- $(FANGLE_PDF) $(TEX_SOURCE:.tex=.toc) \\
 
     <item><nf-tab> \ $(TEX_SOURCE:.tex=.log) $(TEX_SOURCE:.tex=.aux)
+
+    <item>clean_pdf: clean_pdf_tex
   </nf-chunk||>
 
   <subsection|Formatting <TeXmacs>>
@@ -878,7 +905,7 @@
   <TeXmacs> can produce a PDF file directly.
 
   <\nf-chunk|Makefile.inc-vars>
-    <item>FANGLE_PDF=$(TEX_SOURCE:.tm=.pdf)
+    <item>FANGLE_PDF+=$(LITERATE_SOURCE:.tm=.pdf)
   </nf-chunk||>
 
   <\todo>
@@ -893,15 +920,19 @@
   </todo>
 
   <\nf-chunk|Makefile.inc-targets>
-    <item>$(FANGLE_PDF): $(TEXMACS_SOURCE)
+    <item>.SUFFIXES: .tm .pdf
 
-    <item><nf-tab>texmacs -c $(TEXMACS_SOURCE) $\<less\> -q
+    <item>.tm.pdf:
+
+    <item><nf-tab>texmacs -s -c $\<less\> $@ -q
 
     <item>
 
-    <item>clean_pdf:
+    <item>clean_pdf_texmacs:
 
     <item><nf-tab>rm -f -- $(FANGLE_PDF)
+
+    <item>clean_pdf: clean_pdf_texmacs
   </nf-chunk||>
 
   <subsection|Building the Documentation as a Whole>
