@@ -449,7 +449,7 @@
   <\nf-chunk|lyx-build>
     <item>#! /bin/sh
 
-    <item>=\<less\>\\chunkref{lyx-build-helper}\<gtr\>
+    <item><nf-ref|lyx-build-helper|>
 
     <item>cd $PROJECT_DIR \|\| exit 1
 
@@ -1386,7 +1386,7 @@
   multi-dimensional array path.
 
   <\nf-chunk|./fangle>
-    <item>=\<less\>\\chunkref{get_chunk_args()}\<gtr\>
+    <item><nf-ref|get_chunk_args()|>
   </nf-chunk||>
 
   <\nf-chunk|get_chunk_args()>
@@ -1422,7 +1422,7 @@
 
     <item> \ \ \ }
 
-    <item> \ \ \ =\<less\>\\chunkref{parse-chunk-args}\<gtr\>
+    <item> \ \ \ <nf-ref|parse-chunk-args|>
 
     <item> \ }
 
@@ -1488,7 +1488,7 @@
   We can test this function like this:
 
   <\nf-chunk|gca-test.awk>
-    <item>=\<less\>\\chunkref{get_chunk_args()}\<gtr\>
+    <item><nf-ref|get_chunk_args()|>
 
     <item>BEGIN {
 
@@ -1582,8 +1582,7 @@
 
     <item>{
 
-    <item> \ =\<less\>\\chunkref{new-mode-tracker}(context, language,
-    mode)\<gtr\>
+    <item> \ <nf-ref|new-mode-tracker|<tuple|context|language|mode>>
 
     <item> \ rest = mode_tracker(context, text, values);
 
@@ -1669,7 +1668,7 @@
   <\nf-chunk|substitute-chunk-args>
     <item>for(t=2; t in text_array; t++) {
 
-    <item> \ =\<less\>\\chunkref{substitute-chunk-arg}\<gtr\>
+    <item> \ <nf-ref|substitute-chunk-arg|>
 
     <item>}
   </nf-chunk||>
@@ -1753,7 +1752,7 @@
 
   If it were included in a chunk with <verbatim|language=sh>, like this:
 
-  <nf-chunk|example-sh|perl -e "=\<less\>\\chunkref{example-perl}\<gtr\>"|sh|>
+  <nf-chunk|example-sh|perl -e "<nf-ref|example-perl|>"|sh|>
 
   fangle would <em|want> to generate output like this:
 
@@ -1768,7 +1767,7 @@
   <\nf-chunk|example-makefile>
     <item>target: pre-req
 
-    <item><htab|5mm>=\<less\>\\chunkref{example-sh}\<gtr\>
+    <item><htab|5mm><nf-ref|example-sh|>
   </nf-chunk|make|>
 
   We would need the output to look like this --- note the <verbatim|$$>:
@@ -1844,7 +1843,7 @@
   <verbatim|{> <verbatim|(> <verbatim|[> <verbatim|/*>
 
   <\nf-chunk|common-mode-definitions>
-    <item>modes[${language}, "", \ "submodes"]="\\\\\\\\\|\\"\|'\|{\|\\\\(\|\\\\[";
+    <item>modes[<nf-arg|language>, "", \ "submodes"]="\\\\\\\\\|\\"\|'\|{\|\\\\(\|\\\\[";
   </nf-chunk||<tuple|language>>
 
   In the default mode, a comma surrounded by un-important white space is a
@@ -1853,7 +1852,7 @@
   </footnote>.
 
   <\nf-chunk|common-mode-definitions>
-    <item>modes[${language}, "", \ "delimiters"]=" *, *";
+    <item>modes[<nf-arg|language>, "", \ "delimiters"]=" *, *";
   </nf-chunk||language>
 
   and should pass this test:<todo|Why do the tests run in ?(? mode and not ??
@@ -1870,7 +1869,7 @@
 
     <item>if (length(a) != 3) e++;
 
-    <item>=\<less\>\\chunkref{pca-test.awk:summary}\<gtr\>
+    <item><nf-ref|pca-test.awk:summary|>
 
     <item>
 
@@ -1882,7 +1881,7 @@
 
     <item>if (length(a) != 2) e++;
 
-    <item>=\<less\>\\chunkref{pca-test.awk:summary}\<gtr\>
+    <item><nf-ref|pca-test.awk:summary|>
 
     <item>
 
@@ -1892,7 +1891,7 @@
 
     <item>if (length(a) != 1) e++;
 
-    <item>=\<less\>\\chunkref{pca-test.awk:summary}\<gtr\>
+    <item><nf-ref|pca-test.awk:summary|>
   </nf-chunk||>
 
   Nested modes are identified by a backslash, a double or single quote,
@@ -1918,7 +1917,7 @@
   backslash however it is to be interpreted.
 
   <\nf-chunk|common-mode-definitions>
-    <item>modes[${language}, "\\\\", "terminators"]=".";
+    <item>modes[<nf-arg|language>, "\\\\", "terminators"]=".";
   </nf-chunk||>
 
   <subsection|Strings>
@@ -1931,14 +1930,15 @@
   the string.
 
   <\nf-chunk|mode:common-string>
-    <item>modes[${language}, ${quote}, "submodes"]="\\\\\\\\";
+    <item>modes[<nf-arg|language>, <nf-arg|quote>, "submodes"]="\\\\\\\\";
   </nf-chunk||<tuple|language|quote>>
 
   Otherwise, the string will be terminated by the same character that
   commenced it.
 
   <\nf-chunk|mode:common-string>
-    <item>modes[${language}, ${quote}, "terminators"]=${quote};
+    <item>modes[<nf-arg|language>, <nf-arg|quote>,
+    "terminators"]=<nf-arg|quote>;
   </nf-chunk||language>
 
   In C type languages, certain escape sequences exist in strings. We need to
@@ -1955,42 +1955,42 @@
   literal <verbatim|\\\\>.
 
   <\nf-chunk|mode:common-string>
-    <item>escapes[${language}, ${quote}, ++escapes[${language}, ${quote}],
-    "s"]="\\\\\\\\";
+    <item>escapes[<nf-arg|language>, <nf-arg|quote>,
+    ++escapes[<nf-arg|language>, <nf-arg|quote>], "s"]="\\\\\\\\";
 
-    <item>escapes[${language}, ${quote}, \ \ escapes[${language}, ${quote}],
-    "r"]="\\\\\\\\";
+    <item>escapes[<nf-arg|language>, <nf-arg|quote>,
+    \ \ escapes[<nf-arg|language>, <nf-arg|quote>], "r"]="\\\\\\\\";
   </nf-chunk||language>
 
   If the quote character occurs in the text, it should be preceded by a
   backslash, otherwise it would terminate the string unexpectedly.
 
   <\nf-chunk|mode:common-string>
-    <item>escapes[${language}, ${quote}, ++escapes[${language}, ${quote}],
-    "s"]=${quote};
+    <item>escapes[<nf-arg|language>, <nf-arg|quote>,
+    ++escapes[<nf-arg|language>, <nf-arg|quote>], "s"]=<nf-arg|quote>;
 
-    <item>escapes[${language}, ${quote}, \ \ escapes[${language}, ${quote}],
-    "r"]="\\\\" ${quote};
+    <item>escapes[<nf-arg|language>, <nf-arg|quote>,
+    \ \ escapes[<nf-arg|language>, <nf-arg|quote>], "r"]="\\\\"
+    <nf-arg|quote>;
   </nf-chunk||language>
 
   Any newlines in the string, must be replaced by <verbatim|\\n>.
 
   <\nf-chunk|mode:common-string>
-    <item>escapes[${language}, ${quote}, ++escapes[${language}, ${quote}],
-    "s"]="\\n";
+    <item>escapes[<nf-arg|language>, <nf-arg|quote>,
+    ++escapes[<nf-arg|language>, <nf-arg|quote>], "s"]="\\n";
 
-    <item>escapes[${language}, ${quote}, \ \ escapes[${language}, ${quote}],
-    "r"]="\\\\n";
+    <item>escapes[<nf-arg|language>, <nf-arg|quote>,
+    \ \ escapes[<nf-arg|language>, <nf-arg|quote>], "r"]="\\\\n";
   </nf-chunk||language>
 
   For the common modes, we define this string handling for double and single
   quotes.
 
   <\nf-chunk|common-mode-definitions>
-    <item>=\<less\>\\chunkref{mode:common-string}(${language},
-    "\\textbackslash{}"")\<gtr\>
+    <item><nf-ref|mode:common-string|<tuple|<nf-arg|language>|"\\"">>
 
-    <item>=\<less\>\\chunkref{mode:common-string}(${language}, "'")\<gtr\>
+    <item><nf-ref|mode:common-string|<tuple|<nf-arg|language>|"'">>
   </nf-chunk||>
 
   Working strings should pass this test:
@@ -2006,7 +2006,7 @@
 
     <item>if (length(a) != 2) e++;
 
-    <item>=\<less\>\\chunkref{pca-test.awk:summary}\<gtr\>
+    <item><nf-ref|pca-test.awk:summary|>
   </nf-chunk||>
 
   <subsection|Parentheses, Braces and Brackets>
@@ -2028,29 +2028,27 @@
   quote regex we won't have to put the slashes in here>
 
   <\nf-chunk|common-mode-definitions>
-    <item>=\<less\>\\chunkref{mode:common-brackets}(${language}, "{",
-    "}")\<gtr\>
+    <item><nf-ref|mode:common-brackets|<tuple|<nf-arg|language>|"{"|"}">>
 
-    <item>=\<less\>\\chunkref{mode:common-brackets}(${language}, "[",
-    "\\textbackslash{}\\textbackslash{}]")\<gtr\>
+    <item><nf-ref|mode:common-brackets|<tuple|<nf-arg|language>|"["|"\\\\]">>
 
-    <item>=\<less\>\\chunkref{mode:common-brackets}(${language}, "(",
-    "\\textbackslash{}\\textbackslash{})")\<gtr\>
+    <item><nf-ref|mode:common-brackets|<tuple|<nf-arg|language>|"("|"\\\\)">>
   </nf-chunk||>
 
   <subsection|Customizing Standard Modes>
 
   <\nf-chunk|mode:add-submode>
-    <item>modes[${language}, ${mode}, "submodes"] = modes[${language},
-    ${mode}, "submodes"] "\|" ${submode};
+    <item>modes[<nf-arg|language>, <nf-arg|mode>, "submodes"] =
+    modes[<nf-arg|language>, <nf-arg|mode>, "submodes"] "\|"
+    <nf-arg|submode>;
   </nf-chunk||<tuple|language|mode|submode>>
 
   <\nf-chunk|mode:add-escapes>
-    <item>escapes[${language}, ${mode}, ++escapes[${language}, ${mode}],
-    "s"]=${search};
+    <item>escapes[<nf-arg|language>, <nf-arg|mode>,
+    ++escapes[<nf-arg|language>, <nf-arg|mode>], "s"]=<nf-arg|search>;
 
-    <item>escapes[${language}, ${mode}, \ \ escapes[${language}, ${mode}],
-    "r"]=${replace};
+    <item>escapes[<nf-arg|language>, <nf-arg|mode>,
+    \ \ escapes[<nf-arg|language>, <nf-arg|mode>], "r"]=<nf-arg|replace>;
   </nf-chunk||<tuple|language|mode|search|replace>>
 
   \;
@@ -2061,19 +2059,17 @@
   <verbatim|//comment> style comments to be added to any language:
 
   <\nf-chunk|mode:multi-line-comments>
-    <item>=\<less\>\\chunkref{mode:add-submode}(${language}, "",
-    "/\\textbackslash{}\\textbackslash{}*")\<gtr\>
+    <item><nf-ref|mode:add-submode|<tuple|<nf-arg|language>|""|"/\\\\*">>
 
-    <item>modes[${language}, "/*", "terminators"]="\\\\*/";
+    <item>modes[<nf-arg|language>, "/*", "terminators"]="\\\\*/";
   </nf-chunk||<tuple|language>>
 
   <\nf-chunk|mode:single-line-slash-comments>
-    <item>=\<less\>\\chunkref{mode:add-submode}(${language}, "", "//")\<gtr\>
+    <item><nf-ref|mode:add-submode|<tuple|<nf-arg|language>|""|"//">>
 
-    <item>modes[${language}, "//", "terminators"]="\\n";
+    <item>modes[<nf-arg|language>, "//", "terminators"]="\\n";
 
-    <item>=\<less\>\\chunkref{mode:add-escapes}(${language}, "//",
-    "\\textbackslash{}n", "\\textbackslash{}n//")\<gtr\>
+    <item><nf-ref|mode:add-escapes|<tuple|<nf-arg|language>|"//"|"\\n"|"\\n//">>
   </nf-chunk||language>
 
   We can also define <verbatim|# comment> style comments (as used in awk and
@@ -2083,36 +2079,32 @@
   hacky work-arounds in the parser for now>
 
   <\nf-chunk|mode:add-hash-comments>
-    <item>=\<less\>\\chunkref{mode:add-submode}(${language}, "",
-    "\\#")\<gtr\>
+    <item><nf-ref|mode:add-submode|<tuple|<nf-arg|language>|""|"#">>
 
-    <item>modes[${language}, "#", "terminators"]="\\n";
+    <item>modes[<nf-arg|language>, "#", "terminators"]="\\n";
 
-    <item>=\<less\>\\chunkref{mode:add-escapes}(${language}, "\\#",
-    "\\textbackslash{}n", "\\textbackslash{}n\\#")\<gtr\>
+    <item><nf-ref|mode:add-escapes|<tuple|<nf-arg|language>|"#"|"\\n"|"\\n#">>
   </nf-chunk||<tuple|language>>
 
   In C, the <verbatim|#> denotes pre-processor directives which can be
   multi-line
 
   <\nf-chunk|mode:add-hash-defines>
-    <item>=\<less\>\\chunkref{mode:add-submode}(${language}, "",
-    "\\#")\<gtr\>
+    <item><nf-ref|mode:add-submode|<tuple|<nf-arg|language>|""|"#">>
 
-    <item>modes[${language}, "#", "submodes" ]="\\\\\\\\";
+    <item>modes[<nf-arg|language>, "#", "submodes" ]="\\\\\\\\";
 
-    <item>modes[${language}, "#", "terminators"]="\\n";
+    <item>modes[<nf-arg|language>, "#", "terminators"]="\\n";
 
-    <item>=\<less\>\\chunkref{mode:add-escapes}(${language}, "\\#",
-    "\\textbackslash{}n", "\\textbackslash{}\\textbackslash{}\\textbackslash{}\\textbackslash{}\\textbackslash{}n")\<gtr\>
+    <item><nf-ref|mode:add-escapes|<tuple|<nf-arg|language>|"#"|"\\n"|"\\\\\\\\\\n">>
   </nf-chunk||<tuple|language>>
 
   <\nf-chunk|mode:quote-dollar-escape>
-    <item>escapes[${language}, ${quote}, ++escapes[${language}, ${quote}],
-    "s"]="\\\\$";
+    <item>escapes[<nf-arg|language>, <nf-arg|quote>,
+    ++escapes[<nf-arg|language>, <nf-arg|quote>], "s"]="\\\\$";
 
-    <item>escapes[${language}, ${quote}, \ \ escapes[${language}, ${quote}],
-    "r"]="\\\\$";
+    <item>escapes[<nf-arg|language>, <nf-arg|quote>,
+    \ \ escapes[<nf-arg|language>, <nf-arg|quote>], "r"]="\\\\$";
   </nf-chunk||<tuple|language|quote>>
 
   We can add these definitions to various languages
@@ -2124,25 +2116,25 @@
 
     <item><nf-ref|common-mode-definitions|<tuple|"c">>
 
-    <item>=\<less\>\\chunkref{mode:multi-line-comments}("c")\<gtr\>
+    <item><nf-ref|mode:multi-line-comments|<tuple|"c">>
 
-    <item>=\<less\>\\chunkref{mode:single-line-slash-comments}("c")\<gtr\>
+    <item><nf-ref|mode:single-line-slash-comments|<tuple|"c">>
 
-    <item>=\<less\>\\chunkref{mode:add-hash-defines}("c")\<gtr\>
+    <item><nf-ref|mode:add-hash-defines|<tuple|"c">>
 
     <item>
 
-    <item>=\<less\>\\chunkref{common-mode-definitions}("awk")\<gtr\>
+    <item><nf-ref|common-mode-definitions|<tuple|"awk">>
 
-    <item>=\<less\>\\chunkref{mode:add-hash-comments}("awk")\<gtr\>
+    <item><nf-ref|mode:add-hash-comments|<tuple|"awk">>
 
-    <item>=\<less\>\\chunkref{mode:add-naked-regex}("awk")\<gtr\>
+    <item><nf-ref|mode:add-naked-regex|<tuple|"awk">>
   </nf-chunk||>
 
   The awk definitions should allow a comment block like this:
 
   <nf-chunk|test:comment-quote|<item># Comment:
-  =\<less\>\\chunkref{test:comment-text}\<gtr\>|awk|>
+  <nf-ref|test:comment-text|>|awk|>
 
   <\nf-chunk|test:comment-text>
     <item>Now is the time for
@@ -2184,20 +2176,19 @@
   character, but some other more fully qualified name.
 
   <\nf-chunk|mode:add-naked-regex>
-    <item>=\<less\>\\chunkref{mode:add-submode}(${language}, "",
-    "/\\textbackslash{}\\textbackslash{}\\^")\<gtr\>
+    <item><nf-ref|mode:add-submode|<tuple|<nf-arg|language>|""|"/\\\\^">>
 
-    <item>modes[${language}, "/^", "terminators"]="/";
+    <item>modes[<nf-arg|language>, "/^", "terminators"]="/";
   </nf-chunk||<tuple|language>>
 
   <subsection|Perl>
 
   <\nf-chunk|mode-definitions>
-    <item>=\<less\>\\chunkref{common-mode-definitions}("perl")\<gtr\>
+    <item><nf-ref|common-mode-definitions|<tuple|"perl">>
 
-    <item>=\<less\>\\chunkref{mode:multi-line-comments}("perl")\<gtr\>
+    <item><nf-ref|mode:multi-line-comments|<tuple|"perl">>
 
-    <item>=\<less\>\\chunkref{mode:add-hash-comments}("perl")\<gtr\>
+    <item><nf-ref|mode:add-hash-comments|<tuple|"perl">>
   </nf-chunk||>
 
   Still need to add add <verbatim|s/>, submode <verbatim|/>, terminate both
@@ -2207,17 +2198,12 @@
   <subsection|sh>
 
   <\nf-chunk|mode-definitions>
-    <item>=\<less\>\\chunkref{common-mode-definitions}("sh")\<gtr\>
+    <item><nf-ref|common-mode-definitions|<tuple|"sh">>
 
-    <item>#\<less\>\\chunkref{mode:common-string}("sh",
-    "\\textbackslash{}"")\<gtr\>
+    <item><nf-ref|mode:add-hash-comments|<tuple|"sh">>
 
-    <item>#\<less\>\\chunkref{mode:common-string}("sh", "'")\<gtr\>
-
-    <item>=\<less\>\\chunkref{mode:add-hash-comments}("sh")\<gtr\>
-
-    <item>=\<less\>\\chunkref{mode:quote-dollar-escape}("sh", "\\"")\<gtr\>
-  </nf-chunk||>
+    <item><nf-ref|mode:quote-dollar-escape|<tuple|"sh"|"\\"">>
+  </nf-chunk|awk|>
 
   <section|Some tests>
 
@@ -2237,7 +2223,7 @@
 
     <item>if (rest != " spare") e++;
 
-    <item>=\<less\>\\chunkref{pca-test.awk:summary}\<gtr\>
+    <item><nf-ref|pca-test.awk:summary|>
   </nf-chunk||>
 
   We must also be able to parse the example given earlier.
@@ -2254,7 +2240,7 @@
 
     <item>if (length(a) != 3) e++;
 
-    <item>=\<less\>\\chunkref{pca-test.awk:summary}\<gtr\>
+    <item><nf-ref|pca-test.awk:summary|>
   </nf-chunk||>
 
   <section|A non-recursive mode tracker>
@@ -2365,7 +2351,7 @@
   <\nf-chunk|test:whole-chunk>
     <item>if (1) {
 
-    <item> \ =\<less\>\\chunkref{test:say-hello}\<gtr\>
+    <item> \ <nf-ref|test:say-hello|>
 
     <item>}
   </nf-chunk||>
@@ -2380,7 +2366,7 @@
   <\nf-chunk|test:partial-chunk>
     <item>if (1) {
 
-    <item> \ =\<less\>\\chunkref{test:hidden-else}\<gtr\>
+    <item> \ <nf-ref|test:hidden-else|>
 
     <item>}
   </nf-chunk||>
@@ -2476,7 +2462,7 @@
   </nf-chunk||>
 
   <\nf-chunk|mode_tracker()>
-    <item>=\<less\>\\chunkref{parse_chunk_args-reset-modes}\<gtr\>
+    <item><nf-ref|parse_chunk_args-reset-modes|>
   </nf-chunk||>
 
   We then iterate the text (until there is none left) looking for sub-modes
@@ -2540,7 +2526,7 @@
 
     <item> \ \ \ \ \ \ \ \ \ language = context[cindex, "language"];
 
-    <item> \ \ \ \ \ \ \ \ \ =\<less\>\\chunkref{parse_chunk_args-reset-modes}\<gtr\>
+    <item> \ \ \ \ \ \ \ \ \ <nf-ref|parse_chunk_args-reset-modes|>
 
     <item> \ \ \ \ \ \ \ }
 
@@ -2602,7 +2588,7 @@
 
     <item> \ \ \ \ \ \ \ mode = a[1];
 
-    <item> \ \ \ \ \ \ \ =\<less\>\\chunkref{parse_chunk_args-reset-modes}\<gtr\>
+    <item> \ \ \ \ \ \ \ <nf-ref|parse_chunk_args-reset-modes|>
 
     <item> \ \ \ \ \ } else {
 
@@ -2666,21 +2652,21 @@
   We can test this function like this:
 
   <\nf-chunk|pca-test.awk>
-    <item>=\<less\>\\chunkref{error()}\<gtr\>
+    <item><nf-ref|error()|>
 
-    <item>=\<less\>\\chunkref{mode-tracker}\<gtr\>
+    <item><nf-ref|mode-tracker|>
 
-    <item>=\<less\>\\chunkref{parse_chunk_args()}\<gtr\>
+    <item><nf-ref|parse_chunk_args()|>
 
     <item>BEGIN {
 
     <item> \ SUBSEP=".";
 
-    <item> \ =\<less\>\\chunkref{mode-definitions}\<gtr\>
+    <item> \ <nf-ref|mode-definitions|>
 
     <item>
 
-    <item> \ =\<less\>\\chunkref{test:mode-definitions}\<gtr\>
+    <item> \ <nf-ref|test:mode-definitions|>
 
     <item>}
   </nf-chunk|awk|>
@@ -3250,8 +3236,8 @@
   <subsection|lstlistings><label|sub:lst-listings-includes>
 
   If <verbatim|\\lstset{escapeinside={=\<less\>}{\<gtr\>}}> is set, then we
-  can use <verbatim|=\<less\>\\chunkref{chunk-name}\<gtr\>> in listings. The
-  sequence <verbatim|=\<less\>> was chosen because:
+  can use <verbatim|<nf-ref|chunk-name|>> in listings. The sequence
+  <verbatim|=\<less\>> was chosen because:
 
   <\enumerate>
     <item>it is a better mnemonic than <verbatim|\<less\>\<less\>chunk-name\<gtr\>\<gtr\>>
@@ -3352,7 +3338,7 @@
 
     <item> \ \ \ # chunk name up to }
 
-    <item> \ \ \ \ \ \ \ =\<less\>\\chunkref{delatex}(line[3])\<gtr\>
+    <item> \ \ \ \ \ \ \ <nf-ref|delatex|<tuple|line[3]>>
 
     <item> \ \ \ chunk_include(active_chunk, line[2] line[3], indent);
 
@@ -3393,13 +3379,13 @@
   </nf-chunk|>
 
   We will also permit a chunk-part number to follow in square brackets, so
-  that <verbatim|=\<less\>\\chunkref{chunk-name[1]}\<gtr\>> will refer to the
-  first part only. This can make it easy to include a C function prototype in
-  a header file, if the first part of the chunk is just the function
-  prototype without the trailing semi-colon. The header file would include
-  the prototype with the trailing semi-colon, like this:
+  that <verbatim|<nf-ref|chunk-name[1]|>> will refer to the first part only.
+  This can make it easy to include a C function prototype in a header file,
+  if the first part of the chunk is just the function prototype without the
+  trailing semi-colon. The header file would include the prototype with the
+  trailing semi-colon, like this:
 
-  <verbatim|=\<less\>\\chunkref{chunk-name[1]}\<gtr\>>
+  <verbatim|<nf-ref|chunk-name[1]|>>
 
   This is handled in section <reference|sub:Chunk-parts>
 
@@ -3436,7 +3422,7 @@
 
     <item>while(getopt(ARGC, ARGV, "R:LdT:hr")!=-1) {
 
-    <item> \ =\<less\>\\chunkref{handle-options}\<gtr\>
+    <item> \ <nf-ref|handle-options|>
 
     <item>}
 
@@ -3466,15 +3452,15 @@
   <\nf-chunk|begin>
     <item>BEGIN {
 
-    <item> \ =\<less\>\\chunkref{constants}\<gtr\>
+    <item> \ <nf-ref|constants|>
 
-    <item> \ =\<less\>\\chunkref{mode-definitions}\<gtr\>
+    <item> \ <nf-ref|mode-definitions|>
 
-    <item> \ =\<less\>\\chunkref{default-options}\<gtr\>
+    <item> \ <nf-ref|default-options|>
 
     <item>
 
-    <item> \ =\<less\>\\chunkref{read-options}\<gtr\>
+    <item> \ <nf-ref|read-options|>
 
     <item>}
   </nf-chunk||>
@@ -3551,11 +3537,11 @@
   <\nf-chunk|end>
     <item>END {
 
-    <item> \ =\<less\>\\chunkref{debug-output}\<gtr\>
+    <item> \ <nf-ref|debug-output|>
 
     <item> \ ORS="";
 
-    <item> \ =\<less\>\\chunkref{generate-output}\<gtr\>
+    <item> \ <nf-ref|generate-output|>
 
     <item>}
   </nf-chunk||>
@@ -3629,7 +3615,7 @@
   <\nf-chunk|write_chunk()>
     <item>function write_chunk(chunk_name) {
 
-    <item> \ =\<less\>\\chunkref{awk-delete-array}(context)\<gtr\>
+    <item> \ <nf-ref|awk-delete-array|<tuple|context>>
 
     <item> \ return write_chunk_r(chunk_name, context);
 
@@ -3676,8 +3662,8 @@
   We then create a mode tracker
 
   <\nf-chunk|write_chunk()>
-    <item> =\<less\>\\chunkref{new-mode-tracker}(context, chunks[chunk_name,
-    "language"], "")\<gtr\>
+    <item> <nf-ref|new-mode-tracker|<tuple|context|chunks[chunk_name,
+    "language"]|"">>
   </nf-chunk||>
 
   We extract into <verbatim|chunk_params> the names of the parameters that
@@ -3708,7 +3694,7 @@
 
     <item> \ \ \ if (! only_part \|\| part == only_part) {
 
-    <item> \ \ \ \ \ =\<less\>\\chunkref{write-part}\<gtr\>
+    <item> \ \ \ \ \ <nf-ref|write-part|>
 
     <item> \ \ \ }
 
@@ -3738,7 +3724,7 @@
   file-line directive.
 
   <\nf-chunk|write-part>
-    <item>=\<less\>\\chunkref{check-source-jump}\<gtr\>
+    <item><nf-ref|check-source-jump|>
 
     <item>
 
@@ -3746,11 +3732,11 @@
 
     <item>if (chunks[chunk_name, "part", part, "type"] == part_type_chunk) {
 
-    <item> \ =\<less\>\\chunkref{write-included-chunk}\<gtr\>
+    <item> \ <nf-ref|write-included-chunk|>
 
     <item>} else if (chunklet SUBSEP "line" in chunks) {
 
-    <item> \ =\<less\>\\chunkref{write-chunklets}\<gtr\>
+    <item> \ <nf-ref|write-chunklets|>
 
     <item>} else {
 
@@ -3794,7 +3780,7 @@
 
     <item>new_src = mode_escaper(context, s, r, src);
 
-    <item>=\<less\>\\chunkref{awk-delete-array}(new_context)\<gtr\>
+    <item><nf-ref|awk-delete-array|<tuple|new_context>>
 
     <item>write_chunk_r(chunklet, new_context,
 
@@ -3826,7 +3812,7 @@
 
     <item>for(frag = 1; frag \<less\>= max_frag; frag++) {
 
-    <item> \ =\<less\>\\chunkref{write-file-line}\<gtr\>
+    <item> \ <nf-ref|write-file-line|>
   </nf-chunk||>
 
   We then extract the chunklet text and expand any arguments.
@@ -4317,15 +4303,15 @@
   The entire getopt.awk is made out of these chunks in order
 
   <\nf-chunk|getopt.awk>
-    <item>=\<less\>\\chunkref{getopt.awk-header}\<gtr\>
+    <item><nf-ref|getopt.awk-header|>
 
     <item>
 
-    <item>=\<less\>\\chunkref{getopt.awk-notes}\<gtr\>
+    <item><nf-ref|getopt.awk-notes|>
 
-    <item>=\<less\>\\chunkref{getopt.awk-getopt()}\<gtr\>
+    <item><nf-ref|getopt.awk-getopt()|>
 
-    <item>=\<less\>\\chunkref{getopt.awk-begin}\<gtr\>
+    <item><nf-ref|getopt.awk-begin|>
   </nf-chunk||>
 
   Although we only want the header and function:
@@ -4335,11 +4321,11 @@
 
     <item># as part of your standard awk installation
 
-    <item>=\<less\>\\chunkref{getopt.awk-header}\<gtr\>
+    <item><nf-ref|getopt.awk-header|>
 
     <item>
 
-    <item>=\<less\>\\chunkref{getopt.awk-getopt()}\<gtr\>
+    <item><nf-ref|getopt.awk-getopt()|>
   </nf-chunk||>
 
   <chapter|Fangle LaTeX source code><label|latex-source>
@@ -4378,7 +4364,7 @@
 
     <item>
 
-    <item>=\<less\>\\chunkref{gpl3-copyright.hashed}\<gtr\>
+    <item><nf-ref|gpl3-copyright.hashed|>
 
     <item>
 
@@ -4388,17 +4374,17 @@
 
     <item>AddToPreamble
 
-    <item>=\<less\>\\chunkref{./fangle.sty}\<gtr\>
+    <item><nf-ref|./fangle.sty|>
 
     <item>EndPreamble
 
     <item>
 
-    <item>=\<less\>\\chunkref{chunkstyle}\<gtr\>
+    <item><nf-ref|chunkstyle|>
 
     <item>
 
-    <item>=\<less\>\\chunkref{chunkref}\<gtr\>
+    <item><nf-ref|chunkref|>
   </nf-chunk|lyx-module|>
 
   Because <LyX> modules are not yet a language supported by fangle or
@@ -4406,7 +4392,7 @@
   line of the GPL3 license commence with a #
 
   <\nf-chunk|gpl3-copyright.hashed>
-    <item>#=\<less\>\\chunkref{gpl3-copyright}\<gtr\>
+    <item>#<nf-ref|gpl3-copyright|>
 
     <item>
   </nf-chunk|awk|>
@@ -4538,10 +4524,10 @@
   We also define a notangle-like mechanism for escaping to <LaTeX> from the
   listing, and by which we can refer to other listings. We declare the
   <verbatim|=\<less\>...\<gtr\>> sequence to contain <LaTeX> code, and
-  include another like this chunk: <verbatim|=\<less\>\\chunkref{chunkname}\<gtr\>>.
-  However, because <verbatim|=\<less\>...\<gtr\>> is already defined to
-  contain <LaTeX> code for this document --- this is a fangle document after
-  all --- the code fragment below effectively contains the <LaTeX> code:
+  include another like this chunk: <verbatim|<nf-ref|chunkname|>>. However,
+  because <verbatim|=\<less\>...\<gtr\>> is already defined to contain
+  <LaTeX> code for this document --- this is a fangle document after all ---
+  the code fragment below effectively contains the <LaTeX> code:
   <verbatim|}{>. To avoid problems with document generation, I had to declare
   an lstlistings property: <verbatim|escapeinside={}> for this listing only;
   which in <LyX> was done by right-clicking the listings inset, choosing
@@ -4977,7 +4963,7 @@
 
     <item>
 
-    <item>=\<less\>\\chunkref{lyx-build-helper}\<gtr\>
+    <item><nf-ref|lyx-build-helper|>
 
     <item>cd $PROJECT_DIR \|\| exit 1
 
@@ -4990,13 +4976,13 @@
 
     <item>
 
-    <item>=\<less\>\\chunkref{test:helpers}\<gtr\>
+    <item><nf-ref|test:helpers|>
 
     <item>export FANGLE=./fangle
 
     <item>export TMP=${TMP:-/tmp}
 
-    <item>=\<less\>\\chunkref{test:run-tests}\<gtr\>
+    <item><nf-ref|test:run-tests|>
 
     <item># Now check that we can extract a fangle that also passes the
     tests!
@@ -5005,7 +4991,7 @@
 
     <item>export FANGLE=./new-fangle
 
-    <item>=\<less\>\\chunkref{test:run-tests}\<gtr\>
+    <item><nf-ref|test:run-tests|>
   </nf-chunk|sh|>
 
   <\nf-chunk|test:run-tests>
@@ -5013,11 +4999,11 @@
 
     <item>$FANGLE -Rpca-test.awk $TEX_SRC \| awk -f - \|\| exit 1
 
-    <item>=\<less\>\\chunkref{test:cromulence}\<gtr\>
+    <item><nf-ref|test:cromulence|>
 
-    <item>=\<less\>\\chunkref{test:escapes}\<gtr\>
+    <item><nf-ref|test:escapes|>
 
-    <item>=\<less\>\\chunkref{test:chunk-params}\<gtr\>
+    <item><nf-ref|test:chunk-params|>
   </nf-chunk|sh|>
 
   With a lyx-build-helper
@@ -5126,21 +5112,69 @@
 
   <chapter|Chunk Parameters>
 
-  <\nf-chunk|test:chunk-params:sub>
+  <section|<LyX>>
+
+  <\nf-chunk|test:lyx:chunk-params:sub>
     <item>I see a ${THING},
 
     <item>a ${THING} of colour ${colour},\ 
 
-    <item>and looking closer =\<less\>\\chunkref{test:chunk-params:sub:sub}(${colour})\<gtr\>
+    <item>and looking closer =\<less\>\\chunkref{test:lyx:chunk-params:sub:sub}(${colour)\<gtr\>
   </nf-chunk||<tuple|THING|colour>>
 
-  <\nf-chunk|test:chunk-params:sub:sub>
+  <\nf-chunk|test:lyx:chunk-params:sub:sub>
     <item>a funny shade of ${colour}
   </nf-chunk||<tuple|colour>>
 
   <\nf-chunk|test:chunk-params:text>
-    <item>What do you see? "=\<less\>\\chunkref{test:chunk-params:sub}(joe,
+    <item>What do you see? "=\<less\>\\chunkref{test:lyx:chunk-params:sub}(joe,
     red)\<gtr\>"
+
+    <item>Well, fancy!
+  </nf-chunk||>
+
+  Should generate output:
+
+  <\nf-chunk|test:lyx:chunk-params:result>
+    <item>What do you see? "I see a joe,
+
+    <item> \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ a joe of colour red,\ 
+
+    <item> \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ and looking closer a funny shade
+    of red"
+
+    <item>Well, fancy!
+  </nf-chunk||>
+
+  And this chunk will perform the test:
+
+  <\nf-chunk|test:chunk-params>
+    <item>$FANGLE -Rtest:lyx:chunk-params:result $TEX_SRC \<gtr\> $TMP/answer
+    \|\| exit 1
+
+    <item>$FANGLE -Rtest:lyx:chunk-params:text $TEX_SRC \<gtr\> $TMP/result
+    \|\| exit 1
+
+    <item>passtest diff $TMP/answer $TMP/result \|\| (echo
+    test:lyx:chunk-params:text failed ; exit 1)
+  </nf-chunk||>
+
+  <section|<TeXmacs>>
+
+  <\nf-chunk|test:chunk-params:sub>
+    <item>I see a <nf-arg|THING>
+
+    <item>a <nf-arg|THING> of colour <nf-arg|colour>,\ 
+
+    <item>and looking closer <nf-ref|test:chunk-params:sub:sub|<tuple|<nf-arg|colour>>>
+  </nf-chunk||<tuple|THING|colour>>
+
+  <\nf-chunk|test:chunk-params:sub:sub>
+    <item>a funny shade of <nf-arg|colour>
+  </nf-chunk||<tuple|colour>>
+
+  <\nf-chunk|test:chunk-params:text>
+    <item>What do you see? "<nf-ref|test:chunk-params:sub|<tuple|joe|red>>
 
     <item>Well, fancy!
   </nf-chunk||>

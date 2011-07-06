@@ -646,8 +646,6 @@ BEGIN {
   modes["sh", "(",  "submodes" ]="\\\\|\"|{|\\(|\\[|'|/\\*";
   modes["sh", "(",  "delimiters"]=" *, *";
   modes["sh", "(",  "terminators"]="\\)";
-  #<\chunkref{mode:common-string}("sh", "\textbackslash{}"")>
-  #<\chunkref{mode:common-string}("sh", "'")>
   modes["sh", "", "submodes"] = modes["sh", "", "submodes"] "|" "#";
   modes["sh", "#", "terminators"]="\n";
   escapes["sh", "#", ++escapes["sh", "#"], "s"]="\n";
