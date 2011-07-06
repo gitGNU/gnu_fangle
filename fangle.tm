@@ -81,40 +81,40 @@
   not be too hard.
 
   <\nf-chunk|gpl3-copyright>
-    <item># fangle - fully featured notangle replacement in awk
+    <item>fangle - fully featured notangle replacement in awk
 
-    <item>#
+    <item>
 
-    <item># Copyright (C) 2009-2010 Sam Liddicott
+    <item>Copyright (C) 2009-2010 Sam Liddicott
     \<less\>sam@liddicott.com\<gtr\>
 
-    <item>#
+    <item>
 
-    <item># This program is free software: you can redistribute it and/or
+    <item>This program is free software: you can redistribute it and/or
     modify
 
-    <item># it under the terms of the GNU General Public License as published
+    <item>it under the terms of the GNU General Public License as published
     by
 
-    <item># the Free Software Foundation, either version 3 of the License, or
+    <item>the Free Software Foundation, either version 3 of the License, or
 
-    <item># (at your option) any later version.
+    <item>(at your option) any later version.
 
-    <item>#
+    <item>
 
-    <item># This program is distributed in the hope that it will be useful,
+    <item>This program is distributed in the hope that it will be useful,
 
-    <item># but WITHOUT ANY WARRANTY; without even the implied warranty of
+    <item>but WITHOUT ANY WARRANTY; without even the implied warranty of
 
-    <item># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. \ See the
+    <item>MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. \ See the
 
-    <item># GNU General Public License for more details.
+    <item>GNU General Public License for more details.
 
-    <item>#
+    <item>
 
-    <item># You should have received a copy of the GNU General Public License
+    <item>You should have received a copy of the GNU General Public License
 
-    <item># along with this program. \ If not, see
+    <item>along with this program. \ If not, see
     \<less\>http://www.gnu.org/licenses/\<gtr\>.
   </nf-chunk|text|>
 
@@ -2921,7 +2921,7 @@
     <item>/\\xE2\\x89\\xA1/ {
 
     <item> \ if (match($0, "^ *([^[ ]* \|)\<less\>([^[
-    ]*)\\\\[[0-9]*\\\\][(](.*)[)].*, lang=([^ ]*)", line)) {
+    ]*)\\\\[[0-9]*\\\\][(](.*)[)].*, lang=([^ ]*)\<gtr\>", line)) {
 
     <item> \ \ \ next_chunk_name=line[2];
 
