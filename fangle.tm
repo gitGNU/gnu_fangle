@@ -1733,21 +1733,21 @@
 
   <chapter|Language Modes & Quoting><label|modes>
 
-  <section|Modes>
-
   <verbatim|lstlistings> and <verbatim|fangle> both recognize source
-  languages, and perform some basic parsing. <verbatim|lstlistings> can
-  detect strings and comments within a language definition and perform
-  suitable rendering, such as italics for comments, and visible-spaces within
-  strings.
+  languages, and perform some basic parsing and syntax highlighting in the
+  rendered document<\footnote>
+    although lstlisting supports many more languages
+  </footnote>. <verbatim|lstlistings> can detect strings and comments within
+  a language definition and perform suitable rendering, such as italics for
+  comments, and visible-spaces within strings.
 
   Fangle similarly can recognize strings, and comments, etc, within a
-  language, so that any chunks included with <verbatim|\\chunkref> can be
-  suitably escape or quoted.
+  language, so that any chunks included with <verbatim|\\chunkref{a-chunk}>
+  or <nf-ref|a-chunk|> can be suitably escape or quoted.
 
-  <subsection|Modes to keep code together>
+  <section|Modes to keep code together>
 
-  As an example, in the C language there are a few parse modes, affecting the
+  As an example, the C language has a few parse modes, affecting the
   interpretation of characters.
 
   One parse mode is the strings mode. The string mode is commenced by an
@@ -1761,21 +1761,22 @@
 
   Consider this fragment of C code:
 
+  <math|<math-tt|do_something><wide|<around*|(|<math-tt|things><wide|<around|[|<math-tt|x>,
+  <math-tt|y>|]>|\<wide-overbrace\>><rsup|2. <math-tt|[> mode><math-tt|,
+  get_other_things><wide|<around|(|<math-tt|a>,
+  <wide*|<text|"><math-tt|<around|(|all|)>><text|">|\<wide-underbrace\>><rsub|4.
+  <text|"> mode>|)>|\<wide-overbrace\>><rsup|3. <math-tt|(>
+  mode>|)>|\<wide-overbrace\>><rsup|1. <math-tt|(> mode>>
+
   \;
 
-  <math|things<wide|<around|[|x, y|]>|\<wide-overbrace\>><rsup|1. [ mode>,
-  get_other_things<wide|<around|(|a, <wide*|<text|"><around|(|all|)><text|">|\<wide-underbrace\>><rsub|3.
-  " mode>|)>|\<wide-overbrace\>><rsup|2. ( mode>>
-
-  \;
-
-  Mode nesting prevents the close parenthesis in the quoted string (part 3)
-  from terminating the parenthesis mode (part 2).
+  Mode nesting prevents the close parenthesis in the quoted string (part 4)
+  from terminating the parenthesis mode (part 3).
 
   Each language has a set of modes, the default mode being the null mode.
   Each mode can lead to other modes.
 
-  <subsection|Modes affect included chunks>
+  <section|Modes affect included chunks>
 
   For instance, consider this chunk with language=perl:
 
@@ -1785,7 +1786,7 @@
 
   <nf-chunk|example-sh|perl -e "<nf-ref|example-perl|>"|sh|>
 
-  fangle would <em|want> to generate output like this:
+  we might want fangle would to generate output like this:
 
   <verbatim|perl -e "print \\"hello world \\$0\\\\n\\";" >
 
@@ -1798,7 +1799,7 @@
   <\nf-chunk|example-makefile>
     <item>target: pre-req
 
-    <item><htab|5mm><nf-ref|example-sh|>
+    <item><nf-tab><nf-ref|example-sh|>
   </nf-chunk|make|>
 
   We would need the output to look like this --- note the <verbatim|$$>:
@@ -1809,9 +1810,11 @@
     \ \ \ \ \ \ \ \ perl -e "print \\"hello world \\$$0\\\\n\\";"
   </verbatim>
 
-  In order to make this work, we need to define a mode-tracker supporting
-  each language, that can detect the various quoting modes, and provide a
-  transformation that must be applied to any included text so that included
+  <section|Modes operation>
+
+  In order to make this work, we must define a mode-tracker supporting each
+  language, that can detect the various quoting modes, and provide a
+  transformation that may be applied to any included text so that included
   text will be interpreted correctly after any interpolation that it may be
   subject to at run-time.
 
@@ -1820,19 +1823,23 @@
 
   <verbatim|s/\\\\/\\\\\\\\/g;s/$/\\\\$/g;s/"/\\\\"/g;>
 
-  which protects <verbatim|\\ $ ">.
+  which would protect <verbatim|\\ $ ">
 
-  <todo|I don't think this example is true>The mode tracker must also track
-  nested mode-changes, as in this sh example.
+  The mode tracker must also nested mode-changes, as in this shell example:
 
   <verbatim|echo "hello `id ...`">
 
   <phantom|<verbatim|echo "hello `id >><math|\<uparrow\>>
 
-  Any characters inserted at the point marked <math|\<uparrow\>> would need
-  to be escaped, including <verbatim|`> <verbatim|\|> <verbatim|*> among
-  others. First it would need escaping for the back-ticks <verbatim|`>, and
-  then for the double-quotes <verbatim|">.
+  Any shell special characters inserted at the point marked
+  <math|\<uparrow\>> would need to be escaped if their plain-text meaning is
+  to be preserved, including <verbatim|`> <verbatim|\|> <verbatim|*> among
+  others. The set of characters that need escaping in the back-ticks
+  <verbatim|`> is not the same as the set that need escaing in the
+  double-quotes <verbatim|">. However, in shell syntax, a <verbatim|"> at the
+  point marked <math|\<uparrow\>> does not close the leading <verbatim|"> and
+  so would not need additional escaping because of the nesting of the two
+  modes.
 
   <todo|MAYBE>Escaping need not occur if the format and mode of the included
   chunk matches that of the including chunk.
@@ -1841,22 +1848,78 @@
   in it's normal state. As text is output for that chunk the output mode is
   tracked. When a new chunk is included, a transformation appropriate to that
   mode is selected and pushed onto a stack of transformations. Any text to be
-  output is first passed through this stack of transformations.
+  output is passed through this stack of transformations.
 
   It remains to consider if the chunk-include function should return it's
   generated text so that the caller can apply any transformations (and
   formatting), or if it should apply the stack of transformations itself.
 
-  Note that the transformed text should have the property of not being able
-  to change the mode in the current chunk.
+  Note that the transformed included text should have the property of not
+  being able to change the mode in the current chunk.
 
   <todo|Note chunk parameters should probably also be transformed>
 
+  <section|Quoting scenarios>
+
+  <subsection|Direct quoting>
+
+  He we give examples of various quoting scenarios and discuss what the
+  expected outcome might be and how this could be obtained.
+
+  <\with|par-columns|2>
+    <\nf-chunk|test:q:1>
+      <item>echo "$(<nf-ref|test:q:1-inc|>
+    </nf-chunk|sh|>
+
+    <\nf-chunk|test:q:1-inc>
+      <item>echo "hello"
+    </nf-chunk|sh|>
+  </with>
+
+  Should this examples produce <verbatim|echo "$(echo "hello")"> or
+  <verbatim|echo "\\$(echo \\"hello\\")"> ?
+
+  This depends on what the author intended, but we must privde a way to
+  express that intent.
+
+  We might argue that as both chunks have <verbatim|lang=sh> the intent must
+  have been to quote the included chunk <emdash> but consider that this might
+  be shell script that writes shell script.
+
+  If <nf-ref|test:q:1-inc|> had <verbatim|lang=text> then it certainly would
+  have been right to quote it, which leads us to ask: in what ways can we
+  reduce quoting if lang of the included chunk is compatible with the lang of
+  the including chunk?
+
+  If we take a completely nested approach then even though <verbatim|$(> mode
+  might do no quoting of it's own, <verbatim|"> mode will still do it's own
+  quoting. We need a model where the nested <verbatim|$(> mode will prevent
+  <verbatim|"> from quoting.
+
+  This leads rise to the <em|tunneling> feature. In bash, the <verbatim|$(>
+  gives rise to a new top-level parsing scenario, so we need to enter the
+  <em|null> mode, and also ignore any quoting and then undo-this when the
+  <verbatim|$(> mode is terminated by the corresponding close <verbatim|)>.
+
+  We shall say that tunneling is when a mode in a language ignores other
+  modes in the same language and arrives back at an earlier <em|null> mode of
+  the same language.
+
+  In example <nf-ref|test:q:1|> above, the nesting of modes is: <em|null>,
+  <verbatim|">, <verbatim|$(>
+
+  When mode <verbatim|$(> is commenced, the stack of nest modes will be
+  traversed. If the <em|null> moed can be found in the same language, without
+  the language varying, then a tunnel will be established so that the
+  intervening modes, <verbatim|"> in this case, can be skipped when the modes
+  are enumerated to quote the texted being emitted.
+
   <section|Language Mode Definitions>
 
-  All modes are stored in a single multi-dimensional hash. The first index is
-  the language, and the second index is the mode-identifier. The third
-  indexes are terminators, and optionally, submodes, and delimiters.
+  All modes definitions are stored in a single multi-dimensional hash. The
+  first index is the language, and the second index is the mode-identifier.
+  The third indexes hold properties: terminators, and optionally, submodes,
+  delimiters, and tunnel targets.
 
   A useful set of mode definitions for a nameless general C-type language is
   shown here. (Don't be confused by the double backslash escaping needed in
@@ -2228,13 +2291,46 @@
 
   <subsection|sh>
 
+  Shell single-quote strings are different to other strings and have no
+  escape characters. The only special character is the single quote
+  <verbatim|'> which always closes the string. Therefore we cannot use
+  <nf-ref|common-mode-definitions|<tuple|"sh">> but we will invoke most of
+  it's definition apart from single-quote strings.\ 
+
   <\nf-chunk|mode-definitions>
-    <item><nf-ref|common-mode-definitions|<tuple|"sh">>
+    <item>modes["sh", "", \ "submodes"]="\\\\\\\\\|\\"\|'\|{\|\\\\(\|\\\\[";
+
+    <item>modes["sh", "\\\\", "terminators"]=".";
+
+    <item><nf-ref|mode:common-string|<tuple|"sh"|"\\"">>
+
+    <item>modes["sh", "'", "terminators"]="'";
+
+    <item>escapes["sh", "'", ++escapes["sh", "'"], "s"]="'";
+
+    <item>escapes["sh", "'", \ \ escapes["sh", "'"], "r"]="'\\\\'" "'";
+
+    <item><nf-ref|mode:common-brackets|<tuple|"sh"|"$("|")">>
+
+    <item><nf-ref|mode:add-tunnel|<tuple|"sh"|"$("|"">>
+
+    <item><nf-ref|mode:common-brackets|<tuple|"sh"|"{"|"}">>
+
+    <item><nf-ref|mode:common-brackets|<tuple|"sh"|"["|"\\\\]">>
+
+    <item><nf-ref|mode:common-brackets|<tuple|"sh"|"("|"\\\\)">>
 
     <item><nf-ref|mode:add-hash-comments|<tuple|"sh">>
 
     <item><nf-ref|mode:quote-dollar-escape|<tuple|"sh"|"\\"">>
   </nf-chunk|awk|>
+
+  The definition of add-tunnel is:
+
+  <\nf-chunk|mode:add-tunnel>
+    <item>escapes[<nf-arg|language>, <nf-arg|mode>,
+    ++escapes[<nf-arg|language>, <nf-arg|mode>], "tunnel"]=<nf-arg|tunnel>;
+  </nf-chunk||<tuple|language|mode|tunnel>>
 
   <section|Some tests>
 
@@ -2299,7 +2395,8 @@
   <\nf-chunk|new-mode-tracker>
     <item><nf-ref|awk-delete-array|<tuple|context>>
 
-    <item>new_mode_tracker(${context}, ${language}, ${mode});
+    <item>new_mode_tracker(<nf-arg|context>, <nf-arg|language>,
+    <nf-arg|mode>);
   </nf-chunk|awk|<tuple|context|language|mode>>
 
   <subsection|Management>
@@ -2772,7 +2869,7 @@
   This code can perform transforms
 
   <\nf-chunk|mode_tracker>
-    <item>function transform_escape(s, r, text,
+    <item>function transform_escape(quotes, text,
 
     <item> \ \ \ # optional
 
@@ -2784,9 +2881,9 @@
 
     <item>{
 
-    <item> \ for(c=1; c \<less\>= max && (c in s); c++) {
+    <item> \ for(c=1; c \<less\>= max && ( (c, "s") in quotes); c++) {
 
-    <item> \ \ \ gsub(s[c], r[c], text);
+    <item> \ \ \ gsub(quotes[c, "s"], quotes[c, "r"], text);
 
     <item> \ }
 
@@ -2799,7 +2896,7 @@
   the supplied context, and return c + number of new transforms.
 
   <\nf-chunk|mode_tracker>
-    <item>function mode_escaper(context, s, r, src,
+    <item>function mode_escaper(context, quotes, src,
 
     <item> \ c, cp, cpl)
 
@@ -2817,11 +2914,19 @@
 
     <item> \ \ \ \ \ \ \ ++src;
 
-    <item> \ \ \ \ \ \ \ s[src] = escapes[context[c, "language"], context[c,
-    "mode"], cp, "s"];
+    <item> \ \ \ \ \ \ \ quotes[src, "s"] = escapes[context[c, "language"],
+    context[c, "mode"], cp, "s"];
 
-    <item> \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ r[src]
-    = escapes[context[c, "language"], context[c, "mode"], cp, "r"];
+    <item> \ \ \ \ \ \ \ quotes[src, "r"] = escapes[context[c, "language"],
+    context[c, "mode"], cp, "r"];
+
+    <item> \ \ \ \ \ \ \ if ( (context[c, "language"], context[c, "mode"],
+    cp, "t") in escapes ) {
+
+    <item> \ \ \ \ \ \ \ \ \ quotes[src, "t"] = escapes[context[c,
+    "language"], context[c, "mode"], cp, "t"];
+
+    <item> \ \ \ \ \ \ \ }
 
     <item> \ \ \ \ \ }
 
@@ -2833,12 +2938,12 @@
 
     <item>}
 
-    <item>function dump_escaper(c, s, r, cc) {
+    <item>function dump_escaper(quotes, r, cc) {
 
     <item> \ for(cc=1; cc\<less\>=c; cc++) {
 
-    <item> \ \ \ printf("%2d s[%s] r[%s]\\n", cc, s[cc], r[cc]) \<gtr\>
-    "/dev/stderr"
+    <item> \ \ \ printf("%2d s[%s] r[%s]\\n", cc, quotes[cc, "s"], quotes[cc,
+    "r"]) \<gtr\> "/dev/stderr"
 
     <item> \ }
 
@@ -3660,7 +3765,7 @@
 
     <item> \ <with|font-shape|italic|chunk_path>, chunk_args,\ 
 
-    <item> \ s, r, src, new_src,\ 
+    <item> \ quotes, src, new_src,\ 
 
     <item> \ # local vars
 
@@ -3809,7 +3914,7 @@
 
     <item># update the transforms arrays
 
-    <item>new_src = mode_escaper(context, s, r, src);
+    <item>new_src = mode_escaper(context, quotes, src);
 
     <item><nf-ref|awk-delete-array|<tuple|new_context>>
 
@@ -3825,7 +3930,7 @@
 
     <item> \ \ \ \ \ \ \ \ \ \ \ call_chunk_args,
 
-    <item> \ \ \ \ \ \ \ \ \ \ \ s, r, new_src);
+    <item> \ \ \ \ \ \ \ \ \ \ \ quotes, new_src);
   </nf-chunk||>
 
   Before we output a chunklet of lines, we first emit the file and line
@@ -3919,7 +4024,7 @@
 
     <item> \ mode_tracker(context, text);
 
-    <item> \ print untab(transform_escape(s, r, text, src));
+    <item> \ print untab(transform_escape(quotes, text, src));
   </nf-chunk||>
 
   If a line ends in a backslash --- suggesting continuation --- then we

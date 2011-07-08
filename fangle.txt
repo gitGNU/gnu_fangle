@@ -82,81 +82,81 @@ I Using Fangle   9
 6.3 Extracting Program Source   25
 6.4 Extracting Source Files   25
 6.5 Extracting Documentation   27
-6.5.1 Formatting T_ E X   27
-6.5.1.1 Running pdflatex   27
+6.5.1 Formatting T_ E X   28
+6.5.1.1 Running pdflatex   28
 6.5.2 Formatting T_ E X_( M A CS)   28
 6.5.3 Building the Documentation as a Whole   28
 6.6 Other helpers   29
 6.7 Boot-strapping the extraction   29
 6.8 Incorporating Makefile.inc into existing projects   30
 Example   30
-II Source Code   31
-7 Fangle awk source code   33
-7.1 AWK tricks   33
-7.2 Catching errors   34
-8 T_ E X_( M A CS) args   35
-9 L^ A T_ E X and lstlistings   37
-9.1 Additional lstlstings parameters   37
-9.2 Parsing chunk arguments   39
-9.3 Expanding parameters in the text   40
-10 Language Modes & Quoting   43
-10.1 Modes   43
-10.1.1 Modes to keep code together   43
-10.1.2 Modes affect included chunks   43
-10.2 Language Mode Definitions   44
-10.2.1 Backslash   45
-10.2.2 Strings   46
-10.2.3 Parentheses, Braces and Brackets   47
-10.2.4 Customizing Standard Modes   47
-10.2.5 Comments   47
-10.2.6 Regex   48
-10.2.7 Perl   49
-10.2.8 sh   49
-10.3 Some tests   49
-10.4 A non-recursive mode tracker   50
-10.4.1 Constructor   50
-10.4.2 Management   50
-10.4.3 Tracker   51
-10.4.3.1 One happy chunk   54
+II Source Code   33
+7 Fangle awk source code   35
+7.1 AWK tricks   35
+7.2 Catching errors   36
+8 T_ E X_( M A CS) args   37
+9 L^ A T_ E X and lstlistings   39
+9.1 Additional lstlstings parameters   39
+9.2 Parsing chunk arguments   41
+9.3 Expanding parameters in the text   42
+10 Language Modes & Quoting   45
+10.1 Modes   45
+10.1.1 Modes to keep code together   45
+10.1.2 Modes affect included chunks   46
+10.2 Language Mode Definitions   47
+10.2.1 Backslash   47
+10.2.2 Strings   47
+10.2.3 Parentheses, Braces and Brackets   48
+10.2.4 Customizing Standard Modes   48
+10.2.5 Comments   49
+10.2.6 Regex   50
+10.2.7 Perl   50
+10.2.8 sh   51
+10.3 Some tests   51
+10.4 A non-recursive mode tracker   52
+10.4.1 Constructor   52
+10.4.2 Management   53
+10.4.3 Tracker   53
+10.4.3.1 One happy chunk   53
 10.4.3.2 Tests   54
-10.5 Escaping and Quoting   54
+10.5 Escaping and Quoting   57
 11 Recognizing Chunks   57
-11.1 Chunk start   57
-11.1.1 T_ E X_( M A CS)   57
-11.1.2 lstlistings   58
-11.2 Chunk Body   59
-11.2.1 T_ E X_( M A CS)   59
-11.2.2 Noweb   60
-11.3 Chunk end   60
-11.3.1 lstlistings   60
-11.3.2 noweb   61
-11.4 Chunk contents   61
-11.4.1 lstlistings   62
+11.1 Chunk start   58
+11.1.1 T_ E X_( M A CS)   61
+11.1.2 lstlistings   61
+11.2 Chunk Body   61
+11.2.1 T_ E X_( M A CS)   62
+11.2.2 Noweb   63
+11.3 Chunk end   63
+11.3.1 lstlistings   64
+11.3.2 noweb   64
+11.4 Chunk contents   64
+11.4.1 lstlistings   65
 12 Processing Options   65
-13 Generating the Output   67
-13.1 Assembling the Chunks   68
-13.1.1 Chunk Parts   68
-14 Storing Chunks   73
-15 getopt   75
-16 Fangle LaTeX source code   79
+13 Generating the Output   66
+13.1 Assembling the Chunks   69
+13.1.1 Chunk Parts   71
+14 Storing Chunks   72
+15 getopt   72
+16 Fangle LaTeX source code   77
 16.1 fangle module   79
-16.1.1 The Chunk style   79
-16.1.2 The chunkref style   80
-16.2 Latex Macros   80
-16.2.1 The chunk command   81
-16.2.1.1 Chunk parameters   82
-16.2.2 The noweb styled caption   82
-16.2.3 The chunk counter   82
-16.2.4 Cross references   85
+16.1.1 The Chunk style   83
+16.1.2 The chunkref style   83
+16.2 Latex Macros   83
+16.2.1 The chunk command   84
+16.2.1.1 Chunk parameters   84
+16.2.2 The noweb styled caption   85
+16.2.3 The chunk counter   86
+16.2.4 Cross references   86
 16.2.5 The end   86
-17 Extracting fangle   87
-17.1 Extracting from Lyx   87
-17.2 Extracting documentation   87
-17.3 Extracting from the command line   88
-17.4 Testing   88
-III Tests   89
-18 Chunk Parameters   91
-19 Compile-log-lyx   91
+17 Extracting fangle   89
+17.1 Extracting from Lyx   90
+17.2 Extracting documentation   91
+17.3 Extracting from the command line   91
+17.4 Testing   91
+III Tests   92
+18 Chunk Parameters   92
+19 Compile-log-lyx   93
 Part I  Using Fangle 
 Chapter 1Introduction to Literate Programming
 Todo: Should really follow on from a part-0 explanation of what literate programming is.
@@ -270,7 +270,7 @@ This looks simple enough, but as mentioned, fangle has to be had from somewhere 
 When the lyx-build chunk is executed, the current directory will be a temporary directory, and LYX_SOURCE will refer to the tex file in this temporary directory. This is unfortunate as our makefile wants to run from the project directory where the Lyx file is kept.
 We can extract the project directory from $$r, and derive the probable Lyx filename from the noweb file that Lyx generated.
 
-19b <lyx-build-helper[1](), lang=sh> ≡  87c⊳
+19b <lyx-build-helper[1](), lang=sh> ≡  89c⊳
       ________________________________________________________________________
   1  | PROJECT_DIR="$LYX_r"
   2  | LYX_SRC="$PROJECT_DIR/${LYX_i%.tex}.lyx"
@@ -279,7 +279,7 @@ We can extract the project directory from $$r, and derive the probable Lyx filen
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 And then we can define a lyx-build fragment similar to the autoboot fragment
 
-20a <lyx-build[1](), lang=sh> ≡  87a⊳
+20a <lyx-build[1](), lang=sh> ≡  89a⊳
       ________________________________________________________________________
   1  | #! /bin/sh
   2  | «lyx-build-helper 19b»
@@ -315,7 +315,7 @@ As we progress through this chapter, explaining concepts, we will be adding line
 23a <./Makefile.inc[1](), lang=make> ≡ 
       ________________________________________________________________________
   1  | «Makefile.inc-vars 23b»
-  2  | «Makefile.inc-default-targets ?a»
+  2  | «Makefile.inc-default-targets 28a»
   3  | «Makefile.inc-targets 24c»
      |________________________________________________________________________
 
@@ -338,7 +338,7 @@ The first stage will always be to convert the L Y X file to a LaTeX file. Fangle
 The command lyx -e literate fangle.lyx will produce fangle.tex, a TeX file; so we define a make target to be the same as the L Y X file but with the .tex extension.
 The EXTRA_DIST is for automake support so that the TeX files will automaticaly be distributed with the source, to help those who don't have L Y X installed.
 
-24b <Makefile.inc-vars[3]() ⇑23b, lang=> +≡ ▵24a 25a⊳
+24b <Makefile.inc-vars[3]() ⇑23b, lang=> +≡ ▵24a 24d▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   3  | LYX_SOURCE=$(LITERATE_SOURCE) # but only the .lyx files
   4  | TEX_SOURCE=$(LYX_SOURCE:.lyx=.tex)
@@ -346,7 +346,7 @@ The EXTRA_DIST is for automake support so that the TeX files will automaticaly b
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 We then specify that the TeX source is to be generated from the L Y X source.
 
-24c <Makefile.inc-targets[1](), lang=> ≡  24a▿
+24c <Makefile.inc-targets[1](), lang=> ≡  25a⊳
       ________________________________________________________________________
   1  | .SUFFIXES: .tex .lyx
   2  | .lyx.tex:
@@ -360,7 +360,7 @@ Fangle cannot process TeXmacs files directly3. but this is planned when TeXmacs 
 The command texmacs -c fangle.tm fangle.txt -q will produce fangle.txt, a text file; so we define a make target to be the same as the TeXmacs file but with the .txt extension.
 The EXTRA_DIST is for automake support so that the TeX files will automaticaly be distributed with the source, to help those who don't have L Y X installed.
 
-25a <Makefile.inc-vars[4]() ⇑23b, lang=> +≡ ⊲24b 25a▿
+24d <Makefile.inc-vars[4]() ⇑23b, lang=> +≡ ▵24b 25b⊳
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   6  | TEXMACS_SOURCE=$(LITERATE_SOURCE) # but only the .tm files
   7  | TXT_SOURCE=$(LITERATE_SOURCE:.tm=.txt)
@@ -369,7 +369,7 @@ The EXTRA_DIST is for automake support so that the TeX files will automaticaly b
 To do: Add loop around each $< so multiple targets can be specified
 
 
-24a <Makefile.inc-targets[2]() ⇑24c, lang=> +≡ ▵24c 25a⊳
+25a <Makefile.inc-targets[2]() ⇑24c, lang=> +≡ ⊲24c 25d▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   7  | .SUFFIXES: .txt .tm
   8  | .tm.txt:
@@ -382,7 +382,7 @@ To do: Add loop around each $< so multiple targets can be specified
 6.3 Extracting Program Source 
 The program source is extracted using fangle, which is designed to operate on text or a LaTeX documents4. LaTeX documents are just slightly special text documents  ^4.
 
-25a <Makefile.inc-vars[5]() ⇑23b, lang=> +≡ ▵25a 26a⊳
+25b <Makefile.inc-vars[5]() ⇑23b, lang=> +≡ ⊲24d 25c▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   9  | FANGLE_SOURCE=$(TXT_SOURCE)
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
@@ -391,12 +391,12 @@ However, if a source file is not updated, then the fangle file will always have 
 Because of this, we use a stamp file which is always updated each time the sources are fully extracted from the LaTeX document. If the stamp file is newer than the document, then we can avoid an attempt to re-extract any of the sources. Because this stamp file is only updated when extraction is complete, it is safe for the user to interrupt the build-process mid-extraction.
 We use echo rather than touch to update the stamp file beause the touch command does not work very well over an sshfs mount  that I was using.
 
-26a <Makefile.inc-vars[6]() ⇑23b, lang=> +≡ ⊲25a 26a▿
+25c <Makefile.inc-vars[6]() ⇑23b, lang=> +≡ ▵25b 26a⊳
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   10  | FANGLE_SOURCE_STAMP=$(FANGLE_SOURCE).stamp
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 
-25a <Makefile.inc-targets[3]() ⇑24c, lang=> +≡ ⊲24a 26b⊳
+25d <Makefile.inc-targets[3]() ⇑24c, lang=> +≡ ▵25a 26b⊳
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   14  | $(FANGLE_SOURCE_STAMP): $(FANGLE_SOURCE) \
   15  | ↦                $(FANGLE_SOURCES) ; \
@@ -412,7 +412,7 @@ Note 1. FANGLE_PREFIX is set to ./ by default, but whatever it may be overridden
 To do: This doesn't work though, because it loses the full name and doesn't know what to extact!
 
 
-26a <Makefile.inc-vars[7]() ⇑23b, lang=> +≡ ▵26a 26e▿
+26a <Makefile.inc-vars[7]() ⇑23b, lang=> +≡ ⊲25c 26e▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   11  | FANGLE_PREFIX:=\.\/
   12  | FANGLE_SOURCES:=$(shell \
@@ -422,7 +422,7 @@ To do: This doesn't work though, because it loses the full name and doesn't know
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 The target below, echo_fangle_sources is a helpful debugging target and shows the names of the files that would be extracted.
 
-26b <Makefile.inc-targets[4]() ⇑24c, lang=> +≡ ⊲25a 26c▿
+26b <Makefile.inc-targets[4]() ⇑24c, lang=> +≡ ⊲25d 26c▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   20  | .PHONY: echo_fangle_sources
   21  | echo_fangle_sources: ; @echo $(FANGLE_SOURCES)
@@ -436,7 +436,7 @@ We define a convenient target called fangle_sources so that make -f fangle_sourc
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 And also a convenient target to remove extracted sources.
 
-26d <Makefile.inc-targets[6]() ⇑24c, lang=> +≡ ▵26c 27a⊳
+26d <Makefile.inc-targets[6]() ⇑24c, lang=> +≡ ▵26c 27e⊳
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   24  | .PHONY: clean_fangle_sources
   25  | clean_fangle_sources: ; \
@@ -473,7 +473,7 @@ We can use a similar trick to define an indent macro which takes just the filena
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 We now define the pattern for extracting a file. The files are written using noweb's cpif so that the file timestamp will not be touched if the contents haven't changed. This avoids the need to rebuild the entire project because of a typographical change in the documentation, or if none or a few C source files have changed.
 
-27c <Makefile.inc-vars[12]() ⇑23b, lang=> +≡ ▵27b 28a⊳
+27c <Makefile.inc-vars[12]() ⇑23b, lang=> +≡ ▵27b 27d▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   23  | fangle_extract=@mkdir -p $(dir $(1)) && \
   24  |   $(call fangle,$(2),$(1)) > "$(1).tmp" && \
@@ -483,7 +483,7 @@ We now define the pattern for extracting a file. The files are written using now
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 We define a target which will extract or update all sources. To do this we first defined a makefile template that can do this for any source file in the LaTeX document.
 
-28a <Makefile.inc-vars[13]() ⇑23b, lang=> +≡ ⊲27c 28a▿
+27d <Makefile.inc-vars[13]() ⇑23b, lang=> +≡ ▵27c 28b⊳
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   28  | define FANGLE_template
   29  |   $(1): $(2)
@@ -493,7 +493,7 @@ We define a target which will extract or update all sources. To do this we first
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 We then enumerate the discovered FANGLE_SOURCES to generate a makefile rule for each one using the makefile template we defined above.
 
-27a <Makefile.inc-targets[7]() ⇑24c, lang=> +≡ ⊲26d 27b▿
+27e <Makefile.inc-targets[7]() ⇑24c, lang=> +≡ ⊲26d 27f▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   27  | $(foreach source,$(FANGLE_SOURCES),\
   28  |   $(eval $(call FANGLE_template,$(source),$(FANGLE_SOURCE))) \
@@ -502,14 +502,14 @@ We then enumerate the discovered FANGLE_SOURCES to generate a makefile rule for 
 These will all be built with FANGLE_SOURCE_STAMP.
 We also remove the generated sources on a make distclean.
 
-27b <Makefile.inc-targets[8]() ⇑24c, lang=> +≡ ▵27a 28b⊳
+27f <Makefile.inc-targets[8]() ⇑24c, lang=> +≡ ▵27e 28c⊳
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   30  | _distclean: clean_fangle_sources
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 6.5 Extracting Documentation 
 We then identify the intermediate stages of the documentation and their build and clean targets.
 
-?a <Makefile.inc-default-targets[1](), lang=> ≡ 
+28a <Makefile.inc-default-targets[1](), lang=> ≡ 
       ________________________________________________________________________
   1  | .PHONEY : clean_pdf
      |________________________________________________________________________
@@ -519,13 +519,13 @@ We then identify the intermediate stages of the documentation and their build an
 6.5.1.1 Running pdflatex 
 We produce a pdf file from the tex file.
 
-28a <Makefile.inc-vars[14]() ⇑23b, lang=> +≡ ▵28a 28c▿
+28b <Makefile.inc-vars[14]() ⇑23b, lang=> +≡ ⊲27d 28d▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   33  | FANGLE_PDF+=$(TEX_SOURCE:.tex=.pdf)
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 We run pdflatex twice to be sure that the contents and aux files are up to date. We certainly are required to run pdflatex at least twice if these files do not exist.
 
-28b <Makefile.inc-targets[9]() ⇑24c, lang=> +≡ ⊲27b 28d▿
+28c <Makefile.inc-targets[9]() ⇑24c, lang=> +≡ ⊲27f 28e▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   31  | .SUFFIXES: .tex .pdf
   32  | .tex.pdf:
@@ -539,18 +539,16 @@ We run pdflatex twice to be sure that the contents and aux files are up to date.
 6.5.2 Formatting TeXmacs 
 TeXmacs can produce a PDF file directly.
 
-28c <Makefile.inc-vars[15]() ⇑23b, lang=> +≡ ▵28a
+28d <Makefile.inc-vars[15]() ⇑23b, lang=> +≡ ▵28b 28f▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   34  | FANGLE_PDF+=$(LITERATE_SOURCE:.tm=.pdf)
-     |________________________________________________________________________
-
-
+     |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 To do: Outputting the PDF may not be enough to update the links and page references. I think
 we need to update twice, generate a pdf, update twice mode and generate a new PDF.
 Basically the PDF export of TeXmacs is pretty rotten and doesn't work properly from the CLI
 
 
-28d <Makefile.inc-targets[10]() ⇑24c, lang=> +≡ ▵28b 28a▿
+28e <Makefile.inc-targets[10]() ⇑24c, lang=> +≡ ▵28c 29a⊳
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   39  | .SUFFIXES: .tm .pdf
   40  | .tm.pdf:
@@ -563,15 +561,15 @@ Basically the PDF export of TeXmacs is pretty rotten and doesn't work properly f
 6.5.3 Building the Documentation as a Whole 
 Currently we only build pdf as a final format, but FANGLE_DOCS may later hold other output formats.
 
-?a <Makefile.inc-vars[16]() ⇑23b, lang=> +≡ ⊲28c
+28f <Makefile.inc-vars[16]() ⇑23b, lang=> +≡ ▵28d
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
-  1  | FANGLE_DOCS=$(FANGLE_PDF)
+  35  | FANGLE_DOCS=$(FANGLE_PDF)
      |________________________________________________________________________
 
 
 We also define fangle_docs as a convenient phony target.
 
-28a <Makefile.inc-targets[11]() ⇑24c, lang=> +≡ ▵28d 28b▿
+29a <Makefile.inc-targets[11]() ⇑24c, lang=> +≡ ⊲28e 29b▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   46  | .PHONY: fangle_docs
   47  | fangle_docs: $(FANGLE_DOCS)
@@ -579,7 +577,7 @@ We also define fangle_docs as a convenient phony target.
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 And define a convenient clean_fangle_docs which we add to the regular clean target
 
-28b <Makefile.inc-targets[12]() ⇑24c, lang=> +≡ ▵28a
+29b <Makefile.inc-targets[12]() ⇑24c, lang=> +≡ ▵29a
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   49  | .PHONEY: clean_fangle_docs
   50  | clean_fangle_docs: clean_tex clean_pdf
@@ -602,7 +600,7 @@ Therefore we will have a minimal root fragment, which, when extracted, can cope 
 To do: De-lyxify
 
 
-29a <*[1](), lang=sh> ≡ 
+29c <*[1](), lang=sh> ≡ 
       ________________________________________________________________________
   1  | #! /bin/sh
   2  | 
@@ -649,14 +647,14 @@ The existing build system may already have a build target for module.o, but we j
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 The target for this new pre-requisite will be generated by a recursive make using Makefile.inc which will make sure that the source is up to date, before it is built by the main projects makefile.
 
-30c <makefile-glue[3]() ⇑30a, lang=> +≡ ▵30b 30d▿
+30c <makefile-glue[3]() ⇑30a, lang=> +≡ ▵30b 31a⊳
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   5  | $(module_srcdir)/$(MODULE_STAMP): $(module_srcdir)/$(MODULE_SOURCE)
   6  | ↦$(MAKE) -C $(module_srcdir) -f Makefile.inc fangle_sources LITERATE_SOURCE=$(MODULE_SOURCE)
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 We can do similar glue for the docs, clean and distclean targets. In this example the main prject was using a double colon for these targets, so we must use the same in our glue.
 
-30d <makefile-glue[4]() ⇑30a, lang=> +≡ ▵30c
+31a <makefile-glue[4]() ⇑30a, lang=> +≡ ⊲30c
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   7  | docs:: docs_module
   8  | .PHONY: docs_module
@@ -680,41 +678,41 @@ Part II  Source Code
 Chapter 7Fangle awk source code
 We use the copyright notice from chapter 2.
 
-33a <./fangle[1](), lang=awk> ≡  33b▿
+35a <./fangle[1](), lang=awk> ≡  35b▿
       ________________________________________________________________________
   1  | #! /usr/bin/awk -f
   2  | # «gpl3-copyright 4a»
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
-We also use code from Arnold Robbins public domain getopt (1993 revision) defined in 77a, and naturally want to attribute this appropriately.
+We also use code from Arnold Robbins public domain getopt (1993 revision) defined in 79a, and naturally want to attribute this appropriately.
 
-33b <./fangle[2]() ⇑33a, lang=> +≡ ▵33a 33c▿
+35b <./fangle[2]() ⇑35a, lang=> +≡ ▵35a 35c▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   3  | # NOTE: Arnold Robbins public domain getopt for awk is also used:
-  4  | «getopt.awk-header 75a»
-  5  | «getopt.awk-getopt() 75c»
+  4  | «getopt.awk-header 77a»
+  5  | «getopt.awk-getopt() 77c»
   6  | 
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 And include the following chunks (which are explained further on) to make up the program:
 
-33c <./fangle[3]() ⇑33a, lang=> +≡ ▵33b 38a⊳
+35c <./fangle[3]() ⇑35a, lang=> +≡ ▵35b 40a⊳
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
-  7  | «helper-functions 34d»
-  8  | «mode-tracker 54a»
-  9  | «parse_chunk_args 40a»
-  10  | «chunk-storage-functions 73b»
-  11  | «output_chunk_names() 67d»
-  12  | «output_chunks() 67e»
-  13  | «write_chunk() 68a»
-  14  | «expand_chunk_args() 40b»
+  7  | «helper-functions 36d»
+  8  | «mode-tracker 56b»
+  9  | «parse_chunk_args 42a»
+  10  | «chunk-storage-functions 75b»
+  11  | «output_chunk_names() 69d»
+  12  | «output_chunks() 69e»
+  13  | «write_chunk() 70a»
+  14  | «expand_chunk_args() 42b»
   15  | 
-  16  | «begin 65d»
-  17  | «recognize-chunk 57a»
-  18  | «end 67c»
+  16  | «begin 67d»
+  17  | «recognize-chunk 59a»
+  18  | «end 69c»
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 7.1 AWK tricks 
 The portable way to erase an array in awk is to split the empty string, so we define a fangle macro that can split an array, like this:
 
-33d <awk-delete-array[1](ARRAY), lang=awk> ≡ 
+35d <awk-delete-array[1](ARRAY), lang=awk> ≡ 
       ________________________________________________________________________
   1  | split("", ${ARRAY});
      |________________________________________________________________________
@@ -722,7 +720,7 @@ The portable way to erase an array in awk is to split the empty string, so we de
 
 For debugging it is sometimes convenient to be able to dump the contents of an array to stderr, and so this macro is also useful.
 
-33e <dump-array[1](ARRAY), lang=awk> ≡ 
+35e <dump-array[1](ARRAY), lang=awk> ≡ 
       ________________________________________________________________________
   1  | print "\nDump: ${ARRAY}\n--------\n" > "/dev/stderr";
   2  | for (_x in ${ARRAY}) {
@@ -735,7 +733,7 @@ For debugging it is sometimes convenient to be able to dump the contents of an a
 7.2 Catching errors 
 Fatal errors are issued with the error function:
 
-34a <error()[1](), lang=awk> ≡  34b▿
+36a <error()[1](), lang=awk> ≡  36b▿
       ________________________________________________________________________
   1  | function error(message)
   2  | {
@@ -745,7 +743,7 @@ Fatal errors are issued with the error function:
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 and likewise for non-fatal warnings:
 
-34b <error()[2]() ⇑34a, lang=awk> +≡ ▵34a 34c▿
+36b <error()[2]() ⇑36a, lang=awk> +≡ ▵36a 36c▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   6  | function warning(message)
   7  | {
@@ -755,7 +753,7 @@ and likewise for non-fatal warnings:
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 and debug output too:
 
-34c <error()[3]() ⇑34a, lang=awk> +≡ ▵34b
+36c <error()[3]() ⇑36a, lang=awk> +≡ ▵36b
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   11  | function debug_log(message)
   12  | {
@@ -767,9 +765,9 @@ and debug output too:
 To do: append=helper-functions
 
 
-34d <helper-functions[1](), lang=> ≡ 
+36d <helper-functions[1](), lang=> ≡ 
       ________________________________________________________________________
-  1  | «error() 34a»
+  1  | «error() 36a»
      |________________________________________________________________________
 
 
@@ -780,14 +778,14 @@ Arguments commence after the opening parenthesis. The first argument runs up til
 If the following character is a , then another argument follows. If the next character after the , is a space character, then it is also eaten. The fangle stylesheet emits ^K,space as separators, but the fangle untangler will forgive a missing space.
 If the following character is ) then this is a terminator and there are no more arguments.
 
-35a <constants[1](), lang=> ≡  73a⊳
+37a <constants[1](), lang=> ≡  75a⊳
       ________________________________________________________________________
   1  | ARG_SEPARATOR=sprintf("%c", 11);
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 To process the text in this fashion, we split the string on ^K
 
 
-35b <get_chunk_args[1](), lang=> ≡ 
+37b <get_chunk_args[1](), lang=> ≡ 
       ________________________________________________________________________
   1  | function get_texmacs_chunk_args(text, args,   a, done) {
   2  |   split(text, args, ARG_SEPARATOR);
@@ -837,14 +835,14 @@ achunk,language=C,params=name;address
 addto.a named chunk that this chunk is to be included into. This saves the effort of having to declare another listing of the named chunk merely to include this one. 
 Function get_chunk_args() will accept two paramters, text being the text to parse, and values being an array to receive the parsed values as described above. The optional parameter path is used during recursion to build up the multi-dimensional array path.
 
-38a <./fangle[4]() ⇑33a, lang=> +≡ ⊲33c
+40a <./fangle[4]() ⇑35a, lang=> +≡ ⊲35c
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
-  19  | «get_chunk_args() 38b»
+  19  | «get_chunk_args() 40b»
      |________________________________________________________________________
 
 
 
-38b <get_chunk_args()[1](), lang=> ≡  38c▿
+40b <get_chunk_args()[1](), lang=> ≡  40c▿
       ________________________________________________________________________
   1  | function get_tex_chunk_args(text, values,
   2  |   # optional parameters
@@ -854,7 +852,7 @@ Function get_chunk_args() will accept two paramters, text being the text to pars
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 The strategy is to parse the name, and then look for a value. If the value begins with a brace {, then we recurse and consume as much of the text as necessary, returning the remaining text when we encounter a leading close-brace }. This being the strategy --- and executed in a loop --- we realise that we must first look for the closing brace (perhaps preceded by white space) in order to terminate the recursion, and returning remaining text.
 
-38c <get_chunk_args()[2]() ⇑38b, lang=> +≡ ▵38b
+40c <get_chunk_args()[2]() ⇑40b, lang=> +≡ ▵40b
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   6  | {
   7  |   split("", values);
@@ -862,7 +860,7 @@ The strategy is to parse the name, and then look for a value. If the value begin
   9  |     if (match(text, "^ *}(.*)", a)) {
   10  |       return a[1];
   11  |     }
-  12  |     «parse-chunk-args 38d»
+  12  |     «parse-chunk-args 40d»
   13  |   }
   14  |   return text;
   15  | }
@@ -871,7 +869,7 @@ The strategy is to parse the name, and then look for a value. If the value begin
 
 We can see that the text could be inspected with this regex:
 
-38d <parse-chunk-args[1](), lang=> ≡  39a⊳
+40d <parse-chunk-args[1](), lang=> ≡  41a⊳
       ________________________________________________________________________
   1  | if (! match(text, " *([^,=]*[^,= ]) *(([,=]) *(([^,}]*) *,* *(.*))|)$", a)) {
   2  |   return text;
@@ -889,7 +887,7 @@ a[n] assigned text
 a[3] will be either = or , and signify whether the option named in a[1] has a value or not (respectively).
 If the option does have a value, then if the expression substr(a[4],1,1) returns a brace { it will signify that we need to recurse:
 
-39a <parse-chunk-args[2]() ⇑38d, lang=> +≡ ⊲38d
+41a <parse-chunk-args[2]() ⇑40d, lang=> +≡ ⊲40d
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   4  | name=a[1];
   5  | if (a[3] == "=") {
@@ -908,9 +906,9 @@ If the option does have a value, then if the expression substr(a[4],1,1) returns
 
 We can test this function like this:
 
-39b <gca-test.awk[1](), lang=> ≡ 
+41b <gca-test.awk[1](), lang=> ≡ 
       ________________________________________________________________________
-  1  | «get_chunk_args() 38b»
+  1  | «get_chunk_args() 40b»
   2  | BEGIN {
   3  |   SUBSEP=".";
   4  | 
@@ -924,7 +922,7 @@ We can test this function like this:
 
 which should give this output:
 
-39c <gca-test.awk-results[1](), lang=> ≡ 
+41c <gca-test.awk-results[1](), lang=> ≡ 
       ________________________________________________________________________
   1  | a[foo.quux.quirk] => 
   2  | a[foo.quux.a] => fleeg
@@ -948,13 +946,13 @@ Unfortunately, the full set of matching delimiters may vary from language to lan
 This puts me in the unfortunate position of having to parse-somewhat all programming languages without knowing what they are!
 However, if this universal mode-tracking is possible, then parsing the arguments would be trivial. Such a mode tracker is described in chapter 10 and used here with simplicity.
 
-40a <parse_chunk_args[1](), lang=> ≡ 
+42a <parse_chunk_args[1](), lang=> ≡ 
       ________________________________________________________________________
   1  | function parse_chunk_args(language, text, values, mode,
   2  |   # local vars
   3  |   c, context, rest)
   4  | {
-  5  |   «new-mode-tracker(context, language, mode) 50b»
+  5  |   «new-mode-tracker(context, language, mode) 52b»
   6  |   rest = mode_tracker(context, text, values);
   7  |   # extract values
   8  |   for(c=1; c <= context[0, "values"]; c++) {
@@ -970,13 +968,13 @@ Within the body of the chunk, the parameters are referred to with: ${name} and $
 We therefore need a function expand_chunk_args which will take a block of text, a list of permitted parameters, and the arguments which must substitute for the parameters. 
 Here we split the text on ${ which means that all parts except the first will begin with a parameter name which will be terminated by }. The split function will consume the literal ${ in each case.
 
-40b <expand_chunk_args()[1](), lang=> ≡ 
+42b <expand_chunk_args()[1](), lang=> ≡ 
       ________________________________________________________________________
   1  | function expand_chunk_args(text, params, args,  
   2  |   p, text_array, next_text, v, t, l)
   3  | {
   4  |   if (split(text, text_array, "\\${")) {
-  5  |     «substitute-chunk-args 41a»
+  5  |     «substitute-chunk-args 43a»
   6  |   }
   7  | 
   8  |   return text;
@@ -986,7 +984,7 @@ Here we split the text on ${ which means that all parts except the first will be
 
 First, we produce an associative array of substitution values indexed by parameter names. This will serve as a cache, allowing us to look up the replacement values as we extract each name.
 
-41a <substitute-chunk-args[1](), lang=> ≡  41b▿
+43a <substitute-chunk-args[1](), lang=> ≡  43b▿
       ________________________________________________________________________
   1  | for(p in params) {
   2  |   v[params[p]]=args[p];
@@ -994,7 +992,7 @@ First, we produce an associative array of substitution values indexed by paramet
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 We accumulate substituted text in the variable text. As the first part of the split function is the part before the delimiter --- which is ${ in our case --- this part will never contain a parameter reference, so we assign this directly to the result kept in $text.
 
-41b <substitute-chunk-args[2]() ⇑41a, lang=> +≡ ▵41a 41c▿
+43b <substitute-chunk-args[2]() ⇑43a, lang=> +≡ ▵43a 43c▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   4  | text=text_array[1];
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
@@ -1002,10 +1000,10 @@ We then iterate over the remaining values in the array3. I don't know why I thin
 To do: fix or prove it
 , and substitute each reference for it's argument.
 
-41c <substitute-chunk-args[3]() ⇑41a, lang=> +≡ ▵41b
+43c <substitute-chunk-args[3]() ⇑43a, lang=> +≡ ▵43b
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   5  | for(t=2; t in text_array; t++) {
-  6  |   «substitute-chunk-arg 41d»
+  6  |   «substitute-chunk-arg 43d»
   7  | }
      |________________________________________________________________________
 
@@ -1013,7 +1011,7 @@ To do: fix or prove it
 After the split on ${ a valid parameter reference will consist of valid parameter name terminated by a close-brace }. A valid character name begins with the underscore or a letter, and may contain letters, digits or underscores.
 A valid looking reference that is not actually the name of a parameter will be and not substituted. This is good because there is nothing to substitute anyway, and it avoids clashes when writing code for languages where ${...} is a valid construct --- such constructs will not be interfered with unless the parameter name also matches.
 
-41d <substitute-chunk-arg[1](), lang=> ≡ 
+43d <substitute-chunk-arg[1](), lang=> ≡ 
       ________________________________________________________________________
   1  | if (match(text_array[t], "^([a-zA-Z_][a-zA-Z0-9_]*)}", l) &&
   2  |     l[1] in v) 
@@ -1026,23 +1024,21 @@ A valid looking reference that is not actually the name of a parameter will be a
 
 
 Chapter 10Language Modes & Quoting
-10.1 Modes 
-lstlistings and fangle both recognize source languages, and perform some basic parsing. lstlistings can detect strings and comments within a language definition and perform suitable rendering, such as italics for comments, and visible-spaces within strings.
-Fangle similarly can recognize strings, and comments, etc, within a language, so that any chunks included with \chunkref can be suitably escape or quoted.
-10.1.1 Modes to keep code together 
-As an example, in the C language there are a few parse modes, affecting the interpretation of characters.
+lstlistings and fangle both recognize source languages, and perform some basic parsing and syntax highlighting in the rendered document1. although lstlisting supports many more languages  ^1. lstlistings can detect strings and comments within a language definition and perform suitable rendering, such as italics for comments, and visible-spaces within strings.
+Fangle similarly can recognize strings, and comments, etc, within a language, so that any chunks included with \chunkref{a-chunk} or <a-chunk ?> can be suitably escape or quoted.
+10.1 Modes to keep code together 
+As an example, the C language has a few parse modes, affecting the interpretation of characters.
 One parse mode is the strings mode. The string mode is commenced by an un-escaped quotation mark " and terminated by the same. Within the string mode, only one additional mode can be commenced, it is the backslash mode \, which is always terminated after the folloing character.
 Another mode is [ which is terminated by a ] (unless it occurs in a string).
 Consider this fragment of C code:
+do_something((things([x, y])<wide-overbrace>^(2. [ mode), get_other_things((a, "(all)"_(4. " mode)))<wide-overbrace>^(3. ( mode)))<wide-overbrace>^(1. ( mode)
 
-things([x, y])<wide-overbrace>^(1. [ mode), get_other_things((a, "(all)"_(3. " mode)))<wide-overbrace>^(2. ( mode)
-
-Mode nesting prevents the close parenthesis in the quoted string (part 3) from terminating the parenthesis mode (part 2).
+Mode nesting prevents the close parenthesis in the quoted string (part 4) from terminating the parenthesis mode (part 3).
 Each language has a set of modes, the default mode being the null mode. Each mode can lead to other modes.
-10.1.2 Modes affect included chunks 
+10.2 Modes affect included chunks 
 For instance, consider this chunk with language=perl:
 
-43a <example-perl[1](), lang=perl> ≡ 
+45a <example-perl[1](), lang=perl> ≡ 
       ________________________________________________________________________
 print "hello world $0\n";
      |________________________________________________________________________
@@ -1050,58 +1046,84 @@ print "hello world $0\n";
 
 If it were included in a chunk with language=sh, like this:
 
-43b <example-sh[1](), lang=sh> ≡ 
+45b <example-sh[1](), lang=sh> ≡ 
       ________________________________________________________________________
-perl -e "«example-perl 43a»"
+perl -e "«example-perl 45a»"
      |________________________________________________________________________
 
 
-fangle would want to generate output like this:
+we might want fangle would to generate output like this:
 perl -e "print \"hello world \$0\\n\";" 
 See that the double quote ", back-slash \ and $ have been quoted with a back-slash to protect them from shell interpretation.
 If that were then included in a chunk with language=make, like this:
 
-44a <example-makefile[1](), lang=make> ≡ 
+46a <example-makefile[1](), lang=make> ≡ 
       ________________________________________________________________________
   1  | target: pre-req
-  2  |  «example-sh 43b»
+  2  | ↦«example-sh 45b»
      |________________________________________________________________________
 
 
 We would need the output to look like this --- note the $$:
 target: pre-req
         perl -e "print \"hello world \$$0\\n\";"
-In order to make this work, we need to define a mode-tracker supporting each language, that can detect the various quoting modes, and provide a transformation that must be applied to any included text so that included text will be interpreted correctly after any interpolation that it may be subject to at run-time.
+10.3 Modes operation 
+In order to make this work, we must define a mode-tracker supporting each language, that can detect the various quoting modes, and provide a transformation that may be applied to any included text so that included text will be interpreted correctly after any interpolation that it may be subject to at run-time.
 For example, the sed transformation for text to be inserted into shell double-quoted strings would be something like:
 s/\\/\\\\/g;s/$/\\$/g;s/"/\\"/g;
-which protects \ $ ".
-To do: I don't think this example is true
-The mode tracker must also track nested mode-changes, as in this sh example.
+which would protect \ $ "
+The mode tracker must also nested mode-changes, as in this shell example:
 echo "hello ‘id ...‘"
 ↑
-Any characters inserted at the point marked ↑ would need to be escaped, including ‘ | * among others. First it would need escaping for the back-ticks ‘, and then for the double-quotes ".
+Any shell special characters inserted at the point marked ↑ would need to be escaped if their plain-text meaning is to be preserved, including ‘ | * among others. The set of characters that need escaping in the back-ticks ‘ is not the same as the set that need escaing in the double-quotes ". However, in shell syntax, a " at the point marked ↑ does not close the leading " and so would not need additional escaping because of the nesting of the two modes.
 To do: MAYBE
 Escaping need not occur if the format and mode of the included chunk matches that of the including chunk.
-As each chunk is output a new mode tracker for that language is initialized in it's normal state. As text is output for that chunk the output mode is tracked. When a new chunk is included, a transformation appropriate to that mode is selected and pushed onto a stack of transformations. Any text to be output is first passed through this stack of transformations.
+As each chunk is output a new mode tracker for that language is initialized in it's normal state. As text is output for that chunk the output mode is tracked. When a new chunk is included, a transformation appropriate to that mode is selected and pushed onto a stack of transformations. Any text to be output is passed through this stack of transformations.
 It remains to consider if the chunk-include function should return it's generated text so that the caller can apply any transformations (and formatting), or if it should apply the stack of transformations itself.
-Note that the transformed text should have the property of not being able to change the mode in the current chunk.
+Note that the transformed included text should have the property of not being able to change the mode in the current chunk.
 To do: Note chunk parameters should probably also be transformed
 
-10.2 Language Mode Definitions 
-All modes are stored in a single multi-dimensional hash. The first index is the language, and the second index is the mode-identifier. The third indexes are terminators, and optionally, submodes, and delimiters.
+10.4 Quoting scenarios 
+10.4.1 Direct quoting 
+He we give examples of various quoting scenarios and discuss what the expected outcome might be and how this could be obtained.
+
+47a <test:q:1[1](), lang=sh> ≡ 
+      ________________________________________________________________________
+  1  | echo "$(«test:q:1-inc ?b»
+     |________________________________________________________________________
+
+
+
+47b <test:q:1-inc[1](), lang=sh> ≡ 
+      ________________________________________________________________________
+  1  | echo "hello"
+     |________________________________________________________________________
+
+
+Should this examples produce echo "$(echo "hello")" or echo "\$(echo \"hello\")" ?
+This depends on what the author intended, but we must privde a way to express that intent.
+We might argue that as both chunks have lang=sh the intent must have been to quote the included chunk — but consider that this might be shell script that writes shell script.
+If <test:q:1-inc ?b> had lang=text then it certainly would have been right to quote it, which leads us to ask: in what ways can we reduce quoting if lang of the included chunk is compatible with the lang of the including chunk?
+If we take a completely nested approach then even though $( mode might do no quoting of it's own, " mode will still do it's own quoting. We need a model where the nested $( mode will prevent " from quoting.
+This leads rise to the tunneling feature. In bash, the $( gives rise to a new top-level parsing scenario, so we need to enter the null mode, and also ignore any quoting and then undo-this when the $( mode is terminated by the corresponding close ).
+We shall say that tunneling is when a mode in a language ignores other modes in the same language and arrives back at an earlier null mode of the same language.
+In example <test:q:1 ?a> above, the nesting of modes is: null, ", $(
+When mode $( is commenced, the stack of nest modes will be traversed. If the null moed can be found in the same language, without the language varying, then a tunnel will be established so that the intervening modes, " in this case, can be skipped when the modes are enumerated to quote the texted being emitted.
+10.5 Language Mode Definitions 
+All modes definitions are stored in a single multi-dimensional hash. The first index is the language, and the second index is the mode-identifier. The third indexes hold properties: terminators, and optionally, submodes, delimiters, and tunnel targets.
 A useful set of mode definitions for a nameless general C-type language is shown here. (Don't be confused by the double backslash escaping needed in awk. One set of escaping is for the string, and the second set of escaping is for the regex).
 To do: TODO: Add =<\mode{}> command which will allow us to signify that a string is
  regex and thus fangle will quote it for us.
 
 Submodes are entered by the characters  " ' { ( [ /*
 
-45a <common-mode-definitions[1](language), lang=> ≡  45b▿
+47c <common-mode-definitions[1](language), lang=> ≡  47b⊳
       ________________________________________________________________________
   1  | modes[${language}, "",  "submodes"]="\\\\|\"|'|{|\\(|\\[";
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
-In the default mode, a comma surrounded by un-important white space is a delimiter of language items1. whatever a language item might be  ^1.
+In the default mode, a comma surrounded by un-important white space is a delimiter of language items2. whatever a language item might be  ^2.
 
-45b <common-mode-definitions[2](language) ⇑45a, lang=> +≡ ▵45a 45d▿
+48a <common-mode-definitions[2](language) ⇑47a, lang=> +≡ ⊲47a 47d▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   2  | modes[${language}, "",  "delimiters"]=" *, *";
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
@@ -1109,46 +1131,46 @@ and should pass this test:
 To do: Why do the tests run in ?(? mode and not ?? mode
 
 
-45c <test:mode-definitions[1](), lang=> ≡  46g⊳
+48b <test:mode-definitions[1](), lang=> ≡  48g⊳
       ________________________________________________________________________
   1  | parse_chunk_args("c-like", "1,2,3", a, "");
   2  | if (a[1] != "1") e++;
   3  | if (a[2] != "2") e++;
   4  | if (a[3] != "3") e++;
   5  | if (length(a) != 3) e++;
-  6  | «pca-test.awk:summary 54c»
+  6  | «pca-test.awk:summary 56d»
   7  | 
   8  | parse_chunk_args("c-like", "joe, red", a, "");
   9  | if (a[1] != "joe") e++;
   10  | if (a[2] != "red") e++;
   11  | if (length(a) != 2) e++;
-  12  | «pca-test.awk:summary 54c»
+  12  | «pca-test.awk:summary 56d»
   13  | 
   14  | parse_chunk_args("c-like", "${colour}", a, "");
   15  | if (a[1] != "${colour}") e++;
   16  | if (length(a) != 1) e++;
-  17  | «pca-test.awk:summary 54c»
+  17  | «pca-test.awk:summary 56d»
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 Nested modes are identified by a backslash, a double or single quote, various bracket styles or a /* comment.
-For each of these sub-modes modes we must also identify at a mode terminator, and any sub-modes or delimiters that may be entered2. Because we are using the sub-mode characters as the mode identifier it means we can't currently have a mode character dependant on it's context; i.e. { can't behave differently when it is inside [.  ^2.
-10.2.1 Backslash 
+For each of these sub-modes modes we must also identify at a mode terminator, and any sub-modes or delimiters that may be entered3. Because we are using the sub-mode characters as the mode identifier it means we can't currently have a mode character dependant on it's context; i.e. { can't behave differently when it is inside [.  ^3.
+10.5.1 Backslash 
 The backslash mode has no submodes or delimiters, and is terminated by any character. Note that we are not so much interested in evaluating or interpolating content as we are in delineating content. It is no matter that a double backslash (\\) may represent a single backslash while a backslash-newline may represent white space, but it does matter that the newline in a backslash newline should not be able to terminate a C pre-processor statement; and so the newline will be consumed by the backslash however it is to be interpreted.
 
-45d <common-mode-definitions[3](language) ⇑45a, lang=> +≡ ▵45b 46f⊳
+48c <common-mode-definitions[3](language) ⇑47a, lang=> +≡ ▵47b 48f⊳
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   3  | modes[${language}, "\\", "terminators"]=".";
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
-10.2.2 Strings 
+10.5.2 Strings 
 Common languages support two kinds of strings quoting, double quotes and single quotes.
 In a string we have one special mode, which is the backslash. This may escape an embedded quote and prevent us thinking that it should terminate the string.
 
-46a <mode:common-string[1](language, quote), lang=> ≡  46b▿
+48d <mode:common-string[1](language, quote), lang=> ≡  48b⊳
       ________________________________________________________________________
   1  | modes[${language}, ${quote}, "submodes"]="\\\\";
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 Otherwise, the string will be terminated by the same character that commenced it.
 
-46b <mode:common-string[2](language, quote) ⇑46a, lang=> +≡ ▵46a 46c▿
+49a <mode:common-string[2](language, quote) ⇑48a, lang=> +≡ ⊲48a 48c▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   2  | modes[${language}, ${quote}, "terminators"]=${quote};
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
@@ -1156,21 +1178,21 @@ In C type languages, certain escape sequences exist in strings. We need to defin
 The first substitution is to replace a backslash with a double backslash. We do this first as other substitutions may introduce a backslash which we would not then want to escape again here.
 Note: Backslashes need double-escaping in the search pattern but not in the replacement string, hence we are replacing a literal \ with a literal \\.
 
-46c <mode:common-string[3](language, quote) ⇑46a, lang=> +≡ ▵46b 46d▿
+49b <mode:common-string[3](language, quote) ⇑48a, lang=> +≡ ▵48b 48d▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   3  | escapes[${language}, ${quote}, ++escapes[${language}, ${quote}], "s"]="\\\\";
   4  | escapes[${language}, ${quote},   escapes[${language}, ${quote}], "r"]="\\\\";
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 If the quote character occurs in the text, it should be preceded by a backslash, otherwise it would terminate the string unexpectedly.
 
-46d <mode:common-string[4](language, quote) ⇑46a, lang=> +≡ ▵46c 46e▿
+49c <mode:common-string[4](language, quote) ⇑48a, lang=> +≡ ▵48c 48e▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   5  | escapes[${language}, ${quote}, ++escapes[${language}, ${quote}], "s"]=${quote};
   6  | escapes[${language}, ${quote},   escapes[${language}, ${quote}], "r"]="\\" ${quote};
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 Any newlines in the string, must be replaced by \n.
 
-46e <mode:common-string[5](language, quote) ⇑46a, lang=> +≡ ▵46d
+49d <mode:common-string[5](language, quote) ⇑48a, lang=> +≡ ▵48d
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   7  | escapes[${language}, ${quote}, ++escapes[${language}, ${quote}], "s"]="\n";
   8  | escapes[${language}, ${quote},   escapes[${language}, ${quote}], "r"]="\\n";
@@ -1179,25 +1201,25 @@ Any newlines in the string, must be replaced by \n.
 
 For the common modes, we define this string handling for double and single quotes.
 
-46f <common-mode-definitions[4](language) ⇑45a, lang=> +≡ ⊲45d 47b⊳
+49e <common-mode-definitions[4](language) ⇑47a, lang=> +≡ ⊲47d 49b⊳
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
-  4  | «mode:common-string(${language}, "\"") 46a»
-  5  | «mode:common-string(${language}, "'") 46a»
+  4  | «mode:common-string(${language}, "\"") 48a»
+  5  | «mode:common-string(${language}, "'") 48a»
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 Working strings should pass this test:
 
-46g <test:mode-definitions[2]() ⇑45c, lang=> +≡ ⊲45c 49d⊳
+49f <test:mode-definitions[2]() ⇑47c, lang=> +≡ ⊲47c 51a⊳
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   18  | parse_chunk_args("c-like", "say \"I said, \\\"Hello, how are you\\\".\", for me", a, "");
   19  | if (a[1] != "say \"I said, \\\"Hello, how are you\\\".\"") e++;
   20  | if (a[2] != "for me") e++;
   21  | if (length(a) != 2) e++;
-  22  | «pca-test.awk:summary 54c»
+  22  | «pca-test.awk:summary 56d»
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
-10.2.3 Parentheses, Braces and Brackets 
+10.5.3 Parentheses, Braces and Brackets 
 Where quotes are closed by the same character, parentheses, brackets and braces are closed by an alternate character.
 
-47a <mode:common-brackets[1](language, open, close), lang=> ≡ 
+49g <mode:common-brackets[1](language, open, close), lang=> ≡ 
       ________________________________________________________________________
   1  | modes[${language}, ${open},  "submodes" ]="\\\\|\"|{|\\(|\\[|'|/\\*";
   2  | modes[${language}, ${open},  "delimiters"]=" *, *";
@@ -1209,24 +1231,24 @@ Note that the open is NOT a regex but the close token IS.
 To do: When we can quote regex we won't have to put the slashes in here
 
 
-47b <common-mode-definitions[5](language) ⇑45a, lang=> +≡ ⊲46f
+50a <common-mode-definitions[5](language) ⇑47a, lang=> +≡ ⊲48f
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
-  6  | «mode:common-brackets(${language}, "{", "}") 47a»
-  7  | «mode:common-brackets(${language}, "[", "\\]") 47a»
-  8  | «mode:common-brackets(${language}, "(", "\\)") 47a»
+  6  | «mode:common-brackets(${language}, "{", "}") 49a»
+  7  | «mode:common-brackets(${language}, "[", "\\]") 49a»
+  8  | «mode:common-brackets(${language}, "(", "\\)") 49a»
      |________________________________________________________________________
 
 
-10.2.4 Customizing Standard Modes 
+10.5.4 Customizing Standard Modes 
 
-47c <mode:add-submode[1](language, mode, submode), lang=> ≡ 
+50b <mode:add-submode[1](language, mode, submode), lang=> ≡ 
       ________________________________________________________________________
   1  | modes[${language}, ${mode}, "submodes"] = modes[${language}, ${mode}, "submodes"] "|" ${submode};
      |________________________________________________________________________
 
 
 
-47d <mode:add-escapes[1](language, mode, search, replace), lang=> ≡ 
+50c <mode:add-escapes[1](language, mode, search, replace), lang=> ≡ 
       ________________________________________________________________________
   1  | escapes[${language}, ${mode}, ++escapes[${language}, ${mode}], "s"]=${search};
   2  | escapes[${language}, ${mode},   escapes[${language}, ${mode}], "r"]=${replace};
@@ -1234,22 +1256,22 @@ To do: When we can quote regex we won't have to put the slashes in here
 
 
 
-10.2.5 Comments 
+10.5.5 Comments 
 We can define /* comment */ style comments and //comment style comments to be added to any language:
 
-47e <mode:multi-line-comments[1](language), lang=> ≡ 
+50d <mode:multi-line-comments[1](language), lang=> ≡ 
       ________________________________________________________________________
-  1  | «mode:add-submode(${language}, "", "/\\*") 47c»
+  1  | «mode:add-submode(${language}, "", "/\\*") 49c»
   2  | modes[${language}, "/*", "terminators"]="\\*/";
      |________________________________________________________________________
 
 
 
-47f <mode:single-line-slash-comments[1](language), lang=> ≡ 
+50e <mode:single-line-slash-comments[1](language), lang=> ≡ 
       ________________________________________________________________________
-  1  | «mode:add-submode(${language}, "", "//") 47c»
+  1  | «mode:add-submode(${language}, "", "//") 49c»
   2  | modes[${language}, "//", "terminators"]="\n";
-  3  | «mode:add-escapes(${language}, "//", "\n", "\n//") 47d»
+  3  | «mode:add-escapes(${language}, "//", "\n", "\n//") 49d»
      |________________________________________________________________________
 
 
@@ -1257,27 +1279,27 @@ We can also define # comment style comments (as used in awk and shell scripts) i
 To do: I'm having to use # for hash and ¯extbackslash{} for  and have hacky work-arounds in the parser for now
 
 
-47g <mode:add-hash-comments[1](language), lang=> ≡ 
+50f <mode:add-hash-comments[1](language), lang=> ≡ 
       ________________________________________________________________________
-  1  | «mode:add-submode(${language}, "", "#") 47c»
+  1  | «mode:add-submode(${language}, "", "#") 49c»
   2  | modes[${language}, "#", "terminators"]="\n";
-  3  | «mode:add-escapes(${language}, "#", "\n", "\n#") 47d»
+  3  | «mode:add-escapes(${language}, "#", "\n", "\n#") 49d»
      |________________________________________________________________________
 
 
 In C, the # denotes pre-processor directives which can be multi-line
 
-48a <mode:add-hash-defines[1](language), lang=> ≡ 
+50g <mode:add-hash-defines[1](language), lang=> ≡ 
       ________________________________________________________________________
-  1  | «mode:add-submode(${language}, "", "#") 47c»
+  1  | «mode:add-submode(${language}, "", "#") 49c»
   2  | modes[${language}, "#", "submodes" ]="\\\\";
   3  | modes[${language}, "#", "terminators"]="\n";
-  4  | «mode:add-escapes(${language}, "#", "\n", "\\\\\n") 47d»
+  4  | «mode:add-escapes(${language}, "#", "\n", "\\\\\n") 49d»
      |________________________________________________________________________
 
 
 
-48b <mode:quote-dollar-escape[1](language, quote), lang=> ≡ 
+50h <mode:quote-dollar-escape[1](language, quote), lang=> ≡ 
       ________________________________________________________________________
   1  | escapes[${language}, ${quote}, ++escapes[${language}, ${quote}], "s"]="\\$";
   2  | escapes[${language}, ${quote},   escapes[${language}, ${quote}], "r"]="\\$";
@@ -1286,29 +1308,29 @@ In C, the # denotes pre-processor directives which can be multi-line
 
 We can add these definitions to various languages
 
-48c <mode-definitions[1](), lang=> ≡  49b⊳
+51a <mode-definitions[1](), lang=> ≡  51b▿
       ________________________________________________________________________
-  1  | «common-mode-definitions("c-like") 45a»
+  1  | «common-mode-definitions("c-like") 47a»
   2  | 
-  3  | «common-mode-definitions("c") 45a»
-  4  | «mode:multi-line-comments("c") 47e»
-  5  | «mode:single-line-slash-comments("c") 47f»
-  6  | «mode:add-hash-defines("c") 48a»
+  3  | «common-mode-definitions("c") 47a»
+  4  | «mode:multi-line-comments("c") 49e»
+  5  | «mode:single-line-slash-comments("c") 49f»
+  6  | «mode:add-hash-defines("c") 50a»
   7  | 
-  8  | «common-mode-definitions("awk") 45a»
-  9  | «mode:add-hash-comments("awk") 47g»
-  10  | «mode:add-naked-regex("awk") 49a»
+  8  | «common-mode-definitions("awk") 47a»
+  9  | «mode:add-hash-comments("awk") 49g»
+  10  | «mode:add-naked-regex("awk") 51a»
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 The awk definitions should allow a comment block like this:
 
-48d <test:comment-quote[1](), lang=awk> ≡ 
+51b <test:comment-quote[1](), lang=awk> ≡ 
       ________________________________________________________________________
-  1  | # Comment: «test:comment-text 48e»
+  1  | # Comment: «test:comment-text 50e»
      |________________________________________________________________________
 
 
 
-48e <test:comment-text[1](), lang=> ≡ 
+51c <test:comment-text[1](), lang=> ≡ 
       ________________________________________________________________________
   1  | Now is the time for
   2  | the quick brown fox to bring lemonade
@@ -1318,7 +1340,7 @@ The awk definitions should allow a comment block like this:
 
 to come out like this:
 
-48f <test:comment-quote:result[1](), lang=> ≡ 
+51d <test:comment-quote:result[1](), lang=> ≡ 
       ________________________________________________________________________
   1  | # Comment: Now is the time for
   2  | #the quick brown fox to bring lemonade
@@ -1328,7 +1350,7 @@ to come out like this:
 
 The C definition for such a block should have it come out like this:
 
-48g <test:comment-quote:C-result[1](), lang=> ≡ 
+51e <test:comment-quote:C-result[1](), lang=> ≡ 
       ________________________________________________________________________
   1  | # Comment: Now is the time for\
   2  | the quick brown fox to bring lemonade\
@@ -1336,41 +1358,60 @@ The C definition for such a block should have it come out like this:
      |________________________________________________________________________
 
 
-10.2.6 Regex 
+10.5.6 Regex 
 This pattern is incomplete, but meant to detect naked regular expressions in awk and perl; e.g. /.*$/, however required capabilities are not present.
 Current it only detects regexes anchored with ^ as used in fangle.
 For full regex support, modes need to be named not after their starting character, but some other more fully qualified name.
 
-49a <mode:add-naked-regex[1](language), lang=> ≡ 
+51f <mode:add-naked-regex[1](language), lang=> ≡ 
       ________________________________________________________________________
-  1  | «mode:add-submode(${language}, "", "/\\^") 47c»
+  1  | «mode:add-submode(${language}, "", "/\\^") 49c»
   2  | modes[${language}, "/^", "terminators"]="/";
      |________________________________________________________________________
 
 
-10.2.7 Perl 
+10.5.7 Perl 
 
-49b <mode-definitions[2]() ⇑48c, lang=> +≡ ⊲48c 49c▿
+51g <mode-definitions[2]() ⇑50c, lang=> +≡ ▵50c 51c⊳
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
-  11  | «common-mode-definitions("perl") 45a»
-  12  | «mode:multi-line-comments("perl") 47e»
-  13  | «mode:add-hash-comments("perl") 47g»
+  11  | «common-mode-definitions("perl") 47a»
+  12  | «mode:multi-line-comments("perl") 49e»
+  13  | «mode:add-hash-comments("perl") 49g»
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 Still need to add add s/, submode /, terminate both with //. This is likely to be impossible as perl regexes can contain perl.
-10.2.8 sh 
+10.5.8 sh 
+Shell single-quote strings are different to other strings and have no escape characters. The only special character is the single quote ' which always closes the string. Therefore we cannot use <common-mode-definitions("sh") 47a> but we will invoke most of it's definition apart from single-quote strings. 
 
-49c <mode-definitions[3]() ⇑48c, lang=awk> +≡ ▵49b
+52a <mode-definitions[3]() ⇑50c, lang=awk> +≡ ⊲51b
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
-  14  | «common-mode-definitions("sh") 45a»
-  15  | «mode:add-hash-comments("sh") 47g»
-  16  | «mode:quote-dollar-escape("sh", "\"") 48b»
+  14  | modes["sh", "",  "submodes"]="\\\\|\"|'|{|\\(|\\[";
+  15  | modes["sh", "\\", "terminators"]=".";
+  16  | «mode:common-string("sh", "\"") 48a»
+  17  | modes["sh", "'", "terminators"]="'";
+  18  | escapes["sh", "'", ++escapes["sh", "'"], "s"]="'";
+  19  | escapes["sh", "'",   escapes["sh", "'"], "r"]="'\\'" "'";
+  20  | «mode:common-brackets("sh", "$(", ")") 49a»
+  21  | «mode:add-tunnel("sh", "$(", "") ?a»
+  22  | «mode:common-brackets("sh", "{", "}") 49a»
+  23  | «mode:common-brackets("sh", "[", "\\]") 49a»
+  24  | «mode:common-brackets("sh", "(", "\\)") 49a»
+  25  | «mode:add-hash-comments("sh") 49g»
+  26  | «mode:quote-dollar-escape("sh", "\"") 50b»
      |________________________________________________________________________
 
 
-10.3 Some tests 
+The definition of add-tunnel is:
+
+52b <mode:add-tunnel[1](language, mode, tunnel), lang=> ≡ 
+      ________________________________________________________________________
+  1  | escapes[${language}, ${mode}, ++escapes[${language}, ${mode}], "tunnel"]=${tunnel};
+     |________________________________________________________________________
+
+
+10.6 Some tests 
 Also, the parser must return any spare text at the end that has not been processed due to a mode terminator being found.
 
-49d <test:mode-definitions[3]() ⇑45c, lang=> +≡ ⊲46g 49e▿
+52c <test:mode-definitions[3]() ⇑47c, lang=> +≡ ⊲48g 51b▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   23  | rest = parse_chunk_args("c-like", "1, 2, 3) spare", a, "(");
   24  | if (a[1] != 1) e++;
@@ -1378,26 +1419,26 @@ Also, the parser must return any spare text at the end that has not been process
   26  | if (a[3] != 3) e++;
   27  | if (length(a) != 3) e++;
   28  | if (rest != " spare") e++;
-  29  | «pca-test.awk:summary 54c»
+  29  | «pca-test.awk:summary 56d»
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 We must also be able to parse the example given earlier.
 
-49e <test:mode-definitions[4]() ⇑45c, lang=> +≡ ▵49d
+52d <test:mode-definitions[4]() ⇑47c, lang=> +≡ ▵51a
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   30  | parse_chunk_args("c-like", "things[x, y], get_other_things(a, \"(all)\"), 99", a, "(");
   31  | if (a[1] != "things[x, y]") e++;
   32  | if (a[2] != "get_other_things(a, \"(all)\")") e++;
   33  | if (a[3] != "99") e++;
   34  | if (length(a) != 3) e++;
-  35  | «pca-test.awk:summary 54c»
+  35  | «pca-test.awk:summary 56d»
      |________________________________________________________________________
 
 
-10.4 A non-recursive mode tracker 
-10.4.1 Constructor 
+10.7 A non-recursive mode tracker 
+10.7.1 Constructor 
 The mode tracker holds its state in a stack based on a numerically indexed hash. This function, when passed an empty hash, will intialize it.
 
-50a <new_mode_tracker()[1](), lang=> ≡ 
+53a <new_mode_tracker()[1](), lang=> ≡ 
       ________________________________________________________________________
   1  | function new_mode_tracker(context, language, mode) {
   2  |   context[""] = 0;
@@ -1409,24 +1450,24 @@ The mode tracker holds its state in a stack based on a numerically indexed hash.
 
 Because awk functions cannot return an array, we must create the array first and pass it in, so we have a fangle macro to do this:
 
-50b <new-mode-tracker[1](context, language, mode), lang=awk> ≡ 
+53b <new-mode-tracker[1](context, language, mode), lang=awk> ≡ 
       ________________________________________________________________________
-  1  | «awk-delete-array(context) 33d»
+  1  | «awk-delete-array(context) 35d»
   2  | new_mode_tracker(${context}, ${language}, ${mode});
      |________________________________________________________________________
 
 
-10.4.2 Management 
+10.7.2 Management 
 And for tracking modes, we dispatch to a mode-tracker action based on the current language
 
-50c <mode_tracker[1](), lang=awk> ≡  50d▿
+53c <mode_tracker[1](), lang=awk> ≡  52d▿
       ________________________________________________________________________
   1  | function push_mode_tracker(context, language, mode,
   2  |   # local vars
   3  |   top)
   4  | {
   5  |   if (! ("" in context)) {
-  6  |     «new-mode-tracker(context, language, mode) 50b»
+  6  |     «new-mode-tracker(context, language, mode) 52b»
   7  |   } else {
   8  |     top = context[""];
   9  |     if (context[top, "language"] == language && mode=="") mode = context[top, "mode"];
@@ -1438,7 +1479,7 @@ And for tracking modes, we dispatch to a mode-tracker action based on the curren
   15  | }
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 
-50d <mode_tracker[2]() ⇑50c, lang=> +≡ ▵50c 50e▿
+53d <mode_tracker[2]() ⇑52c, lang=> +≡ ▵52c 53a⊳
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   16  | function dump_mode_tracker(context,  
   17  |   c, d)
@@ -1452,7 +1493,7 @@ And for tracking modes, we dispatch to a mode-tracker action based on the curren
   25  | }
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 
-50e <mode_tracker[3]() ⇑50c, lang=> +≡ ▵50d 55a⊳
+54a <mode_tracker[3]() ⇑52c, lang=> +≡ ⊲52d 57a⊳
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   26  | function finalize_mode_tracker(context)
   27  | {
@@ -1462,33 +1503,33 @@ And for tracking modes, we dispatch to a mode-tracker action based on the curren
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 This implies that any chunk must be syntactically whole; for instance, this is fine:
 
-51a <test:whole-chunk[1](), lang=> ≡ 
+54b <test:whole-chunk[1](), lang=> ≡ 
       ________________________________________________________________________
   1  | if (1) {
-  2  |   «test:say-hello 51b»
+  2  |   «test:say-hello 53c»
   3  | }
      |________________________________________________________________________
 
 
 
-51b <test:say-hello[1](), lang=> ≡ 
+54c <test:say-hello[1](), lang=> ≡ 
       ________________________________________________________________________
   1  | print "hello";
      |________________________________________________________________________
 
 
-But this is not fine; the chunk <test:hidden-else 51d> is not properly cromulent.
+But this is not fine; the chunk <test:hidden-else 53e> is not properly cromulent.
 
-51c <test:partial-chunk[1](), lang=> ≡ 
+54d <test:partial-chunk[1](), lang=> ≡ 
       ________________________________________________________________________
   1  | if (1) {
-  2  |   «test:hidden-else 51d»
+  2  |   «test:hidden-else 53e»
   3  | }
      |________________________________________________________________________
 
 
 
-51d <test:hidden-else[1](), lang=> ≡ 
+54e <test:hidden-else[1](), lang=> ≡ 
       ________________________________________________________________________
   1  |   print "I'm fine";
   2  | } else {
@@ -1498,7 +1539,7 @@ But this is not fine; the chunk <test:hidden-else 51d> is not properly cromulent
 
 These tests will check for correct behaviour:
 
-51e <test:cromulence[1](), lang=> ≡ 
+54f <test:cromulence[1](), lang=> ≡ 
       ________________________________________________________________________
   1  | echo Cromulence test
   2  | passtest $FANGLE -Rtest:whole-chunk $TEX_SRC &>/dev/null || ( echo "Whole chunk failed" && exit 1 )
@@ -1506,10 +1547,10 @@ These tests will check for correct behaviour:
      |________________________________________________________________________
 
 
-10.4.3 Tracker 
+10.7.3 Tracker 
 We must avoid recursion as a language construct because we intend to employ mode-tracking to track language mode of emitted code, and the code is emitted from a function which is itself recursive, so instead we implement psuedo-recursion using our own stack based on a hash.
 
-51f <mode_tracker()[1](), lang=awk> ≡  51g▿
+54g <mode_tracker()[1](), lang=awk> ≡  54a⊳
       ________________________________________________________________________
   1  | function mode_tracker(context, text, values, 
   2  |   # optional parameters
@@ -1521,7 +1562,7 @@ We must avoid recursion as a language construct because we intend to employ mode
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 We could be re-commencing with a valid context, so we need to setup the state according to the last context.
 
-51g <mode_tracker()[2]() ⇑51f, lang=> +≡ ▵51f 52c⊳
+55a <mode_tracker()[2]() ⇑53g, lang=> +≡ ⊲53g 54d▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   8  |   cindex = context[""] + 0;
   9  |   mode = context[cindex, "mode"];
@@ -1529,7 +1570,7 @@ We could be re-commencing with a valid context, so we need to setup the state ac
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 First we construct a single large regex combining the possible sub-modes for the current mode along with the terminators for the current mode.
 
-52a <parse_chunk_args-reset-modes[1](), lang=> ≡  52b▿
+55b <parse_chunk_args-reset-modes[1](), lang=> ≡  54c▿
       ________________________________________________________________________
   1  |   submodes=modes[language, mode, "submodes"];
   2  | 
@@ -1546,27 +1587,27 @@ First we construct a single large regex combining the possible sub-modes for the
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 If we don't find anything to match on --- probably because the language is not supported --- then we return the entire text without matching anything.
 
-52b <parse_chunk_args-reset-modes[2]() ⇑52a, lang=> +≡ ▵52a
+55c <parse_chunk_args-reset-modes[2]() ⇑54b, lang=> +≡ ▵54b
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   13  |  if (! length(submodes)) return text;
      |________________________________________________________________________
 
 
 
-52c <mode_tracker()[3]() ⇑51f, lang=> +≡ ⊲51g 52d▿
+55d <mode_tracker()[3]() ⇑53g, lang=> +≡ ▵54a 54e▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
-  11  | «parse_chunk_args-reset-modes 52a»
+  11  | «parse_chunk_args-reset-modes 54b»
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 We then iterate the text (until there is none left) looking for sub-modes or terminators in the regex.
 
-52d <mode_tracker()[4]() ⇑51f, lang=> +≡ ▵52c 52e▿
+55e <mode_tracker()[4]() ⇑53g, lang=> +≡ ▵54d 54f▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   12  |   while((cindex >= 0) && length(text)) {
   13  |     if (match(text, "(" submodes ")", a)) {
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 A bug that creeps in regularly during development is bad regexes of zero length which result in an infinite loop (as no text is consumed), so I catch that right away with this test.
 
-52e <mode_tracker()[5]() ⇑51f, lang=> +≡ ▵52d 52f▿
+55f <mode_tracker()[5]() ⇑53g, lang=> +≡ ▵54e 55a⊳
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   14  |       if (RLENGTH<1) {
   15  |         error(sprintf("Internal error, matched zero length submode, should be impossible - likely regex computation error\n" \
@@ -1576,14 +1617,14 @@ A bug that creeps in regularly during development is bad regexes of zero length 
 part is defined as the text up to the sub-mode or terminator, and this is appended to item --- which is the current text being gathered. If a mode has a delimiter, then item is reset each time a delimiter is found.
 ("hello_item, there_item")<wide-overbrace>^item,  (he said.)<wide-overbrace>^item
 
-52f <mode_tracker()[6]() ⇑51f, lang=> +≡ ▵52e 52g▿
+56a <mode_tracker()[6]() ⇑53g, lang=> +≡ ⊲54f 55b▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   18  |       part = substr(text, 1, RSTART -1);
   19  |       item = item part;
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 We must now determine what was matched. If it was a terminator, then we must restore the previous mode.
 
-52g <mode_tracker()[7]() ⇑51f, lang=> +≡ ▵52f 53a⊳
+56b <mode_tracker()[7]() ⇑53g, lang=> +≡ ▵55a 55c▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   20  |       if (match(a[1], "^" terminators "$")) {
   21  | #printf("%2d EXIT  MODE [%s] by [%s] [%s]\n", cindex, mode, a[1], text) > "/dev/stderr"
@@ -1593,7 +1634,7 @@ We must now determine what was matched. If it was a terminator, then we must res
   25  |         if (cindex>=0) {
   26  |           mode = context[cindex, "mode"];
   27  |           language = context[cindex, "language"];
-  28  |           «parse_chunk_args-reset-modes 52a»
+  28  |           «parse_chunk_args-reset-modes 54b»
   29  |         }
   30  |         item = item a[1];
   31  |         text = substr(text, 1 + length(part) + length(a[1]));
@@ -1601,7 +1642,7 @@ We must now determine what was matched. If it was a terminator, then we must res
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 If a delimiter was matched, then we must store the current item in the parsed values array, and reset the item.
 
-53a <mode_tracker()[8]() ⇑51f, lang=> +≡ ⊲52g 53b▿
+56c <mode_tracker()[8]() ⇑53g, lang=> +≡ ▵55b 55d▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   33  |       else if (match(a[1], "^" delimiters "$")) {
   34  |         if (cindex==0) {
@@ -1615,7 +1656,7 @@ If a delimiter was matched, then we must store the current item in the parsed va
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 otherwise, if a new submode is detected (all submodes have terminators), we must create a nested parse context until we find the terminator for this mode.
 
-53b <mode_tracker()[9]() ⇑51f, lang=> +≡ ▵53a 53c▿
+56d <mode_tracker()[9]() ⇑53g, lang=> +≡ ▵55c 56a⊳
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   42  |  else if ((language, a[1], "terminators") in modes) {
   43  |         #check if new_mode is defined
@@ -1626,7 +1667,7 @@ otherwise, if a new submode is detected (all submodes have terminators), we must
   48  |         context[cindex, "mode"] = a[1];
   49  |         context[cindex, "language"] = language;
   50  |         mode = a[1];
-  51  |         «parse_chunk_args-reset-modes 52a»
+  51  |         «parse_chunk_args-reset-modes 54b»
   52  |       } else {
   53  |         error(sprintf("Submode '%s' set unknown mode in text: %s\nLanguage %s Mode %s\n", a[1], text, language, mode));
   54  |         text = substr(text, 1 + length(part) + length(a[1]));
@@ -1635,7 +1676,7 @@ otherwise, if a new submode is detected (all submodes have terminators), we must
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 In the final case, we parsed to the end of the string. If the string was entire, then we should have no nested mode context, but if the string was just a fragment we may have a mode context which must be preserved for the next fragment. Todo: Consideration ought to be given if sub-mode strings are split over two fragments.
 
-53c <mode_tracker()[10]() ⇑51f, lang=> +≡ ▵53b
+57a <mode_tracker()[10]() ⇑53g, lang=> +≡ ⊲55d
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   57  | else {
   58  |       context[cindex, "values", ++context[cindex, "values"]] = item text;
@@ -1652,35 +1693,35 @@ In the final case, we parsed to the end of the string. If the string was entire,
      |________________________________________________________________________
 
 
-10.4.3.1 One happy chunk 
+10.7.3.1 One happy chunk 
 All the mode tracker chunks are referred to here:
 
-54a <mode-tracker[1](), lang=> ≡ 
+57b <mode-tracker[1](), lang=> ≡ 
       ________________________________________________________________________
-  1  | «new_mode_tracker() 50a»
-  2  | «mode_tracker() 51f»
+  1  | «new_mode_tracker() 52a»
+  2  | «mode_tracker() 53g»
      |________________________________________________________________________
 
 
-10.4.3.2 Tests 
+10.7.3.2 Tests 
 We can test this function like this:
 
-54b <pca-test.awk[1](), lang=awk> ≡ 
+57c <pca-test.awk[1](), lang=awk> ≡ 
       ________________________________________________________________________
-  1  | «error() 34a»
-  2  | «mode-tracker 54a»
+  1  | «error() 36a»
+  2  | «mode-tracker 56b»
   3  | «parse_chunk_args() ?»
   4  | BEGIN {
   5  |   SUBSEP=".";
-  6  |   «mode-definitions 48c»
+  6  |   «mode-definitions 50c»
   7  | 
-  8  |   «test:mode-definitions 45c»
+  8  |   «test:mode-definitions 47c»
   9  | }
      |________________________________________________________________________
 
 
 
-54c <pca-test.awk:summary[1](), lang=awk> ≡ 
+57d <pca-test.awk:summary[1](), lang=awk> ≡ 
       ________________________________________________________________________
   1  | if (e) {
   2  |   printf "Failed " e
@@ -1697,7 +1738,7 @@ We can test this function like this:
 
 which should give this output:
 
-54d <pca-test.awk-results[1](), lang=> ≡ 
+57e <pca-test.awk-results[1](), lang=> ≡ 
       ________________________________________________________________________
   1  | a[foo.quux.quirk] => 
   2  | a[foo.quux.a] => fleeg
@@ -1707,7 +1748,7 @@ which should give this output:
      |________________________________________________________________________
 
 
-10.5 Escaping and Quoting 
+10.8 Escaping and Quoting 
 For the time being and to get around TeXmacs inability to export a TAB character, the right arrow ↦ whose UTF-8 sequence is ...
 To do: complete
 
@@ -1715,7 +1756,7 @@ Another special character is used, the left-arrow ↤ with UTF-8 sequence 0xE2 0
 To do: remove the hack
 
 
-55a <mode_tracker[4]() ⇑50c, lang=> +≡ ⊲50e 55b▿
+58a <mode_tracker[4]() ⇑52c, lang=> +≡ ⊲53a 57b▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
 
   31  | function untab(text) {
@@ -1726,25 +1767,25 @@ To do: remove the hack
 Each nested mode can optionally define a set of transforms to be applied to any text that is included from another language.
 This code can perform transforms
 
-55b <mode_tracker[5]() ⇑50c, lang=awk> +≡ ▵55a 55c▿
+58b <mode_tracker[5]() ⇑52c, lang=awk> +≡ ▵57a 57c▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
-  35  | function transform_escape(s, r, text,
+  35  | function transform_escape(quotes, text,
   36  |     # optional
   37  |     max, 
   38  |         # local vars
   39  |         c)
   40  | {
-  41  |   for(c=1; c <= max && (c in s); c++) {
-  42  |     gsub(s[c], r[c], text);
+  41  |   for(c=1; c <= max && ( (c, "s") in quotes); c++) {
+  42  |     gsub(quotes[c, "s"], quotes[c, "r"], text);
   43  |   }
   44  |   return text;
   45  | }
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 This function must append from index c onwards, and escape transforms from the supplied context, and return c + number of new transforms.
 
-55c <mode_tracker[6]() ⇑50c, lang=awk> +≡ ▵55b
+58c <mode_tracker[6]() ⇑52c, lang=awk> +≡ ▵57b
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
-  46  | function mode_escaper(context, s, r, src,
+  46  | function mode_escaper(context, quotes, src,
   47  |   c, cp, cpl)
   48  | {
   49  |   for(c = context[""]; c >= 0; c--) {
@@ -1752,23 +1793,26 @@ This function must append from index c onwards, and escape transforms from the s
   51  |       cpl = escapes[context[c, "language"], context[c, "mode"]];
   52  |       for (cp = 1; cp <= cpl; cp ++) {
   53  |         ++src;
-  54  |         s[src] = escapes[context[c, "language"], context[c, "mode"], cp, "s"];
-  55  |                                 r[src] = escapes[context[c, "language"], context[c, "mode"], cp, "r"];
-  56  |       }
-  57  |     }
-  58  |   }
-  59  |   return src;
-  60  | }
-  61  | function dump_escaper(c, s, r, cc) {
-  62  |   for(cc=1; cc<=c; cc++) {
-  63  |     printf("%2d s[%s] r[%s]\n", cc, s[cc], r[cc]) > "/dev/stderr"
-  64  |   }
-  65  | }
+  54  |         quotes[src, "s"] = escapes[context[c, "language"], context[c, "mode"], cp, "s"];
+  55  |         quotes[src, "r"] = escapes[context[c, "language"], context[c, "mode"], cp, "r"];
+  56  |         if ( (context[c, "language"], context[c, "mode"], cp, "t") in escapes ) {
+  57  |           quotes[src, "t"] = escapes[context[c, "language"], context[c, "mode"], cp, "t"];
+  58  |         }
+  59  |       }
+  60  |     }
+  61  |   }
+  62  |   return src;
+  63  | }
+  64  | function dump_escaper(quotes, r, cc) {
+  65  |   for(cc=1; cc<=c; cc++) {
+  66  |     printf("%2d s[%s] r[%s]\n", cc, quotes[cc, "s"], quotes[cc, "r"]) > "/dev/stderr"
+  67  |   }
+  68  | }
      |________________________________________________________________________
 
 
 
-55d <test:escapes[1](), lang=sh> ≡ 
+59a <test:escapes[1](), lang=sh> ≡ 
       ________________________________________________________________________
   1  | echo escapes test
   2  | passtest $FANGLE -Rtest:comment-quote $TEX_SRC &>/dev/null || ( echo "Comment-quote failed" && exit 1 )
@@ -1787,7 +1831,7 @@ We don't handle TeXmacs files natively yet, but rather instead emit unicode char
 These hacks detect the unicode character sequences and retro-fit in the old TeX parsing.
 We convert ↦ into a tab character.
 
-57a <recognize-chunk[1](), lang=> ≡  57b▿
+61a <recognize-chunk[1](), lang=> ≡  59b▿
       ________________________________________________________________________
 
   1  | #/\n/ {
@@ -1801,7 +1845,7 @@ We convert ↦ into a tab character.
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 TeXmacs back-tick handling is obscure, and a cut-n-paste back-tick from a shell window comes out as a unicode sequence2. that won't export to html, except as a NULL character (literal 0x00)  ^2 that is fixed-up here.
 
-57b <recognize-chunk[2]() ⇑57a, lang=> +≡ ▵57a 58a⊳
+61b <recognize-chunk[2]() ⇑59a, lang=> +≡ ▵59a 60a⊳
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   9  | 
   10  | /\xE2\x80\x98/ {
@@ -1812,7 +1856,7 @@ In the TeXmacs output, the start of a chunk will appear like this:
   5b<example-chunk^K[1](arg1,^K arg2^K^K), lang=C> ≡
 We detect the the start of a TeXmacs chunk by detecting the ≡ symbol which occurs near the end of the line. We obtain the chunk name, the chunk parameters, and the chunk language.
 
-58a <recognize-chunk[3]() ⇑57a, lang=> +≡ ⊲57b 58b▿
+62a <recognize-chunk[3]() ⇑59a, lang=> +≡ ⊲59b 60b▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   13  | 
   14  | /\xE2\x89\xA1/ {
@@ -1837,7 +1881,7 @@ We detect the the start of a TeXmacs chunk by detecting the ≡ symbol which occ
 Our current scheme is to recognize the new lstlisting chunks, but these may be preceded by a \Chunk command which in L Y X is a more convenient way to pass the chunk name to the \begin{lstlistings} command, and a more visible way to specify other lstset settings.
 The arguments to the \Chunk command are a name, and then a comma-seperated list of key-value pairs after the manner of \lstset. (In fact within the LaTeX \Chunk macro (section 16.2.1) the text name= is prefixed to the argument which is then literally passed to \lstset).
 
-58b <recognize-chunk[4]() ⇑57a, lang=awk> +≡ ▵58a 58c▿
+62b <recognize-chunk[4]() ⇑59a, lang=awk> +≡ ▵60a 60c▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   31  | /^\\Chunk{/ {
   32  |   if (match($0, "^\\\\Chunk{ *([^ ,}]*),?(.*)}", line)) {
@@ -1849,7 +1893,7 @@ The arguments to the \Chunk command are a name, and then a comma-seperated list 
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 We also make a basic attempt to parse the name out of the \lstlistings[name=chunk-name] text, otherwise we fall back to the name found in the previous chunk command. This attempt is very basic and doesn't support commas or spaces or square brackets as part of the chunkname. We also recognize \begin{Chunk} which is convenient for some users3. but not yet supported in the LaTeX macros  ^3.
 
-58c <recognize-chunk[5]() ⇑57a, lang=> +≡ ▵58b 59a⊳
+62c <recognize-chunk[5]() ⇑59a, lang=> +≡ ▵60b 61a⊳
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   38  | /^\\begin{lstlisting}|^\\begin{Chunk}/ {
   39  |   if (match($0, "}.*[[,] *name= *{? *([^], }]*)", line)) {
@@ -1865,7 +1909,7 @@ We also make a basic attempt to parse the name out of the \lstlistings[name=chun
 11.2.1 TeXmacs 
 A chunk body in TeXmacs ends with |________... if it is the final chunklet of a chunk, or if there are further chunklets it ends with |\/\/\/... which is a depiction of a jagged line of torn paper.
 
-59a <recognize-chunk[6]() ⇑57a, lang=> +≡ ⊲58c 59b▿
+63a <recognize-chunk[6]() ⇑59a, lang=> +≡ ⊲60c 61b▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   47  | /^ *\|____________*/ && texmacs_chunking {
   48  |   active_chunk="";
@@ -1881,7 +1925,7 @@ A chunk body in TeXmacs ends with |________... if it is the final chunklet of a 
 It has been observed that not every line of output when a TeXmacs chunk is active is a line of chunk. This may no longer be true, but we set a variable texmacs_chunk if the current line is a chunk line.
 Initially we set this to zero...
 
-59b <recognize-chunk[7]() ⇑57a, lang=> +≡ ▵59a 59c▿
+63b <recognize-chunk[7]() ⇑59a, lang=> +≡ ▵61a 61c▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   57  | texmacs_chunk=0;
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
@@ -1889,7 +1933,7 @@ Initially we set this to zero...
 TeXmacs lines look like this:   3 | main() { so we detect the lines by leading white space, digits, more whiter space and a vertical bar followed by at least once space.
 If we find such a line, we remove this line-header and set texmacs_chunk=1 as well as chunking=1
 
-59c <recognize-chunk[8]() ⇑57a, lang=> +≡ ▵59b 59d▿
+63c <recognize-chunk[8]() ⇑59a, lang=> +≡ ▵61b 61d▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   58  | /^ *[1-9][0-9]* *\| / {
   59  |   if (texmacs_chunking) {
@@ -1901,7 +1945,7 @@ If we find such a line, we remove this line-header and set texmacs_chunk=1 as we
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 When TeXmacs chunking, lines that commence with \/ or __ are not chunk content but visual framing, and are skipped.
 
-59d <recognize-chunk[9]() ⇑57a, lang=> +≡ ▵59c 60a⊳
+63d <recognize-chunk[9]() ⇑59a, lang=> +≡ ▵61c 62a⊳
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   65  | /^ *\.\/\\/ && texmacs_chunking {
   66  |   next;
@@ -1912,7 +1956,7 @@ When TeXmacs chunking, lines that commence with \/ or __ are not chunk content b
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 Any other line when TeXmacs chunking is considered to be a line-wrapped line.
 
-60a <recognize-chunk[10]() ⇑57a, lang=> +≡ ⊲59d 60b▿
+64a <recognize-chunk[10]() ⇑59a, lang=> +≡ ⊲61d 62b▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   71  | texmacs_chunking {
   72  |   if (! texmacs_chunk) {
@@ -1924,7 +1968,7 @@ Any other line when TeXmacs chunking is considered to be a line-wrapped line.
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 This final chunklet seems bogus and probably stops L Y X working.
 
-60b <recognize-chunk[11]() ⇑57a, lang=> +≡ ▵60a 60c▿
+64b <recognize-chunk[11]() ⇑59a, lang=> +≡ ▵62a 62c▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   78  | ! texmacs_chunk {
   79  | #  texmacs_chunking=0;
@@ -1934,7 +1978,7 @@ This final chunklet seems bogus and probably stops L Y X working.
 11.2.2 Noweb 
 We recognize notangle style chunks too:
 
-60c <recognize-chunk[12]() ⇑57a, lang=awk> +≡ ▵60b 60d▿
+64c <recognize-chunk[12]() ⇑59a, lang=awk> +≡ ▵62b 62d▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   82  | /^[<]<.*[>]>=/ {
   83  |   if (match($0, "^[<]<(.*)[>]>= *$", line)) {
@@ -1950,7 +1994,7 @@ Likewise, we need to recognize when a chunk ends.
 11.3.1 lstlistings 
 The e in [e]nd{lislisting} is surrounded by square brackets so that when this document is processed, this chunk doesn't terminate early when the lstlistings package recognizes it's own end-string!4. This doesn't make sense as the regex is anchored with ^, which this line does not begin with!  ^4
 
-60d <recognize-chunk[13]() ⇑57a, lang=> +≡ ▵60c 61a⊳
+64d <recognize-chunk[13]() ⇑59a, lang=> +≡ ▵62c 63a⊳
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   90  | /^\\[e]nd{lstlisting}|^\\[e]nd{Chunk}/ {
   91  |   chunking=0;
@@ -1960,7 +2004,7 @@ The e in [e]nd{lislisting} is surrounded by square brackets so that when this do
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 11.3.2 noweb 
 
-61a <recognize-chunk[14]() ⇑57a, lang=> +≡ ⊲60d 61b▿
+65a <recognize-chunk[14]() ⇑59a, lang=> +≡ ⊲62d 63b▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   95  | /^@ *$/ {
   96  |   chunking=0;
@@ -1969,7 +2013,7 @@ The e in [e]nd{lislisting} is surrounded by square brackets so that when this do
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 All other recognizers are only of effect if we are chunking; there's no point in looking at lines if they aren't part of a chunk, so we just ignore them as efficiently as we can.
 
-61b <recognize-chunk[15]() ⇑57a, lang=> +≡ ▵61a 61c▿
+65b <recognize-chunk[15]() ⇑59a, lang=> +≡ ▵63a 63c▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   99  | ! chunking { next; }
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
@@ -1979,18 +2023,18 @@ We add the output record separator ORS to the line now, because we will set ORS 
 To do: This does't make sense
 ^5.
 
-61c <recognize-chunk[16]() ⇑57a, lang=> +≡ ▵61b
+65c <recognize-chunk[16]() ⇑59a, lang=> +≡ ▵63b
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   100  | length(active_chunk) {
-  101  |   «process-chunk-tabs 61e»
-  102  |   «process-chunk 62b»
+  101  |   «process-chunk-tabs 63e»
+  102  |   «process-chunk 64b»
   103  | }
      |________________________________________________________________________
 
 
 If a chunk just consisted of plain text, we could handle the chunk like this:
 
-61d <process-chunk-simple[1](), lang=> ≡ 
+65d <process-chunk-simple[1](), lang=> ≡ 
       ________________________________________________________________________
   1  | chunk_line(active_chunk, $0 ORS);
      |________________________________________________________________________
@@ -1999,7 +2043,7 @@ If a chunk just consisted of plain text, we could handle the chunk like this:
 but in fact a chunk can include references to other chunks. Chunk includes are traditionally written as <<chunk-name>> but we support other variations, some of which are more suitable for particular editing systems.
 However, we also process tabs at this point. A tab at input can be replaced by a number of spaces defined by the tabs variable, set by the -T option. Of course this is poor tab behaviour, we should probably have the option to use proper counted tab-stops and process this on output.
 
-61e <process-chunk-tabs[1](), lang=> ≡ 
+65e <process-chunk-tabs[1](), lang=> ≡ 
       ________________________________________________________________________
   1  | if (length(tabs)) {
   2  |   gsub("\t", tabs);
@@ -2014,7 +2058,7 @@ If \lstset{escapeinside={=<}{>}} is set, then we can use <chunk-name ?> in listi
 3.and also because lstlistings doesn't like >> as an end delimiter for the texcl escape, so we must make do with a single > which is better complemented by =< than by <<. 
 Unfortunately the =<...> that we use re-enters a LaTeX parsing mode in which some characters are special, e.g. # \ and so these cause trouble if used in arguments to \chunkref. At some point I must fix the LaTeX command \chunkref so that it can accept these literally, but until then, when writing chunkref argumemts that need these characters, I must use the forms \textbackslash{} and \#; so I also define a hacky chunk delatex to be used further on whose purpose it is to remove these from any arguments parsed by fangle.
 
-62a <delatex[1](text), lang=> ≡ 
+66a <delatex[1](text), lang=> ≡ 
       ________________________________________________________________________
   1  | # FILTHY HACK
   2  | gsub("\\\\#", "#", ${text});
@@ -2027,7 +2071,7 @@ As each chunk line may contain more than one chunk include, we will split out ch
 First, as long as the chunk contains a \chunkref command we take as much as we can up to the first \chunkref command.
 TeXmacs text output uses ⟨...⟩ which comes out as unicode sequences 0xC2 0xAB ... 0xC2 0xBB. Modern awk will interpret [^\xC2\xBB] as a single unicode character if LANG is set correctly to the sub-type UTF-8, e.g. LANG=en_GB.UTF-8, otherwise [^\xC2\xBB] will be treated as a two character negated match — but this should not interfere with the function.
 
-62b <process-chunk[1](), lang=> ≡  62c▿
+66b <process-chunk[1](), lang=> ≡  64c▿
       ________________________________________________________________________
   1  | chunk = $0;
   2  | indent = 0;
@@ -2041,7 +2085,7 @@ TeXmacs text output uses ⟨...⟩ which comes out as unicode sequences 0xC2 0xA
 We keep track of the indent count, by counting the number of literal characters found. We can then preserve this indent on each output line when multi-line chunks are expanded.
 We then process this first part literal text, and set the chunk which is still to be processed to be the text after the \chunkref command, which we will process next as we continue around the loop.
 
-62c <process-chunk[2]() ⇑62b, lang=> +≡ ▵62b 63a⊳
+66c <process-chunk[2]() ⇑64b, lang=> +≡ ▵64b 65a⊳
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   9  |   indent += length(chunklet);
   10  |   chunk_line(active_chunk, chunklet);
@@ -2050,11 +2094,11 @@ We then process this first part literal text, and set the chunk which is still t
 We then consider the type of chunk command we have found, whether it is the fangle style command beginning with =< the older notangle style beginning with <<.
 Fangle chunks may have parameters contained within square brackets. These will be matched in line[3] and are considered at this stage of processing to be part of the name of the chunk to be included.
 
-63a <process-chunk[3]() ⇑62b, lang=> +≡ ⊲62c 63b▿
+67a <process-chunk[3]() ⇑64b, lang=> +≡ ⊲64c 65b▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   12  |   if (substr(line[1], 1, 1) == "=") {
   13  |     # chunk name up to }
-  14  |         «delatex(line[3]) 62a»
+  14  |         «delatex(line[3]) 64a»
   15  |     chunk_include(active_chunk, line[2] line[3], indent);
   16  |   } else if (substr(line[1], 1, 1) == "<") {
   17  |     chunk_include(active_chunk, line[4], indent);
@@ -2066,14 +2110,14 @@ Fangle chunks may have parameters contained within square brackets. These will b
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 The loop will continue until there are no more chunkref statements in the text, at which point we process the final part of the chunk.
 
-63b <process-chunk[4]() ⇑62b, lang=> +≡ ▵63a 63c▿
+67b <process-chunk[4]() ⇑64b, lang=> +≡ ▵65a 65c▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   23  | }
   24  | chunk_line(active_chunk, chunk);
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 We add the newline character as a chunklet on it's own, to make it easier to detect new lines and thus manage indentation when processing the output.
 
-63c <process-chunk[5]() ⇑62b, lang=> +≡ ▵63b
+67c <process-chunk[5]() ⇑64b, lang=> +≡ ▵65b
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   25  | chunk_line(active_chunk, "\n");
      |________________________________________________________________________
@@ -2090,7 +2134,7 @@ To do: Do it
 Chapter 12Processing Options
 At the start, first we set the default options.
 
-65a <default-options[1](), lang=> ≡ 
+69a <default-options[1](), lang=> ≡ 
       ________________________________________________________________________
   1  | debug=0;
   2  | linenos=0;
@@ -2102,11 +2146,11 @@ At the start, first we set the default options.
 
 Then we use getopt the standard way, and null out ARGV afterwards in the normal AWK fashion.
 
-65b <read-options[1](), lang=> ≡ 
+69b <read-options[1](), lang=> ≡ 
       ________________________________________________________________________
   1  | Optind = 1    # skip ARGV[0]
   2  | while(getopt(ARGC, ARGV, "R:LdT:hr")!=-1) {
-  3  |   «handle-options 65c»
+  3  |   «handle-options 67c»
   4  | }
   5  | for (i=1; i<Optind; i++) { ARGV[i]=""; }
      |________________________________________________________________________
@@ -2114,7 +2158,7 @@ Then we use getopt the standard way, and null out ARGV afterwards in the normal 
 
 This is how we handle our options:
 
-65c <handle-options[1](), lang=> ≡ 
+69c <handle-options[1](), lang=> ≡ 
       ________________________________________________________________________
   1  | if (Optopt == "R") root = Optarg;
   2  | else if (Optopt == "r") root="";
@@ -2128,21 +2172,21 @@ This is how we handle our options:
 
 We do all of this at the beginning of the program
 
-65d <begin[1](), lang=> ≡ 
+69d <begin[1](), lang=> ≡ 
       ________________________________________________________________________
   1  | BEGIN {
-  2  |   «constants 35a»
-  3  |   «mode-definitions 48c»
-  4  |   «default-options 65a»
+  2  |   «constants 37a»
+  3  |   «mode-definitions 50c»
+  4  |   «default-options 67a»
   5  | 
-  6  |   «read-options 65b»
+  6  |   «read-options 67b»
   7  | }
      |________________________________________________________________________
 
 
 And have a simple help function
 
-65e <help()[1](), lang=> ≡ 
+69e <help()[1](), lang=> ≡ 
       ________________________________________________________________________
   1  | function help() {
   2  |   print "Usage:"
@@ -2161,7 +2205,7 @@ And have a simple help function
 Chapter 13Generating the Output
 We generate output by calling output_chunk, or listing the chunk names.
 
-67a <generate-output[1](), lang=> ≡ 
+71a <generate-output[1](), lang=> ≡ 
       ________________________________________________________________________
   1  | if (length(root)) output_chunk(root);
   2  | else output_chunk_names();
@@ -2170,7 +2214,7 @@ We generate output by calling output_chunk, or listing the chunk names.
 
 We also have some other output debugging:
 
-67b <debug-output[1](), lang=> ≡ 
+71b <debug-output[1](), lang=> ≡ 
       ________________________________________________________________________
   1  | if (debug) {
   2  |   print "------ chunk names "
@@ -2187,19 +2231,19 @@ We also have some other output debugging:
 
 We do both of these at the end. We also set ORS="" because each chunklet is not necessarily a complete line, and we already added ORS to each input line in section 11.4.
 
-67c <end[1](), lang=> ≡ 
+71c <end[1](), lang=> ≡ 
       ________________________________________________________________________
   1  | END {
-  2  |   «debug-output 67b»
+  2  |   «debug-output 69b»
   3  |   ORS="";
-  4  |   «generate-output 67a»
+  4  |   «generate-output 69a»
   5  | }
      |________________________________________________________________________
 
 
 We write chunk names like this. If we seem to be running in notangle compatibility mode, then we enclose the name like this <<name>> the same way notangle does:
 
-67d <output_chunk_names()[1](), lang=> ≡ 
+71d <output_chunk_names()[1](), lang=> ≡ 
       ________________________________________________________________________
   1  | function output_chunk_names(   c, prefix, suffix) 
   2  | {
@@ -2216,7 +2260,7 @@ We write chunk names like this. If we seem to be running in notangle compatibili
 
 This function would write out all chunks
 
-67e <output_chunks()[1](), lang=> ≡ 
+71e <output_chunks()[1](), lang=> ≡ 
       ________________________________________________________________________
   1  | function output_chunks(  a) 
   2  | {
@@ -2239,17 +2283,17 @@ This function would write out all chunks
 chunk_path holds a string consisting of the names of all the chunks that resulted in this chunk being output. It should probably also contain the source line numbers at which each inclusion also occured.
 We first initialize the mode tracker for this chunk.
 
-68a <write_chunk()[1](), lang=> ≡  68b▿
+72a <write_chunk()[1](), lang=> ≡  70b▿
       ________________________________________________________________________
   1  | function write_chunk(chunk_name) {
-  2  |   «awk-delete-array(context) 33d»
+  2  |   «awk-delete-array(context) 35d»
   3  |   return write_chunk_r(chunk_name, context);
   4  | }
   5  | 
   6  | function write_chunk_r(chunk_name, context, indent, tail,
   7  |   # optional vars
   8  |   chunk_path, chunk_args, 
-  9  |   s, r, src, new_src, 
+  9  |   quotes, src, new_src, 
   10  |   # local vars
   11  |   chunk_params, part, max_part, part_line, frag, max_frag, text, 
   12  |   chunklet, only_part, call_chunk_args, new_context)
@@ -2259,7 +2303,7 @@ We first initialize the mode tracker for this chunk.
 13.1.1 Chunk Parts 
 As mentioned in section ?, a chunk name may contain a part specifier in square brackets, limiting the parts that should be emitted.
 
-68b <write_chunk()[2]() ⇑68a, lang=> +≡ ▵68a 68c▿
+72b <write_chunk()[2]() ⇑70a, lang=> +≡ ▵70a 70c▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   15  |   if (match(chunk_name, "^(.*)\\[([0-9]*)\\]$", chunk_name_parts)) {
   16  |     chunk_name = chunk_name_parts[1];
@@ -2268,19 +2312,19 @@ As mentioned in section ?, a chunk name may contain a part specifier in square b
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 We then create a mode tracker
 
-68c <write_chunk()[3]() ⇑68a, lang=> +≡ ▵68b 69a⊳
+72c <write_chunk()[3]() ⇑70a, lang=> +≡ ▵70b 71a⊳
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
-  19  |  «new-mode-tracker(context, chunks[chunk_name, "language"], "") 50b»
+  19  |  «new-mode-tracker(context, chunks[chunk_name, "language"], "") 52b»
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 We extract into chunk_params the names of the parameters that this chunk accepts, whose values were (optionally) passed in chunk_args.
 
-69a <write_chunk()[4]() ⇑68a, lang=> +≡ ⊲68c 69b▿
+73a <write_chunk()[4]() ⇑70a, lang=> +≡ ⊲70c 71b▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   20  |  split(chunks[chunk_name, "params"], chunk_params, " *; *");
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 To assemble a chunk, we write out each part.
 
-69b <write_chunk()[5]() ⇑68a, lang=> +≡ ▵69a
+73b <write_chunk()[5]() ⇑70a, lang=> +≡ ▵71a
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   21  |   if (! (chunk_name in chunk_names)) {
   22  |     error(sprintf(_"The root module <<%s>> was not defined.\nUsed by: %s",\
@@ -2290,7 +2334,7 @@ To assemble a chunk, we write out each part.
   26  |   max_part = chunks[chunk_name, "part"];
   27  |   for(part = 1; part <= max_part; part++) {
   28  |     if (! only_part || part == only_part) {
-  29  |       «write-part 69c»
+  29  |       «write-part 71c»
   30  |     }
   31  |   }
   32  |   if (! finalize_mode_tracker(context)) {
@@ -2305,15 +2349,15 @@ A part can either be a chunklet of lines, or an include of another chunk.
 Chunks may also have parameters, specified in LaTeX style with braces after the chunk name --- looking like this in the document: chunkname{param1, param2}. Arguments are passed in square brackets: \chunkref{chunkname}[arg1, arg2].
 Before we process each part, we check that the source position hasn't changed unexpectedly, so that we can know if we need to output a new file-line directive.
 
-69c <write-part[1](), lang=> ≡ 
+73c <write-part[1](), lang=> ≡ 
       ________________________________________________________________________
-  1  | «check-source-jump 71d»
+  1  | «check-source-jump 73d»
   2  | 
   3  | chunklet = chunks[chunk_name, "part", part];
   4  | if (chunks[chunk_name, "part", part, "type"] == part_type_chunk) {
-  5  |   «write-included-chunk 69d»
+  5  |   «write-included-chunk 71d»
   6  | } else if (chunklet SUBSEP "line" in chunks) {
-  7  |   «write-chunklets 70a»
+  7  |   «write-chunklets 72a»
   8  | } else {
   9  |   # empty last chunklet
   10  | }
@@ -2322,7 +2366,7 @@ Before we process each part, we check that the source position hasn't changed un
 
 To write an included chunk, we must detect any optional chunk arguments in parenthesis. Then we recurse calling write_chunk().
 
-69d <write-included-chunk[1](), lang=> ≡ 
+73d <write-included-chunk[1](), lang=> ≡ 
       ________________________________________________________________________
   1  | if (match(chunklet, "^([^\\[\\(]*)\\((.*)\\)$", chunklet_parts)) {
   2  |   chunklet = chunklet_parts[1];
@@ -2337,14 +2381,14 @@ To write an included chunk, we must detect any optional chunk arguments in paren
   11  |   split("", call_chunk_args);
   12  | }
   13  | # update the transforms arrays
-  14  | new_src = mode_escaper(context, s, r, src);
-  15  | «awk-delete-array(new_context) 33d»
+  14  | new_src = mode_escaper(context, quotes, src);
+  15  | «awk-delete-array(new_context) 35d»
   16  | write_chunk_r(chunklet, new_context,
   17  |             chunks[chunk_name, "part", part, "indent"] indent,
   18  |             chunks[chunk_name, "part", part, "tail"],
   19  |             chunk_path "\n         " chunk_name,
   20  |             call_chunk_args,
-  21  |             s, r, new_src);
+  21  |             quotes, new_src);
      |________________________________________________________________________
 
 
@@ -2352,15 +2396,15 @@ Before we output a chunklet of lines, we first emit the file and line number if 
 Chunklets are generally broken up by includes, so the start of a chunklet is a good place to do this. Then we output each line of the chunklet.
 When it is not safe, such as in the middle of a multi-line macro definition, lineno_suppressed is set to true, and in such a case we note that we want to emit the line statement when it is next safe.
 
-70a <write-chunklets[1](), lang=> ≡  70b▿
+74a <write-chunklets[1](), lang=> ≡  72b▿
       ________________________________________________________________________
   1  | max_frag = chunks[chunklet, "line"];
   2  | for(frag = 1; frag <= max_frag; frag++) {
-  3  |   «write-file-line 71c»
+  3  |   «write-file-line 73c»
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 We then extract the chunklet text and expand any arguments.
 
-70b <write-chunklets[2]() ⇑70a, lang=> +≡ ▵70a 70c▿
+74b <write-chunklets[2]() ⇑72a, lang=> +≡ ▵72a 72c▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   4  | 
   5  |   text = chunks[chunklet, frag];
@@ -2371,7 +2415,7 @@ We then extract the chunklet text and expand any arguments.
 If the text is a single newline (which we keep separate - see 6) then we increment the line number. In the case where this is the last line of a chunk and it is not a top-level chunk we replace the newline with an empty string --- because the chunk that included this chunk will have the newline at the end of the line that included this chunk.
 We also note by newline = 1 that we have started a new line, so that indentation can be managed with the following piece of text.
 
-70c <write-chunklets[3]() ⇑70a, lang=> +≡ ▵70b 70d▿
+74c <write-chunklets[3]() ⇑72a, lang=> +≡ ▵72b 72d▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   9  | 
   10  |  if (text == "\n") {
@@ -2386,7 +2430,7 @@ We also note by newline = 1 that we have started a new line, so that indentation
 If this text does not represent a newline, but we see that we are the first piece of text on a newline, then we prefix our text with the current indent. 
 Note 1. newline is a global output-state variable, but the indent is not. 
 
-70d <write-chunklets[4]() ⇑70a, lang=> +≡ ▵70c 71a⊳
+74d <write-chunklets[4]() ⇑72a, lang=> +≡ ▵72c 73a⊳
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   18  |   } else if (length(text) || length(tail)) {
   19  |     if (newline) text = indent text;
@@ -2396,15 +2440,15 @@ Note 1. newline is a global output-state variable, but the indent is not.
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 Tail will soon no longer be relevant once mode-detection is in place.
 
-71a <write-chunklets[5]() ⇑70a, lang=> +≡ ⊲70d 71b▿
+75a <write-chunklets[5]() ⇑72a, lang=> +≡ ⊲72d 73b▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   23  |   text = text tail;
   24  |   mode_tracker(context, text);
-  25  |   print untab(transform_escape(s, r, text, src));
+  25  |   print untab(transform_escape(quotes, text, src));
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 If a line ends in a backslash --- suggesting continuation --- then we supress outputting file-line as it would probably break the continued lines.
 
-71b <write-chunklets[6]() ⇑70a, lang=> +≡ ▵71a
+75b <write-chunklets[6]() ⇑72a, lang=> +≡ ▵73a
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   26  |   if (linenos) {
   27  |     lineno_suppressed = substr(lastline, length(lastline)) == "\\";
@@ -2415,7 +2459,7 @@ If a line ends in a backslash --- suggesting continuation --- then we supress ou
 
 Of course there is no point in actually outputting the source filename and line number (file-line) if they don't say anything new! We only need to emit them if they aren't what is expected, or if we we not able to emit one when they had changed.
 
-71c <write-file-line[1](), lang=> ≡ 
+75c <write-file-line[1](), lang=> ≡ 
       ________________________________________________________________________
   1  | if (newline && lineno_needed && ! lineno_suppressed) {
   2  |   filename = a_filename;
@@ -2428,7 +2472,7 @@ Of course there is no point in actually outputting the source filename and line 
 
 We check if a new file-line is needed by checking if the source line matches what we (or a compiler) would expect.
 
-71d <check-source-jump[1](), lang=> ≡ 
+75d <check-source-jump[1](), lang=> ≡ 
       ________________________________________________________________________
   1  | if (linenos && (chunk_name SUBSEP "part" SUBSEP part SUBSEP "FILENAME" in chunks)) {
   2  |   a_filename = chunks[chunk_name, "part", part, "FILENAME"];
@@ -2443,7 +2487,7 @@ We check if a new file-line is needed by checking if the source line matches wha
 Chapter 14Storing Chunks
 Awk has pretty limited data structures, so we will use two main hashes. Uninterrupted sequences of a chunk will be stored in chunklets and the chunklets used in a chunk will be stored in chunks.
 
-73a <constants[2]() ⇑35a, lang=> +≡ ⊲35a
+77a <constants[2]() ⇑37a, lang=> +≡ ⊲37a
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   2  | part_type_chunk=1;
   3  | SUBSEP=",";
@@ -2452,7 +2496,7 @@ Awk has pretty limited data structures, so we will use two main hashes. Uninterr
 
 The params mentioned are not chunk parameters for parameterized chunks, as mentioned in 9.2, but the lstlistings style parameters used in the \Chunk command1. The params parameter is used to hold the parameters for parameterized chunks  ^1.
 
-73b <chunk-storage-functions[1](), lang=> ≡  73c▿
+77b <chunk-storage-functions[1](), lang=> ≡  75c▿
       ________________________________________________________________________
   1  | function new_chunk(chunk_name, opts, args,
   2  |   # local vars
@@ -2485,7 +2529,7 @@ The params mentioned are not chunk parameters for parameterized chunks, as menti
   29  | }
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 
-73c <chunk-storage-functions[2]() ⇑73b, lang=> +≡ ▵73b 74a⊳
+77c <chunk-storage-functions[2]() ⇑75b, lang=> +≡ ▵75b 76a⊳
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   30  | 
   31  | function prime_chunk(chunk_name)
@@ -2504,7 +2548,7 @@ The params mentioned are not chunk parameters for parameterized chunks, as menti
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 Chunk include represents a chunkref statement, and stores the requirement to include another chunk. The parameter indent represents the quanity of literal text characters that preceded this chunkref statement and therefore by how much additional lines of the included chunk should be indented.
 
-74a <chunk-storage-functions[3]() ⇑73b, lang=> +≡ ⊲73c 74b▿
+78a <chunk-storage-functions[3]() ⇑75b, lang=> +≡ ⊲75c 76b▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   44  | function chunk_include(chunk_name, chunk_ref, indent, tail)
   45  | {
@@ -2518,7 +2562,7 @@ Chunk include represents a chunkref statement, and stores the requirement to inc
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 The indent is calculated by indent_string, which may in future convert some spaces into tab characters. This function works by generating a printf padded format string, like %22s for an indent of 22, and then printing an empty string using that format.
 
-74b <chunk-storage-functions[4]() ⇑73b, lang=> +≡ ▵74a
+78b <chunk-storage-functions[4]() ⇑75b, lang=> +≡ ▵76a
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   53  | function indent_string(indent) {
   54  |   return sprintf("%" indent "s", "");
@@ -2530,7 +2574,7 @@ Chapter 15getopt
 I use Arnold Robbins public domain getopt (1993 revision). This is probably the same one that is covered in chapter 12 of âĂĲEdition 3 of GAWK: Effective AWK Programming: A User's Guide for GNU AwkâĂİ but as that is licensed under the GNU Free Documentation License, Version 1.3, which conflicts with the GPL3, I can't use it from there (or it's accompanying explanations), so I do my best to explain how it works here.
 The getopt.awk header is:
 
-75a <getopt.awk-header[1](), lang=> ≡ 
+79a <getopt.awk-header[1](), lang=> ≡ 
       ________________________________________________________________________
   1  | # getopt.awk --- do C library getopt(3) function in awk
   2  | #
@@ -2544,7 +2588,7 @@ The getopt.awk header is:
 
 The provided explanation is:
 
-75b <getopt.awk-notes[1](), lang=> ≡ 
+79b <getopt.awk-notes[1](), lang=> ≡ 
       ________________________________________________________________________
   1  | # External variables:
   2  | #    Optind -- index in ARGV of first nonoption argument
@@ -2565,7 +2609,7 @@ The provided explanation is:
 
 The function follows. The final two parameters, thisopt and i are local variables and not parameters --- as indicated by the multiple spaces preceding them. Awk doesn't care, the multiple spaces are a convention to help us humans.
 
-75c <getopt.awk-getopt()[1](), lang=> ≡  76a⊳
+79c <getopt.awk-getopt()[1](), lang=> ≡  78a⊳
       ________________________________________________________________________
   1  | function getopt(argc, argv, options,    thisopt, i)
   2  | {
@@ -2598,7 +2642,7 @@ The function follows. The final two parameters, thisopt and i are local variable
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 At this point, the option has been found and we need to know if it takes any arguments.
 
-76a <getopt.awk-getopt()[2]() ⇑75c, lang=> +≡ ⊲75c
+80a <getopt.awk-getopt()[2]() ⇑77c, lang=> +≡ ⊲77c
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   29  |     if (substr(options, i + 1, 1) == ":") {
   30  |         # get option argument
@@ -2621,7 +2665,7 @@ At this point, the option has been found and we need to know if it takes any arg
 
 A test program is built in, too
 
-76b <getopt.awk-begin[1](), lang=> ≡ 
+80b <getopt.awk-begin[1](), lang=> ≡ 
       ________________________________________________________________________
   1  | BEGIN {
   2  |     Opterr = 1    # default is to diagnose
@@ -2642,25 +2686,25 @@ A test program is built in, too
 
 The entire getopt.awk is made out of these chunks in order
 
-76c <getopt.awk[1](), lang=> ≡ 
+80c <getopt.awk[1](), lang=> ≡ 
       ________________________________________________________________________
-  1  | «getopt.awk-header 75a»
+  1  | «getopt.awk-header 77a»
   2  | 
-  3  | «getopt.awk-notes 75b»
-  4  | «getopt.awk-getopt() 75c»
-  5  | «getopt.awk-begin 76b»
+  3  | «getopt.awk-notes 77b»
+  4  | «getopt.awk-getopt() 77c»
+  5  | «getopt.awk-begin 78b»
      |________________________________________________________________________
 
 
 Although we only want the header and function:
 
-77a <getopt[1](), lang=> ≡ 
+81a <getopt[1](), lang=> ≡ 
       ________________________________________________________________________
   1  | # try: locate getopt.awk for the full original file
   2  | # as part of your standard awk installation
-  3  | «getopt.awk-header 75a»
+  3  | «getopt.awk-header 77a»
   4  | 
-  5  | «getopt.awk-getopt() 75c»
+  5  | «getopt.awk-getopt() 77c»
      |________________________________________________________________________
 
 
@@ -2669,7 +2713,7 @@ Chapter 16Fangle LaTeX source code
 Here we define a L Y X .module file that makes it convenient to use L Y X for writing such literate programs.
 This file ./fangle.module can be installed in your personal .lyx/layouts folder. You will need to Tools Reconfigure so that L Y X notices it. It adds a new format Chunk, which should precede every listing and contain the chunk name.
 
-79a <./fangle.module[1](), lang=lyx-module> ≡ 
+83a <./fangle.module[1](), lang=lyx-module> ≡ 
       ________________________________________________________________________
   1  | #\DeclareLyXModule{Fangle Literate Listings}
   2  | #DescriptionBegin
@@ -2681,23 +2725,23 @@ This file ./fangle.module can be installed in your personal .lyx/layouts folder.
   8  | #  The fangle awk script
   9  | #DescriptionEnd
   10  | 
-  11  | «gpl3-copyright.hashed 79b»
+  11  | «gpl3-copyright.hashed 81b»
   12  | 
   13  | Format 11
   14  | 
   15  | AddToPreamble
-  16  | «./fangle.sty 80d»
+  16  | «./fangle.sty 82d»
   17  | EndPreamble
   18  | 
-  19  | «chunkstyle 80a»
+  19  | «chunkstyle 82a»
   20  | 
-  21  | «chunkref 80c»
+  21  | «chunkref 82c»
      |________________________________________________________________________
 
 
 Because L Y X modules are not yet a language supported by fangle or lstlistings, we resort to this fake awk chunk below in order to have each line of the GPL3 license commence with a #
 
-79b <gpl3-copyright.hashed[1](), lang=awk> ≡ 
+83b <gpl3-copyright.hashed[1](), lang=awk> ≡ 
       ________________________________________________________________________
   1  | #«gpl3-copyright 4a»
   2  | 
@@ -2709,7 +2753,7 @@ The purpose of the chunk style is to make it easier for L Y X users to provide t
 The chunk style is defined as a LaTeX command, so that all text on the same line is passed to the LaTeX command Chunk. This makes it easy to parse using fangle, and easy to pass these options on to the listings package. The first word in a chunk section should be the chunk name, and will have name= prepended to it. Any other words are accepted arguments to lstset.
 We set PassThru to 1 because the user is actually entering raw latex.
 
-80a <chunkstyle[1](), lang=> ≡  80b▿
+84a <chunkstyle[1](), lang=> ≡  82b▿
       ________________________________________________________________________
   1  | Style Chunk
   2  |   LatexType             Command
@@ -2725,7 +2769,7 @@ We set PassThru to 1 because the user is actually entering raw latex.
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 To make the label very visible we choose a larger font coloured red.
 
-80b <chunkstyle[2]() ⇑80a, lang=> +≡ ▵80a
+84b <chunkstyle[2]() ⇑82a, lang=> +≡ ▵82a
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   12  |   LabelFont
   13  |     Family              Sans
@@ -2741,7 +2785,7 @@ To make the label very visible we choose a larger font coloured red.
 16.1.2 The chunkref style 
 We also define the Chunkref style which can be used to express cross references to chunks.
 
-80c <chunkref[1](), lang=> ≡ 
+84c <chunkref[1](), lang=> ≡ 
       ________________________________________________________________________
   1  | InsetLayout Chunkref
   2  |   LyxType               charstyle
@@ -2759,7 +2803,7 @@ We also define the Chunkref style which can be used to express cross references 
 16.2 Latex Macros 
 We require the listings, noweb and xargs packages. As noweb defines it's own \code environment, we re-define the one that L Y X logical markup module expects here.
 
-80d <./fangle.sty[1](), lang=tex> ≡  81a⊳
+84d <./fangle.sty[1](), lang=tex> ≡  83a⊳
       ________________________________________________________________________
   1  | \usepackage{listings}%
   2  | \usepackage{noweb}%
@@ -2768,13 +2812,13 @@ We require the listings, noweb and xargs packages. As noweb defines it's own \co
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 We also define a CChunk macro, for use as: \begin{CChunk} which will need renaming to \begin{Chunk} when I can do this without clashing with \Chunk.
 
-81a <./fangle.sty[2]() ⇑80d, lang=> +≡ ⊲80d 81b▿
+85a <./fangle.sty[2]() ⇑82d, lang=> +≡ ⊲82d 83b▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   5  | \lstnewenvironment{Chunk}{\relax}{\relax}%
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 We also define a suitable \lstset of parameters that suit the literate programming style after the fashion of noweave.
 
-81b <./fangle.sty[3]() ⇑80d, lang=> +≡ ▵81a 81c▿
+85b <./fangle.sty[3]() ⇑82d, lang=> +≡ ▵83a 83c▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   6  | \lstset{numbers=left, stepnumber=5, numbersep=5pt,
   7  |         breaklines=false,basicstyle=\ttfamily,
@@ -2782,13 +2826,13 @@ We also define a suitable \lstset of parameters that suit the literate programmi
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 We also define a notangle-like mechanism for escaping to LaTeX from the listing, and by which we can refer to other listings. We declare the =<...> sequence to contain LaTeX code, and include another like this chunk: <chunkname ?>. However, because =<...> is already defined to contain LaTeX code for this document --- this is a fangle document after all --- the code fragment below effectively contains the LaTeX code: }{. To avoid problems with document generation, I had to declare an lstlistings property: escapeinside={} for this listing only; which in L Y X was done by right-clicking the listings inset, choosing settings->advanced. Therefore =< isn't interpreted literally here, in a listing when the escape sequence is already defined as shown... we need to somehow escape this representation...
 
-81c <./fangle.sty[4]() ⇑80d, lang=> +≡ ▵81b 81d▿
+85c <./fangle.sty[4]() ⇑82d, lang=> +≡ ▵83b 83d▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   9  | \lstset{escapeinside={=<}{>}}%
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 Although our macros will contain the @ symbol, they will be included in a \makeatletter section by L Y X; however we keep the commented out \makeatletter as a reminder. The listings package likes to centre the titles, but noweb titles are specially formatted and must be left aligned. The simplest way to do this turned out to be by removing the definition of \lst@maketitle. This may interact badly if other listings want a regular title or caption. We remember the old maketitle in case we need it.
 
-81d <./fangle.sty[5]() ⇑80d, lang=> +≡ ▵81c 81e▿
+85d <./fangle.sty[5]() ⇑82d, lang=> +≡ ▵83c 83e▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   10  | %\makeatletter
   11  | %somehow re-defining maketitle gives us a left-aligned title
@@ -2799,7 +2843,7 @@ Although our macros will contain the @ symbol, they will be included in a \makea
 16.2.1 The chunk command 
 Our chunk command accepts one argument, and calls \ltset. Although \ltset will note the name, this is erased when the next \lstlisting starts, so we make a note of this in \lst@chunkname and restore in in lstlistings Init hook.
 
-81e <./fangle.sty[6]() ⇑80d, lang=> +≡ ▵81d 82a⊳
+85e <./fangle.sty[6]() ⇑82d, lang=> +≡ ▵83d 84a⊳
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   15  | \def\Chunk#1{%
   16  |   \lstset{title={\fanglecaption},name=#1}%
@@ -2810,20 +2854,20 @@ Our chunk command accepts one argument, and calls \ltset. Although \ltset will n
 16.2.1.1 Chunk parameters 
 Fangle permits parameterized chunks, and requires the paramters to be specified as listings options. The fangle script uses this, and although we don't do anything with these in the LaTeX code right now, we need to stop the listings package complaining.
 
-82a <./fangle.sty[7]() ⇑80d, lang=> +≡ ⊲81e 82b▿
+86a <./fangle.sty[7]() ⇑82d, lang=> +≡ ⊲83e 84b▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   20  | \lst@Key{params}\relax{\def\fangle@chunk@params{#1}}%
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 As it is common to define a chunk which then needs appending to another chunk, and annoying to have to declare a single line chunk to manage the include, we support an append= option.
 
-82b <./fangle.sty[8]() ⇑80d, lang=> +≡ ▵82a 82c▿
+86b <./fangle.sty[8]() ⇑82d, lang=> +≡ ▵84a 84c▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   21  | \lst@Key{append}\relax{\def\fangle@chunk@append{#1}}%
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 16.2.2 The noweb styled caption 
 We define a public macro \fanglecaption which can be set as a regular title. By means of \protect, It expands to \fangle@caption at the appopriate time when the caption is emitted.
 
-82c <./fangle.sty[9]() ⇑80d, lang=> +≡ ▵82b 82d▿
+86c <./fangle.sty[9]() ⇑82d, lang=> +≡ ▵84b 84d▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
 \def\fanglecaption{\protect\fangle@caption}%
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
@@ -2842,14 +2886,14 @@ This means that we need to keep a counter for each chunk-name, that we use to co
 16.2.3 The chunk counter 
 It would be natural to have a counter for each chunk name, but TeX would soon run out of counters1. ...soon did run out of counters and so I had to re-write the LaTeX macros to share a counter as described here.  ^1, so we have one counter which we save at the end of a chunk and restore at the beginning of a chunk.
 
-82d <./fangle.sty[10]() ⇑80d, lang=> +≡ ▵82c 83c⊳
+86d <./fangle.sty[10]() ⇑82d, lang=> +≡ ▵84c 85c⊳
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   22  | \newcounter{fangle@chunkcounter}%
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 We construct the name of this variable to store the counter to be the text lst-chunk- prefixed onto the chunks own name, and store it in \chunkcount. 
 We save the counter like this:
 
-83a <save-counter[1](), lang=> ≡ 
+87a <save-counter[1](), lang=> ≡ 
       ________________________________________________________________________
 \global\expandafter\edef\csname \chunkcount\endcsname{\arabic{fangle@chunkcounter}}%
      |________________________________________________________________________
@@ -2857,7 +2901,7 @@ We save the counter like this:
 
 and restore the counter like this:
 
-83b <restore-counter[1](), lang=> ≡ 
+87b <restore-counter[1](), lang=> ≡ 
       ________________________________________________________________________
 \setcounter{fangle@chunkcounter}{\csname \chunkcount\endcsname}%
      |________________________________________________________________________
@@ -2867,7 +2911,7 @@ If there does not already exist a variable whose name is stored in \chunkcount, 
 Although chunks of the same name share a common counter, they must still be distinguished. We use is the internal name of the listing, suffixed by the counter value. So the first chunk might be something-1 and the second chunk be something-2, etc.
 We also calculate the name of the previous chunk if we can (before we increment the chunk counter). If this is the first chunk of that name, then \prevchunkname is set to \relax which the noweb package will interpret as not existing.
 
-83c <./fangle.sty[11]() ⇑80d, lang=> +≡ ⊲82d 83d▿
+87c <./fangle.sty[11]() ⇑82d, lang=> +≡ ⊲84d 85d▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   23  | \def\fangle@caption{%
   24  |   \edef\chunkcount{lst-chunk-\lst@intname}%
@@ -2882,7 +2926,7 @@ We also calculate the name of the previous chunk if we can (before we increment 
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 After incrementing the chunk counter, we then define the name of this chunk, as well as the name of the first chunk.
 
-83d <./fangle.sty[12]() ⇑80d, lang=> +≡ ▵83c 83e▿
+87d <./fangle.sty[12]() ⇑82d, lang=> +≡ ▵85c 85e▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   33  |   \addtocounter{fangle@chunkcounter}{1}%
   34  |   \global\expandafter\edef\csname \chunkcount\endcsname{\arabic{fangle@chunkcounter}}%
@@ -2891,7 +2935,7 @@ After incrementing the chunk counter, we then define the name of this chunk, as 
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 We now need to calculate the name of the next chunk. We do this by temporarily skipping the counter on by one; however there may not actually be another chunk with this name! We detect this by also defining a label for each chunk based on the chunkname. If there is a next chunkname then it will define a label with that name. As labels are persistent, we can at least tell the second time LaTeX is run. If we don't find such a defined label then we define \nextchunkname to \relax.
 
-83e <./fangle.sty[13]() ⇑80d, lang=> +≡ ▵83d 84a⊳
+87e <./fangle.sty[13]() ⇑82d, lang=> +≡ ▵85d 86a⊳
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   37  |   \addtocounter{fangle@chunkcounter}{1}%
   38  |   \edef\nextchunkname{\lst@intname-\arabic{fangle@chunkcounter}}%
@@ -2900,7 +2944,7 @@ We now need to calculate the name of the next chunk. We do this by temporarily s
 The noweb package requires that we define a \sublabel for every chunk, with a unique name, which is then used to print out it's navigation hints.
 We also define a regular label for this chunk, as was mentioned above when we calculated \nextchunkname. This requires LaTeX to be run at least twice after new chunk sections are added --- but noweb requried that anyway.
 
-84a <./fangle.sty[14]() ⇑80d, lang=> +≡ ⊲83e 84b▿
+88a <./fangle.sty[14]() ⇑82d, lang=> +≡ ⊲85e 86b▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   40  |   \sublabel{\chunkname}%
   41  | % define this label for every chunk instance, so we
@@ -2909,13 +2953,13 @@ We also define a regular label for this chunk, as was mentioned above when we ca
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 We also try and add the chunk to the list of listings, but I'm afraid we don't do very well. We want each chunk name listing once, with all of it's references.
 
-84b <./fangle.sty[15]() ⇑80d, lang=> +≡ ▵84a 84c▿
+88b <./fangle.sty[15]() ⇑82d, lang=> +≡ ▵86a 86c▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   44  |   \addcontentsline{lol}{lstlisting}{\lst@name~[\protect\subpageref{\chunkname}]}%
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 We then call the noweb output macros in the same way that noweave generates them, except that we don't need to call \nwstartdeflinemarkup or \nwenddeflinemarkup — and if we do, it messes up the output somewhat.
 
-84c <./fangle.sty[16]() ⇑80d, lang=> +≡ ▵84b 84d▿
+88c <./fangle.sty[16]() ⇑82d, lang=> +≡ ▵86b 86d▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   45  |   \nwmargintag{%
   46  |     {%
@@ -2951,7 +2995,7 @@ We then call the noweb output macros in the same way that noweave generates them
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 Originally this was developed as a listings aspect, in the Init hook, but it was found easier to affect the title without using a hook — \lst@AddToHookExe{PreSet} is still required to set the listings name to the name passed to the \Chunk command, though.
 
-84d <./fangle.sty[17]() ⇑80d, lang=> +≡ ▵84c 85a⊳
+88d <./fangle.sty[17]() ⇑82d, lang=> +≡ ▵86c 87a⊳
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   76  | %\lst@BeginAspect{fangle}
   77  | %\lst@Key{fangle}{true}[t]{\lstKV@SetIf{#1}{true}}
@@ -2969,7 +3013,7 @@ Macro                           Appearance
 Chunkref can also be used within a code chunk to include another code chunk. The third optional parameter to chunkref is a comma sepatarated list of arguments, which will replace defined parameters in the chunkref.
 Note 1. Darn it, if I have: =<\chunkref{new-mode-tracker}[{chunks[chunk_name, "language"]},{mode}]> the inner braces (inside [ ]) cause _ to signify subscript even though we have lst@ReplaceIn 
 
-85a <./fangle.sty[18]() ⇑80d, lang=> +≡ ⊲84d 86a⊳
+89a <./fangle.sty[18]() ⇑82d, lang=> +≡ ⊲86d 88a⊳
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   81  | \def\chunkref@args#1,{%
   82  |   \def\arg{#1}%
@@ -3012,7 +3056,7 @@ Note 1. Darn it, if I have: =<\chunkref{new-mode-tracker}[{chunks[chunk_name, "l
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 16.2.5 The end 
 
-86a <./fangle.sty[19]() ⇑80d, lang=> +≡ ⊲85a
+90a <./fangle.sty[19]() ⇑82d, lang=> +≡ ⊲87a
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   119  | %
   120  | %\makeatother
@@ -3024,7 +3068,7 @@ Chapter 17Extracting fangle
 To extract from L Y X, you will need to configure L Y X as explained in section ?.
 And this lyx-build scrap will extract fangle for me.
 
-87a <lyx-build[2]() ⇑20a, lang=sh> +≡ ⊲20a
+91a <lyx-build[2]() ⇑20a, lang=sh> +≡ ⊲20a
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   11  | #! /bin/sh
   12  | set -x
@@ -3035,31 +3079,31 @@ And this lyx-build scrap will extract fangle for me.
   17  | /usr/local/bin/fangle -R./fangle $TEX_SRC > ./fangle
   18  | /usr/local/bin/fangle -R./fangle.module $TEX_SRC > ./fangle.module
   19  | 
-  20  | «test:helpers 88b»
+  20  | «test:helpers 90b»
   21  | export FANGLE=./fangle
   22  | export TMP=${TMP:-/tmp}
-  23  | «test:run-tests 87b»
+  23  | «test:run-tests 89b»
   24  | # Now check that we can extract a fangle that also passes the tests!
   25  | $FANGLE -R./fangle $TEX_SRC > ./new-fangle
   26  | export FANGLE=./new-fangle
-  27  | «test:run-tests 87b»
+  27  | «test:run-tests 89b»
      |________________________________________________________________________
 
 
 
-87b <test:run-tests[1](), lang=sh> ≡ 
+91b <test:run-tests[1](), lang=sh> ≡ 
       ________________________________________________________________________
   1  | # run tests
   2  | $FANGLE -Rpca-test.awk $TEX_SRC | awk -f - || exit 1
-  3  | «test:cromulence 51e»
-  4  | «test:escapes 55d»
-  5  | «test:chunk-params 91e»
+  3  | «test:cromulence 53f»
+  4  | «test:escapes 58a»
+  5  | «test:chunk-params 93e»
      |________________________________________________________________________
 
 
 With a lyx-build-helper
 
-87c <lyx-build-helper[2]() ⇑19b, lang=sh> +≡ ⊲19b
+91c <lyx-build-helper[2]() ⇑19b, lang=sh> +≡ ⊲19b
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   5  | PROJECT_DIR="$LYX_r"
   6  | LYX_SRC="$PROJECT_DIR/${LYX_i%.tex}.lyx"
@@ -3070,7 +3114,7 @@ With a lyx-build-helper
 
 17.2 Extracting documentation 
 
-87d <./gen-www[1](), lang=> ≡ 
+91d <./gen-www[1](), lang=> ≡ 
       ________________________________________________________________________
   1  | #python -m elyxer --css lyx.css $LYX_SRC | \
   2  | #  iconv -c -f utf-8 -t ISO-8859-1//TRANSLIT | \
@@ -3096,7 +3140,7 @@ With a lyx-build-helper
 17.3 Extracting from the command line 
 First you will need the tex output, then you can extract:
 
-88a <lyx-build-manual[1](), lang=sh> ≡ 
+92a <lyx-build-manual[1](), lang=sh> ≡ 
       ________________________________________________________________________
   1  | lyx -e latex fangle.lyx
   2  | fangle -R./fangle fangle.tex > ./fangle
@@ -3106,7 +3150,7 @@ First you will need the tex output, then you can extract:
 
 17.4 Testing 
 
-88b <test:helpers[1](), lang=> ≡ 
+92b <test:helpers[1](), lang=> ≡ 
       ________________________________________________________________________
   1  | passtest() {
   2  |   if "$@"
@@ -3130,7 +3174,7 @@ Part III  Tests
 Chapter 18Chunk Parameters
 18.1 L Y X 
 
-91a <test:lyx:chunk-params:sub[1](THING, colour), lang=> ≡ 
+95a <test:lyx:chunk-params:sub[1](THING, colour), lang=> ≡ 
       ________________________________________________________________________
   1  | I see a ${THING},
   2  | a ${THING} of colour ${colour}, 
@@ -3139,21 +3183,21 @@ Chapter 18Chunk Parameters
 
 
 
-91b <test:lyx:chunk-params:sub:sub[1](colour), lang=> ≡ 
+95b <test:lyx:chunk-params:sub:sub[1](colour), lang=> ≡ 
       ________________________________________________________________________
   1  | a funny shade of ${colour}
      |________________________________________________________________________
 
 
 
-91c <test:chunk-params:text[1](), lang=> ≡  92a⊳
+95c <test:chunk-params:text[1](), lang=> ≡  94a⊳
       ________________________________________________________________________
   1  | What do you see? "=<\chunkref{test:lyx:chunk-params:sub}(joe, red)>"
   2  | Well, fancy!
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 Should generate output:
 
-91d <test:lyx:chunk-params:result[1](), lang=> ≡ 
+95d <test:lyx:chunk-params:result[1](), lang=> ≡ 
       ________________________________________________________________________
   1  | What do you see? "I see a joe,
   2  |                   a joe of colour red, 
@@ -3164,7 +3208,7 @@ Should generate output:
 
 And this chunk will perform the test:
 
-91e <test:chunk-params[1](), lang=> ≡  92c⊳
+95e <test:chunk-params[1](), lang=> ≡  94c⊳
       ________________________________________________________________________
   1  | $FANGLE -Rtest:lyx:chunk-params:result $TEX_SRC > $TMP/answer || exit 1
   2  | $FANGLE -Rtest:lyx:chunk-params:text $TEX_SRC > $TMP/result || exit 1
@@ -3172,32 +3216,32 @@ And this chunk will perform the test:
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 18.2 TeXmacs 
 
-91f <test:chunk-params:sub[1](THING, colour), lang=> ≡ 
+95f <test:chunk-params:sub[1](THING, colour), lang=> ≡ 
       ________________________________________________________________________
   1  | I see a ${THING}
   2  | a ${THING} of colour ${colour}, 
-  3  | and looking closer «test:chunk-params:sub:sub(${colour}) 91g»
+  3  | and looking closer «test:chunk-params:sub:sub(${colour}) 93g»
      |________________________________________________________________________
 
 
 
-91g <test:chunk-params:sub:sub[1](colour), lang=> ≡ 
+95g <test:chunk-params:sub:sub[1](colour), lang=> ≡ 
       ________________________________________________________________________
   1  | a funny shade of ${colour}
      |________________________________________________________________________
 
 
 
-92a <test:chunk-params:text[2]() ⇑91c, lang=> +≡ ⊲91c
+96a <test:chunk-params:text[2]() ⇑93c, lang=> +≡ ⊲93c
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
-  3  | What do you see? "«test:chunk-params:sub(joe, red) 91f»
+  3  | What do you see? "«test:chunk-params:sub(joe, red) 93f»
   4  | Well, fancy!
      |________________________________________________________________________
 
 
 Should generate output:
 
-92b <test:chunk-params:result[1](), lang=> ≡ 
+96b <test:chunk-params:result[1](), lang=> ≡ 
       ________________________________________________________________________
   1  | What do you see? "I see a joe,
   2  |                   a joe of colour red, 
@@ -3208,7 +3252,7 @@ Should generate output:
 
 And this chunk will perform the test:
 
-92c <test:chunk-params[2]() ⇑91e, lang=> +≡ ⊲91e
+96c <test:chunk-params[2]() ⇑93e, lang=> +≡ ⊲93e
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   4  | $FANGLE -Rtest:chunk-params:result $TEX_SRC > $TMP/answer || exit 1
   5  | $FANGLE -Rtest:chunk-params:text $TEX_SRC > $TMP/result || exit 1
@@ -3218,7 +3262,7 @@ And this chunk will perform the test:
 
 Chapter 19Compile-log-lyx
 
-93a <Chunk:./compile-log-lyx[1](), lang=sh> ≡ 
+97a <Chunk:./compile-log-lyx[1](), lang=sh> ≡ 
       ________________________________________________________________________
   1  | #! /bin/sh
   2  | # can't use gtkdialog -i, cos it uses the "source" command which ubuntu sh doesn't have
