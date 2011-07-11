@@ -94,14 +94,17 @@ function push_mode_tracker(context, language, mode,
   if (! ("" in context)) {
     split("", context);
     new_mode_tracker(context, language, mode);
+    return context[""];
   } else {
     top = context[""];
     if (context[top, "language"] == language && mode=="") mode = context[top, "mode"];
+    old_top = top;
     top++;
     context[top, "language"] = language;
     context[top, "mode"] = mode;
     context[""] = top;
   }
+  return top;
 }
 function dump_mode_tracker(context,  
   c, d)
@@ -113,9 +116,10 @@ function dump_mode_tracker(context,
     }
   }
 }
-function finalize_mode_tracker(context)
+function pop_mode_tracker(context, context_origin)
 {
-  if ( ("" in context) && context[""] != 0) return 0;
+  if ( (context_origin) && ("" in context) && context[""] != context_origin) return 0;
+  context[""]--;
   return 1;
 }
 function mode_tracker(context, text, values, 
@@ -227,34 +231,25 @@ function untab(text) {
   gsub("[[:space:]]*\xE2\x86\xA4","", text);
   return text;
 }
-function transform_escape(quotes, text,
-    # optional
-    max, 
-        # local vars
-        c)
+function transform_escape(context, text, top,
+  c, cp, cpl, s, r)
 {
-  for(c=1; c <= max && ( (c, "s") in quotes); c++) {
-    gsub(quotes[c, "s"], quotes[c, "r"], text);
-  }
-  return text;
-}
-function mode_escaper(context, quotes, src,
-  c, cp, cpl)
-{
-  for(c = context[""]; c >= 0; c--) {
+  for(c = top; c >= 0; c--) {
     if ( (context[c, "language"], context[c, "mode"]) in escapes) {
       cpl = escapes[context[c, "language"], context[c, "mode"]];
       for (cp = 1; cp <= cpl; cp ++) {
-        ++src;
-        quotes[src, "s"] = escapes[context[c, "language"], context[c, "mode"], cp, "s"];
-        quotes[src, "r"] = escapes[context[c, "language"], context[c, "mode"], cp, "r"];
+        s = escapes[context[c, "language"], context[c, "mode"], cp, "s"];
+        r = escapes[context[c, "language"], context[c, "mode"], cp, "r"];
+        if (length(s)) {
+          gsub(s, r, text);
+        }
         if ( (context[c, "language"], context[c, "mode"], cp, "t") in escapes ) {
           quotes[src, "t"] = escapes[context[c, "language"], context[c, "mode"], cp, "t"];
         }
       }
     }
   }
-  return src;
+  return text;
 }
 function dump_escaper(quotes, r, cc) {
   for(cc=1; cc<=c; cc++) {
@@ -361,8 +356,8 @@ function write_chunk(chunk_name) {
 function write_chunk_r(chunk_name, context, indent, tail,
   # optional vars
   chunk_path, chunk_args, 
-  quotes, src, new_src, 
   # local vars
+  context_origin,
   chunk_params, part, max_part, part_line, frag, max_frag, text, 
   chunklet, only_part, call_chunk_args, new_context)
 {
@@ -371,9 +366,8 @@ function write_chunk_r(chunk_name, context, indent, tail,
     chunk_name = chunk_name_parts[1];
     only_part = chunk_name_parts[2];
   }
- split("", context);
- new_mode_tracker(context, chunks[chunk_name, "language"], "");
- split(chunks[chunk_name, "params"], chunk_params, " *; *");
+  context_origin = push_mode_tracker(context, chunks[chunk_name, "language"], "");
+  split(chunks[chunk_name, "params"], chunk_params, " *; *");
   if (! (chunk_name in chunk_names)) {
     error(sprintf(_"The root module <<%s>> was not defined.\nUsed by: %s",\
                   chunk_name, chunk_path));
@@ -404,15 +398,12 @@ function write_chunk_r(chunk_name, context, indent, tail,
         } else {
           split("", call_chunk_args);
         }
-        # update the transforms arrays
-        new_src = mode_escaper(context, quotes, src);
-        split("", new_context);
-        write_chunk_r(chunklet, new_context,
+
+        write_chunk_r(chunklet, context,
                     chunks[chunk_name, "part", part, "indent"] indent,
                     chunks[chunk_name, "part", part, "tail"],
                     chunk_path "\n         " chunk_name,
-                    call_chunk_args,
-                    quotes, new_src);
+                    call_chunk_args);
       } else if (chunklet SUBSEP "line" in chunks) {
         max_frag = chunks[chunklet, "line"];
         for(frag = 1; frag <= max_frag; frag++) {
@@ -443,7 +434,7 @@ function write_chunk_r(chunk_name, context, indent, tail,
 
           text = text tail;
           mode_tracker(context, text);
-          print untab(transform_escape(quotes, text, src));
+          print untab(transform_escape(context, text, context_origin));
           if (linenos) {
             lineno_suppressed = substr(lastline, length(lastline)) == "\\";
           }
@@ -453,7 +444,7 @@ function write_chunk_r(chunk_name, context, indent, tail,
       }
     }
   }
-  if (! finalize_mode_tracker(context)) {
+  if (! pop_mode_tracker(context, context_origin)) {
     dump_mode_tracker(context);
     error(sprintf(_"Module %s did not close context properly.\nUsed by: %s\n", chunk_name, chunk_path));
   }
@@ -621,9 +612,10 @@ BEGIN {
   modes["perl", "#", "terminators"]="\n";
   escapes["perl", "#", ++escapes["perl", "#"], "s"]="\n";
   escapes["perl", "#",   escapes["perl", "#"], "r"]="\n#";
-  modes["sh", "",  "submodes"]="\\\\|\"|'|{|\\(|\\[";
+  modes["sh", "",  "submodes"]="\\\\|\"|'|{|\\(|\\[|\\$\\(";
   modes["sh", "\\", "terminators"]=".";
-  modes["sh", "\"", "submodes"]="\\\\";
+
+  modes["sh", "\"", "submodes"]="\\\\|\\$\\(";
   modes["sh", "\"", "terminators"]="\"";
   escapes["sh", "\"", ++escapes["sh", "\""], "s"]="\\\\";
   escapes["sh", "\"",   escapes["sh", "\""], "r"]="\\\\";
@@ -631,12 +623,13 @@ BEGIN {
   escapes["sh", "\"",   escapes["sh", "\""], "r"]="\\" "\"";
   escapes["sh", "\"", ++escapes["sh", "\""], "s"]="\n";
   escapes["sh", "\"",   escapes["sh", "\""], "r"]="\\n";
+
   modes["sh", "'", "terminators"]="'";
   escapes["sh", "'", ++escapes["sh", "'"], "s"]="'";
   escapes["sh", "'",   escapes["sh", "'"], "r"]="'\\'" "'";
   modes["sh", "$(",  "submodes" ]="\\\\|\"|{|\\(|\\[|'|/\\*";
   modes["sh", "$(",  "delimiters"]=" *, *";
-  modes["sh", "$(",  "terminators"]=")";
+  modes["sh", "$(",  "terminators"]="\\)";
   escapes["sh", "$(", ++escapes["sh", "$("], "tunnel"]="";
   modes["sh", "{",  "submodes" ]="\\\\|\"|{|\\(|\\[|'|/\\*";
   modes["sh", "{",  "delimiters"]=" *, *";

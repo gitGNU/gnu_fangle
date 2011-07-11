@@ -1868,7 +1868,7 @@
 
   <\with|par-columns|2>
     <\nf-chunk|test:q:1>
-      <item>echo "$(<nf-ref|test:q:1-inc|>
+      <item>echo "$(<nf-ref|test:q:1-inc|>)"
     </nf-chunk|sh|>
 
     <\nf-chunk|test:q:1-inc>
@@ -2298,11 +2298,29 @@
   it's definition apart from single-quote strings.\ 
 
   <\nf-chunk|mode-definitions>
-    <item>modes["sh", "", \ "submodes"]="\\\\\\\\\|\\"\|'\|{\|\\\\(\|\\\\[";
+    <item>modes["sh", "", \ "submodes"]="\\\\\\\\\|\\"\|'\|{\|\\\\(\|\\\\[\|\\\\$\\\\(";
 
     <item>modes["sh", "\\\\", "terminators"]=".";
 
-    <item><nf-ref|mode:common-string|<tuple|"sh"|"\\"">>
+    <item>
+
+    <item>modes["sh", "\\"", "submodes"]="\\\\\\\\\|\\\\$\\\\(";
+
+    <item>modes["sh", "\\"", "terminators"]="\\"";
+
+    <item>escapes["sh", "\\"", ++escapes["sh", "\\""], "s"]="\\\\\\\\";
+
+    <item>escapes["sh", "\\"", \ \ escapes["sh", "\\""], "r"]="\\\\\\\\";
+
+    <item>escapes["sh", "\\"", ++escapes["sh", "\\""], "s"]="\\"";
+
+    <item>escapes["sh", "\\"", \ \ escapes["sh", "\\""], "r"]="\\\\" "\\"";
+
+    <item>escapes["sh", "\\"", ++escapes["sh", "\\""], "s"]="\\n";
+
+    <item>escapes["sh", "\\"", \ \ escapes["sh", "\\""], "r"]="\\\\n";
+
+    <item>
 
     <item>modes["sh", "'", "terminators"]="'";
 
@@ -2310,7 +2328,7 @@
 
     <item>escapes["sh", "'", \ \ escapes["sh", "'"], "r"]="'\\\\'" "'";
 
-    <item><nf-ref|mode:common-brackets|<tuple|"sh"|"$("|")">>
+    <item><nf-ref|mode:common-brackets|<tuple|"sh"|"$("|"\\\\)">>
 
     <item><nf-ref|mode:add-tunnel|<tuple|"sh"|"$("|"">>
 
@@ -2417,12 +2435,16 @@
 
     <item> \ \ \ <nf-ref|new-mode-tracker|<tuple|context|language|mode>>
 
+    <item> \ \ \ return context[""];
+
     <item> \ } else {
 
     <item> \ \ \ top = context[""];
 
     <item> \ \ \ if (context[top, "language"] == language && mode=="") mode =
     context[top, "mode"];
+
+    <item> \ \ \ old_top = top;
 
     <item> \ \ \ top++;
 
@@ -2433,6 +2455,8 @@
     <item> \ \ \ context[""] = top;
 
     <item> \ }
+
+    <item> \ return top;
 
     <item>}
   </nf-chunk|awk|>
@@ -2462,11 +2486,14 @@
   </nf-chunk||>
 
   <\nf-chunk|mode_tracker>
-    <item>function finalize_mode_tracker(context)
+    <item>function pop_mode_tracker(context, context_origin)
 
     <item>{
 
-    <item> \ if ( ("" in context) && context[""] != 0) return 0;
+    <item> \ if ( (context_origin) && ("" in context) && context[""] !=
+    context_origin) return 0;
+
+    <item> \ context[""]--;
 
     <item> \ return 1;
 
@@ -2866,43 +2893,16 @@
   Each nested mode can optionally define a set of transforms to be applied to
   any text that is included from another language.
 
-  This code can perform transforms
+  This code can perform transforms from index c downwards.
 
   <\nf-chunk|mode_tracker>
-    <item>function transform_escape(quotes, text,
+    <item>function transform_escape(context, text, top,
 
-    <item> \ \ \ # optional
-
-    <item> \ \ \ max,\ 
-
-    <item> \ \ \ \ \ \ \ # local vars
-
-    <item> \ \ \ \ \ \ \ c)
+    <item> \ c, cp, cpl, s, r)
 
     <item>{
 
-    <item> \ for(c=1; c \<less\>= max && ( (c, "s") in quotes); c++) {
-
-    <item> \ \ \ gsub(quotes[c, "s"], quotes[c, "r"], text);
-
-    <item> \ }
-
-    <item> \ return text;
-
-    <item>}
-  </nf-chunk|awk|>
-
-  This function must append from index c onwards, and escape transforms from
-  the supplied context, and return c + number of new transforms.
-
-  <\nf-chunk|mode_tracker>
-    <item>function mode_escaper(context, quotes, src,
-
-    <item> \ c, cp, cpl)
-
-    <item>{
-
-    <item> \ for(c = context[""]; c \<gtr\>= 0; c--) {
+    <item> \ for(c = top; c \<gtr\>= 0; c--) {
 
     <item> \ \ \ if ( (context[c, "language"], context[c, "mode"]) in
     escapes) {
@@ -2912,13 +2912,17 @@
 
     <item> \ \ \ \ \ for (cp = 1; cp \<less\>= cpl; cp ++) {
 
-    <item> \ \ \ \ \ \ \ ++src;
+    <item> \ \ \ \ \ \ \ s = escapes[context[c, "language"], context[c,
+    "mode"], cp, "s"];
 
-    <item> \ \ \ \ \ \ \ quotes[src, "s"] = escapes[context[c, "language"],
-    context[c, "mode"], cp, "s"];
+    <item> \ \ \ \ \ \ \ r = escapes[context[c, "language"], context[c,
+    "mode"], cp, "r"];
 
-    <item> \ \ \ \ \ \ \ quotes[src, "r"] = escapes[context[c, "language"],
-    context[c, "mode"], cp, "r"];
+    <item> \ \ \ \ \ \ \ if (length(s)) {
+
+    <item> \ \ \ \ \ \ \ \ \ gsub(s, r, text);
+
+    <item> \ \ \ \ \ \ \ }
 
     <item> \ \ \ \ \ \ \ if ( (context[c, "language"], context[c, "mode"],
     cp, "t") in escapes ) {
@@ -2934,7 +2938,7 @@
 
     <item> \ }
 
-    <item> \ return src;
+    <item> \ return text;
 
     <item>}
 
@@ -3765,9 +3769,9 @@
 
     <item> \ <with|font-shape|italic|chunk_path>, chunk_args,\ 
 
-    <item> \ quotes, src, new_src,\ 
-
     <item> \ # local vars
+
+    <item> \ context_origin,
 
     <item> \ chunk_params, part, max_part, part_line, frag, max_frag, text,\ 
 
@@ -3776,7 +3780,7 @@
     <item>{
 
     <item> \ if (debug) debug_log("write_chunk_r(" chunk_name ")");
-  </nf-chunk||>
+  </nf-chunk|awk|>
 
   <subsection|Chunk Parts><label|sub:Chunk-parts>
 
@@ -3798,8 +3802,8 @@
   We then create a mode tracker
 
   <\nf-chunk|write_chunk()>
-    <item> <nf-ref|new-mode-tracker|<tuple|context|chunks[chunk_name,
-    "language"]|"">>
+    <item> \ context_origin = push_mode_tracker(context, chunks[chunk_name,
+    "language"], "");
   </nf-chunk||>
 
   We extract into <verbatim|chunk_params> the names of the parameters that
@@ -3807,7 +3811,7 @@
   <verbatim|chunk_args>.
 
   <\nf-chunk|write_chunk()>
-    <item> split(chunks[chunk_name, "params"], chunk_params, " *; *");
+    <item> \ split(chunks[chunk_name, "params"], chunk_params, " *; *");
   </nf-chunk||>
 
   To assemble a chunk, we write out each part.
@@ -3836,7 +3840,7 @@
 
     <item> \ }
 
-    <item> \ if (! finalize_mode_tracker(context)) {
+    <item> \ if (! pop_mode_tracker(context, context_origin)) {
 
     <item> \ \ \ dump_mode_tracker(context);
 
@@ -3912,13 +3916,9 @@
 
     <item>}
 
-    <item># update the transforms arrays
+    <item>
 
-    <item>new_src = mode_escaper(context, quotes, src);
-
-    <item><nf-ref|awk-delete-array|<tuple|new_context>>
-
-    <item>write_chunk_r(chunklet, new_context,
+    <item>write_chunk_r(chunklet, context,
 
     <item> \ \ \ \ \ \ \ \ \ \ \ chunks[chunk_name, "part", part, "indent"]
     indent,
@@ -3928,9 +3928,7 @@
     <item> \ \ \ \ \ \ \ \ \ \ \ chunk_path "\\n \ \ \ \ \ \ \ \ "
     chunk_name,
 
-    <item> \ \ \ \ \ \ \ \ \ \ \ call_chunk_args,
-
-    <item> \ \ \ \ \ \ \ \ \ \ \ quotes, new_src);
+    <item> \ \ \ \ \ \ \ \ \ \ \ call_chunk_args);
   </nf-chunk||>
 
   Before we output a chunklet of lines, we first emit the file and line
@@ -4024,7 +4022,7 @@
 
     <item> \ mode_tracker(context, text);
 
-    <item> \ print untab(transform_escape(quotes, text, src));
+    <item> \ print untab(transform_escape(context, text, context_origin));
   </nf-chunk||>
 
   If a line ends in a backslash --- suggesting continuation --- then we
