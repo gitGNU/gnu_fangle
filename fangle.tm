@@ -10,6 +10,14 @@
     sam@liddicott.com
   </author-address>>|<doc-date|August 2009>>
 
+  <item> \ modes["sh", "\\"", "submodes"]="\\\\\\\\\|\|\\\\$\\\\(";
+
+  <item> \ modes["sh", "\\"", "submodes"]="\\\\\\\\\|\|\\\\$\\\\(";
+
+  <item> \ modes["sh", "\\"", "submodes"]="\\\\\\\\\|\|\\\\$\\\\(";
+
+  <item> \ modes["sh", "\\"", "submodes"]="\\\\\\\\\|\|\\\\$\\\\(";
+
   <section*|Introduction>
 
   <name|Fangle> is a tool for fangled literate programming. Newfangled is
@@ -1690,11 +1698,8 @@
     <item>text=text_array[1];
   </nf-chunk||>
 
-  We then iterate over the remaining values in the array<\footnote>
-    I don't know why I think that it will enumerate the array in order, but
-    it seems to work
-  </footnote><todo|fix or prove it>, and substitute each reference for it's
-  argument.
+  We then iterate over the remaining values in the array, and substitute each
+  reference for it's argument.
 
   <\nf-chunk|substitute-chunk-args>
     <item>for(t=2; t in text_array; t++) {
@@ -1747,13 +1752,13 @@
 
   <section|Modes to keep code together>
 
-  As an example, the C language has a few parse modes, affecting the
+  As an example, the C language has a few parse modes, which affect the
   interpretation of characters.
 
-  One parse mode is the strings mode. The string mode is commenced by an
+  One parse mode is the string mode. The string mode is commenced by an
   un-escaped quotation mark <verbatim|"> and terminated by the same. Within
   the string mode, only one additional mode can be commenced, it is the
-  backslash mode <verbatim|\\>, which is always terminated after the folloing
+  backslash mode <verbatim|\\>, which is always terminated by the following
   character.
 
   Another mode is <verbatim|[> which is terminated by a <verbatim|]> (unless
@@ -1778,17 +1783,23 @@
 
   <section|Modes affect included chunks>
 
-  For instance, consider this chunk with language=perl:
+  For instance, consider this chunk with <verbatim|language=perl>:
 
-  <nf-chunk|example-perl|print "hello world $0\\n";|perl|>
+  <\nf-chunk|test:example-perl>
+    <item>print "hello world $0\\n";
+  </nf-chunk|perl|>
 
   If it were included in a chunk with <verbatim|language=sh>, like this:
 
-  <nf-chunk|example-sh|perl -e "<nf-ref|example-perl|>"|sh|>
+  <\nf-chunk|test:example-sh>
+    <item>perl -e "<nf-ref|test:example-perl|>"
+  </nf-chunk|sh|>
 
   we might want fangle would to generate output like this:
 
-  <verbatim|perl -e "print \\"hello world \\$0\\\\n\\";" >
+  <\nf-chunk|test:example-sh.result>
+    <item>perl -e "print \\"hello world \\$0\\\\n\\";"
+  </nf-chunk|sh|>
 
   See that the double quote <verbatim|">, back-slash <verbatim|\\> and
   <verbatim|$> have been quoted with a back-slash to protect them from shell
@@ -1796,19 +1807,20 @@
 
   If that were then included in a chunk with language=make, like this:
 
-  <\nf-chunk|example-makefile>
+  <\nf-chunk|test:example-makefile>
     <item>target: pre-req
 
-    <item><nf-tab><nf-ref|example-sh|>
+    <item><nf-tab><nf-ref|test:example-sh|>
   </nf-chunk|make|>
 
-  We would need the output to look like this --- note the <verbatim|$$>:
+  We would need the output to look like this --- note the <verbatim|$$> as
+  the single <verbatim|$> has been makefile-quoted with another <verbatim|$>.
 
-  <\verbatim>
-    target: pre-req
+  <\nf-chunk|test:example-makefile.result>
+    <item>target: pre-req
 
-    \ \ \ \ \ \ \ \ perl -e "print \\"hello world \\$$0\\\\n\\";"
-  </verbatim>
+    <item><nf-tab>perl -e "print \\"hello world \\$$0\\\\n\\";"
+  </nf-chunk|make|>
 
   <section|Modes operation>
 
@@ -2350,6 +2362,30 @@
     ++escapes[<nf-arg|language>, <nf-arg|mode>], "tunnel"]=<nf-arg|tunnel>;
   </nf-chunk||<tuple|language|mode|tunnel>>
 
+  <subsection|Make>
+
+  For makefiles, we currently recognize 2 modes: the <em|null> mode and
+  <nf-tab> mode, which is tabbed mode. In the <em|null> mode the only escape
+  is <verbatim|$> which must be converted to <verbatim|$$>. In tabbed mode,
+  the only escape is <verbatim|\\n> <emdash> new lines must also begin with a
+  tab.
+
+  <\nf-chunk|mode-definitions>
+    <item>modes["make", "", \ "submodes"]="<nf-tab>";
+
+    <item>escapes["make", "", ++escapes["make", ""], "s"]="\\\\$";
+
+    <item>escapes["make", "", ++escapes["make", ""], "r"]="$$";
+
+    <item>modes["make", "<nf-tab>", "terminators"]="\\\\n";
+
+    <item>escapes["make", "<nf-tab>", ++escapes["make", "<nf-tab>"],
+    "s"]="\\\\n";
+
+    <item>escapes["make", "<nf-tab>", ++escapes["make", "<nf-tab>"],
+    "r"]="\\n<nf-tab>";
+  </nf-chunk|awk|>
+
   <section|Some tests>
 
   Also, the parser must return any spare text at the end that has not been
@@ -2539,10 +2575,10 @@
   <\nf-chunk|test:cromulence>
     <item>echo Cromulence test
 
-    <item>passtest $FANGLE -Rtest:whole-chunk $TEX_SRC &\<gtr\>/dev/null \|\|
+    <item>passtest $FANGLE -Rtest:whole-chunk $TXT_SRC &\<gtr\>/dev/null \|\|
     ( echo "Whole chunk failed" && exit 1 )
 
-    <item>failtest $FANGLE -Rtest:partial-chunk $TEX_SRC &\<gtr\>/dev/null
+    <item>failtest $FANGLE -Rtest:partial-chunk $TXT_SRC &\<gtr\>/dev/null
     \|\| ( echo "Partial chunk failed" && exit 1 )
   </nf-chunk||>
 
@@ -2957,7 +2993,7 @@
   <\nf-chunk|test:escapes>
     <item>echo escapes test
 
-    <item>passtest $FANGLE -Rtest:comment-quote $TEX_SRC &\<gtr\>/dev/null
+    <item>passtest $FANGLE -Rtest:comment-quote $TXT_SRC &\<gtr\>/dev/null
     \|\| ( echo "Comment-quote failed" && exit 1 )
   </nf-chunk|sh|>
 
@@ -3072,7 +3108,7 @@
 
     <item> \ } else {
 
-    <item> \ \ \ warning(sprintf("Unexpected chunk match: %s\\n", $_))
+    <item> \ \ \ # warning(sprintf("Unexpected chunk match: %s\\n", $_))
 
     <item> \ }
 
@@ -5110,34 +5146,11 @@
 
     <item>
 
-    <item><nf-ref|test:helpers|>
-
     <item>export FANGLE=./fangle
 
     <item>export TMP=${TMP:-/tmp}
 
-    <item><nf-ref|test:run-tests|>
-
-    <item># Now check that we can extract a fangle that also passes the
-    tests!
-
-    <item>$FANGLE -R./fangle $TEX_SRC \<gtr\> ./new-fangle
-
-    <item>export FANGLE=./new-fangle
-
-    <item><nf-ref|test:run-tests|>
-  </nf-chunk|sh|>
-
-  <\nf-chunk|test:run-tests>
-    <item># run tests
-
-    <item>$FANGLE -Rpca-test.awk $TEX_SRC \| awk -f - \|\| exit 1
-
-    <item><nf-ref|test:cromulence|>
-
-    <item><nf-ref|test:escapes|>
-
-    <item><nf-ref|test:chunk-params|>
+    <item><nf-ref|test:*|>
   </nf-chunk|sh|>
 
   With a lyx-build-helper
@@ -5150,6 +5163,8 @@
     <item>TEX_DIR="$LYX_p"
 
     <item>TEX_SRC="$TEX_DIR/$LYX_i"
+
+    <item>TXT_SRC="$TEX_SRC"
   </nf-chunk|sh|>
 
   <section|Extracting documentation>
@@ -5208,16 +5223,67 @@
     <item>fangle -R./fangle.module fangle.tex \<gtr\> ./fangle.module
   </nf-chunk|sh|>
 
-  <section|Testing>
+  \;
+
+  <part|Tests>
+
+  <chapter|Tests>
+
+  <\nf-chunk|test:*>
+    <item>#! /bin/bash
+
+    <item>
+
+    <item>export TXT_SRC=${TXT_SRC:-fangle.txt}
+
+    <item>export FANGLE=${FANGLE:-./fangle}
+
+    <item>export TMP=${TMP:-/tmp}
+
+    <item>
+
+    <item>tm -s -c fangle.tm fangle.txt -q
+
+    <item>
+
+    <item><nf-ref|test:helpers|>
+
+    <item><nf-ref|test:run-tests|>
+
+    <item># Now check that we can extract a fangle that also passes the
+    tests!
+
+    <item>$FANGLE -R./fangle $TXT_SRC \<gtr\> ./fangle.new
+
+    <item>export FANGLE=./fangle.new
+
+    <item><nf-ref|test:run-tests|>
+  </nf-chunk||>
+
+  <\nf-chunk|test:run-tests>
+    <item># run tests
+
+    <item>$FANGLE -Rpca-test.awk $TXT_SRC \| awk -f - \|\| exit 1
+
+    <item><nf-ref|test:cromulence|>
+
+    <item><nf-ref|test:escapes|>
+
+    <item><nf-ref|test:test-chunk|<tuple|test:example-sh|test:example-sh.result>>
+
+    <item><nf-ref|test:test-chunk|<tuple|test:example-makefile|test:example-makefile.result>>
+
+    <item><nf-ref|test:chunk-params|>
+  </nf-chunk|sh|>
 
   <\nf-chunk|test:helpers>
     <item>passtest() {
 
     <item> \ if "$@"
 
-    <item> \ then echo "Passed"
+    <item> \ then echo "Passed $TEST"
 
-    <item> \ else echo "Failed"
+    <item> \ else echo "Failed $TEST"
 
     <item> \ \ \ \ \ \ return 1
 
@@ -5231,9 +5297,9 @@
 
     <item> \ if ! "$@"
 
-    <item> \ then echo "Passed"
+    <item> \ then echo "Passed $TEST"
 
-    <item> \ else echo "Failed"
+    <item> \ else echo "Failed $TEST"
 
     <item> \ \ \ \ \ \ return 1
 
@@ -5242,7 +5308,16 @@
     <item>}
   </nf-chunk||>
 
-  <part|Tests>
+  This chunk will render a named chunk and compare it to another rendered
+  nameed chunk
+
+  <\nf-chunk|test:test-chunk>
+    <item>TEST="<nf-arg|result>" passtest diff -u --label "<nf-arg|chunk>"
+    \<less\>( $FANGLE -R<nf-arg|chunk> $TXT_SRC ) \\
+
+    <item> \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ --label
+    "<nf-arg|result>" \<less\>( $FANGLE -R<nf-arg|result> $TXT_SRC )
+  </nf-chunk|sh|<tuple|chunk|result>>
 
   <chapter|Chunk Parameters>
 
@@ -5253,14 +5328,14 @@
 
     <item>a ${THING} of colour ${colour},\ 
 
-    <item>and looking closer =\<less\>\\chunkref{test:lyx:chunk-params:sub:sub}(${colour)\<gtr\>
+    <item>and looking closer =\<less\>\\chunkref{test:lyx:chunk-params:sub:sub}(${colour})\<gtr\>
   </nf-chunk||<tuple|THING|colour>>
 
   <\nf-chunk|test:lyx:chunk-params:sub:sub>
     <item>a funny shade of ${colour}
   </nf-chunk||<tuple|colour>>
 
-  <\nf-chunk|test:chunk-params:text>
+  <\nf-chunk|test:lyx:chunk-params:text>
     <item>What do you see? "=\<less\>\\chunkref{test:lyx:chunk-params:sub}(joe,
     red)\<gtr\>"
 
@@ -5283,20 +5358,14 @@
   And this chunk will perform the test:
 
   <\nf-chunk|test:chunk-params>
-    <item>$FANGLE -Rtest:lyx:chunk-params:result $TEX_SRC \<gtr\> $TMP/answer
+    <item><nf-ref|test:test-chunk|<tuple|test:lyx:chunk-params:text|test:lyx:chunk-params:result>>
     \|\| exit 1
-
-    <item>$FANGLE -Rtest:lyx:chunk-params:text $TEX_SRC \<gtr\> $TMP/result
-    \|\| exit 1
-
-    <item>passtest diff $TMP/answer $TMP/result \|\| (echo
-    test:lyx:chunk-params:text failed ; exit 1)
   </nf-chunk||>
 
   <section|<TeXmacs>>
 
   <\nf-chunk|test:chunk-params:sub>
-    <item>I see a <nf-arg|THING>
+    <item>I see a <nf-arg|THING>,
 
     <item>a <nf-arg|THING> of colour <nf-arg|colour>,\ 
 
@@ -5308,7 +5377,7 @@
   </nf-chunk||<tuple|colour>>
 
   <\nf-chunk|test:chunk-params:text>
-    <item>What do you see? "<nf-ref|test:chunk-params:sub|<tuple|joe|red>>
+    <item>What do you see? "<nf-ref|test:chunk-params:sub|<tuple|joe|red>>"
 
     <item>Well, fancy!
   </nf-chunk||>
@@ -5329,14 +5398,8 @@
   And this chunk will perform the test:
 
   <\nf-chunk|test:chunk-params>
-    <item>$FANGLE -Rtest:chunk-params:result $TEX_SRC \<gtr\> $TMP/answer
+    <item><nf-ref|test:test-chunk|<tuple|test:chunk-params:text|test:chunk-params:result>>
     \|\| exit 1
-
-    <item>$FANGLE -Rtest:chunk-params:text $TEX_SRC \<gtr\> $TMP/result \|\|
-    exit 1
-
-    <item>passtest diff $TMP/answer $TMP/result \|\| (echo
-    test:chunk-params:text failed ; exit 1)
   </nf-chunk||>
 
   <chapter|Compile-log-lyx><label|Compile-log-lyx>

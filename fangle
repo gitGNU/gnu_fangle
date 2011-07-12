@@ -646,6 +646,12 @@ BEGIN {
   escapes["sh", "#",   escapes["sh", "#"], "r"]="\n#";
   escapes["sh", "\"", ++escapes["sh", "\""], "s"]="\\$";
   escapes["sh", "\"",   escapes["sh", "\""], "r"]="\\$";
+  modes["make", "",  "submodes"]="	";
+  escapes["make", "", ++escapes["make", ""], "s"]="\\$";
+  escapes["make", "", ++escapes["make", ""], "r"]="$$";
+  modes["make", "	", "terminators"]="\\n";
+  escapes["make", "	", ++escapes["make", "	"], "s"]="\\n";
+  escapes["make", "	", ++escapes["make", "	"], "r"]="\n	";
   debug=0;
   linenos=0;
   notangle_mode=0;
@@ -691,7 +697,7 @@ BEGIN {
     new_chunk(next_chunk_name, next_chunk_opts, next_chunk_params);
     texmacs_chunking = 1;
   } else {
-    warning(sprintf("Unexpected chunk match: %s\n", $_))
+    # warning(sprintf("Unexpected chunk match: %s\n", $_))
   }
   next;
 }

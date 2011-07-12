@@ -14,6 +14,10 @@ August 2009
 
 
 
+∗    modes["sh", "\"", "submodes"]="\\\\||\\$\\(";
+∗    modes["sh", "\"", "submodes"]="\\\\||\\$\\(";
+∗    modes["sh", "\"", "submodes"]="\\\\||\\$\\(";
+∗    modes["sh", "\"", "submodes"]="\\\\||\\$\\(";
 Introduction 
 Fangle is a tool for fangled literate programming. Newfangled is defined as New and often needlessly novel by TheFreeDictionary.com.
 In this case, fangled means yet another not-so-new1. but improved.  ^1 method for literate programming.
@@ -155,12 +159,12 @@ II Source Code   33
 17.1 Extracting from Lyx   91
 17.2 Extracting documentation   91
 17.3 Extracting from the command line   92
-17.4 Testing   92
-III Tests   93
-18 Chunk Parameters   95
-18.1 L Y X   95
-18.2 T_ E X_( M A CS)   95
-19 Compile-log-lyx   97
+17.4 Testing   93
+III Tests   95
+18 Chunk Parameters   97
+18.1 L Y X   97
+18.2 T_ E X_( M A CS)   97
+19 Compile-log-lyx   99
 Part I  Using Fangle 
 Chapter 1Introduction to Literate Programming
 Todo: Should really follow on from a part-0 explanation of what literate programming is.
@@ -274,7 +278,7 @@ This looks simple enough, but as mentioned, fangle has to be had from somewhere 
 When the lyx-build chunk is executed, the current directory will be a temporary directory, and LYX_SOURCE will refer to the tex file in this temporary directory. This is unfortunate as our makefile wants to run from the project directory where the Lyx file is kept.
 We can extract the project directory from $$r, and derive the probable Lyx filename from the noweb file that Lyx generated.
 
-19b <lyx-build-helper[1](), lang=sh> ≡  91c⊳
+19b <lyx-build-helper[1](), lang=sh> ≡  91b⊳
       ________________________________________________________________________
   1  | PROJECT_DIR="$LYX_r"
   2  | LYX_SRC="$PROJECT_DIR/${LYX_i%.tex}.lyx"
@@ -1000,9 +1004,7 @@ We accumulate substituted text in the variable text. As the first part of the sp
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   4  | text=text_array[1];
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
-We then iterate over the remaining values in the array3. I don't know why I think that it will enumerate the array in order, but it seems to work  ^3
-To do: fix or prove it
-, and substitute each reference for it's argument.
+We then iterate over the remaining values in the array, and substitute each reference for it's argument.
 
 43c <substitute-chunk-args[3]() ⇑43a, lang=> +≡ ▵43b
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
@@ -1031,8 +1033,8 @@ Chapter 10Language Modes & Quoting
 lstlistings and fangle both recognize source languages, and perform some basic parsing and syntax highlighting in the rendered document1. although lstlisting supports many more languages  ^1. lstlistings can detect strings and comments within a language definition and perform suitable rendering, such as italics for comments, and visible-spaces within strings.
 Fangle similarly can recognize strings, and comments, etc, within a language, so that any chunks included with \chunkref{a-chunk} or <a-chunk ?> can be suitably escape or quoted.
 10.1 Modes to keep code together 
-As an example, the C language has a few parse modes, affecting the interpretation of characters.
-One parse mode is the strings mode. The string mode is commenced by an un-escaped quotation mark " and terminated by the same. Within the string mode, only one additional mode can be commenced, it is the backslash mode \, which is always terminated after the folloing character.
+As an example, the C language has a few parse modes, which affect the interpretation of characters.
+One parse mode is the string mode. The string mode is commenced by an un-escaped quotation mark " and terminated by the same. Within the string mode, only one additional mode can be commenced, it is the backslash mode \, which is always terminated by the following character.
 Another mode is [ which is terminated by a ] (unless it occurs in a string).
 Consider this fragment of C code:
 do_something((things([x, y])<wide-overbrace>^(2. [ mode), get_other_things((a, "(all)"_(4. " mode)))<wide-overbrace>^(3. ( mode)))<wide-overbrace>^(1. ( mode)
@@ -1042,35 +1044,47 @@ Each language has a set of modes, the default mode being the null mode. Each mod
 10.2 Modes affect included chunks 
 For instance, consider this chunk with language=perl:
 
-45a <example-perl[1](), lang=perl> ≡ 
+?a <test:example-perl[1](), lang=perl> ≡ 
       ________________________________________________________________________
-print "hello world $0\n";
+  1  | print "hello world $0\n";
      |________________________________________________________________________
 
 
 If it were included in a chunk with language=sh, like this:
 
-45b <example-sh[1](), lang=sh> ≡ 
+?b <test:example-sh[1](), lang=sh> ≡ 
       ________________________________________________________________________
-perl -e "«example-perl 45a»"
+  1  | perl -e "«test:example-perl ?a»"
      |________________________________________________________________________
 
 
 we might want fangle would to generate output like this:
-perl -e "print \"hello world \$0\\n\";" 
-See that the double quote ", back-slash \ and $ have been quoted with a back-slash to protect them from shell interpretation.
-If that were then included in a chunk with language=make, like this:
 
-46a <example-makefile[1](), lang=make> ≡ 
+?c <test:example-sh.result[1](), lang=sh> ≡ 
       ________________________________________________________________________
-  1  | target: pre-req
-  2  | ↦«example-sh 45b»
+  1  | perl -e "print \"hello world \$0\\n\";"
      |________________________________________________________________________
 
 
-We would need the output to look like this --- note the $$:
-target: pre-req
-        perl -e "print \"hello world \$$0\\n\";"
+See that the double quote ", back-slash \ and $ have been quoted with a back-slash to protect them from shell interpretation.
+If that were then included in a chunk with language=make, like this:
+
+?d <test:example-makefile[1](), lang=make> ≡ 
+      ________________________________________________________________________
+  1  | target: pre-req
+  2  | ↦«test:example-sh ?b»
+     |________________________________________________________________________
+
+
+We would need the output to look like this --- note the $$ as the single $ has been makefile-quoted with another $.
+
+?e <test:example-makefile.result[1](), lang=make> ≡ 
+      ________________________________________________________________________
+  1  | target: pre-req
+  2  | ↦perl -e "print \"hello world \$$0\\n\";"
+     |________________________________________________________________________
+
+
 10.3 Modes operation 
 In order to make this work, we must define a mode-tracker supporting each language, that can detect the various quoting modes, and provide a transformation that may be applied to any included text so that included text will be interpreted correctly after any interpolation that it may be subject to at run-time.
 For example, the sed transformation for text to be inserted into shell double-quoted strings would be something like:
@@ -1212,7 +1226,7 @@ For the common modes, we define this string handling for double and single quote
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 Working strings should pass this test:
 
-49f <test:mode-definitions[2]() ⇑48b, lang=> +≡ ⊲48b 52d⊳
+49f <test:mode-definitions[2]() ⇑48b, lang=> +≡ ⊲48b 52a⊳
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   18  | parse_chunk_args("c-like", "say \"I said, \\\"Hello, how are you\\\".\", for me", a, "");
   19  | if (a[1] != "say \"I said, \\\"Hello, how are you\\\".\"") e++;
@@ -1421,10 +1435,24 @@ The definition of add-tunnel is:
      |________________________________________________________________________
 
 
+10.5.9 Make 
+For makefiles, we currently recognize 2 modes: the null mode and ↦ mode, which is tabbed mode. In the null mode the only escape is $ which must be converted to $$. In tabbed mode, the only escape is \n — new lines must also begin with a tab.
+
+?a <mode-definitions[4]() ⇑51b, lang=awk> +≡ ⊲52b
+     ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+  1  | modes["make", "",  "submodes"]="↦";
+  2  | escapes["make", "", ++escapes["make", ""], "s"]="\\$";
+  3  | escapes["make", "", ++escapes["make", ""], "r"]="$$";
+  4  | modes["make", "↦", "terminators"]="\\n";
+  5  | escapes["make", "↦", ++escapes["make", "↦"], "s"]="\\n";
+  6  | escapes["make", "↦", ++escapes["make", "↦"], "r"]="\n↦";
+     |________________________________________________________________________
+
+
 10.6 Some tests 
 Also, the parser must return any spare text at the end that has not been processed due to a mode terminator being found.
 
-52d <test:mode-definitions[3]() ⇑48b, lang=> +≡ ⊲49f 53a⊳
+52a <test:mode-definitions[3]() ⇑48b, lang=> +≡ ⊲49f 53a⊳
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   23  | rest = parse_chunk_args("c-like", "1, 2, 3) spare", a, "(");
   24  | if (a[1] != 1) e++;
@@ -1436,7 +1464,7 @@ Also, the parser must return any spare text at the end that has not been process
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 We must also be able to parse the example given earlier.
 
-53a <test:mode-definitions[4]() ⇑48b, lang=> +≡ ⊲52d
+53a <test:mode-definitions[4]() ⇑48b, lang=> +≡ ⊲52a
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   30  | parse_chunk_args("c-like", "things[x, y], get_other_things(a, \"(all)\"), 99", a, "(");
   31  | if (a[1] != "things[x, y]") e++;
@@ -1559,8 +1587,8 @@ These tests will check for correct behaviour:
 54g <test:cromulence[1](), lang=> ≡ 
       ________________________________________________________________________
   1  | echo Cromulence test
-  2  | passtest $FANGLE -Rtest:whole-chunk $TEX_SRC &>/dev/null || ( echo "Whole chunk failed" && exit 1 )
-  3  | failtest $FANGLE -Rtest:partial-chunk $TEX_SRC &>/dev/null || ( echo "Partial chunk failed" && exit 1 )
+  2  | passtest $FANGLE -Rtest:whole-chunk $TXT_SRC &>/dev/null || ( echo "Whole chunk failed" && exit 1 )
+  3  | failtest $FANGLE -Rtest:partial-chunk $TXT_SRC &>/dev/null || ( echo "Partial chunk failed" && exit 1 )
      |________________________________________________________________________
 
 
@@ -1816,7 +1844,7 @@ This code can perform transforms from index c downwards.
 59a <test:escapes[1](), lang=sh> ≡ 
       ________________________________________________________________________
   1  | echo escapes test
-  2  | passtest $FANGLE -Rtest:comment-quote $TEX_SRC &>/dev/null || ( echo "Comment-quote failed" && exit 1 )
+  2  | passtest $FANGLE -Rtest:comment-quote $TXT_SRC &>/dev/null || ( echo "Comment-quote failed" && exit 1 )
      |________________________________________________________________________
 
 
@@ -1873,7 +1901,7 @@ We detect the the start of a TeXmacs chunk by detecting the ≡ symbol which occ
   24  |     new_chunk(next_chunk_name, next_chunk_opts, next_chunk_params);
   25  |     texmacs_chunking = 1;
   26  |   } else {
-  27  |     warning(sprintf("Unexpected chunk match: %s\n", $_))
+  27  |     # warning(sprintf("Unexpected chunk match: %s\n", $_))
   28  |   }
   29  |   next;
   30  | }
@@ -3077,42 +3105,27 @@ And this lyx-build scrap will extract fangle for me.
   17  | /usr/local/bin/fangle -R./fangle $TEX_SRC > ./fangle
   18  | /usr/local/bin/fangle -R./fangle.module $TEX_SRC > ./fangle.module
   19  | 
-  20  | «test:helpers 92b»
-  21  | export FANGLE=./fangle
-  22  | export TMP=${TMP:-/tmp}
-  23  | «test:run-tests 91b»
-  24  | # Now check that we can extract a fangle that also passes the tests!
-  25  | $FANGLE -R./fangle $TEX_SRC > ./new-fangle
-  26  | export FANGLE=./new-fangle
-  27  | «test:run-tests 91b»
-     |________________________________________________________________________
-
-
-
-91b <test:run-tests[1](), lang=sh> ≡ 
-      ________________________________________________________________________
-  1  | # run tests
-  2  | $FANGLE -Rpca-test.awk $TEX_SRC | awk -f - || exit 1
-  3  | «test:cromulence 54g»
-  4  | «test:escapes 59a»
-  5  | «test:chunk-params 95e»
+  20  | export FANGLE=./fangle
+  21  | export TMP=${TMP:-/tmp}
+  22  | «test:* 95a»
      |________________________________________________________________________
 
 
 With a lyx-build-helper
 
-91c <lyx-build-helper[2]() ⇑19b, lang=sh> +≡ ⊲19b
+91b <lyx-build-helper[2]() ⇑19b, lang=sh> +≡ ⊲19b
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   5  | PROJECT_DIR="$LYX_r"
   6  | LYX_SRC="$PROJECT_DIR/${LYX_i%.tex}.lyx"
   7  | TEX_DIR="$LYX_p"
   8  | TEX_SRC="$TEX_DIR/$LYX_i"
+  9  | TXT_SRC="$TEX_SRC"
      |________________________________________________________________________
 
 
 17.2 Extracting documentation 
 
-91d <./gen-www[1](), lang=> ≡ 
+91c <./gen-www[1](), lang=> ≡ 
       ________________________________________________________________________
   1  | #python -m elyxer --css lyx.css $LYX_SRC | \
   2  | #  iconv -c -f utf-8 -t ISO-8859-1//TRANSLIT | \
@@ -3146,56 +3159,141 @@ First you will need the tex output, then you can extract:
      |________________________________________________________________________
 
 
-17.4 Testing 
 
-92b <test:helpers[1](), lang=> ≡ 
+Part III  Tests 
+Chapter 18Tests
+
+95a <test:*[1](), lang=> ≡ 
+      ________________________________________________________________________
+  1  | #! /bin/bash
+  2  | 
+  3  | export TXT_SRC=${TXT_SRC:-fangle.txt}
+  4  | export FANGLE=${FANGLE:-./fangle}
+  5  | export TMP=${TMP:-/tmp}
+  6  | 
+  7  | tm -s -c fangle.tm fangle.txt -q
+  8  | 
+  9  | «test:helpers 95c»
+  10  | «test:run-tests 95b»
+  11  | # Now check that we can extract a fangle that also passes the tests!
+  12  | $FANGLE -R./fangle $TXT_SRC > ./fangle.new
+  13  | export FANGLE=./fangle.new
+  14  | «test:run-tests 95b»
+     |________________________________________________________________________
+
+
+
+95b <test:run-tests[1](), lang=sh> ≡ 
+      ________________________________________________________________________
+  1  | # run tests
+  2  | $FANGLE -Rpca-test.awk $TXT_SRC | awk -f - || exit 1
+  3  | «test:cromulence 54g»
+  4  | «test:escapes 59a»
+  5  | «test:test-chunk(test:example-sh, test:example-sh.result) ?a»
+  6  | «test:test-chunk(test:example-makefile, test:example-makefile.result) ?a»
+  7  | «test:chunk-params 97e»
+     |________________________________________________________________________
+
+
+
+95c <test:helpers[1](), lang=> ≡ 
       ________________________________________________________________________
   1  | passtest() {
   2  |   if "$@"
-  3  |   then echo "Passed"
-  4  |   else echo "Failed"
+  3  |   then echo "Passed $TEST"
+  4  |   else echo "Failed $TEST"
   5  |        return 1
   6  |   fi
   7  | }
   8  | 
   9  | failtest() {
   10  |   if ! "$@"
-  11  |   then echo "Passed"
-  12  |   else echo "Failed"
+  11  |   then echo "Passed $TEST"
+  12  |   else echo "Failed $TEST"
   13  |        return 1
   14  |   fi
   15  | }
      |________________________________________________________________________
 
 
-Part III  Tests 
-Chapter 18Chunk Parameters
-18.1 L Y X 
+This chunk will render a named chunk and compare it to another rendered nameed chunk
 
-95a <test:lyx:chunk-params:sub[1](THING, colour), lang=> ≡ 
+?a <test:test-chunk[1](chunk, result), lang=sh> ≡ 
+      ________________________________________________________________________
+  1  | TEST="${result}" passtest diff -u --label "${chunk}" <( $FANGLE -R${chunk} $TXT_SRC ) \
+  2  |                                  --label "${result}" <( $FANGLE -R${result} $TXT_SRC )
+     |________________________________________________________________________
+
+
+Chapter 19Chunk Parameters
+19.1 L Y X 
+
+97a <test:lyx:chunk-params:sub[1](THING, colour), lang=> ≡ 
       ________________________________________________________________________
   1  | I see a ${THING},
   2  | a ${THING} of colour ${colour}, 
-  3  | and looking closer =<\chunkref{test:lyx:chunk-params:sub:sub}(${colour)>
+  3  | and looking closer =<\chunkref{test:lyx:chunk-params:sub:sub}(${colour})>
      |________________________________________________________________________
 
 
 
-95b <test:lyx:chunk-params:sub:sub[1](colour), lang=> ≡ 
+97b <test:lyx:chunk-params:sub:sub[1](colour), lang=> ≡ 
       ________________________________________________________________________
   1  | a funny shade of ${colour}
      |________________________________________________________________________
 
 
 
-95c <test:chunk-params:text[1](), lang=> ≡  96a⊳
+97c <test:lyx:chunk-params:text[1](), lang=> ≡ 
       ________________________________________________________________________
   1  | What do you see? "=<\chunkref{test:lyx:chunk-params:sub}(joe, red)>"
+  2  | Well, fancy!
+     |________________________________________________________________________
+
+
+Should generate output:
+
+97d <test:lyx:chunk-params:result[1](), lang=> ≡ 
+      ________________________________________________________________________
+  1  | What do you see? "I see a joe,
+  2  |                   a joe of colour red, 
+  3  |                   and looking closer a funny shade of red"
+  4  | Well, fancy!
+     |________________________________________________________________________
+
+
+And this chunk will perform the test:
+
+97e <test:chunk-params[1](), lang=> ≡  98c⊳
+      ________________________________________________________________________
+  1  | «test:test-chunk(test:lyx:chunk-params:text, test:lyx:chunk-params:result) ?a» || exit 1
+     |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
+19.2 TeXmacs 
+
+97f <test:chunk-params:sub[1](THING, colour), lang=> ≡ 
+      ________________________________________________________________________
+  1  | I see a ${THING},
+  2  | a ${THING} of colour ${colour}, 
+  3  | and looking closer «test:chunk-params:sub:sub(${colour}) 97g»
+     |________________________________________________________________________
+
+
+
+97g <test:chunk-params:sub:sub[1](colour), lang=> ≡ 
+      ________________________________________________________________________
+  1  | a funny shade of ${colour}
+     |________________________________________________________________________
+
+
+
+98a <test:chunk-params:text[1](), lang=> ≡  96a⊳
+      ________________________________________________________________________
+  1  | What do you see? "«test:chunk-params:sub(joe, red) 97f»"
   2  | Well, fancy!
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 Should generate output:
 
-95d <test:lyx:chunk-params:result[1](), lang=> ≡ 
+98b <test:chunk-params:result[1](), lang=> ≡ 
       ________________________________________________________________________
   1  | What do you see? "I see a joe,
   2  |                   a joe of colour red, 
@@ -3206,61 +3304,15 @@ Should generate output:
 
 And this chunk will perform the test:
 
-95e <test:chunk-params[1](), lang=> ≡  96c⊳
-      ________________________________________________________________________
-  1  | $FANGLE -Rtest:lyx:chunk-params:result $TEX_SRC > $TMP/answer || exit 1
-  2  | $FANGLE -Rtest:lyx:chunk-params:text $TEX_SRC > $TMP/result || exit 1
-  3  | passtest diff $TMP/answer $TMP/result || (echo test:lyx:chunk-params:text failed ; exit 1)
-     |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
-18.2 TeXmacs 
-
-95f <test:chunk-params:sub[1](THING, colour), lang=> ≡ 
-      ________________________________________________________________________
-  1  | I see a ${THING}
-  2  | a ${THING} of colour ${colour}, 
-  3  | and looking closer «test:chunk-params:sub:sub(${colour}) 95g»
-     |________________________________________________________________________
-
-
-
-95g <test:chunk-params:sub:sub[1](colour), lang=> ≡ 
-      ________________________________________________________________________
-  1  | a funny shade of ${colour}
-     |________________________________________________________________________
-
-
-
-96a <test:chunk-params:text[2]() ⇑95c, lang=> +≡ ⊲95c
+98c <test:chunk-params[2]() ⇑97e, lang=> +≡ ⊲97e
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
-  3  | What do you see? "«test:chunk-params:sub(joe, red) 95f»
-  4  | Well, fancy!
+  2  | «test:test-chunk(test:chunk-params:text, test:chunk-params:result) ?a» || exit 1
      |________________________________________________________________________
 
 
-Should generate output:
+Chapter 20Compile-log-lyx
 
-96b <test:chunk-params:result[1](), lang=> ≡ 
-      ________________________________________________________________________
-  1  | What do you see? "I see a joe,
-  2  |                   a joe of colour red, 
-  3  |                   and looking closer a funny shade of red"
-  4  | Well, fancy!
-     |________________________________________________________________________
-
-
-And this chunk will perform the test:
-
-96c <test:chunk-params[2]() ⇑95e, lang=> +≡ ⊲95e
-     ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
-  4  | $FANGLE -Rtest:chunk-params:result $TEX_SRC > $TMP/answer || exit 1
-  5  | $FANGLE -Rtest:chunk-params:text $TEX_SRC > $TMP/result || exit 1
-  6  | passtest diff $TMP/answer $TMP/result || (echo test:chunk-params:text failed ; exit 1)
-     |________________________________________________________________________
-
-
-Chapter 19Compile-log-lyx
-
-97a <Chunk:./compile-log-lyx[1](), lang=sh> ≡ 
+99a <Chunk:./compile-log-lyx[1](), lang=sh> ≡ 
       ________________________________________________________________________
   1  | #! /bin/sh
   2  | # can't use gtkdialog -i, cos it uses the "source" command which ubuntu sh doesn't have
