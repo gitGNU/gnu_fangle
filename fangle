@@ -94,7 +94,7 @@ function push_mode_tracker(context, language, mode,
   if (! ("" in context)) {
     split("", context);
     new_mode_tracker(context, language, mode);
-    return context[""];
+    return;
   } else {
     top = context[""];
     if (context[top, "language"] == language && mode=="") mode = context[top, "mode"];
@@ -104,7 +104,7 @@ function push_mode_tracker(context, language, mode,
     context[top, "mode"] = mode;
     context[""] = top;
   }
-  return top;
+  return old_top;
 }
 function dump_mode_tracker(context,  
   c, d)
@@ -118,8 +118,8 @@ function dump_mode_tracker(context,
 }
 function pop_mode_tracker(context, context_origin)
 {
-  if ( (context_origin) && ("" in context) && context[""] != context_origin) return 0;
-  context[""]--;
+  if ( (context_origin) && ("" in context) && context[""] != (1+context_origin)) return 0;
+  context[""] = context_origin;
   return 1;
 }
 function mode_tracker(context, text, values, 
@@ -648,10 +648,10 @@ BEGIN {
   escapes["sh", "\"",   escapes["sh", "\""], "r"]="\\$";
   modes["make", "",  "submodes"]="	";
   escapes["make", "", ++escapes["make", ""], "s"]="\\$";
-  escapes["make", "", ++escapes["make", ""], "r"]="$$";
+  escapes["make", "", escapes["make", ""], "r"]="$$";
   modes["make", "	", "terminators"]="\\n";
   escapes["make", "	", ++escapes["make", "	"], "s"]="\\n";
-  escapes["make", "	", ++escapes["make", "	"], "r"]="\n	";
+  escapes["make", "	", escapes["make", "	"], "r"]=" ;\\\n	";
   debug=0;
   linenos=0;
   notangle_mode=0;

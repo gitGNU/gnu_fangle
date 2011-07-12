@@ -2365,26 +2365,145 @@
   <subsection|Make>
 
   For makefiles, we currently recognize 2 modes: the <em|null> mode and
-  <nf-tab> mode, which is tabbed mode. In the <em|null> mode the only escape
-  is <verbatim|$> which must be converted to <verbatim|$$>. In tabbed mode,
-  the only escape is <verbatim|\\n> <emdash> new lines must also begin with a
-  tab.
+  <nf-tab> mode, which is tabbed mode and contains the makefile recipie. In
+  the <em|null> mode the only escape is <verbatim|$> which must be converted
+  to <verbatim|$$>.\ 
+
+  Tabbed mode is harder to manage, as the GNU Make Manual says in the section
+  on <hlink|splitting lines|http://www.gnu.org/s/hello/manual/make/Splitting-Lines.html>.
+  There is no way to escape a multi-line text that occurs as part of a
+  makefile recipe.
+
+  Despite this sad fact, if the newline's in the shell script all occur at
+  points of top-level shell syntax, then we could replace them with
+  <verbatim| ;\\n<nf-tab>>and largely get the right effect.
+
+  <\with|par-columns|2>
+    <\nf-chunk|test:make:1>
+      <item>all:
+
+      <item><nf-tab>echo making
+
+      <item><nf-tab><nf-ref|test:make:1-inc|$@>
+
+      \;
+    </nf-chunk|make|>
+
+    <\nf-chunk|test:make:1-inc>
+      <item>if test "<nf-arg|target>" = "all"
+
+      <item>then echo yes, all
+
+      <item>else echo not all
+
+      <item>fi
+    </nf-chunk|sh|<tuple|target>>
+  </with>
+
+  The two chunks about could reasonably produce this:
+
+  <\nf-chunk|test:make:1.result-ideal>
+    <item>all:
+
+    <item><nf-tab>echo making test
+
+    <item><nf-tab>if test "$@" = "all" ;\\
+
+    <item><nf-tab>then echo yes, all ;\\
+
+    <item><nf-tab>else echo not all ;\\
+
+    <item><nf-tab>fi
+  </nf-chunk|make|>
+
+  But will more likely produce this:
+
+  <\nf-chunk|test:make:1.result>
+    <item>all:
+
+    <item><nf-tab>echo making test
+
+    <item><nf-tab>if test "$$@" = "all" ;\\
+
+    <item><nf-tab> then echo yes, all ;\\
+
+    <item><nf-tab> else echo not all ;\\
+
+    <item><nf-tab> fi
+  </nf-chunk|make|>
+
+  The chunk argument <verbatim|$@> has been quoted (which would have been
+  fine if we were passing the name of a shell variable), and the other shell
+  lines are (harmlessly) indented by 1 space as part of fangle
+  indent-matching which should have taken into account the expanded tab size,
+  and should generally take into account the expanded prefix of the line
+  whose indent it is trying to match, but which in this case we want to have
+  no effect at all!
+
+  <\todo>
+    The $@ was passed from a make fragment. In what cases should it be
+    converted to $$@?
+
+    Do we need to track the language of sources of arguments?
+  </todo>
+
+  A more ugly work-around until this problem can be solved would be to use
+  this notation:
+
+  <\nf-chunk|test:make:2>
+    <item>all:
+
+    <item><nf-tab>echo making
+
+    <item><nf-tab>ARG="$@"; <nf-ref|test:make:1-inc|$ARG>
+  </nf-chunk|make|>
+
+  which produces this output which is more useful (because it works):
+
+  <\nf-chunk|test:make:2.result>
+    <item>all:
+
+    <item><nf-tab>echo making test
+
+    <item><nf-tab>ARG="$@"; if test "$$ARG" = "all" ;\\
+
+    <item><nf-tab> \ \ \ \ \ \ \ \ \ then echo yes, all ;\\
+
+    <item><nf-tab> \ \ \ \ \ \ \ \ \ else echo not all ;\\
+
+    <item><nf-tab> \ \ \ \ \ \ \ \ \ fi
+  </nf-chunk|make|>
+
+  If, however, the shell fragment contained strings with literal newline
+  characters then there would be no easy way to escape these and preserve the
+  value of the string.
+
+  A different style of makefile construction might be used <emdash> the
+  recipe could be stored in a <hlink|target specific
+  variable|http://www.gnu.org/s/hello/manual/make/Target_002dspecific.html>
+  which contains the recipe with a more normal escape mechanism.
+
+  \;
 
   <\nf-chunk|mode-definitions>
     <item>modes["make", "", \ "submodes"]="<nf-tab>";
 
     <item>escapes["make", "", ++escapes["make", ""], "s"]="\\\\$";
 
-    <item>escapes["make", "", ++escapes["make", ""], "r"]="$$";
+    <item>escapes["make", "", escapes["make", ""], "r"]="$$";
 
     <item>modes["make", "<nf-tab>", "terminators"]="\\\\n";
 
     <item>escapes["make", "<nf-tab>", ++escapes["make", "<nf-tab>"],
     "s"]="\\\\n";
 
-    <item>escapes["make", "<nf-tab>", ++escapes["make", "<nf-tab>"],
-    "r"]="\\n<nf-tab>";
+    <item>escapes["make", "<nf-tab>", escapes["make", "<nf-tab>"], "r"]="
+    ;\\\\\\n<nf-tab>";
   </nf-chunk|awk|>
+
+  Note also that the tab character is hard-wired into the pattern, and that
+  the make variable <verbatim|.RECIPEPREFIX> might change this to something
+  else.
 
   <section|Some tests>
 
@@ -2471,7 +2590,7 @@
 
     <item> \ \ \ <nf-ref|new-mode-tracker|<tuple|context|language|mode>>
 
-    <item> \ \ \ return context[""];
+    <item> \ \ \ return;
 
     <item> \ } else {
 
@@ -2492,7 +2611,7 @@
 
     <item> \ }
 
-    <item> \ return top;
+    <item> \ return old_top;
 
     <item>}
   </nf-chunk|awk|>
@@ -2527,9 +2646,9 @@
     <item>{
 
     <item> \ if ( (context_origin) && ("" in context) && context[""] !=
-    context_origin) return 0;
+    (1+context_origin)) return 0;
 
-    <item> \ context[""]--;
+    <item> \ context[""] = context_origin;
 
     <item> \ return 1;
 
@@ -5527,6 +5646,14 @@
     <associate|sfactor|5>
   </collection>
 </initial>
+
+<\links>
+  <\collection>
+    <id|+zWL4KMM8y8la8L>
+    <target|+zWL4KMM8y8la8K|Link page>
+    <locator|+zWL4KMM8y8la8J|<id|+zWL4KMM8y8la8K>>
+  </collection>
+</links>
 
 <\references>
 </references>
