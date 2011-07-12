@@ -130,7 +130,7 @@
   <assign|old-hlink|<value|hlink>>
 
   <assign|hlink|<macro|t|l|<old-hlink|<arg|t>|<arg|l>><if|<greater|<length|<arg|l>>|0>|<\footnote>
-    <arg|l>
+    <old-hlink|<arg|l>|<arg|l>>
   </footnote>>>>
 
   <assign|old-render-footnote|<value|render-footnote>>
