@@ -10,14 +10,6 @@
     sam@liddicott.com
   </author-address>>|<doc-date|August 2009>>
 
-  <item> \ modes["sh", "\\"", "submodes"]="\\\\\\\\\|\|\\\\$\\\\(";
-
-  <item> \ modes["sh", "\\"", "submodes"]="\\\\\\\\\|\|\\\\$\\\\(";
-
-  <item> \ modes["sh", "\\"", "submodes"]="\\\\\\\\\|\|\\\\$\\\\(";
-
-  <item> \ modes["sh", "\\"", "submodes"]="\\\\\\\\\|\|\\\\$\\\\(";
-
   <section*|Introduction>
 
   <name|Fangle> is a tool for fangled literate programming. Newfangled is
@@ -1891,7 +1883,7 @@
   Should this examples produce <verbatim|echo "$(echo "hello")"> or
   <verbatim|echo "\\$(echo \\"hello\\")"> ?
 
-  This depends on what the author intended, but we must privde a way to
+  This depends on what the author intended, but we must provde a way to
   express that intent.
 
   We might argue that as both chunks have <verbatim|lang=sh> the intent must
@@ -1921,10 +1913,16 @@
   <verbatim|">, <verbatim|$(>
 
   When mode <verbatim|$(> is commenced, the stack of nest modes will be
-  traversed. If the <em|null> moed can be found in the same language, without
+  traversed. If the <em|null> mode can be found in the same language, without
   the language varying, then a tunnel will be established so that the
   intervening modes, <verbatim|"> in this case, can be skipped when the modes
   are enumerated to quote the texted being emitted.
+
+  In such a case, the correct result would be:
+
+  <\nf-chunk|test:q:1.result>
+    <item>echo "$(echo "hello")"
+  </nf-chunk|sh|>
 
   <section|Language Mode Definitions>
 
@@ -2402,10 +2400,10 @@
 
   The two chunks about could reasonably produce this:
 
-  <\nf-chunk|test:make:1.result-ideal>
+  <\nf-chunk|test:make:1.result>
     <item>all:
 
-    <item><nf-tab>echo making test
+    <item><nf-tab>echo making
 
     <item><nf-tab>if test "$@" = "all" ;\\
 
@@ -2418,10 +2416,10 @@
 
   But will more likely produce this:
 
-  <\nf-chunk|test:make:1.result>
+  <\nf-chunk|test:make:1.result-actual>
     <item>all:
 
-    <item><nf-tab>echo making test
+    <item><nf-tab>echo making
 
     <item><nf-tab>if test "$$@" = "all" ;\\
 
@@ -2467,11 +2465,11 @@
 
     <item><nf-tab>ARG="$@"; if test "$$ARG" = "all" ;\\
 
-    <item><nf-tab> \ \ \ \ \ \ \ \ \ then echo yes, all ;\\
+    <item><nf-tab> \ \ \ \ \ \ \ \ \ \ then echo yes, all ;\\
 
-    <item><nf-tab> \ \ \ \ \ \ \ \ \ else echo not all ;\\
+    <item><nf-tab> \ \ \ \ \ \ \ \ \ \ else echo not all ;\\
 
-    <item><nf-tab> \ \ \ \ \ \ \ \ \ fi
+    <item><nf-tab> \ \ \ \ \ \ \ \ \ \ fi
   </nf-chunk|make|>
 
   If, however, the shell fragment contained strings with literal newline
@@ -5353,30 +5351,68 @@
 
     <item>
 
-    <item>export TXT_SRC=${TXT_SRC:-fangle.txt}
+    <item>export SRC="${SRC:-./fangle.tm}"
 
-    <item>export FANGLE=${FANGLE:-./fangle}
+    <item>export FANGLE="${FANGLE:-./fangle}"
 
-    <item>export TMP=${TMP:-/tmp}
+    <item>export TMP="${TMP:-/tmp}"
+
+    <item>export TESTDIR="$TMP/$USER/fangle.tests"
+
+    <item>export TXT_SRC="${TXT_SRC:-$TESTDIR/fangle.txt}"
 
     <item>
 
-    <item>tm -s -c fangle.tm fangle.txt -q
+    <item>mkdir -p "$TESTDIR"
+
+    <item>
+
+    <item>tm -s -c "$SRC" "$TXT_SRC" -q
 
     <item>
 
     <item><nf-ref|test:helpers|>
 
-    <item><nf-ref|test:run-tests|>
+    <item>run_tests() {
 
-    <item># Now check that we can extract a fangle that also passes the
+    <item> \ <nf-ref|test:run-tests|>
+
+    <item>}
+
+    <item>
+
+    <item># test current fangle
+
+    <item>echo Testing current fangle
+
+    <item>run_tests
+
+    <item>
+
+    <item># extract new fangle
+
+    <item>echo testing new fangle
+
+    <item>$FANGLE -R./fangle "$TXT_SRC" \<gtr\> "$TESTDIR/fangle"
+
+    <item>export FANGLE="$TESTDIR/fangle"
+
+    <item>run_tests
+
+    <item>
+
+    <item># Now check that it can extract a fangle that also passes the
     tests!
 
-    <item>$FANGLE -R./fangle $TXT_SRC \<gtr\> ./fangle.new
+    <item>echo testing if new fangle can generate itself
 
-    <item>export FANGLE=./fangle.new
+    <item>$FANGLE -R./fangle "$TXT_SRC" \<gtr\> "$TESTDIR/fangle.new"
 
-    <item><nf-ref|test:run-tests|>
+    <item>passtest diff -bwu "$FANGLE" "$TESTDIR/fangle.new"
+
+    <item>export FANGLE="$TESTDIR/fangle.new"
+
+    <item>run_tests
   </nf-chunk||>
 
   <\nf-chunk|test:run-tests>
@@ -5388,9 +5424,15 @@
 
     <item><nf-ref|test:escapes|>
 
-    <item><nf-ref|test:test-chunk|<tuple|test:example-sh|test:example-sh.result>>
+    <item><nf-ref|test:test-chunk|<tuple|test:example-sh>>
 
-    <item><nf-ref|test:test-chunk|<tuple|test:example-makefile|test:example-makefile.result>>
+    <item><nf-ref|test:test-chunk|<tuple|test:example-makefile>>
+
+    <item><nf-ref|test:test-chunk|<tuple|test:q:1>>
+
+    <item><nf-ref|test:test-chunk|<tuple|test:make:1>>
+
+    <item><nf-ref|test:test-chunk|<tuple|test:make:2>>
 
     <item><nf-ref|test:chunk-params|>
   </nf-chunk|sh|>
@@ -5431,6 +5473,10 @@
   nameed chunk
 
   <\nf-chunk|test:test-chunk>
+    <item><nf-ref|test:test-chunk-result|<tuple|<nf-arg|chunk>|<nf-arg|chunk>.result>>
+  </nf-chunk|sh|<tuple|chunk>>
+
+  <\nf-chunk|test:test-chunk-result>
     <item>TEST="<nf-arg|result>" passtest diff -u --label "<nf-arg|chunk>"
     \<less\>( $FANGLE -R<nf-arg|chunk> $TXT_SRC ) \\
 
@@ -5477,7 +5523,7 @@
   And this chunk will perform the test:
 
   <\nf-chunk|test:chunk-params>
-    <item><nf-ref|test:test-chunk|<tuple|test:lyx:chunk-params:text|test:lyx:chunk-params:result>>
+    <item><nf-ref|test:test-chunk-result|<tuple|test:lyx:chunk-params:text|test:lyx:chunk-params:result>>
     \|\| exit 1
   </nf-chunk||>
 
@@ -5517,7 +5563,7 @@
   And this chunk will perform the test:
 
   <\nf-chunk|test:chunk-params>
-    <item><nf-ref|test:test-chunk|<tuple|test:chunk-params:text|test:chunk-params:result>>
+    <item><nf-ref|test:test-chunk-result|<tuple|test:chunk-params:text|test:chunk-params:result>>
     \|\| exit 1
   </nf-chunk||>
 
@@ -5651,7 +5697,7 @@
   <\collection>
     <id|+zWL4KMM8y8la8L>
     <target|+zWL4KMM8y8la8K|Link page>
-    <locator|+zWL4KMM8y8la8J|<id|+zWL4KMM8y8la8K>>
+    <locator|+LB6vE65cLlYpL4|<id|+zWL4KMM8y8la8K>>
   </collection>
 </links>
 
