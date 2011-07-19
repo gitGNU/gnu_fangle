@@ -97,7 +97,8 @@ function push_mode_tracker(context, language, mode,
     return;
   } else {
     top = context[""];
-    if (context[top, "language"] == language && mode=="") mode = context[top, "mode"];
+#    if (context[top, "language"] == language && mode=="") mode = context[top, "mode"];
+    if (context[top, "language"] == language && context[top, "mode"] == mode) return top;
     old_top = top;
     top++;
     context[top, "language"] = language;
@@ -118,7 +119,7 @@ function dump_mode_tracker(context,
 }
 function pop_mode_tracker(context, context_origin)
 {
-  if ( (context_origin) && ("" in context) && context[""] != (1+context_origin)) return 0;
+  if ( (context_origin) && ("" in context) && context[""] != (1+context_origin) && context[""] != context_origin) return 0;
   context[""] = context_origin;
   return 1;
 }

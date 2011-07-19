@@ -2595,8 +2595,11 @@
 
     <item> \ \ \ top = context[""];
 
-    <item> \ \ \ if (context[top, "language"] == language && mode=="") mode =
-    context[top, "mode"];
+    <item># \ \ \ if (context[top, "language"] == language && mode=="") mode
+    = context[top, "mode"];
+
+    <item> \ \ \ if (context[top, "language"] == language && context[top,
+    "mode"] == mode) return top;
 
     <item> \ \ \ old_top = top;
 
@@ -2645,7 +2648,7 @@
     <item>{
 
     <item> \ if ( (context_origin) && ("" in context) && context[""] !=
-    (1+context_origin)) return 0;
+    (1+context_origin) && context[""] != context_origin) return 0;
 
     <item> \ context[""] = context_origin;
 
