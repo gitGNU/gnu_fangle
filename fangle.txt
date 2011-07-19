@@ -107,8 +107,8 @@ II Source Code   33
 10.4.1 Direct quoting   47
 10.5 Language Mode Definitions   47
 10.5.1 Backslash   48
-10.5.2 Strings   48
-10.5.3 Parentheses, Braces and Brackets   49
+10.5.2 Strings   49
+10.5.3 Parentheses, Braces and Brackets   50
 10.5.4 Customizing Standard Modes   50
 10.5.5 Comments   50
 10.5.6 Regex   51
@@ -1126,7 +1126,7 @@ In example <test:q:1 47a> above, the nesting of modes is: null, ", $(
 When mode $( is commenced, the stack of nest modes will be traversed. If the null mode can be found in the same language, without the language varying, then a tunnel will be established so that the intervening modes, " in this case, can be skipped when the modes are enumerated to quote the texted being emitted.
 In such a case, the correct result would be:
 
-?a <test:q:1.result[1](), lang=sh> ≡ 
+47c <test:q:1.result[1](), lang=sh> ≡ 
       ________________________________________________________________________
   1  | echo "$(echo "hello")"
      |________________________________________________________________________
@@ -1312,7 +1312,7 @@ To do: I'm having to use # for hash and ¯extbackslash{} for  and have hacky wor
 
 In C, the # denotes pre-processor directives which can be multi-line
 
-50h <mode:add-hash-defines[1](language), lang=> ≡ 
+51a <mode:add-hash-defines[1](language), lang=> ≡ 
       ________________________________________________________________________
   1  | «mode:add-submode(${language}, "", "#") 50c»
   2  | modes[${language}, "#", "submodes" ]="\\\\";
@@ -1322,7 +1322,7 @@ In C, the # denotes pre-processor directives which can be multi-line
 
 
 
-51a <mode:quote-dollar-escape[1](language, quote), lang=> ≡ 
+51b <mode:quote-dollar-escape[1](language, quote), lang=> ≡ 
       ________________________________________________________________________
   1  | escapes[${language}, ${quote}, ++escapes[${language}, ${quote}], "s"]="\\$";
   2  | escapes[${language}, ${quote},   escapes[${language}, ${quote}], "r"]="\\$";
@@ -1331,29 +1331,29 @@ In C, the # denotes pre-processor directives which can be multi-line
 
 We can add these definitions to various languages
 
-51b <mode-definitions[1](), lang=> ≡  52a⊳
+51c <mode-definitions[1](), lang=> ≡  52b⊳
       ________________________________________________________________________
   1  | «common-mode-definitions("c-like") 48a»
   2  | 
   3  | «common-mode-definitions("c") 48a»
   4  | «mode:multi-line-comments("c") 50e»
   5  | «mode:single-line-slash-comments("c") 50f»
-  6  | «mode:add-hash-defines("c") 50h»
+  6  | «mode:add-hash-defines("c") 51a»
   7  | 
   8  | «common-mode-definitions("awk") 48a»
   9  | «mode:add-hash-comments("awk") 50g»
-  10  | «mode:add-naked-regex("awk") 51g»
+  10  | «mode:add-naked-regex("awk") 52a»
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 The awk definitions should allow a comment block like this:
 
-51c <test:comment-quote[1](), lang=awk> ≡ 
+51d <test:comment-quote[1](), lang=awk> ≡ 
       ________________________________________________________________________
-  1  | # Comment: «test:comment-text 51d»
+  1  | # Comment: «test:comment-text 51e»
      |________________________________________________________________________
 
 
 
-51d <test:comment-text[1](), lang=> ≡ 
+51e <test:comment-text[1](), lang=> ≡ 
       ________________________________________________________________________
   1  | Now is the time for
   2  | the quick brown fox to bring lemonade
@@ -1363,7 +1363,7 @@ The awk definitions should allow a comment block like this:
 
 to come out like this:
 
-51e <test:comment-quote:result[1](), lang=> ≡ 
+51f <test:comment-quote:result[1](), lang=> ≡ 
       ________________________________________________________________________
   1  | # Comment: Now is the time for
   2  | #the quick brown fox to bring lemonade
@@ -1373,7 +1373,7 @@ to come out like this:
 
 The C definition for such a block should have it come out like this:
 
-51f <test:comment-quote:C-result[1](), lang=> ≡ 
+51g <test:comment-quote:C-result[1](), lang=> ≡ 
       ________________________________________________________________________
   1  | # Comment: Now is the time for\
   2  | the quick brown fox to bring lemonade\
@@ -1386,7 +1386,7 @@ This pattern is incomplete, but meant to detect naked regular expressions in awk
 Current it only detects regexes anchored with ^ as used in fangle.
 For full regex support, modes need to be named not after their starting character, but some other more fully qualified name.
 
-51g <mode:add-naked-regex[1](language), lang=> ≡ 
+52a <mode:add-naked-regex[1](language), lang=> ≡ 
       ________________________________________________________________________
   1  | «mode:add-submode(${language}, "", "/\\^") 50c»
   2  | modes[${language}, "/^", "terminators"]="/";
@@ -1395,7 +1395,7 @@ For full regex support, modes need to be named not after their starting characte
 
 10.5.7 Perl 
 
-52a <mode-definitions[2]() ⇑51b, lang=> +≡ ⊲51b 52b▿
+52b <mode-definitions[2]() ⇑51c, lang=> +≡ ⊲51c 52c▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   11  | «common-mode-definitions("perl") 48a»
   12  | «mode:multi-line-comments("perl") 50e»
@@ -1405,7 +1405,7 @@ Still need to add add s/, submode /, terminate both with //. This is likely to b
 10.5.8 sh 
 Shell single-quote strings are different to other strings and have no escape characters. The only special character is the single quote ' which always closes the string. Therefore we cannot use <common-mode-definitions("sh") 48a> but we will invoke most of it's definition apart from single-quote strings. 
 
-52b <mode-definitions[3]() ⇑51b, lang=awk> +≡ ▵52a 54a⊳
+52c <mode-definitions[3]() ⇑51c, lang=awk> +≡ ▵52b 54a⊳
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   14  | modes["sh", "",  "submodes"]="\\\\|\"|'|{|\\(|\\[|\\$\\(";
   15  | modes["sh", "\\", "terminators"]=".";
@@ -1423,16 +1423,16 @@ Shell single-quote strings are different to other strings and have no escape cha
   27  | escapes["sh", "'", ++escapes["sh", "'"], "s"]="'";
   28  | escapes["sh", "'",   escapes["sh", "'"], "r"]="'\\'" "'";
   29  | «mode:common-brackets("sh", "$(", "\\)") 50a»
-  30  | «mode:add-tunnel("sh", "$(", "") 52c»
+  30  | «mode:add-tunnel("sh", "$(", "") 52d»
   31  | «mode:common-brackets("sh", "{", "}") 50a»
   32  | «mode:common-brackets("sh", "[", "\\]") 50a»
   33  | «mode:common-brackets("sh", "(", "\\)") 50a»
   34  | «mode:add-hash-comments("sh") 50g»
-  35  | «mode:quote-dollar-escape("sh", "\"") 51a»
+  35  | «mode:quote-dollar-escape("sh", "\"") 51b»
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 The definition of add-tunnel is:
 
-52c <mode:add-tunnel[1](language, mode, tunnel), lang=> ≡ 
+52d <mode:add-tunnel[1](language, mode, tunnel), lang=> ≡ 
       ________________________________________________________________________
   1  | escapes[${language}, ${mode}, ++escapes[${language}, ${mode}], "tunnel"]=${tunnel};
      |________________________________________________________________________
@@ -1477,7 +1477,7 @@ The two chunks about could reasonably produce this:
 
 But will more likely produce this:
 
-?a <test:make:1.result-actual[1](), lang=make> ≡ 
+53d <test:make:1.result-actual[1](), lang=make> ≡ 
       ________________________________________________________________________
   1  | all:
   2  | ↦echo making
@@ -1494,7 +1494,7 @@ Do we need to track the language of sources of arguments?
 
 A more ugly work-around until this problem can be solved would be to use this notation:
 
-53a <test:make:2[1](), lang=make> ≡ 
+53e <test:make:2[1](), lang=make> ≡ 
       ________________________________________________________________________
   1  | all:
   2  | ↦echo making
@@ -1504,7 +1504,7 @@ A more ugly work-around until this problem can be solved would be to use this no
 
 which produces this output which is more useful (because it works):
 
-53b <test:make:2.result[1](), lang=make> ≡ 
+53f <test:make:2.result[1](), lang=make> ≡ 
       ________________________________________________________________________
   1  | all:
   2  | ↦echo making test
@@ -1519,14 +1519,14 @@ If, however, the shell fragment contained strings with literal newline character
 A different style of makefile construction might be used — the recipe could be stored in a target specific variable5. http://www.gnu.org/s/hello/manual/make/Target_002dspecific.html  ^5 which contains the recipe with a more normal escape mechanism.
 
 
-54a <mode-definitions[4]() ⇑51b, lang=awk> +≡ ⊲52b
+54a <mode-definitions[4]() ⇑51c, lang=awk> +≡ ⊲52c
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   36  | modes["make", "",  "submodes"]="↦";
-  37  | escapes["make", "", ++escapes["make", ""], "s"]="\\$";
-  38  | escapes["make", "", escapes["make", ""], "r"]="$$";
-  39  | modes["make", "↦", "terminators"]="\\n";
-  40  | escapes["make", "↦", ++escapes["make", "↦"], "s"]="\\n";
-  41  | escapes["make", "↦", escapes["make", "↦"], "r"]=" ;\\\n↦";
+  37  | modes["make", "↦", "terminators"]="\\n";
+  38  | escapes["make", "↦", ++escapes["make", "↦"], "s"]="\\n";
+  39  | escapes["make", "↦", escapes["make", "↦"], "r"]=" ;\\\n↦";
+  40  | escapes["make", "↦", ++escapes["make", "↦"], "s"]="\\$";
+  41  | escapes["make", "↦", escapes["make", "↦"], "r"]="$$";
      |________________________________________________________________________
 
 
@@ -1840,7 +1840,7 @@ We can test this function like this:
   3  | «parse_chunk_args() ?»
   4  | BEGIN {
   5  |   SUBSEP=".";
-  6  |   «mode-definitions 51b»
+  6  |   «mode-definitions 51c»
   7  | 
   8  |   «test:mode-definitions 48c»
   9  | }
@@ -2287,7 +2287,7 @@ We do all of this at the beginning of the program
       ________________________________________________________________________
   1  | BEGIN {
   2  |   «constants 37a»
-  3  |   «mode-definitions 51b»
+  3  |   «mode-definitions 51c»
   4  |   «default-options 69a»
   5  | 
   6  |   «read-options 69b»
@@ -3290,11 +3290,11 @@ Chapter 18Tests
   2  | $FANGLE -Rpca-test.awk $TXT_SRC | awk -f - || exit 1
   3  | «test:cromulence 56d»
   4  | «test:escapes 60c»
-  5  | «test:test-chunk(test:example-sh) 95d»
-  6  | «test:test-chunk(test:example-makefile) 95d»
-  7  | «test:test-chunk(test:q:1) 95d»
-  8  | «test:test-chunk(test:make:1) 95d»
-  9  | «test:test-chunk(test:make:2) 95d»
+  5  | «test:test-chunk(test:example-sh) 96a»
+  6  | «test:test-chunk(test:example-makefile) 96a»
+  7  | «test:test-chunk(test:q:1) 96a»
+  8  | «test:test-chunk(test:make:1) 96a»
+  9  | «test:test-chunk(test:make:2) 96a»
   10  | «test:chunk-params 97e»
      |________________________________________________________________________
 
@@ -3322,14 +3322,14 @@ Chapter 18Tests
 
 This chunk will render a named chunk and compare it to another rendered nameed chunk
 
-95d <test:test-chunk[1](chunk), lang=sh> ≡ 
+96a <test:test-chunk[1](chunk), lang=sh> ≡ 
       ________________________________________________________________________
-  1  | «test:test-chunk-result(${chunk}, ${chunk}.result) ?a»
+  1  | «test:test-chunk-result(${chunk}, ${chunk}.result) 96b»
      |________________________________________________________________________
 
 
 
-?a <test:test-chunk-result[1](chunk, result), lang=sh> ≡ 
+96b <test:test-chunk-result[1](chunk, result), lang=sh> ≡ 
       ________________________________________________________________________
   1  | TEST="${result}" passtest diff -u --label "${chunk}" <( $FANGLE -R${chunk} $TXT_SRC ) \
   2  |                                  --label "${result}" <( $FANGLE -R${result} $TXT_SRC )
@@ -3377,7 +3377,7 @@ And this chunk will perform the test:
 
 97e <test:chunk-params[1](), lang=> ≡  98b⊳
       ________________________________________________________________________
-  1  | «test:test-chunk-result(test:lyx:chunk-params:text, test:lyx:chunk-params:result) ?a» || exit 1
+  1  | «test:test-chunk-result(test:lyx:chunk-params:text, test:lyx:chunk-params:result) 96b» || exit 1
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 19.2 TeXmacs 
 
@@ -3417,7 +3417,7 @@ And this chunk will perform the test:
 
 98b <test:chunk-params[2]() ⇑97e, lang=> +≡ ⊲97e
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
-  2  | «test:test-chunk-result(test:chunk-params:text, test:chunk-params:result) ?a» || exit 1
+  2  | «test:test-chunk-result(test:chunk-params:text, test:chunk-params:result) 96b» || exit 1
      |________________________________________________________________________
 
 

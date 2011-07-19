@@ -647,11 +647,11 @@ BEGIN {
   escapes["sh", "\"", ++escapes["sh", "\""], "s"]="\\$";
   escapes["sh", "\"",   escapes["sh", "\""], "r"]="\\$";
   modes["make", "",  "submodes"]="	";
-  escapes["make", "", ++escapes["make", ""], "s"]="\\$";
-  escapes["make", "", escapes["make", ""], "r"]="$$";
   modes["make", "	", "terminators"]="\\n";
   escapes["make", "	", ++escapes["make", "	"], "s"]="\\n";
   escapes["make", "	", escapes["make", "	"], "r"]=" ;\\\n	";
+  escapes["make", "	", ++escapes["make", "	"], "s"]="\\$";
+  escapes["make", "	", escapes["make", "	"], "r"]="$$";
   debug=0;
   linenos=0;
   notangle_mode=0;

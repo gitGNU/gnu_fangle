@@ -2486,10 +2486,6 @@
   <\nf-chunk|mode-definitions>
     <item>modes["make", "", \ "submodes"]="<nf-tab>";
 
-    <item>escapes["make", "", ++escapes["make", ""], "s"]="\\\\$";
-
-    <item>escapes["make", "", escapes["make", ""], "r"]="$$";
-
     <item>modes["make", "<nf-tab>", "terminators"]="\\\\n";
 
     <item>escapes["make", "<nf-tab>", ++escapes["make", "<nf-tab>"],
@@ -2497,6 +2493,11 @@
 
     <item>escapes["make", "<nf-tab>", escapes["make", "<nf-tab>"], "r"]="
     ;\\\\\\n<nf-tab>";
+
+    <item>escapes["make", "<nf-tab>", ++escapes["make", "<nf-tab>"],
+    "s"]="\\\\$";
+
+    <item>escapes["make", "<nf-tab>", escapes["make", "<nf-tab>"], "r"]="$$";
   </nf-chunk|awk|>
 
   Note also that the tab character is hard-wired into the pattern, and that
@@ -5692,14 +5693,6 @@
     <associate|sfactor|5>
   </collection>
 </initial>
-
-<\links>
-  <\collection>
-    <id|+zWL4KMM8y8la8L>
-    <target|+zWL4KMM8y8la8K|Link page>
-    <locator|+LB6vE65cLlYpL4|<id|+zWL4KMM8y8la8K>>
-  </collection>
-</links>
 
 <\references>
 </references>
