@@ -2362,27 +2362,54 @@
 
   <subsection|Make>
 
+  BUGS: makefile tab mode is terminated by newline, but chunks never end in a
+  newline! So tab mode is never closed unless there is a trailing blank line!
+
   For makefiles, we currently recognize 2 modes: the <em|null> mode and
-  <nf-tab> mode, which is tabbed mode and contains the makefile recipie. In
-  the <em|null> mode the only escape is <verbatim|$> which must be converted
-  to <verbatim|$$>.\ 
+  <nf-tab> mode, which is tabbed mode and contains the makefile recipie.\ 
+
+  \;
+
+  <\nf-chunk|mode-definitions>
+    <item>modes["make", "", \ "submodes"]="<nf-tab>";
+  </nf-chunk|awk|>
+
+  In the <em|null> mode the only escape is <verbatim|$> which must be
+  converted to <verbatim|$$>, and hash-style comments. POSIX requires that
+  line-continuations extend hash-style comments and so fangle-style
+  transformations to replicate the hash at the start of each line is not
+  strictly required, however it is harmless, easier to read, and required by
+  some implementations of <verbatim|make> which do not implement POSIX
+  requirements correctly.
+
+  <\nf-chunk|mode-definitions>
+    <item>escapes["make", "", ++escapes["make", ""], "s"]="\\\\$";
+
+    <item>escapes["make", "", escapes["make", ""], "r"]="$$";
+
+    <item><nf-ref|mode:add-hash-comments|<tuple|"make">>
+  </nf-chunk|awk|>
 
   Tabbed mode is harder to manage, as the GNU Make Manual says in the section
   on <hlink|splitting lines|http://www.gnu.org/s/hello/manual/make/Splitting-Lines.html>.
-  There is no way to escape a multi-line text that occurs as part of a
-  makefile recipe.
+  There is no obvious way to escape a multi-line text that occurs as part of
+  a makefile recipe.
 
-  Despite this sad fact, if the newline's in the shell script all occur at
-  points of top-level shell syntax, then we could replace them with
-  <verbatim| ;\\n<nf-tab>>and largely get the right effect.
+  Traditionally, if the newline's in the shell script all occur at points of
+  top-level shell syntax, then we could replace them with <verbatim|
+  ;\\n<nf-tab>>and largely get the right effect.
 
   <\with|par-columns|2>
     <\nf-chunk|test:make:1>
-      <item>all:
+      <label|test-make-line-quoting><item>all:
 
       <item><nf-tab>echo making
 
       <item><nf-tab><nf-ref|test:make:1-inc|$@>
+
+      \ 
+
+      \ 
 
       \;
     </nf-chunk|make|>
@@ -2392,13 +2419,17 @@
 
       <item>then echo yes, all
 
-      <item>else echo not all
+      <item>else echo "<nf-arg|target>" \| sed -e '/^\\//{
+
+      <item> \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ p;s/^/../
+
+      <item> \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }'
 
       <item>fi
     </nf-chunk|sh|<tuple|target>>
   </with>
 
-  The two chunks about could reasonably produce this:
+  The two chunks above could reasonably produce something like this:
 
   <\nf-chunk|test:make:1.result>
     <item>all:
@@ -2409,23 +2440,125 @@
 
     <item><nf-tab>then echo yes, all ;\\
 
-    <item><nf-tab>else echo not all ;\\
+    <item><nf-tab>else echo "$@" \| sed -e '/^\\//{ ;\\
+
+    <item><nf-tab> \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ p;s/^/../
+    ;\\
+
+    <item><nf-tab> \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }' ;\\
 
     <item><nf-tab>fi
   </nf-chunk|make|>
 
-  But will more likely produce this:
+  However <verbatim|;\\> is not a proper continuation inside a multi-line sed
+  script. There is no simple continuation that fangle could use <emdash> and
+  in any case it would depend on what type of quote marks were used in the
+  bash that contained the sed.
+
+  The difficulty lies in the way that make handles the recipe. Each line of
+  the recipe is invoced as a separate shell command (using <verbatim|$(SHELL)
+  -c>) unless the last character of the line was a backslash. In such a case,
+  the backslash and the newline and the nextline are handed to the shell
+  (although the tab character that prefixes the next line is stripped).
+
+  This behaviour makes it impossible to hand a newline character to the shell
+  unless it is prefixed by a backslash. If an included shell fragment
+  contained strings with literal newline characters then there would be no
+  easy way to escape these and preserve the value of the string.
+
+  A different style of makefile construction might be used <emdash> the
+  recipe could be stored in a <hlink|target specific
+  variable|http://www.gnu.org/s/hello/manual/make/Target_002dspecific.html>
+  which contains the recipe with a more normal escape mechanism.
+
+  A better solution is to use a shell helper that strips the back-slash which
+  precedes the newline character and then passes the arguments to the normal
+  shell.
+
+  Because this is a simple operation and because bash is so flexible, this
+  can be managed in a single line <em|within the makefile itself.>
+
+  As a newline will only exist when preceded by the backslash, and as the
+  purpose of the backash is to protect th newline, that is needed is to
+  remove any backslash that is followed by a newline.
+
+  Bash is capable of doing this with its pattern substitution. If
+  <verbatim|A=123:=456:=789> then <verbatim|${A//:=/=}> will be
+  <verbatim|123=456=789>. We don't want to just perform the substitution in a
+  single variable but in fact in all of <verbatim|$@''>, however bash will
+  repeat substitution over all members of an array, so this is done
+  automatically.
+
+  In bash, <verbatim|$'\\012'> represents the newline character (expressed as
+  an octal escape sequence), so this expression will replace
+  backslash-newline with a single newline.
+
+  <\nf-chunk|fix-requote-newline>
+    <item>"${@//\\\\$'\\012'/$'\\012'}"
+  </nf-chunk|sh|>
+
+  We use this as part of a larger statement which will invoke such a
+  transformed command ine using any particular shell. The trailing
+  <verbatim|--> prevents any options in the command line from being
+  interpreted as options to our bash command <emdash> instead they will be
+  transformed and passed to the inner shell which is invoked with
+  <verbatim|exec> so that our fixup-shell does not hang around longer than is
+  needed.
+
+  <\nf-chunk|fix-make-shell>
+    <item>bash -c 'exec <nf-arg|shell> <nf-ref|fix-requote-newline|>' --
+  </nf-chunk|sh|<tuple|shell>>
+
+  We can then cinlude a line like this in our makefiles. We should rather
+  pass <verbatim|$(SHELL)> as the chunk argument than <verbatim|bash>, but
+  currently fangle will not track which nested-inclusion level the argument
+  comes from and will quote the <verbatim|$> in <verbatim|$(SHELL)> in the
+  same way it quotes a <verbatim|$> that may occur in the bash script, so
+  this would come out as <verbatim|$$(SHELL) and have the wrong effect.>
+
+  <\nf-chunk|make-fix-make-shell>
+    <item>SHELL:=<nf-ref|fix-make-shell|<tuple|bash>>
+  </nf-chunk||>
+
+  The full escaped and quoted text with <verbatim|$(SHELL)> and suitale for
+  inclusion in a Makefile is:
+
+  <\verbatim>
+    SHELL:=bash -c 'exec $(SHELL) "$${@//\\\\$$'\\''\\012'\\''/$$'\\''\\012'\\''}"'
+    --
+  </verbatim>
+
+  Based on this, we just need to escape newlines (in tabbed mode) with a
+  regular backslash:
+
+  Note that terminators applies to literal, not included text, escapes apply
+  to included, not literal text; also that the tab character is hard-wired
+  into the pattern, and that the make variable <verbatim|.RECIPEPREFIX> might
+  change this to something else.
+
+  <\nf-chunk|mode-definitions>
+    <item>modes["make", "<nf-tab>", "terminators"]="\\\\n";
+
+    <item>escapes["make", "<nf-tab>", ++escapes["make", "<nf-tab>"],
+    "s"]="\\\\n";
+
+    <item>escapes["make", "<nf-tab>", \ \ escapes["make", "<nf-tab>"],
+    "r"]="\\\\\\n<nf-tab>";
+  </nf-chunk|awk|>
+
+  With this improved quoting, the test on <reference|test-make-line-quoting>
+  will actually produce this:
 
   <\nf-chunk|test:make:1.result-actual>
     <item>all:
 
     <item><nf-tab>echo making
 
-    <item><nf-tab>if test "$$@" = "all" ;\\
+    <item><nf-tab>if test "$$@" = "all"\\
 
-    <item><nf-tab> then echo yes, all ;\\
+    <item><nf-tab> then echo yes, all\\
 
-    <item><nf-tab> else echo not all ;\\
+    <item><nf-tab> else echo not all\\
 
     <item><nf-tab> fi
   </nf-chunk|make|>
@@ -2463,46 +2596,14 @@
 
     <item><nf-tab>echo making test
 
-    <item><nf-tab>ARG="$@"; if test "$$ARG" = "all" ;\\
+    <item><nf-tab>ARG="$@"; if test "$$ARG" = "all"\\
 
-    <item><nf-tab> \ \ \ \ \ \ \ \ \ \ then echo yes, all ;\\
+    <item><nf-tab> \ \ \ \ \ \ \ \ \ \ then echo yes, all\\
 
-    <item><nf-tab> \ \ \ \ \ \ \ \ \ \ else echo not all ;\\
+    <item><nf-tab> \ \ \ \ \ \ \ \ \ \ else echo not all\\
 
     <item><nf-tab> \ \ \ \ \ \ \ \ \ \ fi
   </nf-chunk|make|>
-
-  If, however, the shell fragment contained strings with literal newline
-  characters then there would be no easy way to escape these and preserve the
-  value of the string.
-
-  A different style of makefile construction might be used <emdash> the
-  recipe could be stored in a <hlink|target specific
-  variable|http://www.gnu.org/s/hello/manual/make/Target_002dspecific.html>
-  which contains the recipe with a more normal escape mechanism.
-
-  \;
-
-  <\nf-chunk|mode-definitions>
-    <item>modes["make", "", \ "submodes"]="<nf-tab>";
-
-    <item>modes["make", "<nf-tab>", "terminators"]="\\\\n";
-
-    <item>escapes["make", "<nf-tab>", ++escapes["make", "<nf-tab>"],
-    "s"]="\\\\n";
-
-    <item>escapes["make", "<nf-tab>", escapes["make", "<nf-tab>"], "r"]="
-    ;\\\\\\n<nf-tab>";
-
-    <item>escapes["make", "<nf-tab>", ++escapes["make", "<nf-tab>"],
-    "s"]="\\\\$";
-
-    <item>escapes["make", "<nf-tab>", escapes["make", "<nf-tab>"], "r"]="$$";
-  </nf-chunk|awk|>
-
-  Note also that the tab character is hard-wired into the pattern, and that
-  the make variable <verbatim|.RECIPEPREFIX> might change this to something
-  else.
 
   <section|Some tests>
 
