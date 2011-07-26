@@ -81,7 +81,7 @@ I Using Fangle   9
 6.2.2 Converting from T_ E X_( M A CS)   24
 6.3 Extracting Program Source   25
 6.4 Extracting Source Files   25
-6.5 Extracting Documentation   27
+6.5 Extracting Documentation   28
 6.5.1 Formatting T_ E X   28
 6.5.1.1 Running pdflatex   28
 6.5.2 Formatting T_ E X_( M A CS)   28
@@ -105,62 +105,62 @@ II Source Code   33
 10.3 Modes operation   46
 10.4 Quoting scenarios   47
 10.4.1 Direct quoting   47
-10.5 Language Mode Definitions   47
-10.5.1 Backslash   48
+10.5 Language Mode Definitions   48
+10.5.1 Backslash   49
 10.5.2 Strings   49
 10.5.3 Parentheses, Braces and Brackets   50
-10.5.4 Customizing Standard Modes   50
-10.5.5 Comments   50
+10.5.4 Customizing Standard Modes   51
+10.5.5 Comments   51
 10.5.6 Regex   51
-10.5.7 Perl   52
-10.5.8 sh   52
-10.5.9 Make   52
-10.6 Some tests   54
-10.7 A non-recursive mode tracker   55
-10.7.1 Constructor   55
-10.7.2 Management   55
-10.7.3 Tracker   56
-10.7.3.1 One happy chunk   59
-10.7.3.2 Tests   59
-10.8 Escaping and Quoting   60
+10.5.7 Perl   54
+10.5.8 sh   54
+10.5.9 Make   55
+10.6 Some tests   55
+10.7 A non-recursive mode tracker   56
+10.7.1 Constructor   56
+10.7.2 Management   57
+10.7.3 Tracker   60
+10.7.3.1 One happy chunk   60
+10.7.3.2 Tests   61
+10.8 Escaping and Quoting   63
 11 Recognizing Chunks   63
 11.1 Chunk start   63
-11.1.1 T_ E X_( M A CS)   63
-11.1.2 lstlistings   64
+11.1.1 T_ E X_( M A CS)   64
+11.1.2 lstlistings   65
 11.2 Chunk Body   65
-11.2.1 T_ E X_( M A CS)   65
+11.2.1 T_ E X_( M A CS)   66
 11.2.2 Noweb   66
 11.3 Chunk end   66
-11.3.1 lstlistings   66
+11.3.1 lstlistings   67
 11.3.2 noweb   67
-11.4 Chunk contents   67
-11.4.1 lstlistings   68
-12 Processing Options   71
-13 Generating the Output   73
+11.4 Chunk contents   68
+11.4.1 lstlistings   71
+12 Processing Options   73
+13 Generating the Output   74
 13.1 Assembling the Chunks   74
-13.1.1 Chunk Parts   74
-14 Storing Chunks   79
-15 getopt   81
+13.1.1 Chunk Parts   79
+14 Storing Chunks   81
+15 getopt   85
 16 Fangle LaTeX source code   85
 16.1 fangle module   85
-16.1.1 The Chunk style   85
+16.1.1 The Chunk style   86
 16.1.2 The chunkref style   86
-16.2 Latex Macros   86
-16.2.1 The chunk command   87
+16.2 Latex Macros   87
+16.2.1 The chunk command   88
 16.2.1.1 Chunk parameters   88
 16.2.2 The noweb styled caption   88
-16.2.3 The chunk counter   88
-16.2.4 Cross references   91
-16.2.5 The end   92
+16.2.3 The chunk counter   91
+16.2.4 Cross references   92
+16.2.5 The end   93
 17 Extracting fangle   93
 17.1 Extracting from Lyx   93
-17.2 Extracting documentation   93
-17.3 Extracting from the command line   94
-III Tests   95
-18 Tests   97
+17.2 Extracting documentation   94
+17.3 Extracting from the command line   95
+III Tests   97
+18 Tests   99
 19 Chunk Parameters   99
 19.1 L Y X   99
-19.2 T_ E X_( M A CS)   99
+19.2 T_ E X_( M A CS)   101
 20 Compile-log-lyx   101
 Part I  Using Fangle 
 Chapter 1Introduction to Literate Programming
@@ -441,7 +441,7 @@ We define a convenient target called fangle_sources so that make -f fangle_sourc
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 And also a convenient target to remove extracted sources.
 
-26d <Makefile.inc-targets[6]() ⇑24c, lang=> +≡ ▵26c 27e⊳
+26d <Makefile.inc-targets[6]() ⇑24c, lang=> +≡ ▵26c 27f⊳
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   24  | .PHONY: clean_fangle_sources
   25  | clean_fangle_sources: ; \
@@ -450,20 +450,20 @@ And also a convenient target to remove extracted sources.
 We now look at the extraction of the source files.
 This makefile macro if_extension takes 4 arguments: the filename $(1), some extensions to match $(2) and a shell command to return if the filename does match the exensions $(3), and a shell command to return if it does not match the extensions $(4).
 
-26e <Makefile.inc-vars[8]() ⇑23b, lang=> +≡ ▵26a 26f▿
+26e <Makefile.inc-vars[8]() ⇑23b, lang=> +≡ ▵26a 27a⊳
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   16  | if_extension=$(if $(findstring $(suffix $(1)),$(2)),$(3),$(4))
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 For some source files like C files, we want to output the line number and filename of the original LaTeX document from which the source came5. I plan to replace this option with a separate mapping file so as not to pollute the generated source, and also to allow a code pretty-printing reformatter like indent be able to re-format the file and adjust for changes through comparing the character streams.  ^5.
 To make this easier we define the file extensions for which we want to do this.
 
-26f <Makefile.inc-vars[9]() ⇑23b, lang=> +≡ ▵26e 27a⊳
+27a <Makefile.inc-vars[9]() ⇑23b, lang=> +≡ ⊲26e 27b▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   17  | C_EXTENSIONS=.c .h
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 We can then use the if_extensions macro to define a macro which expands out to the -L option if fangle is being invoked in a C source file, so that C compile errors will refer to the line number in the TeX document. 
 
-27a <Makefile.inc-vars[10]() ⇑23b, lang=> +≡ ⊲26f 27b▿
+27b <Makefile.inc-vars[10]() ⇑23b, lang=> +≡ ▵27a 27c▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   18  | TABS=8
   19  | nf_line=-L -T$(TABS)
@@ -471,14 +471,14 @@ We can then use the if_extensions macro to define a macro which expands out to t
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 We can use a similar trick to define an indent macro which takes just the filename as an argument and can return a pipeline stage calling the indent command. Indent can be turned off with make fangle_sources indent=
 
-27b <Makefile.inc-vars[11]() ⇑23b, lang=> +≡ ▵27a 27c▿
+27c <Makefile.inc-vars[11]() ⇑23b, lang=> +≡ ▵27b 27d▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   21  | indent_options=-npro -kr -i8 -ts8 -sob -l80 -ss -ncs
   22  | indent=$(call if_extension,$(1),$(C_EXTENSIONS), | indent $(indent_options))
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 We now define the pattern for extracting a file. The files are written using noweb's cpif so that the file timestamp will not be touched if the contents haven't changed. This avoids the need to rebuild the entire project because of a typographical change in the documentation, or if none or a few C source files have changed.
 
-27c <Makefile.inc-vars[12]() ⇑23b, lang=> +≡ ▵27b 27d▿
+27d <Makefile.inc-vars[12]() ⇑23b, lang=> +≡ ▵27c 27e▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   23  | fangle_extract=@mkdir -p $(dir $(1)) && \
   24  |   $(call fangle,$(2),$(1)) > "$(1).tmp" && \
@@ -488,7 +488,7 @@ We now define the pattern for extracting a file. The files are written using now
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 We define a target which will extract or update all sources. To do this we first defined a makefile template that can do this for any source file in the LaTeX document.
 
-27d <Makefile.inc-vars[13]() ⇑23b, lang=> +≡ ▵27c 28b⊳
+27e <Makefile.inc-vars[13]() ⇑23b, lang=> +≡ ▵27d 28b⊳
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   28  | define FANGLE_template
   29  |   $(1): $(2)
@@ -498,7 +498,7 @@ We define a target which will extract or update all sources. To do this we first
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 We then enumerate the discovered FANGLE_SOURCES to generate a makefile rule for each one using the makefile template we defined above.
 
-27e <Makefile.inc-targets[7]() ⇑24c, lang=> +≡ ⊲26d 27f▿
+27f <Makefile.inc-targets[7]() ⇑24c, lang=> +≡ ⊲26d 27g▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   27  | $(foreach source,$(FANGLE_SOURCES),\
   28  |   $(eval $(call FANGLE_template,$(source),$(FANGLE_SOURCE))) \
@@ -507,7 +507,7 @@ We then enumerate the discovered FANGLE_SOURCES to generate a makefile rule for 
 These will all be built with FANGLE_SOURCE_STAMP.
 We also remove the generated sources on a make distclean.
 
-27f <Makefile.inc-targets[8]() ⇑24c, lang=> +≡ ▵27e 28c⊳
+27g <Makefile.inc-targets[8]() ⇑24c, lang=> +≡ ▵27f 28c⊳
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   30  | _distclean: clean_fangle_sources
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
@@ -524,13 +524,13 @@ We then identify the intermediate stages of the documentation and their build an
 6.5.1.1 Running pdflatex 
 We produce a pdf file from the tex file.
 
-28b <Makefile.inc-vars[14]() ⇑23b, lang=> +≡ ⊲27d 28d▿
+28b <Makefile.inc-vars[14]() ⇑23b, lang=> +≡ ⊲27e 28d▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   33  | FANGLE_PDF+=$(TEX_SOURCE:.tex=.pdf)
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 We run pdflatex twice to be sure that the contents and aux files are up to date. We certainly are required to run pdflatex at least twice if these files do not exist.
 
-28c <Makefile.inc-targets[9]() ⇑24c, lang=> +≡ ⊲27f 28e▿
+28c <Makefile.inc-targets[9]() ⇑24c, lang=> +≡ ⊲27g 28e▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   31  | .SUFFIXES: .tex .pdf
   32  | .tex.pdf:
@@ -544,7 +544,7 @@ We run pdflatex twice to be sure that the contents and aux files are up to date.
 6.5.2 Formatting TeXmacs 
 TeXmacs can produce a PDF file directly.
 
-28d <Makefile.inc-vars[15]() ⇑23b, lang=> +≡ ▵28b 28f▿
+28d <Makefile.inc-vars[15]() ⇑23b, lang=> +≡ ▵28b 29a⊳
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   34  | FANGLE_PDF+=$(LITERATE_SOURCE:.tm=.pdf)
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
@@ -553,7 +553,7 @@ we need to update twice, generate a pdf, update twice mode and generate a new PD
 Basically the PDF export of TeXmacs is pretty rotten and doesn't work properly from the CLI
 
 
-28e <Makefile.inc-targets[10]() ⇑24c, lang=> +≡ ▵28c 29a⊳
+28e <Makefile.inc-targets[10]() ⇑24c, lang=> +≡ ▵28c 29b⊳
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   39  | .SUFFIXES: .tm .pdf
   40  | .tm.pdf:
@@ -566,7 +566,7 @@ Basically the PDF export of TeXmacs is pretty rotten and doesn't work properly f
 6.5.3 Building the Documentation as a Whole 
 Currently we only build pdf as a final format, but FANGLE_DOCS may later hold other output formats.
 
-28f <Makefile.inc-vars[16]() ⇑23b, lang=> +≡ ▵28d
+29a <Makefile.inc-vars[16]() ⇑23b, lang=> +≡ ⊲28d
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   35  | FANGLE_DOCS=$(FANGLE_PDF)
      |________________________________________________________________________
@@ -574,7 +574,7 @@ Currently we only build pdf as a final format, but FANGLE_DOCS may later hold ot
 
 We also define fangle_docs as a convenient phony target.
 
-29a <Makefile.inc-targets[11]() ⇑24c, lang=> +≡ ⊲28e 29b▿
+29b <Makefile.inc-targets[11]() ⇑24c, lang=> +≡ ⊲28e 29c▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   46  | .PHONY: fangle_docs
   47  | fangle_docs: $(FANGLE_DOCS)
@@ -582,7 +582,7 @@ We also define fangle_docs as a convenient phony target.
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 And define a convenient clean_fangle_docs which we add to the regular clean target
 
-29b <Makefile.inc-targets[12]() ⇑24c, lang=> +≡ ▵29a
+29c <Makefile.inc-targets[12]() ⇑24c, lang=> +≡ ▵29b
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   49  | .PHONEY: clean_fangle_docs
   50  | clean_fangle_docs: clean_tex clean_pdf
@@ -605,7 +605,7 @@ Therefore we will have a minimal root fragment, which, when extracted, can cope 
 To do: De-lyxify
 
 
-29c <*[1](), lang=sh> ≡ 
+29d <*[1](), lang=sh> ≡ 
       ________________________________________________________________________
   1  | #! /bin/sh
   2  | 
@@ -702,7 +702,7 @@ And include the following chunks (which are explained further on) to make up the
 35c <./fangle[3]() ⇑35a, lang=> +≡ ▵35b 40a⊳
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   7  | «helper-functions 36d»
-  8  | «mode-tracker 59b»
+  8  | «mode-tracker 60b»
   9  | «parse_chunk_args 42a»
   10  | «chunk-storage-functions 79b»
   11  | «output_chunk_names() 73d»
@@ -957,7 +957,7 @@ However, if this universal mode-tracking is possible, then parsing the arguments
   2  |   # local vars
   3  |   c, context, rest)
   4  | {
-  5  |   «new-mode-tracker(context, language, mode) 55b»
+  5  |   «new-mode-tracker(context, language, mode) 56b»
   6  |   rest = mode_tracker(context, text, values);
   7  |   # extract values
   8  |   for(c=1; c <= context[0, "values"]; c++) {
@@ -1029,7 +1029,7 @@ A valid looking reference that is not actually the name of a parameter will be a
 Chapter 10Language Modes & Quoting
 lstlistings and fangle both recognize source languages, and perform some basic parsing and syntax highlighting in the rendered document1. although lstlisting supports many more languages  ^1. lstlistings can detect strings and comments within a language definition and perform suitable rendering, such as italics for comments, and visible-spaces within strings.
 Fangle similarly can recognize strings, and comments, etc, within a language, so that any chunks included with \chunkref{a-chunk} or <a-chunk ?> can be suitably escape or quoted.
-10.1 Modes to keep code together 
+10.1 Modes explanation 
 As an example, the C language has a few parse modes, which affect the interpretation of characters.
 One parse mode is the string mode. The string mode is commenced by an un-escaped quotation mark " and terminated by the same. Within the string mode, only one additional mode can be commenced, it is the backslash mode \, which is always terminated by the following character.
 Another mode is [ which is terminated by a ] (unless it occurs in a string).
@@ -1082,71 +1082,43 @@ We would need the output to look like this --- note the $$ as the single $ has b
      |________________________________________________________________________
 
 
-10.3 Modes operation 
+10.3 Language Mode Definitions 
 In order to make this work, we must define a mode-tracker supporting each language, that can detect the various quoting modes, and provide a transformation that may be applied to any included text so that included text will be interpreted correctly after any interpolation that it may be subject to at run-time.
 For example, the sed transformation for text to be inserted into shell double-quoted strings would be something like:
 s/\\/\\\\/g;s/$/\\$/g;s/"/\\"/g;
 which would protect \ $ "
-The mode tracker must also nested mode-changes, as in this shell example:
-echo "hello ‘id ...‘"
-↑
-Any shell special characters inserted at the point marked ↑ would need to be escaped if their plain-text meaning is to be preserved, including ‘ | * among others. The set of characters that need escaping in the back-ticks ‘ is not the same as the set that need escaing in the double-quotes ". However, in shell syntax, a " at the point marked ↑ does not close the leading " and so would not need additional escaping because of the nesting of the two modes.
-To do: MAYBE
-Escaping need not occur if the format and mode of the included chunk matches that of the including chunk.
-As each chunk is output a new mode tracker for that language is initialized in it's normal state. As text is output for that chunk the output mode is tracked. When a new chunk is included, a transformation appropriate to that mode is selected and pushed onto a stack of transformations. Any text to be output is passed through this stack of transformations.
-It remains to consider if the chunk-include function should return it's generated text so that the caller can apply any transformations (and formatting), or if it should apply the stack of transformations itself.
-Note that the transformed included text should have the property of not being able to change the mode in the current chunk.
-To do: Note chunk parameters should probably also be transformed
+All modes definitions are stored in a single multi-dimensional hash called modes:
+modes[language, mode, properties]
+The first index is the language, and the second index is the mode. The third indexes hold properties such as terminators, possible submodes, transformations, and so forth.
 
-10.4 Quoting scenarios 
-10.4.1 Direct quoting 
-He we give examples of various quoting scenarios and discuss what the expected outcome might be and how this could be obtained.
-
-47a <test:q:1[1](), lang=sh> ≡ 
+?a <xmode:set-terminators[1](language, mode, terminators), lang=> ≡ 
       ________________________________________________________________________
-  1  | echo "$(«test:q:1-inc 47b»)"
+  1  | modes["${language}", "${mode}", "terminators"]="${terminators}";
      |________________________________________________________________________
 
 
 
-47b <test:q:1-inc[1](), lang=sh> ≡ 
+?b <xmode:set-submodes[1](language, mode, submodes), lang=> ≡ 
       ________________________________________________________________________
-  1  | echo "hello"
+  1  | modes["${language}", "${mode}",  "submodes"]="${submodes}";
      |________________________________________________________________________
 
 
-Should this examples produce echo "$(echo "hello")" or echo "\$(echo \"hello\")" ?
-This depends on what the author intended, but we must provde a way to express that intent.
-We might argue that as both chunks have lang=sh the intent must have been to quote the included chunk — but consider that this might be shell script that writes shell script.
-If <test:q:1-inc 47b> had lang=text then it certainly would have been right to quote it, which leads us to ask: in what ways can we reduce quoting if lang of the included chunk is compatible with the lang of the including chunk?
-If we take a completely nested approach then even though $( mode might do no quoting of it's own, " mode will still do it's own quoting. We need a model where the nested $( mode will prevent " from quoting.
-This leads rise to the tunneling feature. In bash, the $( gives rise to a new top-level parsing scenario, so we need to enter the null mode, and also ignore any quoting and then undo-this when the $( mode is terminated by the corresponding close ).
-We shall say that tunneling is when a mode in a language ignores other modes in the same language and arrives back at an earlier null mode of the same language.
-In example <test:q:1 47a> above, the nesting of modes is: null, ", $(
-When mode $( is commenced, the stack of nest modes will be traversed. If the null mode can be found in the same language, without the language varying, then a tunnel will be established so that the intervening modes, " in this case, can be skipped when the modes are enumerated to quote the texted being emitted.
-In such a case, the correct result would be:
-
-47c <test:q:1.result[1](), lang=sh> ≡ 
-      ________________________________________________________________________
-  1  | echo "$(echo "hello")"
-     |________________________________________________________________________
-
-
-10.5 Language Mode Definitions 
-All modes definitions are stored in a single multi-dimensional hash. The first index is the language, and the second index is the mode-identifier. The third indexes hold properties: terminators, and optionally, submodes, delimiters, and tunnel targets.
-A useful set of mode definitions for a nameless general C-type language is shown here. (Don't be confused by the double backslash escaping needed in awk. One set of escaping is for the string, and the second set of escaping is for the regex).
+A useful set of mode definitions for a nameless general C-type language is shown here.
+Don't be confused by the double backslash escaping needed in awk. One set of escaping is for the string, and the second set of escaping is for the regex.
 To do: TODO: Add =<\mode{}> command which will allow us to signify that a string is
  regex and thus fangle will quote it for us.
 
-Submodes are entered by the characters  " ' { ( [ /*
+Sub-modes are identified by a backslash, a double or single quote, various bracket styles or a /* comment; specifically: \ " ' { ( [ /*
+For each of these sub-modes modes we must also identify at a mode terminator, and any sub-modes or delimiters that may be entered2. Because we are using the sub-mode characters as the mode identifier it means we can't currently have a mode character dependant on it's context; i.e. { can't behave differently when it is inside [.  ^2.
 
-48a <common-mode-definitions[1](language), lang=> ≡  48b▿
+47a <common-mode-definitions[1](language), lang=> ≡  47b▿
       ________________________________________________________________________
   1  | modes[${language}, "",  "submodes"]="\\\\|\"|'|{|\\(|\\[";
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
-In the default mode, a comma surrounded by un-important white space is a delimiter of language items2. whatever a language item might be  ^2.
+In the default mode, a comma surrounded by un-important white space is a delimiter of language items3. whatever a language item might be  ^3. Delimiters are used so that fangle can parse and recognise arguments individually.
 
-48b <common-mode-definitions[2](language) ⇑48a, lang=> +≡ ▵48a 48d▿
+47b <common-mode-definitions[2](language) ⇑47a, lang=> +≡ ▵47a 47d▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   2  | modes[${language}, "",  "delimiters"]=" *, *";
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
@@ -1154,46 +1126,44 @@ and should pass this test:
 To do: Why do the tests run in ?(? mode and not ?? mode
 
 
-48c <test:mode-definitions[1](), lang=> ≡  49g⊳
+47c <test:mode-definitions[1](), lang=> ≡  48g⊳
       ________________________________________________________________________
   1  | parse_chunk_args("c-like", "1,2,3", a, "");
   2  | if (a[1] != "1") e++;
   3  | if (a[2] != "2") e++;
   4  | if (a[3] != "3") e++;
   5  | if (length(a) != 3) e++;
-  6  | «pca-test.awk:summary 59d»
+  6  | «pca-test.awk:summary 60d»
   7  | 
   8  | parse_chunk_args("c-like", "joe, red", a, "");
   9  | if (a[1] != "joe") e++;
   10  | if (a[2] != "red") e++;
   11  | if (length(a) != 2) e++;
-  12  | «pca-test.awk:summary 59d»
+  12  | «pca-test.awk:summary 60d»
   13  | 
   14  | parse_chunk_args("c-like", "${colour}", a, "");
   15  | if (a[1] != "${colour}") e++;
   16  | if (length(a) != 1) e++;
-  17  | «pca-test.awk:summary 59d»
+  17  | «pca-test.awk:summary 60d»
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
-Nested modes are identified by a backslash, a double or single quote, various bracket styles or a /* comment.
-For each of these sub-modes modes we must also identify at a mode terminator, and any sub-modes or delimiters that may be entered3. Because we are using the sub-mode characters as the mode identifier it means we can't currently have a mode character dependant on it's context; i.e. { can't behave differently when it is inside [.  ^3.
-10.5.1 Backslash 
-The backslash mode has no submodes or delimiters, and is terminated by any character. Note that we are not so much interested in evaluating or interpolating content as we are in delineating content. It is no matter that a double backslash (\\) may represent a single backslash while a backslash-newline may represent white space, but it does matter that the newline in a backslash newline should not be able to terminate a C pre-processor statement; and so the newline will be consumed by the backslash however it is to be interpreted.
+10.3.1 Backslash 
+The backslash mode has no submodes or delimiters, and is terminated by any character. Note that we are not so much interested in evaluating or interpolating content as we are in delineating content. It is no matter that a double backslash (\\) may represent a single backslash while a backslash-newline may represent white space, but it does matter that the newline in a backslash newline should not be able to terminate a C pre-processor statement; and so the newline will be consumed by the backslash terminator however it may uultimately be interpreted.
 
-48d <common-mode-definitions[3](language) ⇑48a, lang=> +≡ ▵48b 49f⊳
+47d <common-mode-definitions[3](language) ⇑47a, lang=> +≡ ▵47b 48f⊳
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   3  | modes[${language}, "\\", "terminators"]=".";
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
-10.5.2 Strings 
+10.3.2 Strings 
 Common languages support two kinds of strings quoting, double quotes and single quotes.
 In a string we have one special mode, which is the backslash. This may escape an embedded quote and prevent us thinking that it should terminate the string.
 
-49a <mode:common-string[1](language, quote), lang=> ≡  49b▿
+48a <mode:common-string[1](language, quote), lang=> ≡  48b▿
       ________________________________________________________________________
   1  | modes[${language}, ${quote}, "submodes"]="\\\\";
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 Otherwise, the string will be terminated by the same character that commenced it.
 
-49b <mode:common-string[2](language, quote) ⇑49a, lang=> +≡ ▵49a 49c▿
+48b <mode:common-string[2](language, quote) ⇑48a, lang=> +≡ ▵48a 48c▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   2  | modes[${language}, ${quote}, "terminators"]=${quote};
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
@@ -1201,21 +1171,21 @@ In C type languages, certain escape sequences exist in strings. We need to defin
 The first substitution is to replace a backslash with a double backslash. We do this first as other substitutions may introduce a backslash which we would not then want to escape again here.
 Note: Backslashes need double-escaping in the search pattern but not in the replacement string, hence we are replacing a literal \ with a literal \\.
 
-49c <mode:common-string[3](language, quote) ⇑49a, lang=> +≡ ▵49b 49d▿
+48c <mode:common-string[3](language, quote) ⇑48a, lang=> +≡ ▵48b 48d▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   3  | escapes[${language}, ${quote}, ++escapes[${language}, ${quote}], "s"]="\\\\";
   4  | escapes[${language}, ${quote},   escapes[${language}, ${quote}], "r"]="\\\\";
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 If the quote character occurs in the text, it should be preceded by a backslash, otherwise it would terminate the string unexpectedly.
 
-49d <mode:common-string[4](language, quote) ⇑49a, lang=> +≡ ▵49c 49e▿
+48d <mode:common-string[4](language, quote) ⇑48a, lang=> +≡ ▵48c 48e▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   5  | escapes[${language}, ${quote}, ++escapes[${language}, ${quote}], "s"]=${quote};
   6  | escapes[${language}, ${quote},   escapes[${language}, ${quote}], "r"]="\\" ${quote};
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 Any newlines in the string, must be replaced by \n.
 
-49e <mode:common-string[5](language, quote) ⇑49a, lang=> +≡ ▵49d
+48e <mode:common-string[5](language, quote) ⇑48a, lang=> +≡ ▵48d
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   7  | escapes[${language}, ${quote}, ++escapes[${language}, ${quote}], "s"]="\n";
   8  | escapes[${language}, ${quote},   escapes[${language}, ${quote}], "r"]="\\n";
@@ -1224,25 +1194,25 @@ Any newlines in the string, must be replaced by \n.
 
 For the common modes, we define this string handling for double and single quotes.
 
-49f <common-mode-definitions[4](language) ⇑48a, lang=> +≡ ⊲48d 50b⊳
+48f <common-mode-definitions[4](language) ⇑47a, lang=> +≡ ⊲47d 49b⊳
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
-  4  | «mode:common-string(${language}, "\"") 49a»
-  5  | «mode:common-string(${language}, "'") 49a»
+  4  | «mode:common-string(${language}, "\"") 48a»
+  5  | «mode:common-string(${language}, "'") 48a»
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 Working strings should pass this test:
 
-49g <test:mode-definitions[2]() ⇑48c, lang=> +≡ ⊲48c 54b⊳
+48g <test:mode-definitions[2]() ⇑47c, lang=> +≡ ⊲47c 55b⊳
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   18  | parse_chunk_args("c-like", "say \"I said, \\\"Hello, how are you\\\".\", for me", a, "");
   19  | if (a[1] != "say \"I said, \\\"Hello, how are you\\\".\"") e++;
   20  | if (a[2] != "for me") e++;
   21  | if (length(a) != 2) e++;
-  22  | «pca-test.awk:summary 59d»
+  22  | «pca-test.awk:summary 60d»
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
-10.5.3 Parentheses, Braces and Brackets 
+10.3.3 Parentheses, Braces and Brackets 
 Where quotes are closed by the same character, parentheses, brackets and braces are closed by an alternate character.
 
-50a <mode:common-brackets[1](language, open, close), lang=> ≡ 
+49a <mode:common-brackets[1](language, open, close), lang=> ≡ 
       ________________________________________________________________________
   1  | modes[${language}, ${open},  "submodes" ]="\\\\|\"|{|\\(|\\[|'|/\\*";
   2  | modes[${language}, ${open},  "delimiters"]=" *, *";
@@ -1254,24 +1224,24 @@ Note that the open is NOT a regex but the close token IS.
 To do: When we can quote regex we won't have to put the slashes in here
 
 
-50b <common-mode-definitions[5](language) ⇑48a, lang=> +≡ ⊲49f
+49b <common-mode-definitions[5](language) ⇑47a, lang=> +≡ ⊲48f
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
-  6  | «mode:common-brackets(${language}, "{", "}") 50a»
-  7  | «mode:common-brackets(${language}, "[", "\\]") 50a»
-  8  | «mode:common-brackets(${language}, "(", "\\)") 50a»
+  6  | «mode:common-brackets(${language}, "{", "}") 49a»
+  7  | «mode:common-brackets(${language}, "[", "\\]") 49a»
+  8  | «mode:common-brackets(${language}, "(", "\\)") 49a»
      |________________________________________________________________________
 
 
-10.5.4 Customizing Standard Modes 
+10.3.4 Customizing Standard Modes 
 
-50c <mode:add-submode[1](language, mode, submode), lang=> ≡ 
+49c <mode:add-submode[1](language, mode, submode), lang=> ≡ 
       ________________________________________________________________________
   1  | modes[${language}, ${mode}, "submodes"] = modes[${language}, ${mode}, "submodes"] "|" ${submode};
      |________________________________________________________________________
 
 
 
-50d <mode:add-escapes[1](language, mode, search, replace), lang=> ≡ 
+49d <mode:add-escapes[1](language, mode, search, replace), lang=> ≡ 
       ________________________________________________________________________
   1  | escapes[${language}, ${mode}, ++escapes[${language}, ${mode}], "s"]=${search};
   2  | escapes[${language}, ${mode},   escapes[${language}, ${mode}], "r"]=${replace};
@@ -1279,22 +1249,22 @@ To do: When we can quote regex we won't have to put the slashes in here
 
 
 
-10.5.5 Comments 
+10.3.5 Comments 
 We can define /* comment */ style comments and //comment style comments to be added to any language:
 
-50e <mode:multi-line-comments[1](language), lang=> ≡ 
+49e <mode:multi-line-comments[1](language), lang=> ≡ 
       ________________________________________________________________________
-  1  | «mode:add-submode(${language}, "", "/\\*") 50c»
+  1  | «mode:add-submode(${language}, "", "/\\*") 49c»
   2  | modes[${language}, "/*", "terminators"]="\\*/";
      |________________________________________________________________________
 
 
 
-50f <mode:single-line-slash-comments[1](language), lang=> ≡ 
+49f <mode:single-line-slash-comments[1](language), lang=> ≡ 
       ________________________________________________________________________
-  1  | «mode:add-submode(${language}, "", "//") 50c»
+  1  | «mode:add-submode(${language}, "", "//") 49c»
   2  | modes[${language}, "//", "terminators"]="\n";
-  3  | «mode:add-escapes(${language}, "//", "\n", "\n//") 50d»
+  3  | «mode:add-escapes(${language}, "//", "\n", "\n//") 49d»
      |________________________________________________________________________
 
 
@@ -1302,27 +1272,27 @@ We can also define # comment style comments (as used in awk and shell scripts) i
 To do: I'm having to use # for hash and ¯extbackslash{} for  and have hacky work-arounds in the parser for now
 
 
-50g <mode:add-hash-comments[1](language), lang=> ≡ 
+49g <mode:add-hash-comments[1](language), lang=> ≡ 
       ________________________________________________________________________
-  1  | «mode:add-submode(${language}, "", "#") 50c»
+  1  | «mode:add-submode(${language}, "", "#") 49c»
   2  | modes[${language}, "#", "terminators"]="\n";
-  3  | «mode:add-escapes(${language}, "#", "\n", "\n#") 50d»
+  3  | «mode:add-escapes(${language}, "#", "\n", "\n#") 49d»
      |________________________________________________________________________
 
 
 In C, the # denotes pre-processor directives which can be multi-line
 
-51a <mode:add-hash-defines[1](language), lang=> ≡ 
+49h <mode:add-hash-defines[1](language), lang=> ≡ 
       ________________________________________________________________________
-  1  | «mode:add-submode(${language}, "", "#") 50c»
+  1  | «mode:add-submode(${language}, "", "#") 49c»
   2  | modes[${language}, "#", "submodes" ]="\\\\";
   3  | modes[${language}, "#", "terminators"]="\n";
-  4  | «mode:add-escapes(${language}, "#", "\n", "\\\\\n") 50d»
+  4  | «mode:add-escapes(${language}, "#", "\n", "\\\\\n") 49d»
      |________________________________________________________________________
 
 
 
-51b <mode:quote-dollar-escape[1](language, quote), lang=> ≡ 
+50a <mode:quote-dollar-escape[1](language, quote), lang=> ≡ 
       ________________________________________________________________________
   1  | escapes[${language}, ${quote}, ++escapes[${language}, ${quote}], "s"]="\\$";
   2  | escapes[${language}, ${quote},   escapes[${language}, ${quote}], "r"]="\\$";
@@ -1331,29 +1301,29 @@ In C, the # denotes pre-processor directives which can be multi-line
 
 We can add these definitions to various languages
 
-51c <mode-definitions[1](), lang=> ≡  52b⊳
+50b <mode-definitions[1](), lang=> ≡  51a⊳
       ________________________________________________________________________
-  1  | «common-mode-definitions("c-like") 48a»
+  1  | «common-mode-definitions("c-like") 47a»
   2  | 
-  3  | «common-mode-definitions("c") 48a»
-  4  | «mode:multi-line-comments("c") 50e»
-  5  | «mode:single-line-slash-comments("c") 50f»
-  6  | «mode:add-hash-defines("c") 51a»
+  3  | «common-mode-definitions("c") 47a»
+  4  | «mode:multi-line-comments("c") 49e»
+  5  | «mode:single-line-slash-comments("c") 49f»
+  6  | «mode:add-hash-defines("c") 49h»
   7  | 
-  8  | «common-mode-definitions("awk") 48a»
-  9  | «mode:add-hash-comments("awk") 50g»
-  10  | «mode:add-naked-regex("awk") 52a»
+  8  | «common-mode-definitions("awk") 47a»
+  9  | «mode:add-hash-comments("awk") 49g»
+  10  | «mode:add-naked-regex("awk") 50g»
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 The awk definitions should allow a comment block like this:
 
-51d <test:comment-quote[1](), lang=awk> ≡ 
+50c <test:comment-quote[1](), lang=awk> ≡ 
       ________________________________________________________________________
-  1  | # Comment: «test:comment-text 51e»
+  1  | # Comment: «test:comment-text 50d»
      |________________________________________________________________________
 
 
 
-51e <test:comment-text[1](), lang=> ≡ 
+50d <test:comment-text[1](), lang=> ≡ 
       ________________________________________________________________________
   1  | Now is the time for
   2  | the quick brown fox to bring lemonade
@@ -1363,7 +1333,7 @@ The awk definitions should allow a comment block like this:
 
 to come out like this:
 
-51f <test:comment-quote:result[1](), lang=> ≡ 
+50e <test:comment-quote:result[1](), lang=> ≡ 
       ________________________________________________________________________
   1  | # Comment: Now is the time for
   2  | #the quick brown fox to bring lemonade
@@ -1373,7 +1343,7 @@ to come out like this:
 
 The C definition for such a block should have it come out like this:
 
-51g <test:comment-quote:C-result[1](), lang=> ≡ 
+50f <test:comment-quote:C-result[1](), lang=> ≡ 
       ________________________________________________________________________
   1  | # Comment: Now is the time for\
   2  | the quick brown fox to bring lemonade\
@@ -1381,31 +1351,31 @@ The C definition for such a block should have it come out like this:
      |________________________________________________________________________
 
 
-10.5.6 Regex 
+10.3.6 Regex 
 This pattern is incomplete, but meant to detect naked regular expressions in awk and perl; e.g. /.*$/, however required capabilities are not present.
 Current it only detects regexes anchored with ^ as used in fangle.
 For full regex support, modes need to be named not after their starting character, but some other more fully qualified name.
 
-52a <mode:add-naked-regex[1](language), lang=> ≡ 
+50g <mode:add-naked-regex[1](language), lang=> ≡ 
       ________________________________________________________________________
-  1  | «mode:add-submode(${language}, "", "/\\^") 50c»
+  1  | «mode:add-submode(${language}, "", "/\\^") 49c»
   2  | modes[${language}, "/^", "terminators"]="/";
      |________________________________________________________________________
 
 
-10.5.7 Perl 
+10.3.7 Perl 
 
-52b <mode-definitions[2]() ⇑51c, lang=> +≡ ⊲51c 52c▿
+51a <mode-definitions[2]() ⇑50b, lang=> +≡ ⊲50b 51b▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
-  11  | «common-mode-definitions("perl") 48a»
-  12  | «mode:multi-line-comments("perl") 50e»
-  13  | «mode:add-hash-comments("perl") 50g»
+  11  | «common-mode-definitions("perl") 47a»
+  12  | «mode:multi-line-comments("perl") 49e»
+  13  | «mode:add-hash-comments("perl") 49g»
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 Still need to add add s/, submode /, terminate both with //. This is likely to be impossible as perl regexes can contain perl.
-10.5.8 sh 
-Shell single-quote strings are different to other strings and have no escape characters. The only special character is the single quote ' which always closes the string. Therefore we cannot use <common-mode-definitions("sh") 48a> but we will invoke most of it's definition apart from single-quote strings. 
+10.3.8 sh 
+Shell single-quote strings are different to other strings and have no escape characters. The only special character is the single quote ' which always closes the string. Therefore we cannot use <common-mode-definitions("sh") 47a> but we will invoke most of it's definition apart from single-quote strings. 
 
-52c <mode-definitions[3]() ⇑51c, lang=awk> +≡ ▵52b 54a⊳
+51b <mode-definitions[3]() ⇑50b, lang=awk> +≡ ▵51a 52a⊳
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   14  | modes["sh", "",  "submodes"]="\\\\|\"|'|{|\\(|\\[|\\$\\(";
   15  | modes["sh", "\\", "terminators"]=".";
@@ -1422,69 +1392,134 @@ Shell single-quote strings are different to other strings and have no escape cha
   26  | modes["sh", "'", "terminators"]="'";
   27  | escapes["sh", "'", ++escapes["sh", "'"], "s"]="'";
   28  | escapes["sh", "'",   escapes["sh", "'"], "r"]="'\\'" "'";
-  29  | «mode:common-brackets("sh", "$(", "\\)") 50a»
-  30  | «mode:add-tunnel("sh", "$(", "") 52d»
-  31  | «mode:common-brackets("sh", "{", "}") 50a»
-  32  | «mode:common-brackets("sh", "[", "\\]") 50a»
-  33  | «mode:common-brackets("sh", "(", "\\)") 50a»
-  34  | «mode:add-hash-comments("sh") 50g»
-  35  | «mode:quote-dollar-escape("sh", "\"") 51b»
+  29  | «mode:common-brackets("sh", "$(", "\\)") 49a»
+  30  | «mode:add-tunnel("sh", "$(", "") 51c»
+  31  | «mode:common-brackets("sh", "{", "}") 49a»
+  32  | «mode:common-brackets("sh", "[", "\\]") 49a»
+  33  | «mode:common-brackets("sh", "(", "\\)") 49a»
+  34  | «mode:add-hash-comments("sh") 49g»
+  35  | «mode:quote-dollar-escape("sh", "\"") 50a»
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 The definition of add-tunnel is:
 
-52d <mode:add-tunnel[1](language, mode, tunnel), lang=> ≡ 
+51c <mode:add-tunnel[1](language, mode, tunnel), lang=> ≡ 
       ________________________________________________________________________
   1  | escapes[${language}, ${mode}, ++escapes[${language}, ${mode}], "tunnel"]=${tunnel};
      |________________________________________________________________________
 
 
-10.5.9 Make 
+10.3.9 Make 
 BUGS: makefile tab mode is terminated by newline, but chunks never end in a newline! So tab mode is never closed unless there is a trailing blank line!
-For makefiles, we currently recognize 2 modes: the null mode and ↦ mode, which is tabbed mode and contains the makefile recipie. In the null mode the only escape is $ which must be converted to $$. 
-Tabbed mode is harder to manage, as the GNU Make Manual says in the section on splitting lines4. http://www.gnu.org/s/hello/manual/make/Splitting-Lines.html  ^4. There is no way to escape a multi-line text that occurs as part of a makefile recipe.
-Despite this sad fact, if the newline's in the shell script all occur at points of top-level shell syntax, then we could replace them with  ;\n↦and largely get the right effect.
+For makefiles, we currently recognize 2 modes: the null mode and ↦ mode, which is tabbed mode and contains the makefile recipie. 
 
-53a <test:make:1[1](), lang=make> ≡ 
+
+52a <mode-definitions[4]() ⇑50b, lang=awk> +≡ ⊲51b 52b▿
+     ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+  36  | modes["make", "",  "submodes"]="↦";
+     |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
+In the null mode the only escape is $ which must be converted to $$, and hash-style comments. POSIX requires that line-continuations extend hash-style comments and so fangle-style transformations to replicate the hash at the start of each line is not strictly required, however it is harmless, easier to read, and required by some implementations of make which do not implement POSIX requirements correctly.
+
+52b <mode-definitions[5]() ⇑50b, lang=awk> +≡ ▵52a 53d⊳
+     ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+  37  | escapes["make", "", ++escapes["make", ""], "s"]="\\$";
+  38  | escapes["make", "", escapes["make", ""], "r"]="$$";
+  39  | «mode:add-hash-comments("make") 49g»
+     |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
+Tabbed mode is harder to manage, as the GNU Make Manual says in the section on splitting lines4. http://www.gnu.org/s/hello/manual/make/Splitting-Lines.html  ^4. There is no obvious way to escape a multi-line text that occurs as part of a makefile recipe.
+Traditionally, if the newline's in the shell script all occur at points of top-level shell syntax, then we could replace them with  ;\n↦and largely get the right effect.
+
+52c <test:make:1[1](), lang=make> ≡ 
       ________________________________________________________________________
   1  | all:
   2  | ↦echo making
-  3  | ↦«test:make:1-inc($@) 53b»
+  3  | ↦«test:make:1-inc($@) 52d»
+ 
+ 
 
      |________________________________________________________________________
 
 
 
-53b <test:make:1-inc[1](target), lang=sh> ≡ 
+52d <test:make:1-inc[1](target), lang=sh> ≡ 
       ________________________________________________________________________
   1  | if test "${target}" = "all"
   2  | then echo yes, all
-  3  | else echo not all
-  4  | fi
+  3  | else echo "${target}" | sed -e '/^\//{
+  4  |                                  p;s/^/../
+  5  |                        }'
+  6  | fi
      |________________________________________________________________________
 
 
-The two chunks about could reasonably produce this:
+The two chunks above could reasonably produce something like this:
 
-53c <test:make:1.result[1](), lang=make> ≡ 
+52e <test:make:1.result[1](), lang=make> ≡ 
       ________________________________________________________________________
   1  | all:
   2  | ↦echo making
   3  | ↦if test "$@" = "all" ;\
   4  | ↦then echo yes, all ;\
-  5  | ↦else echo not all ;\
-  6  | ↦fi
+  5  | ↦else echo "$@" | sed -e '/^\//{ ;\
+  6  | ↦                           p;s/^/../ ;\
+  7  | ↦                         }' ;\
+  8  | ↦fi
      |________________________________________________________________________
 
 
-But will more likely produce this:
+However ;\ is not a proper continuation inside a multi-line sed script. There is no simple continuation that fangle could use — and in any case it would depend on what type of quote marks were used in the bash that contained the sed.
+The difficulty lies in the way that make handles the recipe. Each line of the recipe is invoced as a separate shell command (using $(SHELL) -c) unless the last character of the line was a backslash. In such a case, the backslash and the newline and the nextline are handed to the shell (although the tab character that prefixes the next line is stripped).
+This behaviour makes it impossible to hand a newline character to the shell unless it is prefixed by a backslash. If an included shell fragment contained strings with literal newline characters then there would be no easy way to escape these and preserve the value of the string.
+A different style of makefile construction might be used — the recipe could be stored in a target specific variable5. http://www.gnu.org/s/hello/manual/make/Target_002dspecific.html  ^5 which contains the recipe with a more normal escape mechanism.
+A better solution is to use a shell helper that strips the back-slash which precedes the newline character and then passes the arguments to the normal shell.
+Because this is a simple operation and because bash is so flexible, this can be managed in a single line within the makefile itself.
+As a newline will only exist when preceded by the backslash, and as the purpose of the backash is to protect th newline, that is needed is to remove any backslash that is followed by a newline.
+Bash is capable of doing this with its pattern substitution. If A=123:=456:=789 then ${A//:=/=} will be 123=456=789. We don't want to just perform the substitution in a single variable but in fact in all of $@'', however bash will repeat substitution over all members of an array, so this is done automatically.
+In bash, $'\012' represents the newline character (expressed as an octal escape sequence), so this expression will replace backslash-newline with a single newline.
 
-53d <test:make:1.result-actual[1](), lang=make> ≡ 
+53a <fix-requote-newline[1](), lang=sh> ≡ 
+      ________________________________________________________________________
+  1  | "${@//\\$'\012'/$'\012'}"
+     |________________________________________________________________________
+
+
+We use this as part of a larger statement which will invoke such a transformed command ine using any particular shell. The trailing -- prevents any options in the command line from being interpreted as options to our bash command — instead they will be transformed and passed to the inner shell which is invoked with exec so that our fixup-shell does not hang around longer than is needed.
+
+53b <fix-make-shell[1](shell), lang=sh> ≡ 
+      ________________________________________________________________________
+  1  | bash -c 'exec ${shell} «fix-requote-newline 53a»' --
+     |________________________________________________________________________
+
+
+We can then cinlude a line like this in our makefiles. We should rather pass $(SHELL) as the chunk argument than bash, but currently fangle will not track which nested-inclusion level the argument comes from and will quote the $ in $(SHELL) in the same way it quotes a $ that may occur in the bash script, so this would come out as $$(SHELL) and have the wrong effect.
+
+53c <make-fix-make-shell[1](), lang=> ≡ 
+      ________________________________________________________________________
+  1  | SHELL:=«fix-make-shell(bash) 53b»
+     |________________________________________________________________________
+
+
+The full escaped and quoted text with $(SHELL) and suitale for inclusion in a Makefile is:
+SHELL:=bash -c 'exec $(SHELL) "$${@//\\$$'\''\012'\''/$$'\''\012'\''}"' --
+Based on this, we just need to escape newlines (in tabbed mode) with a regular backslash:
+Note that terminators applies to literal, not included text, escapes apply to included, not literal text; also that the tab character is hard-wired into the pattern, and that the make variable .RECIPEPREFIX might change this to something else.
+
+53d <mode-definitions[6]() ⇑50b, lang=awk> +≡ ⊲52b
+     ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+  40  | modes["make", "↦", "terminators"]="\\n";
+  41  | escapes["make", "↦", ++escapes["make", "↦"], "s"]="\\n";
+  42  | escapes["make", "↦",   escapes["make", "↦"], "r"]="\\\n↦";
+     |________________________________________________________________________
+
+
+With this improved quoting, the test on 52c will actually produce this:
+
+53e <test:make:1.result-actual[1](), lang=make> ≡ 
       ________________________________________________________________________
   1  | all:
   2  | ↦echo making
-  3  | ↦if test "$$@" = "all" ;\
-  4  | ↦ then echo yes, all ;\
-  5  | ↦ else echo not all ;\
+  3  | ↦if test "$$@" = "all"\
+  4  | ↦ then echo yes, all\
+  5  | ↦ else echo not all\
   6  | ↦ fi
      |________________________________________________________________________
 
@@ -1495,66 +1530,65 @@ Do we need to track the language of sources of arguments?
 
 A more ugly work-around until this problem can be solved would be to use this notation:
 
-53e <test:make:2[1](), lang=make> ≡ 
+54a <test:make:2[1](), lang=make> ≡ 
       ________________________________________________________________________
   1  | all:
   2  | ↦echo making
-  3  | ↦ARG="$@"; «test:make:1-inc($ARG) 53b»
+  3  | ↦ARG="$@"; «test:make:1-inc($ARG) 52d»
      |________________________________________________________________________
 
 
 which produces this output which is more useful (because it works):
 
-53f <test:make:2.result[1](), lang=make> ≡ 
+54b <test:make:2.result[1](), lang=make> ≡ 
       ________________________________________________________________________
   1  | all:
   2  | ↦echo making test
-  3  | ↦ARG="$@"; if test "$$ARG" = "all" ;\
-  4  | ↦           then echo yes, all ;\
-  5  | ↦           else echo not all ;\
+  3  | ↦ARG="$@"; if test "$$ARG" = "all"\
+  4  | ↦           then echo yes, all\
+  5  | ↦           else echo not all\
   6  | ↦           fi
      |________________________________________________________________________
 
 
-If, however, the shell fragment contained strings with literal newline characters then there would be no easy way to escape these and preserve the value of the string.
-A different style of makefile construction might be used — the recipe could be stored in a target specific variable5. http://www.gnu.org/s/hello/manual/make/Target_002dspecific.html  ^5 which contains the recipe with a more normal escape mechanism.
-BREAKING NEWS:
-So use this, to make \ work instinctively
-SHELL:=bash -c 'exec $(SHELL) "$${@//\\$$'\''\012'\''/$$'\''\012'\''}"' --
+10.4 Quoting scenarios 
+10.4.1 Direct quoting 
+He we give examples of various quoting scenarios and discuss what the expected outcome might be and how this could be obtained.
 
-?a <fix-requote-newline[1](), lang=sh> ≡ 
+54c <test:q:1[1](), lang=sh> ≡ 
       ________________________________________________________________________
-  1  | "${@//\\$'\012'/$'\012'}"
+  1  | echo "$(«test:q:1-inc 54d»)"
      |________________________________________________________________________
 
 
 
-?b <fix-make-shell[1](shell), lang=sh> ≡ 
+54d <test:q:1-inc[1](), lang=sh> ≡ 
       ________________________________________________________________________
-  1  | bash -c 'exec ${shell} «fix-requote-newline ?a»' --
+  1  | echo "hello"
      |________________________________________________________________________
 
 
+Should this examples produce echo "$(echo "hello")" or echo "\$(echo \"hello\")" ?
+This depends on what the author intended, but we must provde a way to express that intent.
+We might argue that as both chunks have lang=sh the intent must have been to quote the included chunk — but consider that this might be shell script that writes shell script.
+If <test:q:1-inc 54d> had lang=text then it certainly would have been right to quote it, which leads us to ask: in what ways can we reduce quoting if lang of the included chunk is compatible with the lang of the including chunk?
+If we take a completely nested approach then even though $( mode might do no quoting of it's own, " mode will still do it's own quoting. We need a model where the nested $( mode will prevent " from quoting.
+This leads rise to the tunneling feature. In bash, the $( gives rise to a new top-level parsing scenario, so we need to enter the null mode, and also ignore any quoting and then undo-this when the $( mode is terminated by the corresponding close ).
+We shall say that tunneling is when a mode in a language ignores other modes in the same language and arrives back at an earlier null mode of the same language.
+In example <test:q:1 54c> above, the nesting of modes is: null, ", $(
+When mode $( is commenced, the stack of nest modes will be traversed. If the null mode can be found in the same language, without the language varying, then a tunnel will be established so that the intervening modes, " in this case, can be skipped when the modes are enumerated to quote the texted being emitted.
+In such a case, the correct result would be:
 
-
-54a <mode-definitions[4]() ⇑51c, lang=awk> +≡ ⊲52c
-     ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
-  36  | modes["make", "",  "submodes"]="↦";
-  37  | escapes["make", "", ++escapes["make", ""], "s"]="\\$";
-  38  | escapes["make", "", escapes["make", ""], "r"]="$$";
-  39  | modes["make", "↦", "terminators"]="\\n";
-  40  | escapes["make", "↦", ++escapes["make", "↦"], "s"]="\\n";
-  41  | escapes["make", "↦", escapes["make", "↦"], "r"]="\\\n↦";
-  42  | «mode:add-hash-comments("make") 50g»
+55a <test:q:1.result[1](), lang=sh> ≡ 
+      ________________________________________________________________________
+  1  | echo "$(echo "hello")"
      |________________________________________________________________________
 
 
-Note also that the tab character is hard-wired into the pattern, and that the make variable .RECIPEPREFIX might change this to something else.
-Apart from a makefile's own quoting rules, given above, every makefile action is passed to sh -c and so we need to do the same quoting
-10.6 Some tests 
+10.5 Some tests 
 Also, the parser must return any spare text at the end that has not been processed due to a mode terminator being found.
 
-54b <test:mode-definitions[3]() ⇑48c, lang=> +≡ ⊲49g 54c▿
+55b <test:mode-definitions[3]() ⇑47c, lang=> +≡ ⊲48g 55c▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   23  | rest = parse_chunk_args("c-like", "1, 2, 3) spare", a, "(");
   24  | if (a[1] != 1) e++;
@@ -1562,26 +1596,31 @@ Also, the parser must return any spare text at the end that has not been process
   26  | if (a[3] != 3) e++;
   27  | if (length(a) != 3) e++;
   28  | if (rest != " spare") e++;
-  29  | «pca-test.awk:summary 59d»
+  29  | «pca-test.awk:summary 60d»
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 We must also be able to parse the example given earlier.
 
-54c <test:mode-definitions[4]() ⇑48c, lang=> +≡ ▵54b
+55c <test:mode-definitions[4]() ⇑47c, lang=> +≡ ▵55b
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   30  | parse_chunk_args("c-like", "things[x, y], get_other_things(a, \"(all)\"), 99", a, "(");
   31  | if (a[1] != "things[x, y]") e++;
   32  | if (a[2] != "get_other_things(a, \"(all)\")") e++;
   33  | if (a[3] != "99") e++;
   34  | if (length(a) != 3) e++;
-  35  | «pca-test.awk:summary 59d»
+  35  | «pca-test.awk:summary 60d»
      |________________________________________________________________________
 
 
-10.7 A non-recursive mode tracker 
-10.7.1 Constructor 
+10.6 A non-recursive mode tracker 
+As each chunk is output a new mode tracker for that language is initialized in it's normal state. As text is output for that chunk the output mode is tracked. When a new chunk is included, a transformation appropriate to that mode is selected and pushed onto a stack of transformations. Any text to be output is passed through this stack of transformations.
+It remains to consider if the chunk-include function should return it's generated text so that the caller can apply any transformations (and formatting), or if it should apply the stack of transformations itself.
+Note that the transformed included text should have the property of not being able to change the mode in the current chunk.
+To do: Note chunk parameters should probably also be transformed
+
+10.6.1 Constructor 
 The mode tracker holds its state in a stack based on a numerically indexed hash. This function, when passed an empty hash, will intialize it.
 
-55a <new_mode_tracker()[1](), lang=> ≡ 
+56a <new_mode_tracker()[1](), lang=> ≡ 
       ________________________________________________________________________
   1  | function new_mode_tracker(context, language, mode) {
   2  |   context[""] = 0;
@@ -1591,31 +1630,31 @@ The mode tracker holds its state in a stack based on a numerically indexed hash.
      |________________________________________________________________________
 
 
-Because awk functions cannot return an array, we must create the array first and pass it in, so we have a fangle macro to do this:
+Awk functions cannot return an array, but arrays are passed by reference. Because of this we must create the array first and pass it in, so we have a fangle macro to do this:
 
-55b <new-mode-tracker[1](context, language, mode), lang=awk> ≡ 
+56b <new-mode-tracker[1](context, language, mode), lang=awk> ≡ 
       ________________________________________________________________________
-  1  | «awk-delete-array(context) 35d»
+  1  | «awk-delete-array(${context}) 35d»
   2  | new_mode_tracker(${context}, ${language}, ${mode});
      |________________________________________________________________________
 
 
-10.7.2 Management 
+10.6.2 Management 
 And for tracking modes, we dispatch to a mode-tracker action based on the current language
 
-55c <mode_tracker[1](), lang=awk> ≡  55d▿
+56c <mode_tracker[1](), lang=awk> ≡  56d▿
       ________________________________________________________________________
   1  | function push_mode_tracker(context, language, mode,
   2  |   # local vars
   3  |   top)
   4  | {
   5  |   if (! ("" in context)) {
-  6  |     «new-mode-tracker(context, language, mode) 55b»
+  6  |     «new-mode-tracker(context, language, mode) 56b»
   7  |     return;
   8  |   } else {
   9  |     top = context[""];
   10  | #    if (context[top, "language"] == language && mode=="") mode = context[top, "mode"];
-  11  |     if (context[top, "language"] == language && context[top, "mode"] == mode) return top;
+  11  |     if (context[top, "language"] == language && context[top, "mode"] == mode) return top - 1;
   12  |     old_top = top;
   13  |     top++;
   14  |     context[top, "language"] = language;
@@ -1626,58 +1665,61 @@ And for tracking modes, we dispatch to a mode-tracker action based on the curren
   19  | }
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 
-55d <mode_tracker[2]() ⇑55c, lang=> +≡ ▵55c 56a⊳
+56d <mode_tracker[2]() ⇑56c, lang=> +≡ ▵56c 56e▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   20  | function dump_mode_tracker(context,  
   21  |   c, d)
   22  | {
   23  |   for(c=0; c <= context[""]; c++) {
   24  |     printf(" %2d   %s:%s\n", c, context[c, "language"], context[c, "mode"]) > "/dev/stderr";
-  25  |     for(d=1; ( (c, "values", d) in context); d++) {
-  26  |       printf("   %2d %s\n", d, context[c, "values", d]) > "/dev/stderr";
-  27  |     }
+  25  | #    for(d=1; ( (c, "values", d) in context); d++) {
+  26  | #      printf("   %2d %s\n", d, context[c, "values", d]) > "/dev/stderr";
+  27  | #    }
   28  |   }
   29  | }
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 
-56a <mode_tracker[3]() ⇑55c, lang=> +≡ ⊲55d 60a⊳
+56e <mode_tracker[3]() ⇑56c, lang=> +≡ ▵56d 61a⊳
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   30  | function pop_mode_tracker(context, context_origin)
   31  | {
-  32  |   if ( (context_origin) && ("" in context) && context[""] != (1+context_origin) && context[""] != context_origin) return 0;
-  33  |   context[""] = context_origin;
-  34  |   return 1;
-  35  | }
+  32  |   if ( (context_origin) && ("" in context) && context[""] != (1+context_origin) && context[""] != context_origin) {
+  33  |     print "Context level: " context[""] ", origin: " context_origin "\n" > "/dev/stderr"
+  34  |     return 0;
+  35  |   }
+  36  |   context[""] = context_origin;
+  37  |   return 1;
+  38  | }
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 This implies that any chunk must be syntactically whole; for instance, this is fine:
 
-56b <test:whole-chunk[1](), lang=> ≡ 
+57a <test:whole-chunk[1](), lang=> ≡ 
       ________________________________________________________________________
   1  | if (1) {
-  2  |   «test:say-hello 56c»
+  2  |   «test:say-hello 57b»
   3  | }
      |________________________________________________________________________
 
 
 
-56c <test:say-hello[1](), lang=> ≡ 
+57b <test:say-hello[1](), lang=> ≡ 
       ________________________________________________________________________
   1  | print "hello";
      |________________________________________________________________________
 
 
-But this is not fine; the chunk <test:hidden-else 56e> is not properly cromulent.
+But this is not fine; the chunk <test:hidden-else 57d> is not properly cromulent.
 
-56d <test:partial-chunk[1](), lang=> ≡ 
+57c <test:partial-chunk[1](), lang=> ≡ 
       ________________________________________________________________________
   1  | if (1) {
-  2  |   «test:hidden-else 56e»
+  2  |   «test:hidden-else 57d»
   3  | }
      |________________________________________________________________________
 
 
 
-56e <test:hidden-else[1](), lang=> ≡ 
+57d <test:hidden-else[1](), lang=> ≡ 
       ________________________________________________________________________
   1  |   print "I'm fine";
   2  | } else {
@@ -1687,7 +1729,7 @@ But this is not fine; the chunk <test:hidden-else 56e> is not properly cromulent
 
 These tests will check for correct behaviour:
 
-56f <test:cromulence[1](), lang=> ≡ 
+57e <test:cromulence[1](), lang=> ≡ 
       ________________________________________________________________________
   1  | echo Cromulence test
   2  | passtest $FANGLE -Rtest:whole-chunk $TXT_SRC &>/dev/null || ( echo "Whole chunk failed" && exit 1 )
@@ -1695,10 +1737,10 @@ These tests will check for correct behaviour:
      |________________________________________________________________________
 
 
-10.7.3 Tracker 
+10.6.3 Tracker 
 We must avoid recursion as a language construct because we intend to employ mode-tracking to track language mode of emitted code, and the code is emitted from a function which is itself recursive, so instead we implement psuedo-recursion using our own stack based on a hash.
 
-56g <mode_tracker()[1](), lang=awk> ≡  57a⊳
+57f <mode_tracker()[1](), lang=awk> ≡  58a⊳
       ________________________________________________________________________
   1  | function mode_tracker(context, text, values, 
   2  |   # optional parameters
@@ -1710,7 +1752,7 @@ We must avoid recursion as a language construct because we intend to employ mode
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 We could be re-commencing with a valid context, so we need to setup the state according to the last context.
 
-57a <mode_tracker()[2]() ⇑56g, lang=> +≡ ⊲56g 57d▿
+58a <mode_tracker()[2]() ⇑57f, lang=> +≡ ⊲57f 58d▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   8  |   cindex = context[""] + 0;
   9  |   mode = context[cindex, "mode"];
@@ -1718,7 +1760,7 @@ We could be re-commencing with a valid context, so we need to setup the state ac
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 First we construct a single large regex combining the possible sub-modes for the current mode along with the terminators for the current mode.
 
-57b <parse_chunk_args-reset-modes[1](), lang=> ≡  57c▿
+58b <parse_chunk_args-reset-modes[1](), lang=> ≡  58c▿
       ________________________________________________________________________
   1  |   submodes=modes[language, mode, "submodes"];
   2  | 
@@ -1735,27 +1777,27 @@ First we construct a single large regex combining the possible sub-modes for the
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 If we don't find anything to match on --- probably because the language is not supported --- then we return the entire text without matching anything.
 
-57c <parse_chunk_args-reset-modes[2]() ⇑57b, lang=> +≡ ▵57b
+58c <parse_chunk_args-reset-modes[2]() ⇑58b, lang=> +≡ ▵58b
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   13  |  if (! length(submodes)) return text;
      |________________________________________________________________________
 
 
 
-57d <mode_tracker()[3]() ⇑56g, lang=> +≡ ▵57a 57e▿
+58d <mode_tracker()[3]() ⇑57f, lang=> +≡ ▵58a 58e▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
-  11  | «parse_chunk_args-reset-modes 57b»
+  11  | «parse_chunk_args-reset-modes 58b»
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 We then iterate the text (until there is none left) looking for sub-modes or terminators in the regex.
 
-57e <mode_tracker()[4]() ⇑56g, lang=> +≡ ▵57d 57f▿
+58e <mode_tracker()[4]() ⇑57f, lang=> +≡ ▵58d 58f▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   12  |   while((cindex >= 0) && length(text)) {
   13  |     if (match(text, "(" submodes ")", a)) {
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 A bug that creeps in regularly during development is bad regexes of zero length which result in an infinite loop (as no text is consumed), so I catch that right away with this test.
 
-57f <mode_tracker()[5]() ⇑56g, lang=> +≡ ▵57e 58a⊳
+58f <mode_tracker()[5]() ⇑57f, lang=> +≡ ▵58e 59a⊳
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   14  |       if (RLENGTH<1) {
   15  |         error(sprintf("Internal error, matched zero length submode, should be impossible - likely regex computation error\n" \
@@ -1765,14 +1807,14 @@ A bug that creeps in regularly during development is bad regexes of zero length 
 part is defined as the text up to the sub-mode or terminator, and this is appended to item --- which is the current text being gathered. If a mode has a delimiter, then item is reset each time a delimiter is found.
 ("hello_item, there_item")<wide-overbrace>^item,  (he said.)<wide-overbrace>^item
 
-58a <mode_tracker()[6]() ⇑56g, lang=> +≡ ⊲57f 58b▿
+59a <mode_tracker()[6]() ⇑57f, lang=> +≡ ⊲58f 59b▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   18  |       part = substr(text, 1, RSTART -1);
   19  |       item = item part;
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 We must now determine what was matched. If it was a terminator, then we must restore the previous mode.
 
-58b <mode_tracker()[7]() ⇑56g, lang=> +≡ ▵58a 58c▿
+59b <mode_tracker()[7]() ⇑57f, lang=> +≡ ▵59a 59c▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   20  |       if (match(a[1], "^" terminators "$")) {
   21  | #printf("%2d EXIT  MODE [%s] by [%s] [%s]\n", cindex, mode, a[1], text) > "/dev/stderr"
@@ -1782,7 +1824,7 @@ We must now determine what was matched. If it was a terminator, then we must res
   25  |         if (cindex>=0) {
   26  |           mode = context[cindex, "mode"];
   27  |           language = context[cindex, "language"];
-  28  |           «parse_chunk_args-reset-modes 57b»
+  28  |           «parse_chunk_args-reset-modes 58b»
   29  |         }
   30  |         item = item a[1];
   31  |         text = substr(text, 1 + length(part) + length(a[1]));
@@ -1790,7 +1832,7 @@ We must now determine what was matched. If it was a terminator, then we must res
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 If a delimiter was matched, then we must store the current item in the parsed values array, and reset the item.
 
-58c <mode_tracker()[8]() ⇑56g, lang=> +≡ ▵58b 58d▿
+59c <mode_tracker()[8]() ⇑57f, lang=> +≡ ▵59b 59d▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   33  |       else if (match(a[1], "^" delimiters "$")) {
   34  |         if (cindex==0) {
@@ -1804,7 +1846,7 @@ If a delimiter was matched, then we must store the current item in the parsed va
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 otherwise, if a new submode is detected (all submodes have terminators), we must create a nested parse context until we find the terminator for this mode.
 
-58d <mode_tracker()[9]() ⇑56g, lang=> +≡ ▵58c 59a⊳
+59d <mode_tracker()[9]() ⇑57f, lang=> +≡ ▵59c 60a⊳
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   42  |  else if ((language, a[1], "terminators") in modes) {
   43  |         #check if new_mode is defined
@@ -1815,7 +1857,7 @@ otherwise, if a new submode is detected (all submodes have terminators), we must
   48  |         context[cindex, "mode"] = a[1];
   49  |         context[cindex, "language"] = language;
   50  |         mode = a[1];
-  51  |         «parse_chunk_args-reset-modes 57b»
+  51  |         «parse_chunk_args-reset-modes 58b»
   52  |       } else {
   53  |         error(sprintf("Submode '%s' set unknown mode in text: %s\nLanguage %s Mode %s\n", a[1], text, language, mode));
   54  |         text = substr(text, 1 + length(part) + length(a[1]));
@@ -1824,7 +1866,7 @@ otherwise, if a new submode is detected (all submodes have terminators), we must
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 In the final case, we parsed to the end of the string. If the string was entire, then we should have no nested mode context, but if the string was just a fragment we may have a mode context which must be preserved for the next fragment. Todo: Consideration ought to be given if sub-mode strings are split over two fragments.
 
-59a <mode_tracker()[10]() ⇑56g, lang=> +≡ ⊲58d
+60a <mode_tracker()[10]() ⇑57f, lang=> +≡ ⊲59d
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   57  | else {
   58  |       context[cindex, "values", ++context[cindex, "values"]] = item text;
@@ -1841,35 +1883,35 @@ In the final case, we parsed to the end of the string. If the string was entire,
      |________________________________________________________________________
 
 
-10.7.3.1 One happy chunk 
+10.6.3.1 One happy chunk 
 All the mode tracker chunks are referred to here:
 
-59b <mode-tracker[1](), lang=> ≡ 
+60b <mode-tracker[1](), lang=> ≡ 
       ________________________________________________________________________
-  1  | «new_mode_tracker() 55a»
-  2  | «mode_tracker() 56g»
+  1  | «new_mode_tracker() 56a»
+  2  | «mode_tracker() 57f»
      |________________________________________________________________________
 
 
-10.7.3.2 Tests 
+10.6.3.2 Tests 
 We can test this function like this:
 
-59c <pca-test.awk[1](), lang=awk> ≡ 
+60c <pca-test.awk[1](), lang=awk> ≡ 
       ________________________________________________________________________
   1  | «error() 36a»
-  2  | «mode-tracker 59b»
+  2  | «mode-tracker 60b»
   3  | «parse_chunk_args() ?»
   4  | BEGIN {
   5  |   SUBSEP=".";
-  6  |   «mode-definitions 51c»
+  6  |   «mode-definitions 50b»
   7  | 
-  8  |   «test:mode-definitions 48c»
+  8  |   «test:mode-definitions 47c»
   9  | }
      |________________________________________________________________________
 
 
 
-59d <pca-test.awk:summary[1](), lang=awk> ≡ 
+60d <pca-test.awk:summary[1](), lang=awk> ≡ 
       ________________________________________________________________________
   1  | if (e) {
   2  |   printf "Failed " e
@@ -1886,7 +1928,7 @@ We can test this function like this:
 
 which should give this output:
 
-59e <pca-test.awk-results[1](), lang=> ≡ 
+60e <pca-test.awk-results[1](), lang=> ≡ 
       ________________________________________________________________________
   1  | a[foo.quux.quirk] => 
   2  | a[foo.quux.a] => fleeg
@@ -1896,7 +1938,7 @@ which should give this output:
      |________________________________________________________________________
 
 
-10.8 Escaping and Quoting 
+10.7 Escaping and Quoting 
 For the time being and to get around TeXmacs inability to export a TAB character, the right arrow ↦ whose UTF-8 sequence is ...
 To do: complete
 
@@ -1904,47 +1946,47 @@ Another special character is used, the left-arrow ↤ with UTF-8 sequence 0xE2 0
 To do: remove the hack
 
 
-60a <mode_tracker[4]() ⇑55c, lang=> +≡ ⊲56a 60b▿
+61a <mode_tracker[4]() ⇑56c, lang=> +≡ ⊲56e 61b▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
 
-  36  | function untab(text) {
-  37  |   gsub("[[:space:]]*\xE2\x86\xA4","", text);
-  38  |   return text;
-  39  | }
+  39  | function untab(text) {
+  40  |   gsub("[[:space:]]*\xE2\x86\xA4","", text);
+  41  |   return text;
+  42  | }
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 Each nested mode can optionally define a set of transforms to be applied to any text that is included from another language.
 This code can perform transforms from index c downwards.
 
-60b <mode_tracker[5]() ⇑55c, lang=awk> +≡ ▵60a 58c⊳
+61b <mode_tracker[5]() ⇑56c, lang=awk> +≡ ▵61a 58c⊳
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
-  40  | function transform_escape(context, text, top,
-  41  |   c, cp, cpl, s, r)
-  42  | {
-  43  |   for(c = top; c >= 0; c--) {
-  44  |     if ( (context[c, "language"], context[c, "mode"]) in escapes) {
-  45  |       cpl = escapes[context[c, "language"], context[c, "mode"]];
-  46  |       for (cp = 1; cp <= cpl; cp ++) {
-  47  |         s = escapes[context[c, "language"], context[c, "mode"], cp, "s"];
-  48  |         r = escapes[context[c, "language"], context[c, "mode"], cp, "r"];
-  49  |         if (length(s)) {
-  50  |           gsub(s, r, text);
-  51  |         }
-  52  |         if ( (context[c, "language"], context[c, "mode"], cp, "t") in escapes ) {
-  53  |           quotes[src, "t"] = escapes[context[c, "language"], context[c, "mode"], cp, "t"];
+  43  | function transform_escape(context, text, top,
+  44  |   c, cp, cpl, s, r)
+  45  | {
+  46  |   for(c = top; c >= 0; c--) {
+  47  |     if ( (context[c, "language"], context[c, "mode"]) in escapes) {
+  48  |       cpl = escapes[context[c, "language"], context[c, "mode"]];
+  49  |       for (cp = 1; cp <= cpl; cp ++) {
+  50  |         s = escapes[context[c, "language"], context[c, "mode"], cp, "s"];
+  51  |         r = escapes[context[c, "language"], context[c, "mode"], cp, "r"];
+  52  |         if (length(s)) {
+  53  |           gsub(s, r, text);
   54  |         }
-  55  |       }
-  56  |     }
-  57  |   }
-  58  |   return text;
-  59  | }
-  60  | function dump_escaper(quotes, r, cc) {
-  61  |   for(cc=1; cc<=c; cc++) {
-  62  |     printf("%2d s[%s] r[%s]\n", cc, quotes[cc, "s"], quotes[cc, "r"]) > "/dev/stderr"
-  63  |   }
-  64  | }
+  55  |         if ( (context[c, "language"], context[c, "mode"], cp, "t") in escapes ) {
+  56  |           quotes[src, "t"] = escapes[context[c, "language"], context[c, "mode"], cp, "t"];
+  57  |         }
+  58  |       }
+  59  |     }
+  60  |   }
+  61  |   return text;
+  62  | }
+  63  | function dump_escaper(quotes, r, cc) {
+  64  |   for(cc=1; cc<=c; cc++) {
+  65  |     printf("%2d s[%s] r[%s]\n", cc, quotes[cc, "s"], quotes[cc, "r"]) > "/dev/stderr"
+  66  |   }
+  67  | }
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 
-60c <test:escapes[1](), lang=sh> ≡ 
+61c <test:escapes[1](), lang=sh> ≡ 
       ________________________________________________________________________
   1  | echo escapes test
   2  | passtest $FANGLE -Rtest:comment-quote $TXT_SRC &>/dev/null || ( echo "Comment-quote failed" && exit 1 )
@@ -2308,7 +2350,7 @@ We do all of this at the beginning of the program
       ________________________________________________________________________
   1  | BEGIN {
   2  |   «constants 37a»
-  3  |   «mode-definitions 51c»
+  3  |   «mode-definitions 50b»
   4  |   «default-options 71a»
   5  | 
   6  |   «read-options 71b»
@@ -2446,34 +2488,35 @@ We then create a mode tracker
 
 74c <write_chunk()[3]() ⇑74a, lang=> +≡ ▵74b 75a⊳
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
-  19  |   context_origin = push_mode_tracker(context, chunks[chunk_name, "language"], "");
+  19  |   context_origin = context[""];
+  20  |   new_context = push_mode_tracker(context, chunks[chunk_name, "language"], "");
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 We extract into chunk_params the names of the parameters that this chunk accepts, whose values were (optionally) passed in chunk_args.
 
 75a <write_chunk()[4]() ⇑74a, lang=> +≡ ⊲74c 75b▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
-  20  |   split(chunks[chunk_name, "params"], chunk_params, " *; *");
+  21  |   split(chunks[chunk_name, "params"], chunk_params, " *; *");
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 To assemble a chunk, we write out each part.
 
 75b <write_chunk()[5]() ⇑74a, lang=> +≡ ▵75a
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
-  21  |   if (! (chunk_name in chunk_names)) {
-  22  |     error(sprintf(_"The root module <<%s>> was not defined.\nUsed by: %s",\
-  23  |                   chunk_name, chunk_path));
-  24  |   }
-  25  | 
-  26  |   max_part = chunks[chunk_name, "part"];
-  27  |   for(part = 1; part <= max_part; part++) {
-  28  |     if (! only_part || part == only_part) {
-  29  |       «write-part 75c»
-  30  |     }
-  31  |   }
-  32  |   if (! pop_mode_tracker(context, context_origin)) {
-  33  |     dump_mode_tracker(context);
-  34  |     error(sprintf(_"Module %s did not close context properly.\nUsed by: %s\n", chunk_name, chunk_path));
-  35  |   }
-  36  | }
+  22  |   if (! (chunk_name in chunk_names)) {
+  23  |     error(sprintf(_"The root module <<%s>> was not defined.\nUsed by: %s",\
+  24  |                   chunk_name, chunk_path));
+  25  |   }
+  26  | 
+  27  |   max_part = chunks[chunk_name, "part"];
+  28  |   for(part = 1; part <= max_part; part++) {
+  29  |     if (! only_part || part == only_part) {
+  30  |       «write-part 75c»
+  31  |     }
+  32  |   }
+  33  |   if (! pop_mode_tracker(context, context_origin)) {
+  34  |     dump_mode_tracker(context);
+  35  |     error(sprintf(_"Module %s did not close context properly.\nUsed by: %s\n", chunk_name, chunk_path));
+  36  |   }
+  37  | }
      |________________________________________________________________________
 
 
@@ -2573,7 +2616,7 @@ Tail will soon no longer be relevant once mode-detection is in place.
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   23  |   text = text tail;
   24  |   mode_tracker(context, text);
-  25  |   print untab(transform_escape(context, text, context_origin));
+  25  |   print untab(transform_escape(context, text, new_context));
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 If a line ends in a backslash --- suggesting continuation --- then we supress outputting file-line as it would probably break the continued lines.
 
@@ -3309,8 +3352,8 @@ Chapter 18Tests
       ________________________________________________________________________
   1  | # run tests
   2  | $FANGLE -Rpca-test.awk $TXT_SRC | awk -f - || exit 1
-  3  | «test:cromulence 56f»
-  4  | «test:escapes 60c»
+  3  | «test:cromulence 57e»
+  4  | «test:escapes 61c»
   5  | «test:test-chunk(test:example-sh) 98a»
   6  | «test:test-chunk(test:example-makefile) 98a»
   7  | «test:test-chunk(test:q:1) 98a»

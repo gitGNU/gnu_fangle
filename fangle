@@ -98,7 +98,7 @@ function push_mode_tracker(context, language, mode,
   } else {
     top = context[""];
 #    if (context[top, "language"] == language && mode=="") mode = context[top, "mode"];
-    if (context[top, "language"] == language && context[top, "mode"] == mode) return top;
+    if (context[top, "language"] == language && context[top, "mode"] == mode) return top - 1;
     old_top = top;
     top++;
     context[top, "language"] = language;
@@ -112,14 +112,17 @@ function dump_mode_tracker(context,
 {
   for(c=0; c <= context[""]; c++) {
     printf(" %2d   %s:%s\n", c, context[c, "language"], context[c, "mode"]) > "/dev/stderr";
-    for(d=1; ( (c, "values", d) in context); d++) {
-      printf("   %2d %s\n", d, context[c, "values", d]) > "/dev/stderr";
-    }
+#    for(d=1; ( (c, "values", d) in context); d++) {
+#      printf("   %2d %s\n", d, context[c, "values", d]) > "/dev/stderr";
+#    }
   }
 }
 function pop_mode_tracker(context, context_origin)
 {
-  if ( (context_origin) && ("" in context) && context[""] != (1+context_origin) && context[""] != context_origin) return 0;
+  if ( (context_origin) && ("" in context) && context[""] != (1+context_origin) && context[""] != context_origin) {
+    print "Context level: " context[""] ", origin: " context_origin "\n" > "/dev/stderr"
+    return 0;
+  }
   context[""] = context_origin;
   return 1;
 }
@@ -367,7 +370,8 @@ function write_chunk_r(chunk_name, context, indent, tail,
     chunk_name = chunk_name_parts[1];
     only_part = chunk_name_parts[2];
   }
-  context_origin = push_mode_tracker(context, chunks[chunk_name, "language"], "");
+  context_origin = context[""];
+  new_context = push_mode_tracker(context, chunks[chunk_name, "language"], "");
   split(chunks[chunk_name, "params"], chunk_params, " *; *");
   if (! (chunk_name in chunk_names)) {
     error(sprintf(_"The root module <<%s>> was not defined.\nUsed by: %s",\
@@ -435,7 +439,7 @@ function write_chunk_r(chunk_name, context, indent, tail,
 
           text = text tail;
           mode_tracker(context, text);
-          print untab(transform_escape(context, text, context_origin));
+          print untab(transform_escape(context, text, new_context));
           if (linenos) {
             lineno_suppressed = substr(lastline, length(lastline)) == "\\";
           }
@@ -650,13 +654,13 @@ BEGIN {
   modes["make", "",  "submodes"]="	";
   escapes["make", "", ++escapes["make", ""], "s"]="\\$";
   escapes["make", "", escapes["make", ""], "r"]="$$";
-  modes["make", "	", "terminators"]="\\n";
-  escapes["make", "	", ++escapes["make", "	"], "s"]="\\n";
-  escapes["make", "	", escapes["make", "	"], "r"]="\\\n	";
   modes["make", "", "submodes"] = modes["make", "", "submodes"] "|" "#";
   modes["make", "#", "terminators"]="\n";
   escapes["make", "#", ++escapes["make", "#"], "s"]="\n";
   escapes["make", "#",   escapes["make", "#"], "r"]="\n#";
+  modes["make", "	", "terminators"]="\\n";
+  escapes["make", "	", ++escapes["make", "	"], "s"]="\\n";
+  escapes["make", "	",   escapes["make", "	"], "r"]="\\\n	";
   debug=0;
   linenos=0;
   notangle_mode=0;

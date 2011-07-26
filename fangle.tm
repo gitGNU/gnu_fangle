@@ -1742,7 +1742,7 @@
   language, so that any chunks included with <verbatim|\\chunkref{a-chunk}>
   or <nf-ref|a-chunk|> can be suitably escape or quoted.
 
-  <section|Modes to keep code together>
+  <section|Modes explanation>
 
   As an example, the C language has a few parse modes, which affect the
   interpretation of characters.
@@ -1814,7 +1814,7 @@
     <item><nf-tab>perl -e "print \\"hello world \\$$0\\\\n\\";"
   </nf-chunk|make|>
 
-  <section|Modes operation>
+  <section|Language Mode Definitions>
 
   In order to make this work, we must define a mode-tracker supporting each
   language, that can detect the various quoting modes, and provide a
@@ -1829,112 +1829,31 @@
 
   which would protect <verbatim|\\ $ ">
 
-  The mode tracker must also nested mode-changes, as in this shell example:
+  All modes definitions are stored in a single multi-dimensional hash called
+  modes:
 
-  <verbatim|echo "hello `id ...`">
+  <verbatim|modes[language, mode, properties]>
 
-  <phantom|<verbatim|echo "hello `id >><math|\<uparrow\>>
+  The first index is the language, and the second index is the mode. The
+  third indexes hold properties such as terminators, possible submodes,
+  transformations, and so forth.
 
-  Any shell special characters inserted at the point marked
-  <math|\<uparrow\>> would need to be escaped if their plain-text meaning is
-  to be preserved, including <verbatim|`> <verbatim|\|> <verbatim|*> among
-  others. The set of characters that need escaping in the back-ticks
-  <verbatim|`> is not the same as the set that need escaing in the
-  double-quotes <verbatim|">. However, in shell syntax, a <verbatim|"> at the
-  point marked <math|\<uparrow\>> does not close the leading <verbatim|"> and
-  so would not need additional escaping because of the nesting of the two
-  modes.
+  <\nf-chunk|xmode:set-terminators>
+    <item>modes["<nf-arg|language>", "<nf-arg|mode>",
+    "terminators"]="<nf-arg|terminators>";
+  </nf-chunk||<tuple|language|mode|terminators>>
 
-  <todo|MAYBE>Escaping need not occur if the format and mode of the included
-  chunk matches that of the including chunk.
-
-  As each chunk is output a new mode tracker for that language is initialized
-  in it's normal state. As text is output for that chunk the output mode is
-  tracked. When a new chunk is included, a transformation appropriate to that
-  mode is selected and pushed onto a stack of transformations. Any text to be
-  output is passed through this stack of transformations.
-
-  It remains to consider if the chunk-include function should return it's
-  generated text so that the caller can apply any transformations (and
-  formatting), or if it should apply the stack of transformations itself.
-
-  Note that the transformed included text should have the property of not
-  being able to change the mode in the current chunk.
-
-  <todo|Note chunk parameters should probably also be transformed>
-
-  <section|Quoting scenarios>
-
-  <subsection|Direct quoting>
-
-  He we give examples of various quoting scenarios and discuss what the
-  expected outcome might be and how this could be obtained.
-
-  <\with|par-columns|2>
-    <\nf-chunk|test:q:1>
-      <item>echo "$(<nf-ref|test:q:1-inc|>)"
-    </nf-chunk|sh|>
-
-    <\nf-chunk|test:q:1-inc>
-      <item>echo "hello"
-    </nf-chunk|sh|>
-  </with>
-
-  Should this examples produce <verbatim|echo "$(echo "hello")"> or
-  <verbatim|echo "\\$(echo \\"hello\\")"> ?
-
-  This depends on what the author intended, but we must provde a way to
-  express that intent.
-
-  We might argue that as both chunks have <verbatim|lang=sh> the intent must
-  have been to quote the included chunk <emdash> but consider that this might
-  be shell script that writes shell script.
-
-  If <nf-ref|test:q:1-inc|> had <verbatim|lang=text> then it certainly would
-  have been right to quote it, which leads us to ask: in what ways can we
-  reduce quoting if lang of the included chunk is compatible with the lang of
-  the including chunk?
-
-  If we take a completely nested approach then even though <verbatim|$(> mode
-  might do no quoting of it's own, <verbatim|"> mode will still do it's own
-  quoting. We need a model where the nested <verbatim|$(> mode will prevent
-  <verbatim|"> from quoting.
-
-  This leads rise to the <em|tunneling> feature. In bash, the <verbatim|$(>
-  gives rise to a new top-level parsing scenario, so we need to enter the
-  <em|null> mode, and also ignore any quoting and then undo-this when the
-  <verbatim|$(> mode is terminated by the corresponding close <verbatim|)>.
-
-  We shall say that tunneling is when a mode in a language ignores other
-  modes in the same language and arrives back at an earlier <em|null> mode of
-  the same language.
-
-  In example <nf-ref|test:q:1|> above, the nesting of modes is: <em|null>,
-  <verbatim|">, <verbatim|$(>
-
-  When mode <verbatim|$(> is commenced, the stack of nest modes will be
-  traversed. If the <em|null> mode can be found in the same language, without
-  the language varying, then a tunnel will be established so that the
-  intervening modes, <verbatim|"> in this case, can be skipped when the modes
-  are enumerated to quote the texted being emitted.
-
-  In such a case, the correct result would be:
-
-  <\nf-chunk|test:q:1.result>
-    <item>echo "$(echo "hello")"
-  </nf-chunk|sh|>
-
-  <section|Language Mode Definitions>
-
-  All modes definitions are stored in a single multi-dimensional hash. The
-  first index is the language, and the second index is the mode-identifier.
-  The third indexes hold properties: terminators, and optionally, submodes,
-  delimiters, and tunnel targets.
+  <\nf-chunk|xmode:set-submodes>
+    <item>modes["<nf-arg|language>", "<nf-arg|mode>",
+    \ "submodes"]="<nf-arg|submodes>";
+  </nf-chunk||<tuple|language|mode|submodes>>
 
   A useful set of mode definitions for a nameless general C-type language is
-  shown here. (Don't be confused by the double backslash escaping needed in
-  awk. One set of escaping is for the string, and the second set of escaping
-  is for the regex).
+  shown here.
+
+  Don't be confused by the double backslash escaping needed in awk. One set
+  of escaping is for the string, and the second set of escaping is for the
+  regex.
 
   <\todo>
     TODO: Add =\<less\>\\mode{}\<gtr\> command which will allow us to signify
@@ -1943,8 +1862,18 @@
     \ regex and thus fangle will quote it for us.
   </todo>
 
-  Submodes are entered by the characters \ <verbatim|"> <verbatim|'>
-  <verbatim|{> <verbatim|(> <verbatim|[> <verbatim|/*>
+  Sub-modes are identified by a backslash, a double or single quote, various
+  bracket styles or a <verbatim|/*> comment; specifically: <verbatim|\\>
+  <verbatim|"> <verbatim|'> <verbatim|{> <verbatim|(> <verbatim|[>
+  <verbatim|/*>
+
+  For each of these sub-modes modes we must also identify at a mode
+  terminator, and any sub-modes or delimiters that may be entered<\footnote>
+    Because we are using the sub-mode characters as the mode identifier it
+    means we can't currently have a mode character dependant on it's context;
+    i.e. <verbatim|{> can't behave differently when it is inside
+    <verbatim|[>.
+  </footnote>.
 
   <\nf-chunk|common-mode-definitions>
     <item>modes[<nf-arg|language>, "", \ "submodes"]="\\\\\\\\\|\\"\|'\|{\|\\\\(\|\\\\[";
@@ -1953,7 +1882,8 @@
   In the default mode, a comma surrounded by un-important white space is a
   delimiter of language items<\footnote>
     whatever a <em|language item> might be
-  </footnote>.
+  </footnote>. Delimiters are used so that fangle can parse and recognise
+  arguments individually.
 
   <\nf-chunk|common-mode-definitions>
     <item>modes[<nf-arg|language>, "", \ "delimiters"]=" *, *";
@@ -1998,17 +1928,6 @@
     <item><nf-ref|pca-test.awk:summary|>
   </nf-chunk||>
 
-  Nested modes are identified by a backslash, a double or single quote,
-  various bracket styles or a <verbatim|/*> comment.
-
-  For each of these sub-modes modes we must also identify at a mode
-  terminator, and any sub-modes or delimiters that may be entered<\footnote>
-    Because we are using the sub-mode characters as the mode identifier it
-    means we can't currently have a mode character dependant on it's context;
-    i.e. <verbatim|{> can't behave differently when it is inside
-    <verbatim|[>.
-  </footnote>.
-
   <subsection|Backslash>
 
   The backslash mode has no submodes or delimiters, and is terminated by any
@@ -2018,7 +1937,7 @@
   while a backslash-newline may represent white space, but it does matter
   that the newline in a backslash newline should not be able to terminate a C
   pre-processor statement; and so the newline will be consumed by the
-  backslash however it is to be interpreted.
+  backslash terminator however it may uultimately be interpreted.
 
   <\nf-chunk|common-mode-definitions>
     <item>modes[<nf-arg|language>, "\\\\", "terminators"]=".";
@@ -2605,6 +2524,67 @@
     <item><nf-tab> \ \ \ \ \ \ \ \ \ \ fi
   </nf-chunk|make|>
 
+  <section|Quoting scenarios>
+
+  <subsection|Direct quoting>
+
+  He we give examples of various quoting scenarios and discuss what the
+  expected outcome might be and how this could be obtained.
+
+  <\with|par-columns|2>
+    <\nf-chunk|test:q:1>
+      <item>echo "$(<nf-ref|test:q:1-inc|>)"
+    </nf-chunk|sh|>
+
+    <\nf-chunk|test:q:1-inc>
+      <item>echo "hello"
+    </nf-chunk|sh|>
+  </with>
+
+  Should this examples produce <verbatim|echo "$(echo "hello")"> or
+  <verbatim|echo "\\$(echo \\"hello\\")"> ?
+
+  This depends on what the author intended, but we must provde a way to
+  express that intent.
+
+  We might argue that as both chunks have <verbatim|lang=sh> the intent must
+  have been to quote the included chunk <emdash> but consider that this might
+  be shell script that writes shell script.
+
+  If <nf-ref|test:q:1-inc|> had <verbatim|lang=text> then it certainly would
+  have been right to quote it, which leads us to ask: in what ways can we
+  reduce quoting if lang of the included chunk is compatible with the lang of
+  the including chunk?
+
+  If we take a completely nested approach then even though <verbatim|$(> mode
+  might do no quoting of it's own, <verbatim|"> mode will still do it's own
+  quoting. We need a model where the nested <verbatim|$(> mode will prevent
+  <verbatim|"> from quoting.
+
+  This leads rise to the <em|tunneling> feature. In bash, the <verbatim|$(>
+  gives rise to a new top-level parsing scenario, so we need to enter the
+  <em|null> mode, and also ignore any quoting and then undo-this when the
+  <verbatim|$(> mode is terminated by the corresponding close <verbatim|)>.
+
+  We shall say that tunneling is when a mode in a language ignores other
+  modes in the same language and arrives back at an earlier <em|null> mode of
+  the same language.
+
+  In example <nf-ref|test:q:1|> above, the nesting of modes is: <em|null>,
+  <verbatim|">, <verbatim|$(>
+
+  When mode <verbatim|$(> is commenced, the stack of nest modes will be
+  traversed. If the <em|null> mode can be found in the same language, without
+  the language varying, then a tunnel will be established so that the
+  intervening modes, <verbatim|"> in this case, can be skipped when the modes
+  are enumerated to quote the texted being emitted.
+
+  In such a case, the correct result would be:
+
+  <\nf-chunk|test:q:1.result>
+    <item>echo "$(echo "hello")"
+  </nf-chunk|sh|>
+
   <section|Some tests>
 
   Also, the parser must return any spare text at the end that has not been
@@ -2645,6 +2625,21 @@
 
   <section|A non-recursive mode tracker>
 
+  As each chunk is output a new mode tracker for that language is initialized
+  in it's normal state. As text is output for that chunk the output mode is
+  tracked. When a new chunk is included, a transformation appropriate to that
+  mode is selected and pushed onto a stack of transformations. Any text to be
+  output is passed through this stack of transformations.
+
+  It remains to consider if the chunk-include function should return it's
+  generated text so that the caller can apply any transformations (and
+  formatting), or if it should apply the stack of transformations itself.
+
+  Note that the transformed included text should have the property of not
+  being able to change the mode in the current chunk.
+
+  <todo|Note chunk parameters should probably also be transformed>
+
   <subsection|Constructor>
 
   The mode tracker holds its state in a stack based on a numerically indexed
@@ -2662,11 +2657,12 @@
     <item>}
   </nf-chunk||>
 
-  Because awk functions cannot return an array, we must create the array
-  first and pass it in, so we have a fangle macro to do this:
+  Awk functions cannot return an array, but arrays are passed by reference.
+  Because of this we must create the array first and pass it in, so we have a
+  fangle macro to do this:
 
   <\nf-chunk|new-mode-tracker>
-    <item><nf-ref|awk-delete-array|<tuple|context>>
+    <item><nf-ref|awk-delete-array|<tuple|<nf-arg|context>>>
 
     <item>new_mode_tracker(<nf-arg|context>, <nf-arg|language>,
     <nf-arg|mode>);
@@ -2700,7 +2696,7 @@
     = context[top, "mode"];
 
     <item> \ \ \ if (context[top, "language"] == language && context[top,
-    "mode"] == mode) return top;
+    "mode"] == mode) return top - 1;
 
     <item> \ \ \ old_top = top;
 
@@ -2731,12 +2727,12 @@
     <item> \ \ \ printf(" %2d \ \ %s:%s\\n", c, context[c, "language"],
     context[c, "mode"]) \<gtr\> "/dev/stderr";
 
-    <item> \ \ \ for(d=1; ( (c, "values", d) in context); d++) {
+    <item># \ \ \ for(d=1; ( (c, "values", d) in context); d++) {
 
-    <item> \ \ \ \ \ printf(" \ \ %2d %s\\n", d, context[c, "values", d])
+    <item># \ \ \ \ \ printf(" \ \ %2d %s\\n", d, context[c, "values", d])
     \<gtr\> "/dev/stderr";
 
-    <item> \ \ \ }
+    <item># \ \ \ }
 
     <item> \ }
 
@@ -2749,7 +2745,14 @@
     <item>{
 
     <item> \ if ( (context_origin) && ("" in context) && context[""] !=
-    (1+context_origin) && context[""] != context_origin) return 0;
+    (1+context_origin) && context[""] != context_origin) {
+
+    <item> \ \ \ print "Context level: " context[""] ", origin: "
+    context_origin "\\n" \<gtr\> "/dev/stderr"
+
+    <item> \ \ \ return 0;
+
+    <item> \ }
 
     <item> \ context[""] = context_origin;
 
@@ -4060,7 +4063,9 @@
   We then create a mode tracker
 
   <\nf-chunk|write_chunk()>
-    <item> \ context_origin = push_mode_tracker(context, chunks[chunk_name,
+    <item> \ context_origin = context[""];
+
+    <item> \ new_context = push_mode_tracker(context, chunks[chunk_name,
     "language"], "");
   </nf-chunk||>
 
@@ -4280,7 +4285,7 @@
 
     <item> \ mode_tracker(context, text);
 
-    <item> \ print untab(transform_escape(context, text, context_origin));
+    <item> \ print untab(transform_escape(context, text, new_context));
   </nf-chunk||>
 
   If a line ends in a backslash --- suggesting continuation --- then we
