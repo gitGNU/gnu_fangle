@@ -117,7 +117,7 @@
 
   <assign|old-verbatim|<value|verbatim>>
 
-  <assign|verbatim|<macro|x|<with|par-par-sep|0fn|<compound|old-verbatim|<arg|x>>>>>
+  <assign|verbatim|<macro|x|<with|<merge|ov-|<get-label|<arg|x>>>|<macro|x|<old-verbatim|<arg|x>>>|ov-document|<macro|x|<with|par-par-sep|0fn|<small|<old-verbatim|<arg|x>>>>>|<compound|<merge|ov-|<get-label|<arg|x>>>|<arg|x>>>>>
 
   <\active*>
     <\src-comment>
@@ -707,6 +707,29 @@
 
   <\active*>
     <\src-comment>
+      nf-quote causes literal text to be included in a new language mode -
+      it's main task is to do some of the horrid nested quoting that some
+      languages require.
+
+      For instance to match a backslash in a gsub regex in awk requires 4
+      back slashes - first quote the single backslash for the regex which
+      makes two backslashes, and then quote each of those for the string
+      argument to gsub
+    </src-comment>
+  </active*>
+
+  <assign|output-mode?|<macro|<assign|output-mode|unknown><specific|screen|<assign|output-mode|typeset>><specific|html|<assign|output-mode|export>>>>
+
+  <assign|nf-text-render-typeset|<macro|x|mode|submode|<math|<wide|<text|<verbatim|<arg|x>>>|\<wide-overbrace\>><rsup|<arg|mode>:<arg|submode>>>>>
+
+  <assign|nf-text-render-export|<macro|x|mode|submode|<nv-langle><arg|mode>:<arg|submode>:<arg|x><nv-rangle>>>
+
+  <assign|nf-text|<macro|x|mode|submode|<output-mode?><compound|<merge|nf-text-render-|<value|output-mode>>|<arg|x>|<arg|mode>|<arg|submode>>>>
+
+  <drd-props|nf-text|accessible|all>
+
+  <\active*>
+    <\src-comment>
       nf-arg is a public macro. It will be replaced by the value of the chunk
       argument when the code is extracted.
 
@@ -763,8 +786,8 @@
 <\initial>
   <\collection>
     <associate|page-medium|automatic>
-    <associate|page-screen-height|746496tmpt>
-    <associate|page-screen-width|1268736tmpt>
+    <associate|page-screen-height|744960tmpt>
+    <associate|page-screen-width|1273344tmpt>
     <associate|preamble|true>
   </collection>
 </initial>
