@@ -1458,10 +1458,9 @@ Traditionally, if the newline's in the shell script all occur at points of top-l
   1  | all:
   2  | ↦echo making
   3  | ↦«test:make:1-inc($@) 54d»
- 
- 
-
      |________________________________________________________________________
+
+
 
 
 
@@ -1478,7 +1477,7 @@ Traditionally, if the newline's in the shell script all occur at points of top-l
 
 The two chunks above could reasonably produce something like this:
 
-54e <test:make:1.result[1](), lang=make> ≡ 
+?a <test:make:1.result.bad[1](), lang=make> ≡ 
       ________________________________________________________________________
   1  | all:
   2  | ↦echo making
@@ -1491,8 +1490,23 @@ The two chunks above could reasonably produce something like this:
      |________________________________________________________________________
 
 
-However ;\ is not a proper continuation inside a multi-line sed script. There is no simple continuation that fangle could use — and in any case it would depend on what type of quote marks were used in the bash that contained the sed.
-The difficulty lies in the way that make handles the recipe. Each line of the recipe is invoced as a separate shell command (using $(SHELL) -c) unless the last character of the line was a backslash. In such a case, the backslash and the newline and the nextline are handed to the shell (although the tab character that prefixes the next line is stripped).
+However ;\ is not a proper continuation inside a multi-line sed script. There is no simple continuation that fangle could use — and in any case it would depend on what type of quote marks were used in the bash that contained the sed. 
+We would prefer to use a more intuitive single backslash at the end of the line, giving these results.
+
+54a <test:make:1.result[1](), lang=make> ≡ 
+      ________________________________________________________________________
+  1  | all:
+  2  | ↦echo making
+  3  | ↦if test "$$@" = "all"\
+  4  | ↦ then echo yes, all\
+  5  | ↦ else echo "$$@" | sed -e '/^\//{\
+  6  | ↦                                  p;s/^/../\
+  7  | ↦                        }'\
+  8  | ↦ fi
+     |________________________________________________________________________
+
+
+The difficulty lies in the way that make handles the recipe. Each line of the recipe is invoked as a separate shell command (using $(SHELL) -c) unless the last character of the line was a backslash. In such a case, the backslash and the newline and the nextline are handed to the shell (although the tab character that prefixes the next line is stripped).
 This behaviour makes it impossible to hand a newline character to the shell unless it is prefixed by a backslash. If an included shell fragment contained strings with literal newline characters then there would be no easy way to escape these and preserve the value of the string.
 A different style of makefile construction might be used — the recipe could be stored in a target specific variable5. http://www.gnu.org/s/hello/manual/make/Target_002dspecific.html  ^5 which contains the recipe with a more normal escape mechanism.
 A better solution is to use a shell helper that strips the back-slash which precedes the newline character and then passes the arguments to the normal shell.
@@ -1568,11 +1582,13 @@ which produces this output which is more useful (because it works):
 56b <test:make:2.result[1](), lang=make> ≡ 
       ________________________________________________________________________
   1  | all:
-  2  | ↦echo making test
+  2  | ↦echo making
   3  | ↦ARG="$@"; if test "$$ARG" = "all"\
   4  | ↦           then echo yes, all\
-  5  | ↦           else echo not all\
-  6  | ↦           fi
+  5  | ↦           else echo "$$ARG" | sed -e '/^\//{\
+  6  | ↦                                            p;s/^/../\
+  7  | ↦                                  }'\
+  8  | ↦           fi
      |________________________________________________________________________
 
 
@@ -1593,7 +1609,7 @@ He we give examples of various quoting scenarios and discuss what the expected o
      |________________________________________________________________________
 
 
-Should this examples produce echo "$(echo "hello")" or echo "\$(echo \"hello\")" ?
+Should this examples produce echo "$(echo "hello")" or echo "$(echo \"hello\")" ?
 This depends on what the author intended, but we must provde a way to express that intent.
 We might argue that as both chunks have lang=sh the intent must have been to quote the included chunk — but consider that this might be shell script that writes shell script.
 If <test:q:1-inc 56d> had lang=text then it certainly would have been right to quote it, which leads us to ask: in what ways can we reduce quoting if lang of the included chunk is compatible with the lang of the including chunk?
@@ -3426,8 +3442,8 @@ This chunk will render a named chunk and compare it to another rendered nameed c
 
 100b <test:test-chunk-result[1](chunk, result), lang=sh> ≡ 
       ________________________________________________________________________
-  1  | TEST="${result}" passtest diff -u --label "${chunk}" <( fangle -R${chunk} $TXT_SRC ) \
-  2  |                                  --label "${result}" <( fangle -R${result} $TXT_SRC )
+  1  | TEST="${result}" passtest diff -u --label "EXPECTED: ${result}" <( fangle -R${result} $TXT_SRC ) \
+  2  |                                  --label "ACTUAL: ${chunk}" <( fangle -R${chunk} $TXT_SRC )
      |________________________________________________________________________
 
 

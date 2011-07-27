@@ -2367,13 +2367,11 @@
       <item><nf-tab>echo making
 
       <item><nf-tab><nf-ref|test:make:1-inc|$@>
-
-      \ 
-
-      \ 
-
-      \;
     </nf-chunk|make|>
+
+    \;
+
+    \;
 
     <\nf-chunk|test:make:1-inc>
       <item>if test "<nf-arg|target>" = "all"
@@ -2392,7 +2390,7 @@
 
   The two chunks above could reasonably produce something like this:
 
-  <\nf-chunk|test:make:1.result>
+  <\nf-chunk|test:make:1.result.bad>
     <item>all:
 
     <item><nf-tab>echo making
@@ -2414,10 +2412,31 @@
   However <verbatim|;\\> is not a proper continuation inside a multi-line sed
   script. There is no simple continuation that fangle could use <emdash> and
   in any case it would depend on what type of quote marks were used in the
-  bash that contained the sed.
+  bash that contained the sed.\ 
+
+  We would prefer to use a more intuitive single backslash at the end of the
+  line, giving these results.
+
+  <\nf-chunk|test:make:1.result>
+    <item>all:
+
+    <item><nf-tab>echo making
+
+    <item><nf-tab>if test "$$@" = "all"\\
+
+    <item><nf-tab> then echo yes, all\\
+
+    <item><nf-tab> else echo "$$@" \| sed -e '/^\\//{\\
+
+    <item><nf-tab> \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ p;s/^/../\\
+
+    <item><nf-tab> \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }'\\
+
+    <item><nf-tab> fi
+  </nf-chunk|make|>
 
   The difficulty lies in the way that make handles the recipe. Each line of
-  the recipe is invoced as a separate shell command (using <verbatim|$(SHELL)
+  the recipe is invoked as a separate shell command (using <verbatim|$(SHELL)
   -c>) unless the last character of the line was a backslash. In such a case,
   the backslash and the newline and the nextline are handed to the shell
   (although the tab character that prefixes the next line is stripped).
@@ -2555,13 +2574,17 @@
   <\nf-chunk|test:make:2.result>
     <item>all:
 
-    <item><nf-tab>echo making test
+    <item><nf-tab>echo making
 
     <item><nf-tab>ARG="$@"; if test "$$ARG" = "all"\\
 
     <item><nf-tab> \ \ \ \ \ \ \ \ \ \ then echo yes, all\\
 
-    <item><nf-tab> \ \ \ \ \ \ \ \ \ \ else echo not all\\
+    <item><nf-tab> \ \ \ \ \ \ \ \ \ \ else echo "$$ARG" \| sed -e '/^\\//{\\
+
+    <item><nf-tab> \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ p;s/^/../\\
+
+    <item><nf-tab> \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }'\\
 
     <item><nf-tab> \ \ \ \ \ \ \ \ \ \ fi
   </nf-chunk|make|>
@@ -2584,7 +2607,7 @@
   </with>
 
   Should this examples produce <verbatim|echo "$(echo "hello")"> or
-  <verbatim|echo "\\$(echo \\"hello\\")"> ?
+  <verbatim|echo "$(echo \\"hello\\")"> ?
 
   This depends on what the author intended, but we must provde a way to
   express that intent.
@@ -5641,11 +5664,11 @@
   </nf-chunk|sh|<tuple|chunk>>
 
   <\nf-chunk|test:test-chunk-result>
-    <item>TEST="<nf-arg|result>" passtest diff -u --label "<nf-arg|chunk>"
-    \<less\>( fangle -R<nf-arg|chunk> $TXT_SRC ) \\
+    <item>TEST="<nf-arg|result>" passtest diff -u --label "EXPECTED:
+    <nf-arg|result>" \<less\>( fangle -R<nf-arg|result> $TXT_SRC ) \\
 
     <item> \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ --label
-    "<nf-arg|result>" \<less\>( fangle -R<nf-arg|result> $TXT_SRC )
+    "ACTUAL: <nf-arg|chunk>" \<less\>( fangle -R<nf-arg|chunk> $TXT_SRC )
   </nf-chunk|sh|<tuple|chunk|result>>
 
   <chapter|Chunk Parameters>
