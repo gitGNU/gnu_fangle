@@ -536,13 +536,18 @@
 
   <\nf-chunk|Makefile.inc-vars>
     <item>FANGLE=fangle
-  </nf-chunk||>
+
+    <item>AWK=awk
+
+    <item>RUN_FANGLE=$(AWK) -f $(FANGLE)
+  </nf-chunk|make|>
 
   We also define a placeholder for <verbatim|LITERATE_SOURCE> to hold the
-  name of this document. This will normally be passed on the command line.
+  name of this document. This will normally be passed on the command line or
+  set by the including makefile.
 
   <\nf-chunk|Makefile.inc-vars>
-    <item>LITERATE_SOURCE=
+    <item>#LITERATE_SOURCE=
   </nf-chunk||>
 
   Fangle cannot process <LyX> or <TeXmacs> documents directly, so the first
@@ -593,7 +598,7 @@
     <item><nf-tab>rm -f -- $(TEX_SOURCE)
 
     <item>clean: clean_tex
-  </nf-chunk||>
+  </nf-chunk|make|>
 
   <subsection|Converting from <TeXmacs>><label|Converting-from-Lyx>
 
@@ -715,7 +720,7 @@
 
     <item>FANGLE_SOURCES:=$(shell \\
 
-    <item> \ $(FANGLE) -r $(FANGLE_SOURCE) \|\\
+    <item> \ $(RUN_FANGLE) -r $(FANGLE_SOURCE) \|\\
 
     <item> \ sed -e 's/^[\<less\>][\<less\>]//;s/[\<gtr\>][\<gtr\>]$$//;/^$(FANGLE_PREFIX)/!d'
     \\
@@ -790,7 +795,7 @@
 
     <item>nf_line=-L -T$(TABS)
 
-    <item>fangle=$(FANGLE) $(call if_extension,$(2),$(C_EXTENSIONS),$(nf_line))
+    <item>fangle=$(RUN_FANGLE) $(call if_extension,$(2),$(C_EXTENSIONS),$(nf_line))
     -R"$(2)" $(1)
   </nf-chunk||>
 
@@ -1142,6 +1147,43 @@
   We could do similarly for install targets to install the generated docs.
 
   <part|Source Code>
+
+  <chapter|Fangle Makefile>
+
+  We use the copyright notice from chapter <reference|License>, and the
+  Makefile.inc from chapter <reference|makefile.inc>
+
+  <\nf-chunk|./Makefile>
+    <item># <nf-ref|gpl3-copyright|>
+
+    <item>
+
+    <item><nf-ref|make-fix-make-shell|>
+
+    <item>
+
+    <item>LITERATE_SOURCE=fangle.tm
+
+    <item>
+
+    <item>all: fangle_sources
+
+    <item>include Makefile.inc
+
+    <item>
+
+    <item>fangle: test
+
+    <item>
+
+    <item>.PHONEY: test
+
+    <item>test: fangle.txt
+
+    <item><nf-tab>$(RUN_FANGLE) -R"test:*" fangle.txt \<gtr\> test.sh
+
+    <item><nf-tab>bash test.sh ; echo pass $$?
+  </nf-chunk|make|>
 
   <chapter|Fangle awk source code>
 
@@ -5471,6 +5513,18 @@
 
     <item>export TXT_SRC="${TXT_SRC:-$TESTDIR/fangle.txt}"
 
+    <item>export AWK="${AWK:-awk}"
+
+    <item>export RUN_FANGLE="${RUN_FANGLE:-$AWK -f}"
+
+    <item>
+
+    <item>fangle() {
+
+    <item> \ ${AWK} -f ${FANGLE} "$@"
+
+    <item>}
+
     <item>
 
     <item>mkdir -p "$TESTDIR"
@@ -5503,7 +5557,7 @@
 
     <item>echo testing new fangle
 
-    <item>$FANGLE -R./fangle "$TXT_SRC" \<gtr\> "$TESTDIR/fangle"
+    <item>fangle -R./fangle "$TXT_SRC" \<gtr\> "$TESTDIR/fangle"
 
     <item>export FANGLE="$TESTDIR/fangle"
 
@@ -5516,7 +5570,7 @@
 
     <item>echo testing if new fangle can generate itself
 
-    <item>$FANGLE -R./fangle "$TXT_SRC" \<gtr\> "$TESTDIR/fangle.new"
+    <item>fangle -R./fangle "$TXT_SRC" \<gtr\> "$TESTDIR/fangle.new"
 
     <item>passtest diff -bwu "$FANGLE" "$TESTDIR/fangle.new"
 
@@ -5528,7 +5582,7 @@
   <\nf-chunk|test:run-tests>
     <item># run tests
 
-    <item>$FANGLE -Rpca-test.awk $TXT_SRC \| awk -f - \|\| exit 1
+    <item>fangle -Rpca-test.awk $TXT_SRC \| awk -f - \|\| exit 1
 
     <item><nf-ref|test:cromulence|>
 
@@ -5588,10 +5642,10 @@
 
   <\nf-chunk|test:test-chunk-result>
     <item>TEST="<nf-arg|result>" passtest diff -u --label "<nf-arg|chunk>"
-    \<less\>( $FANGLE -R<nf-arg|chunk> $TXT_SRC ) \\
+    \<less\>( fangle -R<nf-arg|chunk> $TXT_SRC ) \\
 
     <item> \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ --label
-    "<nf-arg|result>" \<less\>( $FANGLE -R<nf-arg|result> $TXT_SRC )
+    "<nf-arg|result>" \<less\>( fangle -R<nf-arg|result> $TXT_SRC )
   </nf-chunk|sh|<tuple|chunk|result>>
 
   <chapter|Chunk Parameters>
