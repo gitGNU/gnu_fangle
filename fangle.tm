@@ -1143,6 +1143,25 @@
 
   <part|Source Code>
 
+  <chapter|Fangle Makefile>
+
+  We use the copyright notice from chapter <reference|License>, and the
+  Makefile.inc from
+
+  <\nf-chunk|./Makefile>
+    <item># <nf-ref|gpl3-copyright|>
+
+    <item><nf-ref|make-fix-make-shell|>
+
+    <item>
+
+    <item>all:
+
+    <item>include Makefile.inc
+
+    <item>./fangle: test
+  </nf-chunk|make|>
+
   <chapter|Fangle awk source code>
 
   We use the copyright notice from chapter <reference|License>.

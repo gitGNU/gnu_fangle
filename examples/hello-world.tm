@@ -1,9 +1,11 @@
-<TeXmacs|1.0.7.10>
+<TeXmacs|1.0.7.14>
 
-<style|<tuple|article|fangle>>
+<style|<tuple|article|fangle|env-program>>
 
 <\body>
-  <hide-preamble|<assign|LyX|<macro|L<space|-0.1667em><move|Y|0fn|-0.25em><space|-0.125em>X>>>
+  <\hide-preamble>
+    <assign|LyX|<macro|L<space|-0.1667em><move|Y|0fn|-0.25em><space|-0.125em>X>>
+  </hide-preamble>
 
   <doc-data|<doc-title|Sample Literate Programming>|<doc-author-data|<author-name|Sam
   Liddicott>|<\author-address>
@@ -25,7 +27,22 @@
 
   <subsubsection|Message>
 
-  Here is the message that we wish to give to world:
+  Here is the message that we wish to give to
+  world:<new-fangle|messagess|sh|<tuple|a1|a2>>
+
+  message is below:
+
+  <\messagess>
+    hello
+
+    more
+
+    eyc
+  </messagess>
+
+  end
+
+  \;
 
   <nf-chunk|message|Hello World!|txt|>
 
@@ -39,7 +56,7 @@
     of the listing which is <em|txt>. The beginning of the header gives the
     id to this <em|chunk> of code <emdash> <chunk-reference|message|1>
     <emdash> which suggests to the reader that it is the first chunk on page
-    <chunk-page-reference|message|1>. <\footnote>
+    <chunk-page-reference|message|1>.<\footnote>
       The label and hyperlink <chunk-reference|message|1> were generated with
       the <TeXmacs> document tag <verbatim|\<less\>chunk-reference\|message\|1\<gtr\>>
       to generate a link to the first chunklet of the chunk named
@@ -84,7 +101,7 @@
     The technique used is to put a <TeXmacs> <em|label> at the begining of
     the chunk and also at the end of the chunk. We take the <em|pagerefpage>
     of each label, and if they are not on the same page, then at the end of
-    the chunk we set the page header to be the same as the chunk header.\ 
+    the chunk we set the page header to be the same as the chunk header.
   </note>
 
   We have to enclose this line in the standard C <em|main> function, like
@@ -208,7 +225,7 @@
     <associate|page-screen-margin|false>
     <associate|page-show-hf|true>
     <associate|preamble|false>
-    <associate|src-style|scheme>
+    <associate|src-style|angular>
   </collection>
 </initial>
 

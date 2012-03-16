@@ -1,4 +1,4 @@
-<TeXmacs|1.0.7.10>
+<TeXmacs|1.0.7.14>
 
 <style|source>
 
@@ -11,7 +11,7 @@
         Style to be used in literate programs.
       </src-purpose>
 
-      <\src-copyright|2009-2011>
+      <\src-copyright|2009-2012>
         Sam Liddicott
       </src-copyright>
 
@@ -781,13 +781,55 @@
 
   <assign|nf-ht|<macro|<extern|(lambda () `(concat "[" ,(string #\\ht)
   "]"))>>>
+
+  <\active*>
+    <\src-comment>
+      THIS is the NEW fangle
+    </src-comment>
+  </active*>
+
+  <assign|fangle-chunk-new|<macro|name|args|<quasi|<new-counter|<merge|code-chunk-|<unquote|<arg|name>>>><new-counter|<merge|code-line-|<unquote|<arg|name>>>><assign|<unquote|<merge|code-item-|<arg|name>>>|<macro|<compound|<unquote|<merge|next-code-line-|<arg|name>>>><render-item|<compound|<unquote|<merge|the-code-line-|<arg|name>>>>>>><compound|<merge|inc-code-chunk-|<unquote|<arg|name>>>><assign|<merge|code-args-|<unquote|<arg|name>>>|<arg|args>>>>>
+
+  <assign|fangle-chunk-init|<macro|name|args|<with|nf-same-chunk|<equal|<value|nf-last-chunk>|<arg|name>>|<if|<not|<provides|<merge|code-chunk-|<unquote|<arg|name>>|-nr>>>|<fangle-chunk-new|<arg|name>|<arg|args>>|<nf-chunk-next|<arg|name>>><nf-chunk-label|<arg|name>><nf-chunk-ref|<arg|name>><assign|nf-continues|<and|<value|nf-same-chunk>|<not|<equal|<number|<the-nf-chunk>|alpha>|a>>>>>>>
+
+  <assign|fangle-render-list|<\macro|body>
+    hh
+
+    <\padded-normal|<item-vsep>|<item-vsep>>
+      <\indent-left|<item-hsep>>
+        <surround|<no-page-break*>|<no-indent*>|<arg|body>>
+      </indent-left>
+    </padded-normal>
+  </macro>>
+
+  <assign|fangle-list|<\macro|item-render|item-transform|body>
+    <\with|current-item|<arg|item-render>|transform-item|<arg|item-transform>|_item-nr|0>
+      <fangle-render-list|<arg|body>>
+    </with>
+  </macro>>
+
+  <assign|new-fangle|<\macro|name|lang|args>
+    <fangle-chunk-init|<arg|name>|<arg|args>><quasi|<style-with|src-compact|none|<assign|<arg|name>|<\macro|body>
+      <small|<with|item-vsep|0fn|item-nr|<value|<unquote|<merge|code-line-|<arg|name>|-nr>>>|<fangle-list|<value|nf-render-line-no>|<value|identity>|<prog-f|<unquote|<arg|lang>>|<arg|body>>>>>
+    </macro>>><drd-props|<unquote|<arg|name>>|arity|1|accessible|all>>
+  </macro>>
+
+  <assign|nf-chunkz|<macro|name|x|lang|args|<with|the-label||xnv-langle-subst||xnv-rangle-subst||nf-name|<unquote|<arg|name>>|y|<value|pob>|<small|<surround|<nf-chunk-init|<arg|name>|<arg|args>><wide-underlined|<nf-border-if|<nf-first-chunklet?|<value|nf-name>>>|1ln|<no-page-break*><label|<arg|name>><small|<nf-header|<arg|name>|<arg|lang>|<arg|args>>><no-page-break>>|<if|<nf-last-chunklet?|<value|nf-name>>|<wide-bothlined|<nf-border-if|<nf-last-chunklet?|<value|nf-name>>>|0ln|1ln|0ln|<htab|5mm*|last>>|<nf-jags>>|<\with|item|<value|<merge|code-item-|<unquote|<arg|name>>>>|item-vsep|0fn|current-item|<value|nf-render-line-no>|transform-item|<value|identity>>
+    <\surround||<nf-chunk-outit|<arg|name>><if|<and|<not|<equal|<value|nf-page>|<pagerefpage|<nf-this-chunk-id|<arg|name>|end>>>>|<ispageref?|<nf-this-chunk-id|<arg|name>|end>>>|<nf-use-page-header|<with|nv-langle|<macro|<with|mode|math|<left|langle>>>|nv-rangle|<macro|<with|mode|math|<right|rangle>>>|<small|<nf-header|<arg|name>|<arg|lang>|<arg|args>>>>>>>
+      <no-page-break><nf-verbatim-top|<nf-first-chunklet?|<value|nf-name>>>
+
+      <with|nv-langle-subst|\S|nv-rangle-subst|\T|<nf-pf|<value|nf-name>|<arg|lang>|<arg|x>>>
+
+      <no-page-break*><if|<nf-last-chunklet?|<value|nf-name>>|<assign|<merge|code-line-|<value|nf-name>|-nr>|0>><nf-verbatim-bottom|<nf-last-chunklet?|<value|nf-name>>>
+    </surround>
+  </with>>>>>>
 </body>
 
 <\initial>
   <\collection>
     <associate|page-medium|automatic>
     <associate|page-screen-height|744960tmpt>
-    <associate|page-screen-width|1273344tmpt>
+    <associate|page-screen-width|1267200tmpt>
     <associate|preamble|true>
   </collection>
 </initial>

@@ -3,24 +3,30 @@
 <style|<tuple|article|tmdoc-keyboard|header-article|fangle>>
 
 <\body>
-  <hide-preamble|<assign|LyX|<macro|L<space|-0.1667em><move|Y|0fn|-0.25em><space|-0.125em>X>><assign|par-first|0fn><assign|par-par-sep|0.5fn>>
+  <\hide-preamble>
+    <assign|LyX|<macro|L<space|-0.1667em><move|Y|0fn|-0.25em><space|-0.125em>X>>
+
+    <assign|par-first|0fn><assign|par-par-sep|0.5fn>
+
+    <assign|tick|<macro|<with|font|modern|font-family|ss|\<checkmark\>>>>
+
+    <assign|sub-page|<\macro|x>
+      <\wide-std-framed>
+        \;
+
+        <\padded-centered|0cm|2cm>
+          <indent-both|1cm|1cm|<arg|x>>
+        </padded-centered>
+      </wide-std-framed>
+    </macro>>
+
+    <assign|fake-caret|<macro|<with|color|black|<math|\<vdots\>>>>>
+  </hide-preamble>
 
   <doc-data|<doc-title|Getting Started with
   Fangle>|<doc-author-data|<author-name|Sam Liddicott>|<\author-address>
     sam@liddicott.com
   </author-address>>>
-
-  <assign|sub-page|<\macro|x>
-    <\wide-std-framed>
-      \;
-
-      <\padded-centered|0cm|2cm>
-        <indent-both|1cm|1cm|<arg|x>>
-      </padded-centered>
-    </wide-std-framed>
-  </macro>>
-
-  <assign|fake-caret|<macro|<with|color|black|<math|\<vdots\>>>>>
 
   <\abstract>
     This document explains how to use fangle and is a companion to
@@ -82,6 +88,24 @@
   described here.
 
   <todo|Make install>
+
+  <subsection|Choosing the editing environment>
+
+  If you don't already have a preference, <TeXmacs> is recommended, but a
+  full list of supported features is shown in table
+  <reference|feature-table>.
+
+  <big-table|<tabular|<tformat|<cwith|2|9|2|6|cell-halign|c>|<cwith|2|9|1|6|cell-tborder|1ln>|<cwith|1|9|1|1|cell-rborder|1ln>|<table|<row|<cell|<strong|features>>|<cell|<TeXmacs>>|<cell|<LyX>>|<cell|<TeX>>|<cell|Text>|<cell|Other
+  with Text export>>|<row|<cell|final-layout in edit
+  mode>|<cell|<tick>>|<cell|>|<cell|>|<cell|>|<cell|>>|<row|<cell|syntax
+  highlighting in edit mode>|<cell|few>|<cell|>|<cell|>|<cell|>|<cell|>>|<row|<cell|syntax
+  highlighting in PDF export>|<cell|few>|<cell|many>|<cell|many>|<cell|>|<cell|>>|<row|<cell|syntax
+  highlighting in HTML export>|<cell|few>|<cell|>|<cell|>|<cell|>|<cell|>>|<row|<cell|line-numbers
+  in edit mode>|<cell|<tick>>|<cell|>|<cell|>|<cell|>|<cell|>>|<row|<cell|hyperlinks
+  in edit mode>|<cell|<tick>>|<cell|>|<cell|>|<cell|>|<cell|>>|<row|<cell|hyperlinks
+  in PDF export>|<cell|>|<cell|<tick>>|<cell|<tick>>|<cell|>|<cell|>>|<row|<cell|hyperlinks
+  in HTML export>|<cell|<tick>>|<cell|<tick>>|<cell|<tick>>|<cell|>|<cell|>>>>>|Feature
+  comparison table<label|feature-table>>
 
   <subsection|For personal use>
 
@@ -730,8 +754,6 @@
       <no-break>1><vspace|0.5fn>
     </with>
 
-    \;
-
     <with|font-series|bold|math-font-series|bold|1 Hello World>
 
     The typical hello-world program looks something like this:
@@ -769,12 +791,10 @@
     <\nf-fake-chunk|./hello-world.de.c>
       <item><nf-fake-ref|hello-world|<tuple|Hallo welt|german>|1a>
     </nf-fake-chunk||<tuple>|1|1c|||||>
-
-    \;
   </sub-page>
 
-  Which demonstrates nicely how to use fangle in terms of function, but less
-  so in terms of style.
+  <no-page-break*>Which demonstrates nicely how to use fangle in terms of
+  function, but less so in terms of style.
 </body>
 
 <\initial>
