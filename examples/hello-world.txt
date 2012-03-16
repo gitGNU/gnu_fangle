@@ -10,7 +10,7 @@ Using TeXmacs and Fangle
 
 Abstract 
 Literate Programming will not be explained here but it will be shown as a way narrate program development showing the progression of ideas a is natural for humans to understand, leaving the generation of programs from those ideas to the machine.
-TeXmacs is used as the editor and Fangle1. http://new.fangled.org  ^1 as the extraction tool. 
+TeXmacs is used as the editor and Fangle[1] (http://new.fangled.org) ^1 as the extraction tool. 
 Here we will explain the popular hello world written in C.
 1 Message 
 Here is the message that we wish to give to world:
@@ -22,7 +22,7 @@ Hello World!
 
 
 Because we did not press enter in the literate programming environment, this line is not prefixed in the document tree with an <item> tag and so has no line number displayed and is not a line but a line-fragment.
-Note 1. The header contains the chunk name message as well as the language of the listing which is txt. The beginning of the header gives the id to this chunk of code — 1a — which suggests to the reader that it is the first chunk on page 1. 2. The label and hyperlink 1a were generated with the TeXmacs document tag <chunk-reference|message|1> to generate a link to the first chunklet of the chunk named message.  ^2 
+Note 1. The header contains the chunk name message as well as the language of the listing which is txt. The beginning of the header gives the id to this chunk of code — 1a — which suggests to the reader that it is the first chunk on page 1.[2] (The label and hyperlink 1a were generated with the TeXmacs document tag <chunk-reference|message|1> to generate a link to the first chunklet of the chunk named message.) ^2 
 2 Displaying the message 
 We have a few choices available. The message can be output with printf, like this:
 
@@ -44,7 +44,7 @@ But, we prefer printf which is more traditional.
 Note 2. These last two chunks have a different letter for the chunk reference even though they may be on the same page. 
 Note 3. They also contain a line number, because they are intended to be a full line of text. 
 3 The main function 
-Note 4. If a code chunk is split across two pages, as this next code chunk is, the code chunk header is repeated in the page header of the last page. The technique used is to put a TeXmacs label at the begining of the chunk and also at the end of the chunk. We take the pagerefpage of each label, and if they are not on the same page, then at the end of the chunk we set the page header to be the same as the chunk header.  
+Note 4. If a code chunk is split across two pages, as this next code chunk is, the code chunk header is repeated in the page header of the last page. The technique used is to put a TeXmacs label at the begining of the chunk and also at the end of the chunk. We take the pagerefpage of each label, and if they are not on the same page, then at the end of the chunk we set the page header to be the same as the chunk header. 
 We have to enclose this line in the standard C main function, like this:
 
    1d <main[1](), lang=cpp> ≡ 

@@ -1,4 +1,4 @@
-<TeXmacs|1.0.7.10>
+<TeXmacs|1.0.7.14>
 
 <style|<tuple|book|fangle|header-book|tmdoc-keyboard>>
 
@@ -1173,6 +1173,8 @@
     <item>
 
     <item>fangle: test
+
+    <item>./fangle: test
 
     <item>
 

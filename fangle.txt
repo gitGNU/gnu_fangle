@@ -91,77 +91,77 @@ I Using Fangle   9
 6.8 Incorporating Makefile.inc into existing projects   30
 Example   30
 II Source Code   33
-7 Fangle awk source code   35
-7.1 AWK tricks   37
-7.2 Catching errors   37
-8 T_ E X_( M A CS) args   38
-9 L^ A T_ E X and lstlistings   39
-9.1 Additional lstlstings parameters   41
-9.2 Parsing chunk arguments   41
-9.3 Expanding parameters in the text   43
-10 Language Modes & Quoting   44
-10.1 Modes to keep code together   47
-10.2 Modes affect included chunks   47
-10.3 Modes operation   47
-10.4 Quoting scenarios   48
-10.4.1 Direct quoting   49
-10.5 Language Mode Definitions   49
-10.5.1 Backslash   50
-10.5.2 Strings   51
-10.5.3 Parentheses, Braces and Brackets   51
-10.5.4 Customizing Standard Modes   52
-10.5.5 Comments   53
-10.5.6 Regex   53
-10.5.7 Perl   53
-10.5.8 sh   56
-10.5.9 Make   56
-10.6 Some tests   57
-10.7 A non-recursive mode tracker   57
-10.7.1 Constructor   58
-10.7.2 Management   58
-10.7.3 Tracker   59
-10.7.3.1 One happy chunk   62
-10.7.3.2 Tests   62
-10.8 Escaping and Quoting   63
-11 Recognizing Chunks   65
-11.1 Chunk start   65
-11.1.1 T_ E X_( M A CS)   65
-11.1.2 lstlistings   66
-11.2 Chunk Body   67
-11.2.1 T_ E X_( M A CS)   67
-11.2.2 Noweb   68
-11.3 Chunk end   68
-11.3.1 lstlistings   68
-11.3.2 noweb   69
-11.4 Chunk contents   69
-11.4.1 lstlistings   70
-12 Processing Options   73
-13 Generating the Output   75
-13.1 Assembling the Chunks   76
-13.1.1 Chunk Parts   76
-14 Storing Chunks   81
-15 getopt   83
-16 Fangle LaTeX source code   87
-16.1 fangle module   87
-16.1.1 The Chunk style   87
-16.1.2 The chunkref style   88
-16.2 Latex Macros   88
-16.2.1 The chunk command   89
-16.2.1.1 Chunk parameters   90
-16.2.2 The noweb styled caption   90
-16.2.3 The chunk counter   90
-16.2.4 Cross references   93
-16.2.5 The end   94
-17 Extracting fangle   95
-17.1 Extracting from Lyx   95
-17.2 Extracting documentation   95
-17.3 Extracting from the command line   96
+7 Fangle Makefile   35
+8 Fangle awk source code   37
+8.1 AWK tricks   37
+8.2 Catching errors   38
+9 T_ E X_( M A CS) args   39
+10 L^ A T_ E X and lstlistings   41
+10.1 Additional lstlstings parameters   41
+10.2 Parsing chunk arguments   43
+10.3 Expanding parameters in the text   44
+11 Language Modes & Quoting   47
+11.1 Modes explanation   47
+11.2 Modes affect included chunks   47
+11.3 Language Mode Definitions   48
+11.3.1 Backslash   49
+11.3.2 Strings   49
+11.3.3 Parentheses, Braces and Brackets   50
+11.3.4 Customizing Standard Modes   51
+11.3.5 Comments   51
+11.3.6 Regex   52
+11.3.7 Perl   53
+11.3.8 sh   53
+11.3.9 Make   53
+11.4 Quoting scenarios   56
+11.4.1 Direct quoting   56
+11.5 Some tests   57
+11.6 A non-recursive mode tracker   58
+11.6.1 Constructor   58
+11.6.2 Management   58
+11.6.3 Tracker   60
+11.6.3.1 One happy chunk   62
+11.6.3.2 Tests   62
+11.7 Escaping and Quoting   63
+12 Recognizing Chunks   65
+12.1 Chunk start   65
+12.1.1 T_ E X_( M A CS)   65
+12.1.2 lstlistings   66
+12.2 Chunk Body   67
+12.2.1 T_ E X_( M A CS)   67
+12.2.2 Noweb   68
+12.3 Chunk end   68
+12.3.1 lstlistings   68
+12.3.2 noweb   69
+12.4 Chunk contents   69
+12.4.1 lstlistings   70
+13 Processing Options   73
+14 Generating the Output   75
+14.1 Assembling the Chunks   76
+14.1.1 Chunk Parts   76
+15 Storing Chunks   81
+16 getopt   83
+17 Fangle LaTeX source code   87
+17.1 fangle module   87
+17.1.1 The Chunk style   87
+17.1.2 The chunkref style   88
+17.2 Latex Macros   88
+17.2.1 The chunk command   89
+17.2.1.1 Chunk parameters   90
+17.2.2 The noweb styled caption   90
+17.2.3 The chunk counter   90
+17.2.4 Cross references   93
+17.2.5 The end   94
+18 Extracting fangle   95
+18.1 Extracting from Lyx   95
+18.2 Extracting documentation   95
+18.3 Extracting from the command line   96
 III Tests   97
-18 Tests   99
-19 Chunk Parameters   101
-19.1 L Y X   101
-19.2 T_ E X_( M A CS)   101
-20 Compile-log-lyx   103
+19 Tests   99
+20 Chunk Parameters   101
+20.1 L Y X   101
+20.2 T_ E X_( M A CS)   101
+21 Compile-log-lyx   103
 Part I  Using Fangle 
 Chapter 1Introduction to Literate Programming
 Todo: Should really follow on from a part-0 explanation of what literate programming is.
@@ -443,7 +443,7 @@ We define a convenient target called fangle_sources so that make -f fangle_sourc
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 And also a convenient target to remove extracted sources.
 
-26d <Makefile.inc-targets[6]() ⇑24c, lang=> +≡ ▵26c 27f⊳
+26d <Makefile.inc-targets[6]() ⇑24c, lang=> +≡ ▵26c 27e⊳
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   24  | .PHONY: clean_fangle_sources
   25  | clean_fangle_sources: ; \
@@ -452,20 +452,20 @@ And also a convenient target to remove extracted sources.
 We now look at the extraction of the source files.
 This makefile macro if_extension takes 4 arguments: the filename $(1), some extensions to match $(2) and a shell command to return if the filename does match the exensions $(3), and a shell command to return if it does not match the extensions $(4).
 
-26e <Makefile.inc-vars[8]() ⇑23b, lang=> +≡ ▵26a 27a⊳
+26e <Makefile.inc-vars[8]() ⇑23b, lang=> +≡ ▵26a 26f⊳
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   18  | if_extension=$(if $(findstring $(suffix $(1)),$(2)),$(3),$(4))
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 For some source files like C files, we want to output the line number and filename of the original LaTeX document from which the source came5. I plan to replace this option with a separate mapping file so as not to pollute the generated source, and also to allow a code pretty-printing reformatter like indent be able to re-format the file and adjust for changes through comparing the character streams.  ^5.
 To make this easier we define the file extensions for which we want to do this.
 
-27a <Makefile.inc-vars[9]() ⇑23b, lang=> +≡ ⊲26e 27b▿
+27a <Makefile.inc-vars[9]() ⇑23b, lang=> +≡ ⊲26e 27a▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   19  | C_EXTENSIONS=.c .h
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 We can then use the if_extensions macro to define a macro which expands out to the -L option if fangle is being invoked in a C source file, so that C compile errors will refer to the line number in the TeX document. 
 
-27b <Makefile.inc-vars[10]() ⇑23b, lang=> +≡ ▵27a 27c▿
+27b <Makefile.inc-vars[10]() ⇑23b, lang=> +≡ ▵26f 27b▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   20  | TABS=8
   21  | nf_line=-L -T$(TABS)
@@ -473,14 +473,14 @@ We can then use the if_extensions macro to define a macro which expands out to t
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 We can use a similar trick to define an indent macro which takes just the filename as an argument and can return a pipeline stage calling the indent command. Indent can be turned off with make fangle_sources indent=
 
-27c <Makefile.inc-vars[11]() ⇑23b, lang=> +≡ ▵27b 27d▿
+27c <Makefile.inc-vars[11]() ⇑23b, lang=> +≡ ▵27a 27c▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   23  | indent_options=-npro -kr -i8 -ts8 -sob -l80 -ss -ncs
   24  | indent=$(call if_extension,$(1),$(C_EXTENSIONS), | indent $(indent_options))
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 We now define the pattern for extracting a file. The files are written using noweb's cpif so that the file timestamp will not be touched if the contents haven't changed. This avoids the need to rebuild the entire project because of a typographical change in the documentation, or if none or a few C source files have changed.
 
-27d <Makefile.inc-vars[12]() ⇑23b, lang=> +≡ ▵27c 27e▿
+27d <Makefile.inc-vars[12]() ⇑23b, lang=> +≡ ▵27b 27d▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   25  | fangle_extract=@mkdir -p $(dir $(1)) && \
   26  |   $(call fangle,$(2),$(1)) > "$(1).tmp" && \
@@ -490,7 +490,7 @@ We now define the pattern for extracting a file. The files are written using now
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 We define a target which will extract or update all sources. To do this we first defined a makefile template that can do this for any source file in the LaTeX document.
 
-27e <Makefile.inc-vars[13]() ⇑23b, lang=> +≡ ▵27d 28b⊳
+27e <Makefile.inc-vars[13]() ⇑23b, lang=> +≡ ▵27c 28b⊳
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   30  | define FANGLE_template
   31  |   $(1): $(2)
@@ -500,7 +500,7 @@ We define a target which will extract or update all sources. To do this we first
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 We then enumerate the discovered FANGLE_SOURCES to generate a makefile rule for each one using the makefile template we defined above.
 
-27f <Makefile.inc-targets[7]() ⇑24c, lang=> +≡ ⊲26d 27g▿
+27f <Makefile.inc-targets[7]() ⇑24c, lang=> +≡ ⊲26d 27f▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   27  | $(foreach source,$(FANGLE_SOURCES),\
   28  |   $(eval $(call FANGLE_template,$(source),$(FANGLE_SOURCE))) \
@@ -509,7 +509,7 @@ We then enumerate the discovered FANGLE_SOURCES to generate a makefile rule for 
 These will all be built with FANGLE_SOURCE_STAMP.
 We also remove the generated sources on a make distclean.
 
-27g <Makefile.inc-targets[8]() ⇑24c, lang=> +≡ ▵27f 28c⊳
+27g <Makefile.inc-targets[8]() ⇑24c, lang=> +≡ ▵27e 28c⊳
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   30  | _distclean: clean_fangle_sources
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
@@ -526,13 +526,13 @@ We then identify the intermediate stages of the documentation and their build an
 6.5.1.1 Running pdflatex 
 We produce a pdf file from the tex file.
 
-28b <Makefile.inc-vars[14]() ⇑23b, lang=> +≡ ⊲27e 28d▿
+28b <Makefile.inc-vars[14]() ⇑23b, lang=> +≡ ⊲27d 28d▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   35  | FANGLE_PDF+=$(TEX_SOURCE:.tex=.pdf)
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 We run pdflatex twice to be sure that the contents and aux files are up to date. We certainly are required to run pdflatex at least twice if these files do not exist.
 
-28c <Makefile.inc-targets[9]() ⇑24c, lang=> +≡ ⊲27g 28e▿
+28c <Makefile.inc-targets[9]() ⇑24c, lang=> +≡ ⊲27f 28e▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   31  | .SUFFIXES: .tex .pdf
   32  | .tex.pdf:
@@ -546,7 +546,7 @@ We run pdflatex twice to be sure that the contents and aux files are up to date.
 6.5.2 Formatting TeXmacs 
 TeXmacs can produce a PDF file directly.
 
-28d <Makefile.inc-vars[15]() ⇑23b, lang=> +≡ ▵28b 29a⊳
+28d <Makefile.inc-vars[15]() ⇑23b, lang=> +≡ ▵28b 28f⊳
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   36  | FANGLE_PDF+=$(LITERATE_SOURCE:.tm=.pdf)
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
@@ -555,7 +555,7 @@ we need to update twice, generate a pdf, update twice mode and generate a new PD
 Basically the PDF export of TeXmacs is pretty rotten and doesn't work properly from the CLI
 
 
-28e <Makefile.inc-targets[10]() ⇑24c, lang=> +≡ ▵28c 29b⊳
+28e <Makefile.inc-targets[10]() ⇑24c, lang=> +≡ ▵28c 29a⊳
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   39  | .SUFFIXES: .tm .pdf
   40  | .tm.pdf:
@@ -576,7 +576,7 @@ Currently we only build pdf as a final format, but FANGLE_DOCS may later hold ot
 
 We also define fangle_docs as a convenient phony target.
 
-29b <Makefile.inc-targets[11]() ⇑24c, lang=> +≡ ⊲28e 29c▿
+29b <Makefile.inc-targets[11]() ⇑24c, lang=> +≡ ⊲28e 29b▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   46  | .PHONY: fangle_docs
   47  | fangle_docs: $(FANGLE_DOCS)
@@ -584,7 +584,7 @@ We also define fangle_docs as a convenient phony target.
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 And define a convenient clean_fangle_docs which we add to the regular clean target
 
-29c <Makefile.inc-targets[12]() ⇑24c, lang=> +≡ ▵29b
+29c <Makefile.inc-targets[12]() ⇑24c, lang=> +≡ ▵29a
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   49  | .PHONEY: clean_fangle_docs
   50  | clean_fangle_docs: clean_tex clean_pdf
@@ -697,11 +697,12 @@ We use the copyright notice from chapter 2, and the Makefile.inc from chapter 6
   8  | include Makefile.inc
   9  | 
   10  | fangle: test
-  11  | 
-  12  | .PHONEY: test
-  13  | test: fangle.txt
-  14  | ↦$(RUN_FANGLE) -R"test:*" fangle.txt > test.sh
-  15  | ↦bash test.sh ; echo pass $$?
+  11  | ./fangle: test
+  12  | 
+  13  | .PHONEY: test
+  14  | test: fangle.txt
+  15  | ↦$(RUN_FANGLE) -R"test:*" fangle.txt > test.sh
+  16  | ↦bash test.sh ; echo pass $$?
      |________________________________________________________________________
 
 
@@ -805,7 +806,7 @@ Chapter 9TeXmacs args
 TeXmacs functions with arguments1. or function declarations with parameters  ^1 appear like this:
 blah((I came, I saw, I conquered)<wide-overbrace>^(argument 1)(^K, )<wide-overbrace>^(sep.)(and then went home asd)<wide-overbrace>^(argument 3)(^K))<wide-overbrace>^(term.)_arguments
 Arguments commence after the opening parenthesis. The first argument runs up till the next ^K. 
-If the following character is a , then another argument follows. If the next character after the , is a space character, then it is also eaten. The fangle stylesheet emits ^K,space as separators, but the fangle untangler will forgive a missing space.
+If the following character is a , then another argument follows. If the next character after the , is a space character, then it is also eaten. The fangle stylesheet emits ^K,Space as separators, but the fangle untangler will forgive a missing space.
 If the following character is ) then this is a terminator and there are no more arguments.
 
 39a <constants[1](), lang=> ≡  81a⊳
@@ -1226,7 +1227,7 @@ For the common modes, we define this string handling for double and single quote
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 Working strings should pass this test:
 
-50g <test:mode-definitions[2]() ⇑49c, lang=> +≡ ⊲49c 57b⊳
+50g <test:mode-definitions[2]() ⇑49c, lang=> +≡ ⊲49c 57c⊳
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   18  | parse_chunk_args("c-like", "say \"I said, \\\"Hello, how are you\\\".\", for me", a, "");
   19  | if (a[1] != "say \"I said, \\\"Hello, how are you\\\".\"") e++;
@@ -1444,7 +1445,7 @@ For makefiles, we currently recognize 2 modes: the null mode and ↦ mode, which
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 In the null mode the only escape is $ which must be converted to $$, and hash-style comments. POSIX requires that line-continuations extend hash-style comments and so fangle-style transformations to replicate the hash at the start of each line is not strictly required, however it is harmless, easier to read, and required by some implementations of make which do not implement POSIX requirements correctly.
 
-54b <mode-definitions[5]() ⇑52b, lang=awk> +≡ ▵54a 55d⊳
+54b <mode-definitions[5]() ⇑52b, lang=awk> +≡ ▵54a 56a⊳
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   37  | escapes["make", "", ++escapes["make", ""], "s"]="\\$";
   38  | escapes["make", "", escapes["make", ""], "r"]="$$";
@@ -1477,7 +1478,7 @@ Traditionally, if the newline's in the shell script all occur at points of top-l
 
 The two chunks above could reasonably produce something like this:
 
-?a <test:make:1.result.bad[1](), lang=make> ≡ 
+54e <test:make:1.result.bad[1](), lang=make> ≡ 
       ________________________________________________________________________
   1  | all:
   2  | ↦echo making
@@ -1493,7 +1494,7 @@ The two chunks above could reasonably produce something like this:
 However ;\ is not a proper continuation inside a multi-line sed script. There is no simple continuation that fangle could use — and in any case it would depend on what type of quote marks were used in the bash that contained the sed. 
 We would prefer to use a more intuitive single backslash at the end of the line, giving these results.
 
-54a <test:make:1.result[1](), lang=make> ≡ 
+54f <test:make:1.result[1](), lang=make> ≡ 
       ________________________________________________________________________
   1  | all:
   2  | ↦echo making
@@ -1542,7 +1543,7 @@ SHELL:=bash -c 'exec $(SHELL) "$${@//\\$$'\''\012'\''/$$'\''\012'\''}"' --
 Based on this, we just need to escape newlines (in tabbed mode) with a regular backslash:
 Note that terminators applies to literal, not included text, escapes apply to included, not literal text; also that the tab character is hard-wired into the pattern, and that the make variable .RECIPEPREFIX might change this to something else.
 
-55d <mode-definitions[6]() ⇑52b, lang=awk> +≡ ⊲54b
+56a <mode-definitions[6]() ⇑52b, lang=awk> +≡ ⊲54b
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   40  | modes["make", "↦", "terminators"]="\\n";
   41  | escapes["make", "↦", ++escapes["make", "↦"], "s"]="\\n";
@@ -1552,7 +1553,7 @@ Note that terminators applies to literal, not included text, escapes apply to in
 
 With this improved quoting, the test on 54c will actually produce this:
 
-55e <test:make:1.result-actual[1](), lang=make> ≡ 
+56b <test:make:1.result-actual[1](), lang=make> ≡ 
       ________________________________________________________________________
   1  | all:
   2  | ↦echo making
@@ -1569,7 +1570,7 @@ Do we need to track the language of sources of arguments?
 
 A more ugly work-around until this problem can be solved would be to use this notation:
 
-56a <test:make:2[1](), lang=make> ≡ 
+56c <test:make:2[1](), lang=make> ≡ 
       ________________________________________________________________________
   1  | all:
   2  | ↦echo making
@@ -1579,7 +1580,7 @@ A more ugly work-around until this problem can be solved would be to use this no
 
 which produces this output which is more useful (because it works):
 
-56b <test:make:2.result[1](), lang=make> ≡ 
+56d <test:make:2.result[1](), lang=make> ≡ 
       ________________________________________________________________________
   1  | all:
   2  | ↦echo making
@@ -1596,14 +1597,14 @@ which produces this output which is more useful (because it works):
 11.4.1 Direct quoting 
 He we give examples of various quoting scenarios and discuss what the expected outcome might be and how this could be obtained.
 
-56c <test:q:1[1](), lang=sh> ≡ 
+56e <test:q:1[1](), lang=sh> ≡ 
       ________________________________________________________________________
-  1  | echo "$(«test:q:1-inc 56d»)"
+  1  | echo "$(«test:q:1-inc 57a»)"
      |________________________________________________________________________
 
 
 
-56d <test:q:1-inc[1](), lang=sh> ≡ 
+57a <test:q:1-inc[1](), lang=sh> ≡ 
       ________________________________________________________________________
   1  | echo "hello"
      |________________________________________________________________________
@@ -1612,15 +1613,15 @@ He we give examples of various quoting scenarios and discuss what the expected o
 Should this examples produce echo "$(echo "hello")" or echo "$(echo \"hello\")" ?
 This depends on what the author intended, but we must provde a way to express that intent.
 We might argue that as both chunks have lang=sh the intent must have been to quote the included chunk — but consider that this might be shell script that writes shell script.
-If <test:q:1-inc 56d> had lang=text then it certainly would have been right to quote it, which leads us to ask: in what ways can we reduce quoting if lang of the included chunk is compatible with the lang of the including chunk?
+If <test:q:1-inc 57a> had lang=text then it certainly would have been right to quote it, which leads us to ask: in what ways can we reduce quoting if lang of the included chunk is compatible with the lang of the including chunk?
 If we take a completely nested approach then even though $( mode might do no quoting of it's own, " mode will still do it's own quoting. We need a model where the nested $( mode will prevent " from quoting.
 This leads rise to the tunneling feature. In bash, the $( gives rise to a new top-level parsing scenario, so we need to enter the null mode, and also ignore any quoting and then undo-this when the $( mode is terminated by the corresponding close ).
 We shall say that tunneling is when a mode in a language ignores other modes in the same language and arrives back at an earlier null mode of the same language.
-In example <test:q:1 56c> above, the nesting of modes is: null, ", $(
+In example <test:q:1 56e> above, the nesting of modes is: null, ", $(
 When mode $( is commenced, the stack of nest modes will be traversed. If the null mode can be found in the same language, without the language varying, then a tunnel will be established so that the intervening modes, " in this case, can be skipped when the modes are enumerated to quote the texted being emitted.
 In such a case, the correct result would be:
 
-57a <test:q:1.result[1](), lang=sh> ≡ 
+57b <test:q:1.result[1](), lang=sh> ≡ 
       ________________________________________________________________________
   1  | echo "$(echo "hello")"
      |________________________________________________________________________
@@ -1629,7 +1630,7 @@ In such a case, the correct result would be:
 11.5 Some tests 
 Also, the parser must return any spare text at the end that has not been processed due to a mode terminator being found.
 
-57b <test:mode-definitions[3]() ⇑49c, lang=> +≡ ⊲50g 57c▿
+57c <test:mode-definitions[3]() ⇑49c, lang=> +≡ ⊲50g 57d▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   23  | rest = parse_chunk_args("c-like", "1, 2, 3) spare", a, "(");
   24  | if (a[1] != 1) e++;
@@ -1641,7 +1642,7 @@ Also, the parser must return any spare text at the end that has not been process
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 We must also be able to parse the example given earlier.
 
-57c <test:mode-definitions[4]() ⇑49c, lang=> +≡ ▵57b
+57d <test:mode-definitions[4]() ⇑49c, lang=> +≡ ▵57c
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   30  | parse_chunk_args("c-like", "things[x, y], get_other_things(a, \"(all)\"), 99", a, "(");
   31  | if (a[1] != "things[x, y]") e++;
@@ -1683,7 +1684,7 @@ Awk functions cannot return an array, but arrays are passed by reference. Becaus
 11.6.2 Management 
 And for tracking modes, we dispatch to a mode-tracker action based on the current language
 
-58c <mode_tracker[1](), lang=awk> ≡  58d▿
+58c <mode_tracker[1](), lang=awk> ≡  59a⊳
       ________________________________________________________________________
   1  | function push_mode_tracker(context, language, mode,
   2  |   # local vars
@@ -1706,7 +1707,7 @@ And for tracking modes, we dispatch to a mode-tracker action based on the curren
   19  | }
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 
-58d <mode_tracker[2]() ⇑58c, lang=> +≡ ▵58c 58e▿
+59a <mode_tracker[2]() ⇑58c, lang=> +≡ ⊲58c 59b▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   20  | function dump_mode_tracker(context,  
   21  |   c, d)
@@ -1720,7 +1721,7 @@ And for tracking modes, we dispatch to a mode-tracker action based on the curren
   29  | }
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 
-58e <mode_tracker[3]() ⇑58c, lang=> +≡ ▵58d 63a⊳
+59b <mode_tracker[3]() ⇑58c, lang=> +≡ ▵59a 63b⊳
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   30  | function pop_mode_tracker(context, context_origin)
   31  | {
@@ -1734,33 +1735,33 @@ And for tracking modes, we dispatch to a mode-tracker action based on the curren
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 This implies that any chunk must be syntactically whole; for instance, this is fine:
 
-59a <test:whole-chunk[1](), lang=> ≡ 
+59c <test:whole-chunk[1](), lang=> ≡ 
       ________________________________________________________________________
   1  | if (1) {
-  2  |   «test:say-hello 59b»
+  2  |   «test:say-hello 59d»
   3  | }
      |________________________________________________________________________
 
 
 
-59b <test:say-hello[1](), lang=> ≡ 
+59d <test:say-hello[1](), lang=> ≡ 
       ________________________________________________________________________
   1  | print "hello";
      |________________________________________________________________________
 
 
-But this is not fine; the chunk <test:hidden-else 59d> is not properly cromulent.
+But this is not fine; the chunk <test:hidden-else 59f> is not properly cromulent.
 
-59c <test:partial-chunk[1](), lang=> ≡ 
+59e <test:partial-chunk[1](), lang=> ≡ 
       ________________________________________________________________________
   1  | if (1) {
-  2  |   «test:hidden-else 59d»
+  2  |   «test:hidden-else 59f»
   3  | }
      |________________________________________________________________________
 
 
 
-59d <test:hidden-else[1](), lang=> ≡ 
+59f <test:hidden-else[1](), lang=> ≡ 
       ________________________________________________________________________
   1  |   print "I'm fine";
   2  | } else {
@@ -1770,7 +1771,7 @@ But this is not fine; the chunk <test:hidden-else 59d> is not properly cromulent
 
 These tests will check for correct behaviour:
 
-59e <test:cromulence[1](), lang=> ≡ 
+59g <test:cromulence[1](), lang=> ≡ 
       ________________________________________________________________________
   1  | echo Cromulence test
   2  | passtest $FANGLE -Rtest:whole-chunk $TXT_SRC &>/dev/null || ( echo "Whole chunk failed" && exit 1 )
@@ -1781,7 +1782,7 @@ These tests will check for correct behaviour:
 11.6.3 Tracker 
 We must avoid recursion as a language construct because we intend to employ mode-tracking to track language mode of emitted code, and the code is emitted from a function which is itself recursive, so instead we implement psuedo-recursion using our own stack based on a hash.
 
-59f <mode_tracker()[1](), lang=awk> ≡  60a⊳
+60a <mode_tracker()[1](), lang=awk> ≡  60b▿
       ________________________________________________________________________
   1  | function mode_tracker(context, text, values, 
   2  |   # optional parameters
@@ -1793,7 +1794,7 @@ We must avoid recursion as a language construct because we intend to employ mode
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 We could be re-commencing with a valid context, so we need to setup the state according to the last context.
 
-60a <mode_tracker()[2]() ⇑59f, lang=> +≡ ⊲59f 60d▿
+60b <mode_tracker()[2]() ⇑60a, lang=> +≡ ▵60a 60e▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   8  |   cindex = context[""] + 0;
   9  |   mode = context[cindex, "mode"];
@@ -1801,7 +1802,7 @@ We could be re-commencing with a valid context, so we need to setup the state ac
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 First we construct a single large regex combining the possible sub-modes for the current mode along with the terminators for the current mode.
 
-60b <parse_chunk_args-reset-modes[1](), lang=> ≡  60c▿
+60c <parse_chunk_args-reset-modes[1](), lang=> ≡  60d▿
       ________________________________________________________________________
   1  |   submodes=modes[language, mode, "submodes"];
   2  | 
@@ -1818,27 +1819,27 @@ First we construct a single large regex combining the possible sub-modes for the
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 If we don't find anything to match on --- probably because the language is not supported --- then we return the entire text without matching anything.
 
-60c <parse_chunk_args-reset-modes[2]() ⇑60b, lang=> +≡ ▵60b
+60d <parse_chunk_args-reset-modes[2]() ⇑60c, lang=> +≡ ▵60c
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   13  |  if (! length(submodes)) return text;
      |________________________________________________________________________
 
 
 
-60d <mode_tracker()[3]() ⇑59f, lang=> +≡ ▵60a 60e▿
+60e <mode_tracker()[3]() ⇑60a, lang=> +≡ ▵60b 60f▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
-  11  | «parse_chunk_args-reset-modes 60b»
+  11  | «parse_chunk_args-reset-modes 60c»
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 We then iterate the text (until there is none left) looking for sub-modes or terminators in the regex.
 
-60e <mode_tracker()[4]() ⇑59f, lang=> +≡ ▵60d 60f▿
+60f <mode_tracker()[4]() ⇑60a, lang=> +≡ ▵60e 61a⊳
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   12  |   while((cindex >= 0) && length(text)) {
   13  |     if (match(text, "(" submodes ")", a)) {
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 A bug that creeps in regularly during development is bad regexes of zero length which result in an infinite loop (as no text is consumed), so I catch that right away with this test.
 
-60f <mode_tracker()[5]() ⇑59f, lang=> +≡ ▵60e 61a⊳
+61a <mode_tracker()[5]() ⇑60a, lang=> +≡ ⊲60f 61b▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   14  |       if (RLENGTH<1) {
   15  |         error(sprintf("Internal error, matched zero length submode, should be impossible - likely regex computation error\n" \
@@ -1848,14 +1849,14 @@ A bug that creeps in regularly during development is bad regexes of zero length 
 part is defined as the text up to the sub-mode or terminator, and this is appended to item --- which is the current text being gathered. If a mode has a delimiter, then item is reset each time a delimiter is found.
 ("hello_item, there_item")<wide-overbrace>^item,  (he said.)<wide-overbrace>^item
 
-61a <mode_tracker()[6]() ⇑59f, lang=> +≡ ⊲60f 61b▿
+61b <mode_tracker()[6]() ⇑60a, lang=> +≡ ▵61a 61c▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   18  |       part = substr(text, 1, RSTART -1);
   19  |       item = item part;
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 We must now determine what was matched. If it was a terminator, then we must restore the previous mode.
 
-61b <mode_tracker()[7]() ⇑59f, lang=> +≡ ▵61a 61c▿
+61c <mode_tracker()[7]() ⇑60a, lang=> +≡ ▵61b 61d▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   20  |       if (match(a[1], "^" terminators "$")) {
   21  | #printf("%2d EXIT  MODE [%s] by [%s] [%s]\n", cindex, mode, a[1], text) > "/dev/stderr"
@@ -1865,7 +1866,7 @@ We must now determine what was matched. If it was a terminator, then we must res
   25  |         if (cindex>=0) {
   26  |           mode = context[cindex, "mode"];
   27  |           language = context[cindex, "language"];
-  28  |           «parse_chunk_args-reset-modes 60b»
+  28  |           «parse_chunk_args-reset-modes 60c»
   29  |         }
   30  |         item = item a[1];
   31  |         text = substr(text, 1 + length(part) + length(a[1]));
@@ -1873,7 +1874,7 @@ We must now determine what was matched. If it was a terminator, then we must res
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 If a delimiter was matched, then we must store the current item in the parsed values array, and reset the item.
 
-61c <mode_tracker()[8]() ⇑59f, lang=> +≡ ▵61b 61d▿
+61d <mode_tracker()[8]() ⇑60a, lang=> +≡ ▵61c 61e▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   33  |       else if (match(a[1], "^" delimiters "$")) {
   34  |         if (cindex==0) {
@@ -1887,7 +1888,7 @@ If a delimiter was matched, then we must store the current item in the parsed va
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 otherwise, if a new submode is detected (all submodes have terminators), we must create a nested parse context until we find the terminator for this mode.
 
-61d <mode_tracker()[9]() ⇑59f, lang=> +≡ ▵61c 62a⊳
+61e <mode_tracker()[9]() ⇑60a, lang=> +≡ ▵61d 62a⊳
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   42  |  else if ((language, a[1], "terminators") in modes) {
   43  |         #check if new_mode is defined
@@ -1898,7 +1899,7 @@ otherwise, if a new submode is detected (all submodes have terminators), we must
   48  |         context[cindex, "mode"] = a[1];
   49  |         context[cindex, "language"] = language;
   50  |         mode = a[1];
-  51  |         «parse_chunk_args-reset-modes 60b»
+  51  |         «parse_chunk_args-reset-modes 60c»
   52  |       } else {
   53  |         error(sprintf("Submode '%s' set unknown mode in text: %s\nLanguage %s Mode %s\n", a[1], text, language, mode));
   54  |         text = substr(text, 1 + length(part) + length(a[1]));
@@ -1907,7 +1908,7 @@ otherwise, if a new submode is detected (all submodes have terminators), we must
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 In the final case, we parsed to the end of the string. If the string was entire, then we should have no nested mode context, but if the string was just a fragment we may have a mode context which must be preserved for the next fragment. Todo: Consideration ought to be given if sub-mode strings are split over two fragments.
 
-62a <mode_tracker()[10]() ⇑59f, lang=> +≡ ⊲61d
+62a <mode_tracker()[10]() ⇑60a, lang=> +≡ ⊲61e
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   57  | else {
   58  |       context[cindex, "values", ++context[cindex, "values"]] = item text;
@@ -1930,7 +1931,7 @@ All the mode tracker chunks are referred to here:
 62b <mode-tracker[1](), lang=> ≡ 
       ________________________________________________________________________
   1  | «new_mode_tracker() 58a»
-  2  | «mode_tracker() 59f»
+  2  | «mode_tracker() 60a»
      |________________________________________________________________________
 
 
@@ -1969,7 +1970,7 @@ We can test this function like this:
 
 which should give this output:
 
-62e <pca-test.awk-results[1](), lang=> ≡ 
+63a <pca-test.awk-results[1](), lang=> ≡ 
       ________________________________________________________________________
   1  | a[foo.quux.quirk] => 
   2  | a[foo.quux.a] => fleeg
@@ -1987,7 +1988,7 @@ Another special character is used, the left-arrow ↤ with UTF-8 sequence 0xE2 0
 To do: remove the hack
 
 
-63a <mode_tracker[4]() ⇑58c, lang=> +≡ ⊲58e 63b▿
+63b <mode_tracker[4]() ⇑58c, lang=> +≡ ⊲59b 63c▿
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
 
   39  | function untab(text) {
@@ -1998,7 +1999,7 @@ To do: remove the hack
 Each nested mode can optionally define a set of transforms to be applied to any text that is included from another language.
 This code can perform transforms from index c downwards.
 
-63b <mode_tracker[5]() ⇑58c, lang=awk> +≡ ▵63a 58c⊳
+63c <mode_tracker[5]() ⇑58c, lang=awk> +≡ ▵63b
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
   43  | function transform_escape(context, text, top,
   44  |   c, cp, cpl, s, r)
@@ -2025,9 +2026,11 @@ This code can perform transforms from index c downwards.
   65  |     printf("%2d s[%s] r[%s]\n", cc, quotes[cc, "s"], quotes[cc, "r"]) > "/dev/stderr"
   66  |   }
   67  | }
-     |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
+     |________________________________________________________________________
 
-63c <test:escapes[1](), lang=sh> ≡ 
+
+
+64a <test:escapes[1](), lang=sh> ≡ 
       ________________________________________________________________________
   1  | echo escapes test
   2  | passtest $FANGLE -Rtest:comment-quote $TXT_SRC &>/dev/null || ( echo "Comment-quote failed" && exit 1 )
@@ -3370,7 +3373,7 @@ Chapter 19Tests
   16  | 
   17  | tm -s -c "$SRC" "$TXT_SRC" -q
   18  | 
-  19  | «test:helpers 99c»
+  19  | «test:helpers 100a»
   20  | run_tests() {
   21  |   «test:run-tests 99b»
   22  | }
@@ -3399,19 +3402,19 @@ Chapter 19Tests
       ________________________________________________________________________
   1  | # run tests
   2  | fangle -Rpca-test.awk $TXT_SRC | awk -f - || exit 1
-  3  | «test:cromulence 59e»
-  4  | «test:escapes 63c»
-  5  | «test:test-chunk(test:example-sh) 100a»
-  6  | «test:test-chunk(test:example-makefile) 100a»
-  7  | «test:test-chunk(test:q:1) 100a»
-  8  | «test:test-chunk(test:make:1) 100a»
-  9  | «test:test-chunk(test:make:2) 100a»
+  3  | «test:cromulence 59g»
+  4  | «test:escapes 64a»
+  5  | «test:test-chunk(test:example-sh) 100b»
+  6  | «test:test-chunk(test:example-makefile) 100b»
+  7  | «test:test-chunk(test:q:1) 100b»
+  8  | «test:test-chunk(test:make:1) 100b»
+  9  | «test:test-chunk(test:make:2) 100b»
   10  | «test:chunk-params 101e»
      |________________________________________________________________________
 
 
 
-99c <test:helpers[1](), lang=> ≡ 
+100a <test:helpers[1](), lang=> ≡ 
       ________________________________________________________________________
   1  | passtest() {
   2  |   if "$@"
@@ -3433,14 +3436,14 @@ Chapter 19Tests
 
 This chunk will render a named chunk and compare it to another rendered nameed chunk
 
-100a <test:test-chunk[1](chunk), lang=sh> ≡ 
+100b <test:test-chunk[1](chunk), lang=sh> ≡ 
       ________________________________________________________________________
-  1  | «test:test-chunk-result(${chunk}, ${chunk}.result) 100b»
+  1  | «test:test-chunk-result(${chunk}, ${chunk}.result) 100c»
      |________________________________________________________________________
 
 
 
-100b <test:test-chunk-result[1](chunk, result), lang=sh> ≡ 
+100c <test:test-chunk-result[1](chunk, result), lang=sh> ≡ 
       ________________________________________________________________________
   1  | TEST="${result}" passtest diff -u --label "EXPECTED: ${result}" <( fangle -R${result} $TXT_SRC ) \
   2  |                                  --label "ACTUAL: ${chunk}" <( fangle -R${chunk} $TXT_SRC )
@@ -3488,7 +3491,7 @@ And this chunk will perform the test:
 
 101e <test:chunk-params[1](), lang=> ≡  102b⊳
       ________________________________________________________________________
-  1  | «test:test-chunk-result(test:lyx:chunk-params:text, test:lyx:chunk-params:result) 100b» || exit 1
+  1  | «test:test-chunk-result(test:lyx:chunk-params:text, test:lyx:chunk-params:result) 100c» || exit 1
      |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
 20.2 TeXmacs 
 
@@ -3508,11 +3511,13 @@ And this chunk will perform the test:
 
 
 
-101h <test:chunk-params:text[1](), lang=> ≡  96a⊳
+101h <test:chunk-params:text[1](), lang=> ≡ 
       ________________________________________________________________________
   1  | What do you see? "«test:chunk-params:sub(joe, red) 101f»"
   2  | Well, fancy!
-     |/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ 
+     |________________________________________________________________________
+
+
 Should generate output:
 
 102a <test:chunk-params:result[1](), lang=> ≡ 
@@ -3528,7 +3533,7 @@ And this chunk will perform the test:
 
 102b <test:chunk-params[2]() ⇑101e, lang=> +≡ ⊲101e
      ./\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
-  2  | «test:test-chunk-result(test:chunk-params:text, test:chunk-params:result) 100b» || exit 1
+  2  | «test:test-chunk-result(test:chunk-params:text, test:chunk-params:result) 100c» || exit 1
      |________________________________________________________________________
 
 
