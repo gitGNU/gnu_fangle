@@ -1,4 +1,4 @@
-<TeXmacs|1.0.7.14>
+<TeXmacs|1.0.7.15>
 
 <style|source>
 
@@ -259,6 +259,45 @@
   </cell>>>>>>>
 
   <assign|nf-framed-fragment|<macro|x|<arg|x>>>
+
+  <\active*>
+    <\src-comment>
+      This is how top and bottom borders are drawn using solid or jagged
+      lines - it needs reworking, its a horrid hack with repeated code. \ 
+    </src-comment>
+  </active*>
+
+  <assign|nf-jag-top|<macro|<with|gr-geometry|<tuple|geometry|0.25fn|1fn>|gr-mode|<tuple|edit|line>|gr-frame|<tuple|scale|1cm|<tuple|0gw|1gh>>|gr-line-width|0.5ln|<graphics||<line|<point|0gw|-0.4gh>|<point|0.5gw|-0.25gh>|<point|1gw|-0.4gh>>>>>>
+
+  <assign|nf-jag-bottom|<macro|<with|gr-geometry|<tuple|geometry|0.25fn|1bls>|gr-mode|<tuple|edit|line>|gr-frame|<tuple|scale|1cm|<tuple|0gw|1gh>>|gr-line-width|1ln|<graphics||<line|<point|0gw|0.5gh>|<point|0.5gw|0.35gh>|<point|1gw|0.5gh>>>>>>
+
+  <assign|nf-jags-top|<macro|x|<repeat|<arg|x>|<nf-jag-top>>>>
+
+  <assign|nf-jags-bottom|<macro|x|<repeat|<arg|x>|<nf-jag-bottom>>>>
+
+  <assign|nf-jagit-top|<macro|body|<datoms|<macro|x|<nf-jags-top|<arg|x>>>|<surround||<htab|5mm*|last><vspace*|1sep>|<arg|body>>>>>
+
+  <assign|nf-jagit-bottom|<macro|body|<datoms|<macro|x|<nf-jags-bottom|<arg|x>>>|<surround||<htab|5mm*|last><vspace*|1sep>|<arg|body>>>>>
+
+  <assign|nf-top-border-line|<macro|body|<wide-underlined|<value|nf-cell-border>|1ln|<arg|body>>>>
+
+  <assign|nf-top-border-jags|<macro|body|<nf-jagit-top|<arg|body>>>>
+
+  <assign|nf-top-border-true|<macro|body|<nf-top-border-line|<arg|body>>>>
+
+  <assign|nf-top-border-false|<macro|body|<nf-top-border-jags|<arg|body>>>>
+
+  <assign|nf-top-border|<macro|first|body|<compound|<merge|nf-top-border-|<arg|first>>|<arg|body>>>>
+
+  <assign|nf-bottom-border-line|<macro|body|<wide-bothlined|<value|nf-cell-border>|0ln|1ln|0ln|<arg|body>>>>
+
+  <assign|nf-bottom-border-jags|<macro|body|<nf-jagit-bottom|<arg|body>>>>
+
+  <assign|nf-bottom-border-true|<macro|body|<nf-bottom-border-line|<arg|body>>>>
+
+  <assign|nf-bottom-border-false|<macro|body|<nf-bottom-border-jags|<arg|body>>>>
+
+  <assign|nf-bottom-border|<macro|first|body|<compound|<merge|nf-bottom-border-|<arg|first>>|<arg|body>>>>
 
   <\active*>
     <\src-comment>
@@ -656,7 +695,7 @@
 
   <assign|nf-use-page-header|<macro|h|<set-this-page-header|<arg|h>>>>
 
-  <assign|nf-chunk|<macro|name|x|lang|args|<with|the-label||xnv-langle-subst||xnv-rangle-subst||nf-name|<unquote|<arg|name>>|y|<value|pob>|<small|<surround|<nf-chunk-init|<arg|name>|<arg|args>><wide-underlined|<nf-border-if|<nf-first-chunklet?|<value|nf-name>>>|1ln|<no-page-break*><label|<arg|name>><small|<nf-header|<arg|name>|<arg|lang>|<arg|args>>><no-page-break>>|<if|<nf-last-chunklet?|<value|nf-name>>|<wide-bothlined|<nf-border-if|<nf-last-chunklet?|<value|nf-name>>>|0ln|1ln|0ln|<htab|5mm*|last>>|<nf-jags>>|<\with|item|<value|<merge|code-item-|<unquote|<arg|name>>>>|item-vsep|0fn|current-item|<value|nf-render-line-no>|transform-item|<value|identity>>
+  <assign|nf-chunk|<macro|name|x|lang|args|<with|the-label||xnv-langle-subst||xnv-rangle-subst||nf-name|<unquote|<arg|name>>|y|<value|pob>|<small|<surround|<nf-chunk-init|<arg|name>|<arg|args>><wide-underlined|<nf-border-if|<nf-first-chunklet?|<value|nf-name>>>|1ln|<no-page-break*><label|<arg|name>><small|<nf-header|<arg|name>|<arg|lang>|<arg|args>>><no-page-break>>|<if|<nf-last-chunklet?|<value|nf-name>>|<wide-bothlined|<nf-border-if|<nf-last-chunklet?|<value|nf-name>>>|0ln|1ln|0ln|<htab|5mm*|last>>>|<\with|item|<value|<merge|code-item-|<unquote|<arg|name>>>>|item-vsep|0fn|current-item|<value|nf-render-line-no>|transform-item|<value|identity>>
     <\surround||<nf-chunk-outit|<arg|name>><if|<and|<not|<equal|<value|nf-page>|<pagerefpage|<nf-this-chunk-id|<arg|name>|end>>>>|<ispageref?|<nf-this-chunk-id|<arg|name>|end>>>|<nf-use-page-header|<with|nv-langle|<macro|<with|mode|math|<left|langle>>>|nv-rangle|<macro|<with|mode|math|<right|rangle>>>|<small|<nf-header|<arg|name>|<arg|lang>|<arg|args>>>>>>>
       <no-page-break><nf-verbatim-top|<nf-first-chunklet?|<value|nf-name>>>
 
@@ -665,6 +704,18 @@
       <no-page-break*><if|<nf-last-chunklet?|<value|nf-name>>|<assign|<merge|code-line-|<value|nf-name>|-nr>|0>><nf-verbatim-bottom|<nf-last-chunklet?|<value|nf-name>>>
     </surround>
   </with>>>>>>
+
+  <assign|nf-chunkl|<macro|name|x|lang|args|<with|the-label||xnv-langle-subst||xnv-rangle-subst||nf-name|<unquote|<arg|name>>|y|<value|pob>|||<small|<\surround|<nf-chunk-init|<arg|name>|<arg|args>><label|<arg|name>><no-page-break*><small|<nf-top-border|<nf-first-chunklet?|<value|nf-name>>|<nf-header|<arg|name>|<arg|lang>|<arg|args>>>><no-page-break>|<nf-bottom-border|<nf-last-chunklet?|<value|nf-name>>|<htab|5mm*|last>>>
+    <\with|item|<value|<merge|code-item-|<unquote|<arg|name>>>>|item-vsep|0fn|current-item|<value|nf-render-line-no>|transform-item|<value|identity>>
+      <\surround||<nf-chunk-outit|<arg|name>><if|<and|<not|<equal|<value|nf-page>|<pagerefpage|<nf-this-chunk-id|<arg|name>|end>>>>|<ispageref?|<nf-this-chunk-id|<arg|name>|end>>>|<nf-use-page-header|<with|nv-langle|<macro|<with|mode|math|<left|langle>>>|nv-rangle|<macro|<with|mode|math|<right|rangle>>>|<small|<nf-header|<arg|name>|<arg|lang>|<arg|args>>>>>>>
+        <no-page-break><nf-verbatim-top|<nf-first-chunklet?|<value|nf-name>>>
+
+        <with|nv-langle-subst|\S|nv-rangle-subst|\T|<nf-pf|<value|nf-name>|<arg|lang>|<arg|x>>>
+
+        <if|<nf-last-chunklet?|<value|nf-name>>|<assign|<merge|code-line-|<value|nf-name>|-nr>|0>>
+      </surround>
+    </with>
+  </surround>>>>>
 
   <assign|nf-fake-chunk|<macro|name|x|lang|args|chunk_no|chunk_label|chunk_first_label|prev|prev_label|next|next_label|line-no|<with|the-label||xnv-langle-subst||xnv-rangle-subst||nf-name|<unquote|<arg|name>>|name|<arg|name>|lang|<arg|lang>|args|<arg|args>|chunk_no|<arg|chunk_no>|chunk_label|<arg|chunk_label>|chunk_first_label|<arg|chunk_first_label>|prev|<arg|prev>|prev_label|<arg|prev_label>|next|<arg|next>|next_label|<arg|next_label>|<small|<surround|<wide-underlined|<nf-border-if|<equal|<value|chunk_no>|1>>|1ln|<no-page-break*><small|<render-fangle-header><htab|0pt><render-fangle-nav>><no-page-break>>|<if|<equal|<length|<value|next>>|0>|<wide-bothlined|<nf-border-if|<equal|<length|<value|next>>|0>>|0ln|1ln|0ln|<htab|5mm*|last>>|<nf-jags>>|<\with|xitem|<arg|line-no>|item-nr|0|item-vsep|0fn|current-item|<value|nf-render-line-no>|transform-item|<value|identity>>
     <no-page-break><nf-verbatim-top|<nf-first-chunklet?|<value|nf-name>>>
@@ -793,8 +844,6 @@
   <assign|fangle-chunk-init|<macro|name|args|<with|nf-same-chunk|<equal|<value|nf-last-chunk>|<arg|name>>|<if|<not|<provides|<merge|code-chunk-|<unquote|<arg|name>>|-nr>>>|<fangle-chunk-new|<arg|name>|<arg|args>>|<nf-chunk-next|<arg|name>>><nf-chunk-label|<arg|name>><nf-chunk-ref|<arg|name>><assign|nf-continues|<and|<value|nf-same-chunk>|<not|<equal|<number|<the-nf-chunk>|alpha>|a>>>>>>>
 
   <assign|fangle-render-list|<\macro|body>
-    hh
-
     <\padded-normal|<item-vsep>|<item-vsep>>
       <\indent-left|<item-hsep>>
         <surround|<no-page-break*>|<no-indent*>|<arg|body>>
