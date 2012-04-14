@@ -522,7 +522,7 @@
     </src-comment>
   </active*>
 
-  <assign|nf-chunk-new|<macro|name|args|<quasi|<new-counter|<merge|code-chunk-|<unquote|<arg|name>>>><new-counter|<merge|code-line-|<unquote|<arg|name>>>><assign|<unquote|<merge|code-item-|<arg|name>>>|<macro|<compound|<unquote|<merge|next-code-line-|<arg|name>>>><render-item|<compound|<unquote|<merge|the-code-line-|<arg|name>>>>>>><compound|<merge|inc-code-chunk-|<unquote|<arg|name>>>><assign|<merge|code-args-|<unquote|<arg|name>>>|<arg|args>>>>>
+  <assign|nf-chunk-new|<macro|name|args|<quasi|<new-counter|<merge|code-chunk-|<unquote|<arg|name>>>><new-counter|<merge|code-line-|<unquote|<arg|name>>>><assign|<unquote|<merge|code-item-|<arg|name>>>|<macro|<compound|<unquote|<merge|next-code-line-|<arg|name>>>><render-item|<compound|<unquote|<merge|the-code-line-|<arg|name>>>>>>><compound|<merge|inc-code-chunk-|<unquote|<arg|name>>>><assign|<merge|code-args-|<unquote|<arg|name>>>|<arg|args>>><write|nf-chunk|<tuple|<tuple|<arg|name>>|<reference|<nf-this-chunk-id|<arg|name>|ref>>>>>>
 
   <\active*>
     <\src-comment>
@@ -531,7 +531,7 @@
     </src-comment>
   </active*>
 
-  <assign|nf-chunk-next|<macro|name|<compound|<merge|inc-code-chunk-|<unquote|<arg|name>>>>>>
+  <assign|nf-chunk-next|<macro|name|<compound|<merge|inc-code-chunk-|<unquote|<arg|name>>>><write|nf-chunk|<tuple|<tuple|<arg|name>>|<reference|<nf-this-chunk-id|<arg|name>|ref>>>>>>
 
   <\active*>
     <\src-comment>
