@@ -1,6 +1,6 @@
-<TeXmacs|1.0.7.14>
+<TeXmacs|1.0.7.15>
 
-<style|<tuple|article|fangle|env-program>>
+<style|<tuple|article|env-program|fangle>>
 
 <\body>
   <\hide-preamble>
@@ -27,22 +27,7 @@
 
   <subsubsection|Message>
 
-  Here is the message that we wish to give to
-  world:<new-fangle|messagess|sh|<tuple|a1|a2>>
-
-  message is below:
-
-  <\messagess>
-    hello
-
-    more
-
-    eyc
-  </messagess>
-
-  end
-
-  \;
+  Here is the message that we wish to give to world:
 
   <nf-chunk|message|Hello World!|txt|>
 
@@ -70,16 +55,16 @@
   <verbatim|printf>, like this:
 
   <\nf-chunk|message-printf>
-    <item>printf("<nf-ref|message>\\n");
+    <item>printf("<nf-ref|message|>\\n");
   </nf-chunk|cpp|>
 
   or even with <verbatim|puts>:
 
   <\nf-chunk|message-puts>
-    <item>puts("<nf-ref|message>\\n");
+    <item>puts("<nf-ref|message|>\\n");
   <|nf-chunk>
     cpp
-  </nf-chunk>
+  </nf-chunk|>
 
   But, we prefer <verbatim|printf> which is more traditional.
 
@@ -110,12 +95,12 @@
   <\nf-chunk|main>
     <item>int main(int argc, char** argv) {
 
-    <item> \ <label|printfs><nf-ref|message-printf>
+    <item> \ <label|printfs><nf-ref|message-printf|>
 
     <item> \ return 0;
 
     <item>}
-  </nf-chunk|cpp>
+  </nf-chunk|cpp|>
 
   The statement <verbatim|return 0;> lets the operating system know that the
   function completed successfully <emdash> which is a bit of a presumption as
@@ -141,14 +126,14 @@
   <paragraph|Header files>
 
   On my system, both <verbatim|printf> and <verbatim|puts> both require the
-  header <verbatim|stdio.h>; so this line becomes the first line of our file.\ 
+  header <verbatim|stdio.h>; so this line becomes the first line of our file.
 
   <\nf-chunk|./hello-world.c>
     <item>#include stdout.h
   </nf-chunk|cpp|<tuple|>>
 
   <\note>
-    The header contains a link to chunk <chunk-reference|hello-world.c|2>
+    The header contains a link to chunk <chunk-reference|./hello-world.c|2>
     which is the next chunklet of this named chunk.
   </note>
 
@@ -158,7 +143,7 @@
   <chunk-reference|main|1>.
 
   <\nf-chunk|./hello-world.c>
-    <item><nf-ref|main>
+    <item><nf-ref|main|>
   </nf-chunk|cpp>
 
   <\note>
@@ -216,6 +201,29 @@
   Although this is a little verbose, it shows how things work. There is a
   Makefile.inc project that allows you to do all that sort of thing
   automatically.
+
+  <\the-index*|nf-chunk|Code Index>
+    <index-1|./hello-world.c|<reference|code-ref-./hello-world.c-1>,
+    <reference|code-ref-./hello-world.c-2>,
+    <reference|code-ref-./hello-world.c-3>>
+
+    <index-1|main|<reference|code-ref-main-1>>
+
+    <index-2|Used by|<reference|code-ref-./hello-world.c-1>>
+
+    <index-1|message|<reference|code-ref-message-1>>
+
+    <index-2|Used by|<reference|code-ref-message-printf-1>,
+    <reference|code-ref-message-puts-1>>
+
+    <index-1|message-printf|<reference|code-ref-message-printf-1>>
+
+    <index-2|Used by|<reference|code-ref-main-1>>
+
+    <index-1|message-puts|<reference|code-ref-message-puts-1>>
+  </the-index*>
+
+  \;
 </body>
 
 <\initial>
