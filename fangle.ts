@@ -95,11 +95,11 @@
 
   <extern|(lambda() (define-group enumerate-tag nf-chunk))>
 
-  \ <assign|list-of-chunks|<\macro|aux|body>
+  <assign|list-of-chunks|<\macro|aux|body>
     <render-index|List of Code Chunks|<arg|body>>
   </macro>>
 
-  \ <assign|list-of-chunks*|<\macro|aux|name|body>
+  <assign|list-of-chunks*|<\macro|aux|name|body>
     <render-index|<localize|<arg|name>>|<arg|body>>
   </macro>>
 
@@ -703,11 +703,11 @@
 
   <assign|nf-use-page-header|<macro|h|<set-this-page-header|<arg|h>>>>
 
-  <assign|nf-chunk|<macro|name|x|lang|args|<with|the-label||xnv-langle-subst||xnv-rangle-subst||nf-name|<unquote|<arg|name>>|y|<value|pob>|<small|<surround|<nf-chunk-init|<arg|name>|<arg|args>><wide-underlined|<nf-border-if|<nf-first-chunklet?|<value|nf-name>>>|1ln|<no-page-break*><label|<arg|name>><small|<nf-header|<arg|name>|<arg|lang>|<arg|args>>><no-page-break>>|<if|<nf-last-chunklet?|<value|nf-name>>|<wide-bothlined|<nf-border-if|<nf-last-chunklet?|<value|nf-name>>>|0ln|1ln|0ln|<htab|5mm*|last>>>|<\with|item|<value|<merge|code-item-|<unquote|<arg|name>>>>|item-vsep|0fn|current-item|<value|nf-render-line-no>|transform-item|<value|identity>>
+  <assign|nf-chunk|<macro|name|x|lang|args|<with|the-label||xnv-langle-subst||xnv-rangle-subst||nf-name|<unquote|<arg|name>>|y|<value|pob>|<small|<surround|<nf-chunk-init|<arg|name>|<arg|args>><wide-underlined|<nf-border-if|<nf-first-chunklet?|<value|nf-name>>>|1ln|<no-page-break*><label|<arg|name>><small|<nf-header|<arg|name>|<arg|lang>|<arg|args>>><no-page-break>>|<if|<nf-last-chunklet?|<value|nf-name>>|<wide-bothlined|<nf-border-if|<nf-last-chunklet?|<value|nf-name>>>|0ln|1ln|0ln|<if|<nf-first-chunklet?|<value|nf-name>>|<nf-show-used-by>><htab|5mm*|last>>|<if|<nf-first-chunklet?|<value|nf-name>>|<nf-show-used-by>>>|<\with|item|<value|<merge|code-item-|<unquote|<arg|name>>>>|item-vsep|0fn|current-item|<value|nf-render-line-no>|transform-item|<value|identity>>
     <\surround||<nf-chunk-outit|<arg|name>><if|<and|<not|<equal|<value|nf-page>|<pagerefpage|<nf-this-chunk-id|<arg|name>|end>>>>|<ispageref?|<nf-this-chunk-id|<arg|name>|end>>>|<nf-use-page-header|<with|nv-langle|<macro|<with|mode|math|<left|langle>>>|nv-rangle|<macro|<with|mode|math|<right|rangle>>>|<small|<nf-header|<arg|name>|<arg|lang>|<arg|args>>>>>>>
       <no-page-break><nf-verbatim-top|<nf-first-chunklet?|<value|nf-name>>>
 
-      <with|nv-langle-subst|\S|nv-rangle-subst|\T|<nf-pf|<value|nf-name>|<arg|lang>|<arg|x>>>
+      <with|nv-langle-subst|\S|nv-rangle-subst|\T|nf-current-chunk|<arg|name>|<nf-pf|<value|nf-name>|<arg|lang>|<arg|x>>>
 
       <no-page-break*><if|<nf-last-chunklet?|<value|nf-name>>|<assign|<merge|code-line-|<value|nf-name>|-nr>|0>><nf-verbatim-bottom|<nf-last-chunklet?|<value|nf-name>>>
     </surround>
@@ -754,7 +754,8 @@
     </src-comment>
   </active*>
 
-  <assign|nf-ref|<style-with|src-compact|none|<macro|name|args|<nv-langle><arg|name><if|<and|<or|<equal|<get-label|<arg|args>>|tuple>|<equal|<get-label|<arg|args>>|string>>|<greater|<length|<arg|args>>|0>>|<specific-verbatim|\<#000B\>>(<if|<equal|<get-label|<arg|args>>|tuple>|<nf-commas|<arg|args>>|<with|color|blue|<arg|args>>>)|<phantom|(><arg|args>>
+  <assign|nf-ref|<style-with|src-compact|none|<macro|name|args|<if|<and|<provides|nf-current-chunk>|<not|<equal|<uninit>|<value|nf-current-chunk>>>|<not|<equal|?|<value|nf-current-chunk>>>>|<nf-used-by-chunk|<arg|name>|<nf-chunk-id|<value|nf-current-chunk>|ref|1>><write|nf-chunk|<tuple|<tuple|<arg|name>|Used
+  by>|<reference|<nf-chunk-id|<value|nf-current-chunk>|ref|1>>>>|<auto-label><write|nf-chunk|<tuple|<tuple|<arg|name>|Mentioned>|<nf-render-used-by|<the-auto>>>>><nv-langle><arg|name><if|<and|<or|<equal|<get-label|<arg|args>>|tuple>|<equal|<get-label|<arg|args>>|string>>|<greater|<length|<arg|args>>|0>>|<specific-verbatim|\<#000B\>>(<if|<equal|<get-label|<arg|args>>|tuple>|<nf-commas|<arg|args>>|<with|color|blue|<arg|args>>>)|<phantom|(><arg|args>>
   <reference|<nf-chunk-id|<arg|name>|ref|1>><nv-rangle><flag|<arg|name>|red><if|<equal|0|1>|<compound|<quote-arg|name>>>>>>
 
   <assign|nf-fake-ref|<style-with|src-compact|none|<macro|name|args|ref|<nv-langle><arg|name><if|<equal|<get-label|<arg|args>>|tuple>|<specific-verbatim|\<#000B\>>(<nf-commas|<arg|args>>)>
@@ -763,6 +764,28 @@
   <drd-props|nf-ref|accessible|all>
 
   <drd-props|nf-fake-ref|accessible|all>
+
+  <assign|nf-render-used-by|<macro|x|<reference|<arg|x>> (<localize|page>
+  <pageref|<arg|x>>)>>
+
+  <assign|nf-used-by-chunk|<macro|name|<write|nf-chunk|<tuple|<tuple|<arg|name>|Used
+  by>|<reference|<nf-chunk-id|<value|nf-current-chunk>|ref|1>>>>>>
+
+  <assign|nf-put|<macro|name|value|<with|the-label|<arg|value>|<label|<arg|name>>>>>
+
+  <assign|nf-get|<macro|name|<get-binding|<arg|name>|0>>>
+
+  <assign|nf-ping-old|<macro|name|<if|<not|<provides|<merge|old-|<arg|name>>>>|<assign|<merge|old-|<arg|name>>|<get-binding|<arg|name>|0>>>>>
+
+  <assign|nf-used-by-chunk|<macro|name|used|<nf-ping-old|<merge|nf-code-use-|<arg|name>>><with|uses|<value|<merge|nf-code-use-|<arg|name>>>|<if|<not|<equal|<get-label|<value|uses>>|tuple>>|<assign|<merge|nf-code-use-|<arg|name>>|<tuple|<arg|used>>>|<if|<not|<equal|<look-up|<value|<merge|nf-code-use-|<arg|name>>>|<minus|<length|<value|<merge|nf-code-use-|<arg|name>>>>|1>>|<arg|used>>>|<assign|<merge|nf-code-use-|<arg|name>>|<merge|<value|<merge|nf-code-use-|<arg|name>>>|<tuple|<arg|used>>>>>><nf-put|<merge|nf-code-use-|<arg|name>>|<value|<merge|nf-code-use-|<arg|name>>>>>>>
+
+  <assign|nf-show-used-by|<macro|<nf-ping-old|<merge|nf-code-use-|<value|nf-name>>><with|uses|<value|<merge|old-nf-code-use-|<value|nf-name>>>|<if|<equal|<get-label|<value|uses>>|tuple>|Used
+  by <nf-render-used-by|<value|uses>>|<smaller|not used>>>>>
+
+  <assign|render-join|<xmacro|args|<with|join|<arg|args|0>|render|<arg|args|1>|render-join|<macro|x|<value|join><compound|<value|render>|<arg|x>>>|<compound|<value|render>|<arg|args|2>><map-args|render-join|concat|args|3>>>>
+
+  <assign|nf-render-used-by|<macro|t|with|render|<quasi|<render-join|,
+  |reference|<unquote*|<arg|t>>>>>>
 
   <\active*>
     <\src-comment>
@@ -885,7 +908,7 @@
 <\initial>
   <\collection>
     <associate|page-medium|automatic>
-    <associate|page-screen-height|744960tmpt>
+    <associate|page-screen-height|747264tmpt>
     <associate|page-screen-width|1267200tmpt>
     <associate|preamble|true>
   </collection>
