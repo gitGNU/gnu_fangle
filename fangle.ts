@@ -95,6 +95,14 @@
 
   <extern|(lambda() (define-group enumerate-tag nf-chunk))>
 
+  \ <assign|list-of-chunks|<\macro|aux|body>
+    <render-index|List of Code Chunks|<arg|body>>
+  </macro>>
+
+  \ <assign|list-of-chunks*|<\macro|aux|name|body>
+    <render-index|<localize|<arg|name>>|<arg|body>>
+  </macro>>
+
   <\active*>
     <\src-comment>
       The filename macro is intended to format filenames with appropriate
