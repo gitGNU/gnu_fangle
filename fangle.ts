@@ -474,15 +474,17 @@
     </src-comment>
   </active*>
 
-  <assign|render-fangle-header|<macro|<shift|<resize|<specific-verbatim|\<#000A\>><value|chunk_label>
-  |||0fn|>|-2.0fn|><nv-langle><with|color|blue|<value|name>>[<value|chunk_no><style-with|src-compact|none|]><if|<not|<equal|<value|chunk_no>|1>>|<if|<not|<equal|<length|<value|args>>|0>>|(<with|nf-render-commas|<macro|x|<arg|x>>|<nf-commas|<value|args>>>)>
-  <math|\<Uparrow\>><value|first_chunk_label>|(<nf-commas|<value|args>>)>,
-  lang=<with|color|blue|<value|lang>><nv-rangle>
+  <assign|render-fangle-header|<macro|name|lang|args|<shift|<resize|<specific-verbatim|\<#000A\>><value|chunk_label>
+  |||0fn|>|-2.0fn|><nv-langle><with|color|blue|<arg|name>>[<value|chunk_no><style-with|src-compact|none|]><if|<not|<equal|<value|chunk_no>|1>>|<if|<not|<equal|<length|<arg|args>>|0>>|(<with|nf-render-commas|<macro|x|<arg|x>>|<nf-commas|<arg|args>>>)>
+  <math|\<Uparrow\>><value|first_chunk_label>|(<nf-commas|<arg|args>>)>,
+  lang=<with|color|blue|<arg|lang>><nv-rangle>
   <math|<if|<not|<equal|<value|chunk_no>|1>>|+>\<equiv\>>>>
+
+  <drd-props|render-fangle-header|accessible|all>
 
   <assign|if-provides|<macro|x|<if|<provides|<arg|x>>|<arg|x>>>>
 
-  <assign|fangle-header|<macro|name|lang|args|<with|<render-fangle-header|<arg|name>|<arg|lang>|<arg|args>|<if-provides|<compound|<merge|the-code-chunk-|<unquote|<arg|name>>>>>|<value|the-label>>>>>
+  <assign|fangle-header|<macro|name|lang|args|<render-fangle-header|<arg|name>|<arg|lang>|<arg|args>|<if-provides|<compound|<merge|the-code-chunk-|<unquote|<arg|name>>>>>|<value|the-label>>>>
 
   <assign|draw-fangle-header|<macro|name|lang|args|chunk_no|chunk_label|first_chunk_label|prev|prev_label|next|next_label|<with|name|<arg|name>|lang|<arg|lang>|args|<arg|args>|chunk_no|<arg|chunk_no>|chunk_label|<arg|chunk_label>|first_chunk_label|<arg|first_chunk_label>|prev|<arg|prev>|prev_label|<arg|prev_label>|next_label|<arg|next_label>|next|<arg|next>|<render-fangle-header><htab|0pt><render-fangle-nav>>>>
 
@@ -495,12 +497,14 @@
   lang=<with|color|blue|<arg|lang>><nv-rangle>
   <math|<if|<not|<nf-first-chunklet?|<arg|name>>>|+>\<equiv\>><htab|0pt><fangle-nav|<arg|name>>>>
 
-  <assign|nf-header|<macro|name|lang|args|<with|name|<arg|name>|lang|<arg|lang>|args|<if|<not|<equal|<value|<merge|code-args-|<unquote|<arg|name>>>>|<uninit>>>|<nf-commas|<value|<merge|code-args-|<unquote|<arg|name>>>>>|<arg|args>>|chunk_label|<value|the-label>|chunk_no|<compound|<merge|the-code-chunk-|<unquote|<arg|name>>>>|first_chunk_label|<reference|<nf-chunk-id|<arg|name>|ref|1>>|<fangle-header><htab|0pt><xnf-nav|<arg|name>>>>>
+  <assign|nf-header|<macro|name|lang|args|<with|chunk_label|<value|the-label>|chunk_no|<compound|<merge|the-code-chunk-|<unquote|<arg|name>>>>|first_chunk_label|<reference|<nf-chunk-id|<arg|name>|ref|1>>|<fangle-header|<arg|name>|<arg|lang>|<if|<not|<equal|<value|<merge|code-args-|<unquote|<arg|name>>>>|<uninit>>>|<nf-commas|<value|<merge|code-args-|<unquote|<arg|name>>>>>|<arg|args>>><htab|0pt><xnf-nav|<arg|name>>>>>
 
   <assign|nf-render-commas|<macro|x|<with|color|blue|<arg|x>>>>
 
-  <assign|nf-commas|<macro|items|<if|<equal|<get-label|<arg|items>>|tuple>|<if|<less|<length|<arg|items>>|1>|<specific-verbatim|\<#000B\>>|<nf-render-commas|<look-up|<arg|items>|0>><if|<greater|<length|<arg|items>>|1>|<specific-verbatim|\<#000B\>>,
+  <assign|nf-commas|<macro|items|<if|<equal|<get-label|<arg|items>>|tuple>|<if|<less|<length|<arg|items>>|1>|<arg|items><specific-verbatim|\<#000B\>>|<nf-render-commas|<look-up|<arg|items>|0>><if|<greater|<length|<arg|items>>|1>|<specific-verbatim|\<#000B\>>,
   <nf-commas|<range|<arg|items>|1|<length|<arg|items>>>>|<specific-verbatim|\<#000B\>>>>|<arg|items><if|<not|<equal|<length|<arg|items>>|0>>|<specific-verbatim|\<#000B\>>>>>>
+
+  <drd-props|nf-commas|accessible|all>
 
   <assign|nf-commaxy|<macro|x|, (<arg|x>)>>
 
