@@ -18,13 +18,39 @@
 SHELL:=bash -c 'exec bash "$${@//\\$$'\''\012'\''/$$'\''\012'\''}"' --
 
 LITERATE_SOURCE=fangle.tm
+BINDIR=/usr/local/bin
+TEXMACS_DIR=/usr/share/texmacs/TeXmacs
+LYX_DIR=/usr/share/lyx
 
 all: fangle_sources
 include Makefile.inc
 
 fangle: test
+./fangle: test
 
 .PHONEY: test
 test: fangle.txt
 	$(RUN_FANGLE) -R"test:*" fangle.txt > test.sh
 	bash test.sh ; echo pass $$?
+
+install-local: BINDIR=$$HOME/.local/bin
+install-local: TEXMACS_DIR=$$HOME/.TeXmacs
+install-local: LYX_DIR=$$HOME/.lyx
+install-local: install
+.PHONEY: install-local
+
+install-system: install
+.PHONEY: install-local
+
+install:
+	test -n "$(BINDIR)" -a -n "$(TEXMACS_DIR)"
+	mkdir -p "$(BINDIR)"
+	install fangle "$(BINDIR)"
+	mkdir -p "$(TEXMACS_DIR)/plugins/fangle"
+	mkdir -p "$(TEXMACS_DIR)/plugins/fangle/packages"
+	install fangle.ts "$(TEXMACS_DIR)/plugins/fangle/packages"
+	mkdir -p "$(TEXMACS_DIR)/plugins/fangle/progs"
+	install init-fangle.scm "$(TEXMACS_DIR)/plugins/fangle/progs"
+	mkdir -p "$(LYX_DIR)/modules"
+	install fangle.module "$(LYX_DIR)/modules"
+.PHONEY: install

@@ -72,7 +72,7 @@
         /^[[:space:]]*\<less\>\\\\nf-chunk/{h;n;s/[[:space:]]*/
         \<less\>item\<gtr\>/}
 
-        } ' slow.tm
+        ' slow.tm
       </verbatim>
     </src-comment>
   </active*>
@@ -704,6 +704,8 @@
       same name and this is not the first chunk on a page
     </src-comment>
   </active*>
+
+  <assign|nf-use-page-header|<macro|h|<set-this-page-header|<value|page-even-header>>>>
 
   <assign|nf-use-page-header|<macro|h|<set-this-page-header|<arg|h>>>>
 

@@ -1164,6 +1164,12 @@
 
     <item>LITERATE_SOURCE=fangle.tm
 
+    <item>BINDIR=/usr/local/bin
+
+    <item>TEXMACS_DIR=/usr/share/texmacs/TeXmacs
+
+    <item>LYX_DIR=/usr/share/lyx
+
     <item>
 
     <item>all: fangle_sources
@@ -1185,6 +1191,51 @@
     <item><nf-tab>$(RUN_FANGLE) -R"test:*" fangle.txt \<gtr\> test.sh
 
     <item><nf-tab>bash test.sh ; echo pass $$?
+
+    <item>
+
+    <item>install-local: BINDIR=$$HOME/.local/bin
+
+    <item>install-local: TEXMACS_DIR=$$HOME/.TeXmacs
+
+    <item>install-local: LYX_DIR=$$HOME/.lyx
+
+    <item>install-local: install
+
+    <item>.PHONEY: install-local
+
+    <item>
+
+    <item>install-system: install
+
+    <item>.PHONEY: install-local
+
+    <item>
+
+    <item>install:
+
+    <item><nf-tab>test -n "$(BINDIR)" -a -n "$(TEXMACS_DIR)"
+
+    <item><nf-tab>mkdir -p "$(BINDIR)"
+
+    <item><nf-tab>install fangle "$(BINDIR)"
+
+    <item><nf-tab>mkdir -p "$(TEXMACS_DIR)/plugins/fangle"
+
+    <item><nf-tab>mkdir -p "$(TEXMACS_DIR)/plugins/fangle/packages"
+
+    <item><nf-tab>install fangle.ts "$(TEXMACS_DIR)/plugins/fangle/packages"
+
+    <item><nf-tab>mkdir -p "$(TEXMACS_DIR)/plugins/fangle/progs"
+
+    <item><nf-tab>install init-fangle.scm
+    "$(TEXMACS_DIR)/plugins/fangle/progs"
+
+    <item><nf-tab>mkdir -p "$(LYX_DIR)/modules"
+
+    <item><nf-tab>install fangle.module "$(LYX_DIR)/modules"
+
+    <item>.PHONEY: install
   </nf-chunk|make|>
 
   <chapter|Fangle awk source code>

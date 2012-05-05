@@ -1,4 +1,4 @@
-<TeXmacs|1.0.7.10>
+<TeXmacs|1.0.7.15>
 
 <style|<tuple|article|tmdoc-keyboard|header-article|fangle>>
 
@@ -61,8 +61,7 @@
     preparation system they intend to employ.
   </abstract>
 
-  <\table-of-contents|toc>
-  </table-of-contents>
+  <table-of-contents|toc|>
 
   <part|Getting and Installing Fangle>
 
@@ -81,13 +80,15 @@
 
   <section|Installing Fangle>
 
-  There is no <verbatim|make install><\footnote>
-    there should be, but I'm writing this document partly to find out what
-    the obstacles to adoption are
-  </footnote> so you will need to copy files to the correct places, as
-  described here.
+  There is a <verbatim|make install>, but you will first need to decide if
+  you want a system wide installation for all users, or a private
+  installation just for one user.
 
-  <todo|Make install>
+  A system installation is managed with <verbatim|sudo make install> and a
+  private installation is managed with <verbatim|make install-local>
+
+  The only difference between these make targets is the default installation
+  target paths.
 
   <subsection|Choosing the editing environment>
 
@@ -103,29 +104,39 @@
   highlighting in HTML export>|<cell|few>|<cell|>|<cell|>|<cell|>|<cell|>>|<row|<cell|line-numbers
   in edit mode>|<cell|<tick>>|<cell|>|<cell|>|<cell|>|<cell|>>|<row|<cell|hyperlinks
   in edit mode>|<cell|<tick>>|<cell|>|<cell|>|<cell|>|<cell|>>|<row|<cell|hyperlinks
-  in PDF export>|<cell|>|<cell|<tick>>|<cell|<tick>>|<cell|>|<cell|>>|<row|<cell|hyperlinks
+  in PDF export>|<cell|<tick>>|<cell|<tick>>|<cell|<tick>>|<cell|>|<cell|>>|<row|<cell|hyperlinks
   in HTML export>|<cell|<tick>>|<cell|<tick>>|<cell|<tick>>|<cell|>|<cell|>>>>>|Feature
   comparison table<label|feature-table>>
 
   <subsection|For personal use>
 
-  <subsubsection|The fangle untangler>
+  If the default private installation directories are acceptable, then type:
 
-  <verbatim|fangle> itself needs copying to where personal programs are kept.
-  This could just be the git checkout directory or the place where you
-  un-tar'd lateIf you have noweb installed then yst.tar.gz
+  <verbatim|make install-local>
+
+  which will install in the following locations
+
+  <block|<tformat|<table|<row|<cell|>|<cell|files>|<cell|locations>|<cell|override>>|<row|<cell|executables>|<cell|<verbatim|fangle>>|<cell|<verbatim|$HOME/.local/bin>>|<cell|<verbatim|BINDIR>>>|<row|<cell|<TeXmacs>
+  plugins>|<cell|<verbatim|fangle.ts>>|<cell|<verbatim|$HOME/.TeXmacs><em|/plugins>>|<cell|<verbatim|TEXMACS_DIR>>>|<row|<cell|<LyX>
+  modules>|<cell|<verbatim|fangle.module>>|<cell|<verbatim|$HOME/.lyx><em|/modules>>|<cell|<verbatim|LYX_DIR>>>>>>
+
+  \;
+
+  <subsubsection|Executables>
+
+  Executables need installing to where personal programs are kept. This could
+  just be the git checkout directory or the place where you un-tar'd
+  latest.tar.gz
 
   I keep my personal programs in a private <verbatim|.local/bin> directory
   which I keep in my path.
 
-  <\verbatim>
-    mkdir -p $HOME/.local/bin
+  You could overide this to <verbatim|$HOME/bin> like this:
 
-    cp fangle $HOME/.local/bin
-  </verbatim>
+  <verbatim|make local-install BINDIR=$HOME/bin>
 
-  If you don't have this folder in your path (and you use bash) you could add
-  it like this:
+  If you don't have the target folder in your path (and you use bash) you
+  could add it like this:
 
   <verbatim|echo 'export PATH=$PATH:$HOME/.local/bin' \<gtr\>\<gtr\>
   $HOME/.bashrc>
@@ -135,22 +146,37 @@
 
   <verbatim|<verbatim|export PATH=$PATH:$HOME/.local/bin>>
 
-  <subsubsection|The <TeXmacs> stylesheet>
+  <subsubsection|<TeXmacs> plugins>
 
-  If you are using <TeXmacs>, then <verbatim|fangle.ts> needs copying to your
-  private <TeXmacs> packages folder:
+  If you are using <TeXmacs>, then the fangle plugin needs copying to your
+  private <TeXmacs> plugins folder, normally
+  <verbatim|$HOME/.TeXmacs/plugins/> where a folder <verbatim|fangle> is
+  created to contain the plugin files.\ 
 
-  <verbatim|cp fangle.ts $HOME/.TeXmacs/packages/>
+  You could override this to <verbatim|$HOME/usr/local/texmacs/TeXmacs/plugins>
+  like this:
+
+  <verbatim|make local-install TEXMACS_DIR=$HOME/usr/local/texmacs/TeXmacs>
+
+  Note that you do not have to specify the sub-folder <verbatim|plugins>
+  <emdash> this is automatically added onto the provided
+  <verbatim|TEXMACS_DIR>
 
   <subsubsection|The <LyX> stylesheet>
 
   If you are using <LyX>, then <verbatim|fangle.module> needs copying to your
-  private <LyX> modules folder:
+  private <LyX> modules folder, normally <verbatim|$HOME/.lyx/modules/>
 
-  <verbatim|cp fangle.module $HOME/.lyx/modules/>
+  You could override this to <verbatim|$HOME/usr/local/lyx/modules> like
+  this:
+
+  <verbatim|make local-install LYX_DIR=$HOME/usr/local/lyx>
+
+  Note that you do not have to specify the sub-folder <verbatim|modules>
+  <emdash> this is automatically added onto the provided <verbatim|LYX_DIR>
 
   You will also need to have Norman Ramsey's <name|noweb> stylesheet
-  installed.
+  installed as part of your <TeX> installation.
 
   <subsubsection|The <TeX> stylesheet>
 
@@ -160,21 +186,32 @@
 
   <subsection|For system-wide use>
 
-  <subsubsection|The fangle untangler>
+  If the default system installation directories are acceptable, then type:
 
-  <paragraph|/usr/local/bin>
+  <verbatim|sudo make install>
 
-  <verbatim|fangle> can be copied to <verbatim|/usr/local/bin>
+  which will install in the following locations
 
-  <verbatim|sudo cp fangle /usr/local/bin>
+  <block|<tformat|<table|<row|<cell|>|<cell|files>|<cell|locations>|<cell|override>>|<row|<cell|executables>|<cell|<verbatim|fangle>>|<cell|<verbatim|/usr/local/bin>>|<cell|<verbatim|BINDIR>>>|<row|<cell|<TeXmacs>
+  plugins>|<cell|<verbatim|fangle.ts>>|<cell|<verbatim|/usr/share/texmacs/TeXmacs><em|/plugins>>|<cell|<verbatim|TEXMACS_DIR>>>|<row|<cell|<LyX>
+  modules>|<cell|<verbatim|fangle.module>>|<cell|<verbatim|/usr/share/lyx><em|/modules>>|<cell|<verbatim|LYX_DIR>>>>>>
 
-  <paragraph|/opt>
+  <subsubsection|Executables>
 
-  you could extract the entire package to <verbatim|/opt/fangle> but might
+  Executables need installing where all users will find them, usually
+  somewhere in the system <verbatim|PATH>. This defaults to
+  <verbatim|/usr/local/bin> but you could overide to <verbatim|/usr/bin> like
+  this:
+
+  <verbatim|sudo make install BINDIR=/usr/bin>
+
+  You could extract the entire package to <verbatim|/opt/fangle> but might
   want to add <verbatim|/opt/fangle> to the system-wide path. You could do
   that like this
 
   <\verbatim>
+    sudo make install BINDIR=/opt/fangle/bin
+
     echo 'PATH=$PATH:/opt/fangle' \<gtr\>\<gtr\> /etc/profile.d/fangle.sh
 
     echo export PATH \<gtr\>\<gtr\> /etc/profile.d/fangle.sh
@@ -183,22 +220,33 @@
   <subsubsection|The <TeXmacs> stylesheet>
 
   If you are using <TeXmacs> then you will need to install
-  <verbatim|fangle.ts> into the <TeXmacs> system-wide package folder. This
-  might be <verbatim|/usr/share/texmacs/TeXmacs/packages/> but may vary
-  across installations.
+  <verbatim|fangle.ts> into the <TeXmacs> system-wide plugins folder. This
+  might be in <verbatim|/usr/share/texmacs/TeXmacs> but may vary across
+  installations.
 
-  <verbatim|cp fangle.ts /usr/share/texmacs/TeXmacs/packages/>
+  You could override like this:
+
+  <verbatim|sudo make install TEXMACS_DIR=/usr/local/share/texmacs/TeXmacs>
+
+  Note that you do not have to specify the sub-folder <verbatim|plugins>
+  <emdash> this is automatically added onto the provided
+  <verbatim|TEXMACS_DIR>
 
   <subsubsection|The <LyX> stylesheet>
 
   If you are using <LyX>, then you will need to install
   <verbatim|fangle.module> into the <LyX> system-wide modules folder. This
-  might be <verbatim|/usr/share/lyx/> but may vary across installations
+  might be in <verbatim|/usr/share/lyx/> but may vary across installations.
 
-  <verbatim|cp fangle.module /usr/share/lyx/modules/>
+  You could override like this:
+
+  <verbatim|sudo make install LYX_DIR=/usr/share/lyx>
+
+  Note that you do not have to specify the sub-folder <verbatim|modules>
+  <emdash> this is automatically added onto the provided <verbatim|LYX_DIR>
 
   You will also need to have Norman Ramsey's <name|noweb> stylesheet
-  installed.
+  installed as part of your <TeX> installation.
 
   <subsubsection|The <TeX> stylesheet>
 
@@ -238,17 +286,6 @@
 
   <\enumerate>
     <item>Start <TeXmacs> with a new document.
-
-    <item>Work around a dumb bug in Fangle<\footnote>
-      And if you can work out what the fix is to get fangle.ts to execute
-      this command, please let me know!
-    </footnote>.
-
-    From the menu: <menu|Tools|Execute|Evaluate scheme expression...> and
-    type: <verbatim|(define-group enumerate-tag nf-chunk)>
-
-    Sadly you will need to do this each time you start <TeXmacs> but lucky
-    for you it will remember the last command you ran.
 
     <item>Choose an appropriate document style:
 
@@ -319,8 +356,9 @@
 
   <subsubsection|Start a new section (or chapter)>
 
-  <menu|Insert|Section|Section> (or <menu|Insert|Section|Chapter>) and type
-  the name of the chapter:
+  <menu|Insert|Section|Section> (or if you are writing a book
+  <menu|Insert|Section|Chapter>), and then type the name of the section (or
+  chapter):
 
   <keys|H|e|l|l|o|space|W|o|r|l|d|enter>
 
@@ -332,8 +370,8 @@
   Before you insert a chunk of code, you introduce it.
 
   Usually you will have introduced some aspect of the main problem that the
-  program as a whole will solve, and will then outline the solution that this
-  chunk will provide.
+  program as a whole will solve, and will then outline the aspect of the
+  solution that this chunk will provide.
 
   We will introduce our hello-world chunk by typing:
 
@@ -379,7 +417,7 @@
 
     <\sub-page>
       <\nf-fake-chunk|hello-world<fake-caret>>
-        <item>
+        \;
       </nf-fake-chunk|||1|1a|||||>
     </sub-page>
   </enumerate>
@@ -396,7 +434,7 @@
   Usually chunks will not have parameters, although parameters can be useful
   when a chunk is used to express an algorithm (like a sort) or a class of
   behaviours (like binary tree management). In such cases, a set of
-  parameterized chunks can work like generics or C++ templates.
+  parameterized chunks can work a bit like generics or C++ templates.
 
   If chunk has parameters, they must be enclosed in a tuple. When I
   understand DRD's a bit better this will be done for you, but for now if you
@@ -433,9 +471,9 @@
   If your chunk shows as inactive then this will be visible as the third
   argument, but you may prefer to activate your chunk at this point. You
   should be able to do this by pressing <key|enter> or clicking the
-  <image|<tuple|<#89504E470D0A1A0A0000000D49484452000000110000001108060000003B6D47FA000000017352474200AECE1CE900000006624B474400FF00FF00FFA0BDA793000000097048597300000B1300000B1301009A9C180000000774494D4507DB06120F0303780569BC0000001974455874436F6D6D656E74004372656174656420776974682047494D5057810E17000000924944415438CBBD94D10D80200C440FE3127E38846C0303EA3665083F1CA37E95102D52A2B17F90DCCB91BBE22811E3E50CF860C6F2E0176F1652221D020031C42660DDD6BA935EB119721532339C733688888FFDC877D33CD99C68620130731D52A67215B700B927129706E82A1B2552DFDC72A136B60459002A2486584DA16B77046471F11831805BA94C9072A97EFF0A4E5C193CCC5933FA210000000049454E44AE426082>|png>||||>
-  icon on the toolbar. Sometimes the <image|<tuple|<#89504E470D0A1A0A0000000D49484452000000110000001108060000003B6D47FA000000017352474200AECE1CE900000006624B474400FF00FF00FFA0BDA793000000097048597300000B1300000B1301009A9C180000000774494D4507DB06120F0303780569BC0000001974455874436F6D6D656E74004372656174656420776974682047494D5057810E17000000924944415438CBBD94D10D80200C440FE3127E38846C0303EA3665083F1CA37E95102D52A2B17F90DCCB91BBE22811E3E50CF860C6F2E0176F1652221D020031C42660DDD6BA935EB119721532339C733688888FFDC877D33CD99C68620130731D52A67215B700B927129706E82A1B2552DFDC72A136B60459002A2486584DA16B77046471F11831805BA94C9072A97EFF0A4E5C193CCC5933FA210000000049454E44AE426082>|png>||||>
-  icon is absent and pressent enter does nothing <emdash> in which case try
+  <inactive|<image|<tuple|<#89504E470D0A1A0A0000000D49484452000000110000001108060000003B6D47FA000000017352474200AECE1CE900000006624B474400FF00FF00FFA0BDA793000000097048597300000B1300000B1301009A9C180000000774494D4507DB06120F0303780569BC0000001974455874436F6D6D656E74004372656174656420776974682047494D5057810E17000000924944415438CBBD94D10D80200C440FE3127E38846C0303EA3665083F1CA37E95102D52A2B17F90DCCB91BBE22811E3E50CF860C6F2E0176F1652221D020031C42660DDD6BA935EB119721532339C733688888FFDC877D33CD99C68620130731D52A67215B700B927129706E82A1B2552DFDC72A136B60459002A2486584DA16B77046471F11831805BA94C9072A97EFF0A4E5C193CCC5933FA210000000049454E44AE426082>|png>||||>>
+  icon on the toolbar. Sometimes the <inactive|<image|<tuple|<#89504E470D0A1A0A0000000D49484452000000110000001108060000003B6D47FA000000017352474200AECE1CE900000006624B474400FF00FF00FFA0BDA793000000097048597300000B1300000B1301009A9C180000000774494D4507DB06120F0303780569BC0000001974455874436F6D6D656E74004372656174656420776974682047494D5057810E17000000924944415438CBBD94D10D80200C440FE3127E38846C0303EA3665083F1CA37E95102D52A2B17F90DCCB91BBE22811E3E50CF860C6F2E0176F1652221D020031C42660DDD6BA935EB119721532339C733688888FFDC877D33CD99C68620130731D52A67215B700B927129706E82A1B2552DFDC72A136B60459002A2486584DA16B77046471F11831805BA94C9072A97EFF0A4E5C193CCC5933FA210000000049454E44AE426082>|png>||||>>
+  icon is absent and pressing enter does nothing <emdash> in which case try
   the <inactive|<menu|Tools|Update|Styles>> and if that doesn't work then I
   don't know what to do.
 
@@ -455,7 +493,7 @@
   When you press <key|enter>, a new line number will be inserted at the left
   of the listing. If you press <key|S-enter> then you can break the line for
   layout purposes, but it will not be considered a new-line when the code is
-  extracted and leading white-space will be stripped.
+  extracted, and leading white-space will be stripped.
 
   <\sub-page>
     <\nf-fake-chunk|hello-world>
