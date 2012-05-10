@@ -161,6 +161,16 @@
 
   <\active*>
     <\src-comment>
+      This style makes it easy to render a fake text insertion point/caret
+
+      TODO: make it full height. Maybe make it also italic when needed
+    </src-comment>
+  </active*>
+
+  <assign|fake-caret|<macro|<space|0.5spc><with|gr-mode|<tuple|edit|line>|gr-frame|<tuple|scale|1fs|<tuple|0.5gw|0.5gh>>|gr-geometry|<tuple|geometry|3ln|1.5ex|bottom>|gr-color|red|gr-auto-crop|false|<graphics||<with|color|red|<line|<point|0gw|1ln>|<point|1gw|1ln>>>|<with|color|red|<line|<point|0.5gw|1ln>|<point|0.5gw|1gh>>>|<with|color|red|<line|<point|0gw|1gh>|<point|1gw|1gh>>>>><space|0.5spc>>>
+
+  <\active*>
+    <\src-comment>
       Now, some extensions to standard <TeXmacs> functionality.
 
       \ - the get-binding trick to extract a page number is kindly given by
@@ -731,7 +741,7 @@
     </with>
   </surround>>>>>
 
-  <assign|nf-fake-chunk|<macro|name|x|lang|args|chunk_no|chunk_label|chunk_first_label|prev|prev_label|next|next_label|line-no|<with|the-label||xnv-langle-subst||xnv-rangle-subst||nf-name|<unquote|<arg|name>>|name|<arg|name>|lang|<arg|lang>|args|<arg|args>|chunk_no|<arg|chunk_no>|chunk_label|<arg|chunk_label>|chunk_first_label|<arg|chunk_first_label>|prev|<arg|prev>|prev_label|<arg|prev_label>|next|<arg|next>|next_label|<arg|next_label>|<small|<surround|<wide-underlined|<nf-border-if|<equal|<value|chunk_no>|1>>|1ln|<no-page-break*><small|<render-fangle-header><htab|0pt><render-fangle-nav>><no-page-break>>|<if|<equal|<length|<value|next>>|0>|<wide-bothlined|<nf-border-if|<equal|<length|<value|next>>|0>>|0ln|1ln|0ln|<htab|5mm*|last>>|<nf-jags>>|<\with|xitem|<arg|line-no>|item-nr|0|item-vsep|0fn|current-item|<value|nf-render-line-no>|transform-item|<value|identity>>
+  <assign|nf-fake-chunk|<macro|name|x|lang|args|chunk_no|chunk_label|chunk_first_label|prev|prev_label|next|next_label|line-no|<with|the-label||xnv-langle-subst||xnv-rangle-subst||nf-name|<unquote|<arg|name>>|chunk_no|<arg|chunk_no>|chunk_label|<arg|chunk_label>|chunk_first_label|<arg|chunk_first_label>|prev|<arg|prev>|prev_label|<arg|prev_label>|next|<arg|next>|next_label|<arg|next_label>|<small|<surround|<wide-underlined|<nf-border-if|<equal|<value|chunk_no>|1>>|1ln|<no-page-break*><small|<compound|render-fangle-header|<arg|name>|<arg|lang>|<arg|args>><htab|0pt><render-fangle-nav>><no-page-break>>|<if|<equal|<length|<value|next>>|0>|<wide-bothlined|<nf-border-if|<equal|<length|<value|next>>|0>>|0ln|1ln|0ln|<htab|5mm*|last>>|<nf-jags>>|<\with|xitem|<arg|line-no>|item-nr|0|item-vsep|0fn|current-item|<value|nf-render-line-no>|transform-item|<value|identity>>
     <no-page-break><nf-verbatim-top|<nf-first-chunklet?|<value|nf-name>>>
 
     <with|nv-langle-subst|\S|nv-rangle-subst|\T|<nf-pf|<value|nf-name>|<arg|lang>|<arg|x>>>
