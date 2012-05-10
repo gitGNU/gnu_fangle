@@ -20,7 +20,7 @@
       </wide-std-framed>
     </macro>>
 
-    <assign|fake-caret|<macro|<with|color|black|<math|\<vdots\>>>>>
+    \;
   </hide-preamble>
 
   <doc-data|<doc-title|Getting Started with
@@ -61,7 +61,8 @@
     preparation system they intend to employ.
   </abstract>
 
-  <table-of-contents|toc|>
+  <\table-of-contents|toc>
+  </table-of-contents>
 
   <part|Getting and Installing Fangle>
 
@@ -406,7 +407,7 @@
       </nf-fake-chunk|||1|1a|||||>
     </sub-page>
 
-    If the text insertion point (represented by the three vertical dots
+    If the text insertion point (represented by the red verticle line
     <fake-caret>) does not appear as shown above, then press <key|left> so
     that it does.
 
@@ -455,8 +456,8 @@
   Type the first chunk argument, and then for additional arguments,
   <key|M-right> (windows key and right arrow).
 
-  You can type multiple parameters: <inactive|<nf-chunk|hello-world|<tuple|message|language<fake-caret>>||>>
-  or
+  You can type multiple parameters:
+  <inactive|<nf-chunk|hello-world|<tuple|message|language<fake-caret>>||>> or
 
   <\sub-page>
     <\nf-fake-chunk|hello-world>
@@ -471,11 +472,11 @@
   If your chunk shows as inactive then this will be visible as the third
   argument, but you may prefer to activate your chunk at this point. You
   should be able to do this by pressing <key|enter> or clicking the
-  <inactive|<image|<tuple|<#89504E470D0A1A0A0000000D49484452000000110000001108060000003B6D47FA000000017352474200AECE1CE900000006624B474400FF00FF00FFA0BDA793000000097048597300000B1300000B1301009A9C180000000774494D4507DB06120F0303780569BC0000001974455874436F6D6D656E74004372656174656420776974682047494D5057810E17000000924944415438CBBD94D10D80200C440FE3127E38846C0303EA3665083F1CA37E95102D52A2B17F90DCCB91BBE22811E3E50CF860C6F2E0176F1652221D020031C42660DDD6BA935EB119721532339C733688888FFDC877D33CD99C68620130731D52A67215B700B927129706E82A1B2552DFDC72A136B60459002A2486584DA16B77046471F11831805BA94C9072A97EFF0A4E5C193CCC5933FA210000000049454E44AE426082>|png>||||>>
-  icon on the toolbar. Sometimes the <inactive|<image|<tuple|<#89504E470D0A1A0A0000000D49484452000000110000001108060000003B6D47FA000000017352474200AECE1CE900000006624B474400FF00FF00FFA0BDA793000000097048597300000B1300000B1301009A9C180000000774494D4507DB06120F0303780569BC0000001974455874436F6D6D656E74004372656174656420776974682047494D5057810E17000000924944415438CBBD94D10D80200C440FE3127E38846C0303EA3665083F1CA37E95102D52A2B17F90DCCB91BBE22811E3E50CF860C6F2E0176F1652221D020031C42660DDD6BA935EB119721532339C733688888FFDC877D33CD99C68620130731D52A67215B700B927129706E82A1B2552DFDC72A136B60459002A2486584DA16B77046471F11831805BA94C9072A97EFF0A4E5C193CCC5933FA210000000049454E44AE426082>|png>||||>>
+  <image|<tuple|<#89504E470D0A1A0A0000000D49484452000000110000001108060000003B6D47FA000000017352474200AECE1CE900000006624B474400FF00FF00FFA0BDA793000000097048597300000B1300000B1301009A9C180000000774494D4507DB06120F0303780569BC0000001974455874436F6D6D656E74004372656174656420776974682047494D5057810E17000000924944415438CBBD94D10D80200C440FE3127E38846C0303EA3665083F1CA37E95102D52A2B17F90DCCB91BBE22811E3E50CF860C6F2E0176F1652221D020031C42660DDD6BA935EB119721532339C733688888FFDC877D33CD99C68620130731D52A67215B700B927129706E82A1B2552DFDC72A136B60459002A2486584DA16B77046471F11831805BA94C9072A97EFF0A4E5C193CCC5933FA210000000049454E44AE426082>|png>|2ex|||>
+  icon on the toolbar. Sometimes the <image|<tuple|<#89504E470D0A1A0A0000000D49484452000000110000001108060000003B6D47FA000000017352474200AECE1CE900000006624B474400FF00FF00FFA0BDA793000000097048597300000B1300000B1301009A9C180000000774494D4507DB06120F0303780569BC0000001974455874436F6D6D656E74004372656174656420776974682047494D5057810E17000000924944415438CBBD94D10D80200C440FE3127E38846C0303EA3665083F1CA37E95102D52A2B17F90DCCB91BBE22811E3E50CF860C6F2E0176F1652221D020031C42660DDD6BA935EB119721532339C733688888FFDC877D33CD99C68620130731D52A67215B700B927129706E82A1B2552DFDC72A136B60459002A2486584DA16B77046471F11831805BA94C9072A97EFF0A4E5C193CCC5933FA210000000049454E44AE426082>|png>|2ex|||>
   icon is absent and pressing enter does nothing <emdash> in which case try
-  the <inactive|<menu|Tools|Update|Styles>> and if that doesn't work then I
-  don't know what to do.
+  the <menu|Tools|Update|Styles> and if that doesn't work then I don't know
+  what to do.
 
   The code body is an enumerate style. Press <key|enter> to insert a new
   numbered line. (You'll probably want to press <keys|left|backspace|right>
@@ -704,13 +705,17 @@
   <\small>
     <\cpp>
       <\with|par-par-sep|0fn>
-        #include stdio.c
+        /* The traditional hello-world program in french\ 
 
-        /* The traditional hell-world program in french\ 
-
-        \ * generated using literate programming macros
+        \ * generated using fangle literate programming macros
 
         \ */
+
+        \;
+
+        #include stdio.c
+
+        \;
 
         main() {
 
@@ -773,7 +778,7 @@
 
       Hello-world is a famous <em|first program> with a visible side effect.
 
-      This example produces hello-world in multiple languages.
+      This example produces hello-world in mulfake-caretle languages.
     </small>
 
     <strong|Table of Contents>
@@ -799,9 +804,11 @@
     <\nf-fake-chunk|hello-world>
       <item>/* The traditional hello-world program in <nf-arg|language>\ 
 
-      <item> * generated using literate programming macros
+      <item> * generated using fangle literate programming macros
 
       <item> */
+
+      <item>
 
       <item>#include stdio.c
 
