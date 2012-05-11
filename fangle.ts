@@ -1,4 +1,4 @@
-<TeXmacs|1.0.7.15>
+<TeXmacs|1.0.7.10>
 
 <style|source>
 
@@ -741,7 +741,7 @@
     </with>
   </surround>>>>>
 
-  <assign|nf-fake-chunk|<macro|name|x|lang|args|chunk_no|chunk_label|chunk_first_label|prev|prev_label|next|next_label|line-no|<with|the-label||xnv-langle-subst||xnv-rangle-subst||nf-name|<unquote|<arg|name>>|chunk_no|<arg|chunk_no>|chunk_label|<arg|chunk_label>|chunk_first_label|<arg|chunk_first_label>|prev|<arg|prev>|prev_label|<arg|prev_label>|next|<arg|next>|next_label|<arg|next_label>|<small|<surround|<wide-underlined|<nf-border-if|<equal|<value|chunk_no>|1>>|1ln|<no-page-break*><small|<compound|render-fangle-header|<arg|name>|<arg|lang>|<arg|args>><htab|0pt><render-fangle-nav>><no-page-break>>|<if|<equal|<length|<value|next>>|0>|<wide-bothlined|<nf-border-if|<equal|<length|<value|next>>|0>>|0ln|1ln|0ln|<htab|5mm*|last>>|<nf-jags>>|<\with|xitem|<arg|line-no>|item-nr|0|item-vsep|0fn|current-item|<value|nf-render-line-no>|transform-item|<value|identity>>
+  <assign|nf-fake-chunk|<macro|name|x|lang|args|chunk_no|chunk_label|chunk_first_label|prev|prev_label|next|next_label|line-no|<with|the-label||xnv-langle-subst||xnv-rangle-subst||nf-name|<unquote|<arg|name>>|chunk_no|<arg|chunk_no>|chunk_label|<arg|chunk_label>|first_chunk_label|<arg|chunk_first_label>|prev|<arg|prev>|prev_label|<arg|prev_label>|next|<arg|next>|next_label|<arg|next_label>|<small|<surround|<wide-underlined|<nf-border-if|<equal|<value|chunk_no>|1>>|1ln|<no-page-break*><small|<render-fangle-header|<arg|name>|<arg|lang>|<arg|args>><htab|0pt><render-fangle-nav>><no-page-break>>|<if|<equal|<length|<value|next>>|0>|<wide-bothlined|<nf-border-if|<equal|<length|<value|next>>|0>>|0ln|1ln|0ln|<htab|5mm*|last>>|<nf-jags>>|<\with|xitem|<arg|line-no>|item-nr|0|item-vsep|0fn|current-item|<value|nf-render-line-no>|transform-item|<value|identity>>
     <no-page-break><nf-verbatim-top|<nf-first-chunklet?|<value|nf-name>>>
 
     <with|nv-langle-subst|\S|nv-rangle-subst|\T|<nf-pf|<value|nf-name>|<arg|lang>|<arg|x>>>
@@ -924,8 +924,8 @@
 <\initial>
   <\collection>
     <associate|page-medium|automatic>
-    <associate|page-screen-height|747264tmpt>
-    <associate|page-screen-width|1267200tmpt>
+    <associate|page-screen-height|768000tmpt>
+    <associate|page-screen-width|1274880tmpt>
     <associate|preamble|true>
   </collection>
 </initial>
