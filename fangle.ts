@@ -416,7 +416,11 @@
     </src-comment>
   </active*>
 
-  <assign|nf-chunk-id|<macro|name|tag|n|<merge|code-|<arg|tag>|-|<unquote|<arg|name>>|-|<arg|n>>>>
+  <assign|nf-base|<macro|x|<if|<provides|fake-page-base-name>|<merge|<value|fake-page-base-name>|-|<arg|x>>|<arg|x>>>>
+
+  <assign|zog|<xmacro|x|<quasi|<if|<and|<provides|fake-page-base-name>|<greater|<length|<value|fake-page-base-name>>|0>>|<merge|<value|fake-page-base-name>|-|<unquote*|<quote-arg|x>>>|<merge|<unquote*|<quote-arg|x>>>>>>>
+
+  <assign|nf-chunk-id|<macro|name|tag|n|<merge|<nf-base|code->|<arg|tag>|-|<unquote|<arg|name>>|-|<arg|n>>>>
 
   <\active*>
     <\src-comment>
