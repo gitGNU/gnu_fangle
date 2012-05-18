@@ -394,22 +394,6 @@
   Fangle chunks are (currently) called: <verbatim|nf-chunk> and are entered
   like this:
 
-  <\fake-page>
-    a<value|page-no> <label|pogly><reference|pogly>
-
-    \;
-  </fake-page|3>
-
-  <\fake-page>
-    <value|page-no>
-
-    <\nf-chunk|blahzig>
-      test<this-page-no>\\value
-
-      <item><value|page-no><value|page-no>\\this-pag<this-page-no>
-    </nf-chunk||>
-  </fake-page|2>
-
   <\enumerate>
     <item>type: <keys|\\|n|f|-|c|h|u|n|k> <emdash> it will appear like this:
     <inactive|<hybrid|nf-chunk>>
@@ -420,11 +404,7 @@
     <inactive|<nf-chunk|<fake-caret>|||>> which is the inactive view, or the
     active view shown below:
 
-    <\fake-page>
-      <\nf-fake-chunk|<fake-caret>>
-        \;
-      </nf-fake-chunk|||1|1a|||||>
-    </fake-page>
+    <fake-page|<nf-chunk|<fake-caret>|||>|example-1|1|0>
 
     If the text insertion point (represented by the red verticle line
     <fake-caret>) does not appear in the position shown above, then press
@@ -435,11 +415,9 @@
     This will give you either <inactive|<nf-chunk|hello-world<fake-caret>|||>>
     for the inactive view, or the active view shown as below:
 
-    <\fake-page>
-      <\nf-fake-chunk|hello-world<fake-caret>>
-        \;
-      </nf-fake-chunk|||1|1a|||||>
-    </fake-page>
+    <fake-page|<\nf-chunk|hello-world<fake-caret>>
+      \;
+    </nf-chunk||>|example-1|1|1>
   </enumerate>
 
   <subsection|Optional chunk parameters><label|insert-chunk-params>
@@ -490,10 +468,8 @@
   or
 
   <\fake-page>
-    <\nf-fake-chunk|hello-world>
-      \;
-    </nf-fake-chunk||<tuple|message|language<fake-caret>>|1|1a|||||>
-  </fake-page>
+    <nf-chunk|hello-world|||<tuple|message|language<fake-caret>>>
+  </fake-page|example-1|1|2>
 
   <subsection|Optional language>
 
@@ -513,11 +489,7 @@
 
   For the active view, press <key|right> to select the third argument
 
-  <\fake-page>
-    <\nf-fake-chunk|hello-world>
-      \;
-    </nf-fake-chunk|<fake-caret>|<tuple|message|language>|1|1a|||||>
-  </fake-page>
+  <fake-page|<nf-chunk|hello-world||<fake-caret>|<tuple|message|language>>|example-1|1|3>
 
   For syntax markup, <TeXmacs> supports C++ (called <verbatim|cpp>) and
   bourne shell (called <verbatim|sh>), but for automatic quoting fangle
@@ -529,11 +501,7 @@
   Enter the language <verbatim|cpp>: <inactive|<nf-chunk|hello-world||cpp<fake-caret>|<tuple|message|language>>>
   or
 
-  <\fake-page>
-    <\nf-fake-chunk|hello-world>
-      \;
-    </nf-fake-chunk|cpp<fake-caret>|<tuple|message|language>|1|1a|||||>
-  </fake-page>
+  <fake-page|<nf-chunk|hello-world||<fake-caret>|<tuple|message|language>>|example-1|1|4>
 
   <subsection|Typing code>
 
@@ -554,11 +522,9 @@
   to delete the blank line that is somehow there. <todo|stop that from
   happening>
 
-  <\fake-page>
-    <\nf-fake-chunk|hello-world>
-      <item><fake-caret>
-    </nf-fake-chunk|cpp|<tuple|message|language>|1|1a|||||>
-  </fake-page>
+  <fake-page|<\nf-chunk|hello-world>
+    <item><fake-caret>
+  </nf-chunk|cpp|<tuple|message|language>>|example-1|1|5>
 
   At this point, start typing code.
 
@@ -567,17 +533,15 @@
   layout purposes, but it will not be considered a new-line when the code is
   extracted, and leading white-space will be stripped.
 
-  <\fake-page>
-    <\nf-fake-chunk|hello-world>
-      <item>#include \<less\>stdio.h\<gtr\>
+  <fake-page|<\nf-chunk|hello-world>
+    <item>#include \<less\>stdio.h\<gtr\>
 
-      <item>
+    <item>
 
-      <item>main() {
+    <item>main() {
 
-      <item> \ printf("<fake-caret>
-    </nf-fake-chunk|cpp|<tuple|message|language>|1|1a|||||>
-  </fake-page>
+    <item> \ printf("<fake-caret>
+  </nf-chunk|cpp|<tuple|message|language>>|example-1|1|6>
 
   The listing above is incomplete. Instead of typing the the traditional
   <verbatim|hello world!>, we can make use of our chunk arguments. Let's
@@ -596,19 +560,17 @@
 
   Finish typing the code as shown below:
 
-  <\fake-page>
-    <\nf-fake-chunk|hello-world>
-      <item>#include \<less\>stdio.h\<gtr\>
+  <fake-page|<\nf-chunk|hello-world>
+    <item>#include \<less\>stdio.h\<gtr\>
 
-      <item>
+    <item>
 
-      <item>main() {
+    <item>main() {
 
-      <item> \ printf("<nf-arg|message>\\n");
+    <item> \ printf("<nf-arg|message>\\n");
 
-      <item>}<fake-caret>
-    </nf-fake-chunk|cpp|<tuple|message|language>|1|1a|||||>
-  </fake-page>
+    <item>}<fake-caret>
+  </nf-chunk|cpp|<tuple|message|language>>|example-1|1|7>
 
   We've now defined a chunk of code which can potentially produce the famous
   <verbatim|hello world!> in any language.
@@ -648,10 +610,10 @@
 
     We will derive the french hello-world program like this:<htab|0mm>
 
-    <\nf-fake-chunk|./hello-world.fr.c>
+    <\nf-chunk|./hello-world.fr.c>
       <item><fake-caret>
-    </nf-fake-chunk|cpp||1|1b|||||>
-  </fake-page>
+    </nf-chunk|cpp|>
+  </fake-page|example-1|1|7>
 
   To include our previous chunk with the <verbatim|nf-ref> command, type
   <keys|M-\\|n|f|-|r|e|f|enter> and then type the name of our previous chunk,
@@ -667,11 +629,11 @@
 
     We will derive the french hello-world program like this:<htab|0mm>
 
-    <\nf-fake-chunk|./hello-world.fr.c>
+    <\nf-chunk|./hello-world.fr.c>
       <item><nf-fake-ref|hello-world|<tuple|Bonjour tout le
       monde>|1a><fake-caret>
-    </nf-fake-chunk|cpp||1|1b|||||>
-  </fake-page>
+    </nf-chunk|cpp|>
+  </fake-page|example-1|1|8>
 
   Note that when there are no arguments to the reference, the parenthesis do
   not appear, but they appear automatically when there are arguments.
@@ -697,10 +659,10 @@
 
     We will derive the german hello-world program like this:<htab|0mm>
 
-    <\nf-fake-chunk|./hello-world.de.c>
+    <\nf-chunk|./hello-world.de.c>
       <item><nf-fake-ref|hello-world|<tuple|Hallo welt>|1a><fake-caret>
-    </nf-fake-chunk|cpp||1|1c|||||>
-  </fake-page>
+    </nf-chunk|cpp|>
+  </fake-page|example-1|1|8>
 
   <subsection|The document so far>
 
@@ -746,34 +708,34 @@
 
     The typical hello-world program looks like this:
 
-    <\nf-fake-chunk|hello-world>
+    <\nf-chunk|hello-world>
       <item>#include \<less\>stdio.h\<gtr\>
 
       <item>
 
       <item>main() {
 
-      <item> \ printf("%s\\n", "<nf-arg|message>");
+      <item> \ printf("<nf-arg|message>\\n");
 
       <item>}
-    </nf-fake-chunk|cpp|<tuple|message|language>|1|1c|||||>
+    </nf-chunk|cpp|<tuple|message|language>>
 
-    <strong|<small|1.1 In French>>
+    <strong|<small|1.1 In French>><htab|0mm>
 
     We will derive the french hello-world program like this:<htab|0mm>
 
-    <\nf-fake-chunk|./hello-world.fr.c>
-      <item><nf-fake-ref|hello-world|<tuple|Bonjour tout le monde|french>|1a>
-    </nf-fake-chunk|text|<tuple>|1|1b|||||>
+    <\nf-chunk|./hello-world.fr.c>
+      <item><nf-fake-ref|hello-world|<tuple|Bonjour tout le monde>|1a>
+    </nf-chunk|cpp|>
 
-    <small|<strong|1.2 In German>>
+    <strong|<small|1.2 In German>><htab|0mm>
 
     We will derive the german hello-world program like this:<htab|0mm>
 
-    <\nf-fake-chunk|./hello-world.de.c>
-      <item><nf-fake-ref|hello-world|<tuple|Hallo welt|german>|1a>
-    </nf-fake-chunk|text|<tuple>|1|1c|||||>
-  </fake-page>
+    <\nf-chunk|./hello-world.de.c>
+      <item><nf-fake-ref|hello-world|<tuple|Hallo welt>|1a><fake-caret>
+    </nf-chunk|cpp|>
+  </fake-page|example-1|1|demo-1>
 
   <no-page-break*>Which demonstrates nicely how to use fangle in terms of
   function, but less so in terms of style.
