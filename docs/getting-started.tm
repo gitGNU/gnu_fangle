@@ -1,4 +1,4 @@
-<TeXmacs|1.0.7.10>
+<TeXmacs|1.0.7.15>
 
 <style|<tuple|article|tmdoc-keyboard|header-article|fangle>>
 
@@ -10,7 +10,7 @@
 
     <assign|tick|<macro|<with|font|modern|font-family|ss|\<checkmark\>>>>
 
-    <assign|sub-page|<\macro|x>
+    <assign|fake-pages|<\macro|x>
       <\wide-std-framed>
         \;
 
@@ -62,178 +62,6 @@
   </abstract>
 
   <\table-of-contents|toc>
-    <vspace*|2fn><with|font-series|bold|math-font-series|bold|font-size|1.19|I<space|2spc>Getting
-    and Installing Fangle> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-1><vspace|1fn>
-
-    <vspace*|1fn><with|font-series|bold|math-font-series|bold|1<space|2spc>Getting
-    Fangle> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-2><vspace|0.5fn>
-
-    <vspace*|1fn><with|font-series|bold|math-font-series|bold|2<space|2spc>Installing
-    Fangle> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-3><vspace|0.5fn>
-
-    <with|par-left|1.5fn|2.1<space|2spc>Choosing the editing environment
-    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-4>>
-
-    <with|par-left|1.5fn|2.2<space|2spc>For personal use
-    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-6>>
-
-    <with|par-left|3fn|2.2.1<space|2spc>Executables
-    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-7>>
-
-    <with|par-left|3fn|2.2.2<space|2spc>T<rsub|<space|-0.4spc><move|<resize|<with|math-level|0|E>||||0.5fn>|0fn|-0.1fn>><space|-0.4spc>X<rsub|<space|-0.4spc><move|<resize|M<space|-0.2spc>A<space|-0.4spc>CS||||0.5fn>|0fn|-0.1fn>>
-    plugins <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-8>>
-
-    <with|par-left|3fn|2.2.3<space|2spc>The
-    L<space|-0.1667em><move|Y|0fn|-0.25em><space|-0.125em>X stylesheet
-    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-9>>
-
-    <with|par-left|3fn|2.2.4<space|2spc>The
-    T<rsub|<space|-0.4spc><move|<resize|<with|math-level|0|E>||||0.5fn>|0fn|-0.1fn>><space|-0.4spc>X
-    stylesheet <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-10>>
-
-    <with|par-left|1.5fn|2.3<space|2spc>For system-wide use
-    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-11>>
-
-    <with|par-left|3fn|2.3.1<space|2spc>Executables
-    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-12>>
-
-    <with|par-left|3fn|2.3.2<space|2spc>The
-    T<rsub|<space|-0.4spc><move|<resize|<with|math-level|0|E>||||0.5fn>|0fn|-0.1fn>><space|-0.4spc>X<rsub|<space|-0.4spc><move|<resize|M<space|-0.2spc>A<space|-0.4spc>CS||||0.5fn>|0fn|-0.1fn>>
-    stylesheet <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-13>>
-
-    <with|par-left|3fn|2.3.3<space|2spc>The
-    L<space|-0.1667em><move|Y|0fn|-0.25em><space|-0.125em>X stylesheet
-    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-14>>
-
-    <with|par-left|3fn|2.3.4<space|2spc>The
-    T<rsub|<space|-0.4spc><move|<resize|<with|math-level|0|E>||||0.5fn>|0fn|-0.1fn>><space|-0.4spc>X
-    stylesheet <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-15>>
-
-    <vspace*|2fn><with|font-series|bold|math-font-series|bold|font-size|1.19|II<space|2spc>Authoring
-    with Fangle> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-16><vspace|1fn>
-
-    <vspace*|1fn><with|font-series|bold|math-font-series|bold|3<space|2spc>T<rsub|<space|-0.4spc><move|<resize|<with|math-level|0|E>||||0.5fn>|0fn|-0.1fn>><space|-0.4spc>X<rsub|<space|-0.4spc><move|<resize|M<space|-0.2spc>A<space|-0.4spc>CS||||0.5fn>|0fn|-0.1fn>>>
-    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-17><vspace|0.5fn>
-
-    <with|par-left|1.5fn|3.1<space|2spc>Load fangle style-sheet
-    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-18>>
-
-    <with|par-left|1.5fn|3.2<space|2spc>Save the document
-    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-25>>
-
-    <with|par-left|1.5fn|3.3<space|2spc>Sandard document parts
-    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-27>>
-
-    <with|par-left|3fn|3.3.1<space|2spc>Insert your title
-    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-28>>
-
-    <with|par-left|3fn|3.3.2<space|2spc>Insert your abstract
-    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-30>>
-
-    <with|par-left|3fn|3.3.3<space|2spc>Insert a table of contents
-    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-32>>
-
-    <with|par-left|3fn|3.3.4<space|2spc>Start a new section (or chapter)
-    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-34>>
-
-    <with|par-left|1.5fn|3.4<space|2spc>Talk about your code
-    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-37>>
-
-    <with|par-left|1.5fn|3.5<space|2spc>Insert your first code chunk
-    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-38>>
-
-    <with|par-left|1.5fn|3.6<space|2spc>Optional chunk parameters
-    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-39>>
-
-    <with|par-left|3fn|3.6.1<space|2spc>Create a tuple
-    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-40>>
-
-    <with|par-left|1.5fn|3.7<space|2spc>Optional language
-    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-41>>
-
-    <with|par-left|3fn|3.7.1<space|2spc>Type the language
-    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-42>>
-
-    <with|par-left|1.5fn|3.8<space|2spc>Typing code
-    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-43>>
-
-    <with|par-left|3fn|3.8.1<space|2spc>Referencing arguments
-    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-45>>
-
-    <with|par-left|1.5fn|3.9<space|2spc>File chunks
-    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-46>>
-
-    <with|par-left|3fn|3.9.1<space|2spc>French hello-world
-    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-47>>
-
-    <with|par-left|3fn|3.9.2<space|2spc>German hello-world
-    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-50>>
-
-    <with|par-left|1.5fn|3.10<space|2spc>The document so far
-    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-53>>
-
-    <with|par-left|1.5fn|3.11<space|2spc>Additional parameters
-    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-54>>
-
-    <with|par-left|3fn|3.11.1<space|2spc>Passing parameters
-    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-55>>
-
-    <with|par-left|3fn|3.11.2<space|2spc>Extra chunklets
-    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-56>>
-
-    <with|par-left|1.5fn|3.12<space|2spc>The completed document
-    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-57>>
-
-    <vspace*|2fn><with|font-series|bold|math-font-series|bold|font-size|1.19|III<space|2spc>Generating
-    the files> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-58><vspace|1fn>
-
-    <with|par-left|1.5fn|3.13<space|2spc>Extracting individual files
-    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-59>>
-
-    <with|par-left|1.5fn|3.14<space|2spc>Extracting all files
-    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-61>>
   </table-of-contents>
 
   <part|Getting and Installing Fangle>
@@ -412,7 +240,7 @@
   The <LyX> system-wide folder defaults to <verbatim|/usr/share/lyx>, but may
   vary across installations. Within that is a sub-folder called
   <samp|<verbatim|>><verbatim|modules> into which the fangle module is
-  copued.
+  copied.
 
   You could override like this:
 
@@ -566,6 +394,22 @@
   Fangle chunks are (currently) called: <verbatim|nf-chunk> and are entered
   like this:
 
+  <\fake-page>
+    a<value|page-no> <label|pogly><reference|pogly>
+
+    \;
+  </fake-page|3>
+
+  <\fake-page>
+    <value|page-no>
+
+    <\nf-chunk|blahzig>
+      test<this-page-no>\\value
+
+      <item><value|page-no><value|page-no>\\this-pag<this-page-no>
+    </nf-chunk||>
+  </fake-page|2>
+
   <\enumerate>
     <item>type: <keys|\\|n|f|-|c|h|u|n|k> <emdash> it will appear like this:
     <inactive|<hybrid|nf-chunk>>
@@ -576,11 +420,11 @@
     <inactive|<nf-chunk|<fake-caret>|||>> which is the inactive view, or the
     active view shown below:
 
-    <\sub-page>
+    <\fake-page>
       <\nf-fake-chunk|<fake-caret>>
         \;
       </nf-fake-chunk|||1|1a|||||>
-    </sub-page>
+    </fake-page>
 
     If the text insertion point (represented by the red verticle line
     <fake-caret>) does not appear in the position shown above, then press
@@ -591,11 +435,11 @@
     This will give you either <inactive|<nf-chunk|hello-world<fake-caret>|||>>
     for the inactive view, or the active view shown as below:
 
-    <\sub-page>
+    <\fake-page>
       <\nf-fake-chunk|hello-world<fake-caret>>
         \;
       </nf-fake-chunk|||1|1a|||||>
-    </sub-page>
+    </fake-page>
   </enumerate>
 
   <subsection|Optional chunk parameters><label|insert-chunk-params>
@@ -607,11 +451,11 @@
   give you <inactive|<nf-chunk|hello-world|||<fake-caret>>>, but for the
   active view shown below you will just need to press <key|right> once:
 
-  <\sub-page>
+  <\fake-page>
     <\nf-fake-chunk|hello-world<fake-caret>>
       \;
     </nf-fake-chunk|||1|1a|||||>
-  </sub-page>
+  </fake-page>
 
   You may now specify parameters to the code that will be contained in the
   chunk. Chunks can take optional parameters, and behave somewhat like C
@@ -645,11 +489,11 @@
   You can type multiple parameters: <inactive|<nf-chunk|hello-world|||<tuple|message|language<fake-caret>>>>
   or
 
-  <\sub-page>
+  <\fake-page>
     <\nf-fake-chunk|hello-world>
       \;
     </nf-fake-chunk||<tuple|message|language<fake-caret>>|1|1a|||||>
-  </sub-page>
+  </fake-page>
 
   <subsection|Optional language>
 
@@ -669,11 +513,11 @@
 
   For the active view, press <key|right> to select the third argument
 
-  <\sub-page>
+  <\fake-page>
     <\nf-fake-chunk|hello-world>
       \;
     </nf-fake-chunk|<fake-caret>|<tuple|message|language>|1|1a|||||>
-  </sub-page>
+  </fake-page>
 
   For syntax markup, <TeXmacs> supports C++ (called <verbatim|cpp>) and
   bourne shell (called <verbatim|sh>), but for automatic quoting fangle
@@ -685,11 +529,11 @@
   Enter the language <verbatim|cpp>: <inactive|<nf-chunk|hello-world||cpp<fake-caret>|<tuple|message|language>>>
   or
 
-  <\sub-page>
+  <\fake-page>
     <\nf-fake-chunk|hello-world>
       \;
     </nf-fake-chunk|cpp<fake-caret>|<tuple|message|language>|1|1a|||||>
-  </sub-page>
+  </fake-page>
 
   <subsection|Typing code>
 
@@ -710,11 +554,11 @@
   to delete the blank line that is somehow there. <todo|stop that from
   happening>
 
-  <\sub-page>
+  <\fake-page>
     <\nf-fake-chunk|hello-world>
       <item><fake-caret>
     </nf-fake-chunk|cpp|<tuple|message|language>|1|1a|||||>
-  </sub-page>
+  </fake-page>
 
   At this point, start typing code.
 
@@ -723,7 +567,7 @@
   layout purposes, but it will not be considered a new-line when the code is
   extracted, and leading white-space will be stripped.
 
-  <\sub-page>
+  <\fake-page>
     <\nf-fake-chunk|hello-world>
       <item>#include \<less\>stdio.h\<gtr\>
 
@@ -733,7 +577,7 @@
 
       <item> \ printf("<fake-caret>
     </nf-fake-chunk|cpp|<tuple|message|language>|1|1a|||||>
-  </sub-page>
+  </fake-page>
 
   The listing above is incomplete. Instead of typing the the traditional
   <verbatim|hello world!>, we can make use of our chunk arguments. Let's
@@ -752,7 +596,7 @@
 
   Finish typing the code as shown below:
 
-  <\sub-page>
+  <\fake-page>
     <\nf-fake-chunk|hello-world>
       <item>#include \<less\>stdio.h\<gtr\>
 
@@ -764,7 +608,7 @@
 
       <item>}<fake-caret>
     </nf-fake-chunk|cpp|<tuple|message|language>|1|1a|||||>
-  </sub-page>
+  </fake-page>
 
   We've now defined a chunk of code which can potentially produce the famous
   <verbatim|hello world!> in any language.
@@ -799,7 +643,7 @@
   <keys|\\|n|f|-|c|h|u|n|k|enter> and then the chunk name
   <keys|.|/|h|e|l|l|o|-|w|o|r|l|d|.|f|r|.|c|right|right>
 
-  <\sub-page>
+  <\fake-page>
     <strong|<small|1.1 In French>><htab|0mm>
 
     We will derive the french hello-world program like this:<htab|0mm>
@@ -807,7 +651,7 @@
     <\nf-fake-chunk|./hello-world.fr.c>
       <item><fake-caret>
     </nf-fake-chunk|cpp||1|1b|||||>
-  </sub-page>
+  </fake-page>
 
   To include our previous chunk with the <verbatim|nf-ref> command, type
   <keys|M-\\|n|f|-|r|e|f|enter> and then type the name of our previous chunk,
@@ -818,7 +662,7 @@
 
   <keys|M-\\|t|u|p|l|e|enter|B|o|n|j|o|u|r|space|t|o|u|t|space|l|e|space|m|o|n|d|e|enter>
 
-  <\sub-page>
+  <\fake-page>
     <strong|<small|1.1 In French>><htab|0mm>
 
     We will derive the french hello-world program like this:<htab|0mm>
@@ -827,7 +671,7 @@
       <item><nf-fake-ref|hello-world|<tuple|Bonjour tout le
       monde>|1a><fake-caret>
     </nf-fake-chunk|cpp||1|1b|||||>
-  </sub-page>
+  </fake-page>
 
   Note that when there are no arguments to the reference, the parenthesis do
   not appear, but they appear automatically when there are arguments.
@@ -848,7 +692,7 @@
   <keys|\\|n|f|-|c|h|u|n|k|enter> and then the chunk name
   <keys|.|/|h|e|l|l|o|-|w|o|r|l|d|.|d|e|.|c|right|right>
 
-  <\sub-page>
+  <\fake-page>
     <strong|<small|1.2 In German>><htab|0mm>
 
     We will derive the german hello-world program like this:<htab|0mm>
@@ -856,13 +700,13 @@
     <\nf-fake-chunk|./hello-world.de.c>
       <item><nf-fake-ref|hello-world|<tuple|Hallo welt>|1a><fake-caret>
     </nf-fake-chunk|cpp||1|1c|||||>
-  </sub-page>
+  </fake-page>
 
   <subsection|The document so far>
 
   The document you typed might look something like this:<no-page-break>
 
-  <\sub-page>
+  <\fake-page>
     <htab|0mm><strong|Literate Example><htab|0mm>
 
     <\with|par-par-sep|0fn>
@@ -929,7 +773,7 @@
     <\nf-fake-chunk|./hello-world.de.c>
       <item><nf-fake-ref|hello-world|<tuple|Hallo welt|german>|1a>
     </nf-fake-chunk|text|<tuple>|1|1c|||||>
-  </sub-page>
+  </fake-page>
 
   <no-page-break*>Which demonstrates nicely how to use fangle in terms of
   function, but less so in terms of style.
@@ -949,21 +793,21 @@
   <with|color|blue|Bonjour tout le monde> and extending the tuple by pressing
   <key|M-right>, and then typing: <key|f r e n c h>
 
-  <\sub-page>
+  <\fake-page>
     <\nf-fake-chunk|./hello-world.fr.c>
       <item><nf-fake-ref|hello-world|<tuple|Bonjour tout le
       monde|french>|1a><fake-caret>
     </nf-fake-chunk|cpp||1|1b|||||>
-  </sub-page>
+  </fake-page>
 
   And doing similarly for the german:
 
-  <\sub-page>
+  <\fake-page>
     <\nf-fake-chunk|./hello-world.de.c>
       <item><nf-fake-ref|hello-world|<tuple|Hallo
       welt|german>|1a><fake-caret>
     </nf-fake-chunk|cpp||1|1c|||||>
-  </sub-page>
+  </fake-page>
 
   <subsubsection|Extra chunklets>
 
@@ -972,7 +816,7 @@
   delete up to the word <em|program> and then type
   <keys|space|s|h|o|u|l|d|space|b|e|g|i|n|space|w|i|t|h|space|a|n|space|i|n|t|r|o|d|u|c|t|o|r|y|space|c|o|m|m|e|n|t|:>
 
-  <\sub-page>
+  <\fake-page>
     \;
 
     The typical hello-world program should begin with an introductory
@@ -989,7 +833,7 @@
 
       <item>}
     </nf-fake-chunk|cpp|<tuple|message|language>|1|1a|||||>
-  </sub-page>
+  </fake-page>
 
   We will now enter another hello-world chunk by typing
   <keys|\\|n|f|-|c|h|u|n|k|enter> and calling it <verbatim|hello-world> as
@@ -1009,7 +853,7 @@
   Note that the second chunklet no longer has any parameters showing <emdash>
   this is because it must use the same parameters as the first chunklet.
 
-  <\sub-page>
+  <\fake-page>
     \;
 
     The typical hello-world program should begin with an introductory
@@ -1030,7 +874,7 @@
 
       <item>}
     </nf-fake-chunk|cpp|<tuple|>|2|1b|||||>
-  </sub-page>
+  </fake-page>
 
   Create parameters for the first chunklet, as explained in
   <reference|insert-chunk-params>, and these are then replicated in the other
@@ -1043,7 +887,7 @@
   When the final program is generated, the language will be inserted into the
   comment.
 
-  <\sub-page>
+  <\fake-page>
     \;
 
     The typical hello-world program should begin with an introductory
@@ -1070,7 +914,7 @@
 
       <item>}<fake-caret>
     </nf-fake-chunk|cpp|<tuple|message|language>|2|1b|1a|<math|\<vartriangle\>>|1a||>
-  </sub-page>
+  </fake-page>
 
   We see that chunk 1b is not very well explained, <math|>and is only obvious
   to someone who has already graduated beyond <em|hello-world>. We need to
@@ -1079,7 +923,7 @@
 
   <keys|W|e|space|m|u|s|t|space|i|n|c|l|u|d|e|space|shift-F7|s|t|d|i|o|.|h|right|space|w|h|i|c|h|space|d|e|f|i|n|e|s|space|shift-F7|p|r|i|n|t|f|right|.|enter>
 
-  <\sub-page>
+  <\fake-page>
     \;
 
     The typical hello-world program should begin with an introductory
@@ -1108,7 +952,7 @@
 
       <item>}<fake-caret>
     </nf-fake-chunk|cpp|<tuple|message|language>|2|1b|1a||||<with|mode|math|\<vartriangle\>>1a>
-  </sub-page>
+  </fake-page>
 
   But we also wish to explain the <verbatim|main> function, so we need to
   split the block.
@@ -1118,7 +962,7 @@
   Insert <em|yet another> chunklet called hello-world and cut-n-paste the
   lines from the second chunklet into the third chunklet.
 
-  <\sub-page>
+  <\fake-page>
     \;
 
     The typical hello-world program should begin with an introductory
@@ -1155,7 +999,7 @@
 
       <item>}<fake-caret>
     </nf-fake-chunk|cpp|<tuple|message|language>|3|1c|||||>
-  </sub-page>
+  </fake-page>
 
   \;
 
@@ -1166,7 +1010,7 @@
 
   The document you typed might look something like this:<no-page-break>
 
-  <\sub-page>
+  <\fake-page>
     <htab|0mm><strong|Literate Example><htab|0mm>
 
     <\with|par-par-sep|0fn>
@@ -1254,7 +1098,7 @@
     <\nf-fake-chunk|./hello-world.de.c>
       <item><nf-fake-ref|hello-world|<tuple|Hallo welt|german>|1a>
     </nf-fake-chunk|text|<tuple>|1|1c|||||>
-  </sub-page>
+  </fake-page>
 
   \;
 
@@ -1338,327 +1182,24 @@
 
     done
   </verbatim>
+
+  <key|a>
 </body>
 
 <\initial>
   <\collection>
-    <associate|page-medium|papyrus>
+    <associate|page-medium|paper>
     <associate|page-screen-height|746496tmpt>
     <associate|page-screen-margin|false>
     <associate|page-screen-width|1268736tmpt>
+    <associate|page-show-hf|true>
     <associate|preamble|false>
     <associate|sfactor|3>
   </collection>
 </initial>
 
 <\references>
-  <\collection>
-    <associate||<tuple|?a|?>>
-    <associate|./hello-world.de.c|<tuple||?>>
-    <associate|./hello-world.fr.c|<tuple||?>>
-    <associate|a|<tuple|?b|?>>
-    <associate|auto-1|<tuple|I|2>>
-    <associate|auto-10|<tuple|2.2.4|4>>
-    <associate|auto-11|<tuple|2.3|4>>
-    <associate|auto-12|<tuple|2.3.1|4>>
-    <associate|auto-13|<tuple|2.3.2|4>>
-    <associate|auto-14|<tuple|2.3.3|4>>
-    <associate|auto-15|<tuple|2.3.4|5>>
-    <associate|auto-16|<tuple|II|5>>
-    <associate|auto-17|<tuple|3|5>>
-    <associate|auto-18|<tuple|3.1|5>>
-    <associate|auto-19|<tuple|2|5>>
-    <associate|auto-2|<tuple|1|2>>
-    <associate|auto-20|<tuple|3|5>>
-    <associate|auto-21|<tuple|3|5>>
-    <associate|auto-22|<tuple|4|6>>
-    <associate|auto-23|<tuple|4|6>>
-    <associate|auto-24|<tuple|4|6>>
-    <associate|auto-25|<tuple|3.2|6>>
-    <associate|auto-26|<tuple|3.2|6>>
-    <associate|auto-27|<tuple|3.3|6>>
-    <associate|auto-28|<tuple|3.3.1|6>>
-    <associate|auto-29|<tuple|3.3.1|6>>
-    <associate|auto-3|<tuple|2|2>>
-    <associate|auto-30|<tuple|3.3.2|6>>
-    <associate|auto-31|<tuple|3.3.2|6>>
-    <associate|auto-32|<tuple|3.3.3|6>>
-    <associate|auto-33|<tuple|3.3.3|6>>
-    <associate|auto-34|<tuple|3.3.4|6>>
-    <associate|auto-35|<tuple|3.3.4|6>>
-    <associate|auto-36|<tuple|3.3.4|6>>
-    <associate|auto-37|<tuple|3.4|6>>
-    <associate|auto-38|<tuple|3.5|7>>
-    <associate|auto-39|<tuple|3.6|7>>
-    <associate|auto-4|<tuple|2.1|2>>
-    <associate|auto-40|<tuple|3.6.1|8>>
-    <associate|auto-41|<tuple|3.7|8>>
-    <associate|auto-42|<tuple|3.7.1|8>>
-    <associate|auto-43|<tuple|3.8|9>>
-    <associate|auto-44|<tuple|3.8|9>>
-    <associate|auto-45|<tuple|3.8.1|9>>
-    <associate|auto-46|<tuple|3.9|10>>
-    <associate|auto-47|<tuple|3.9.1|10>>
-    <associate|auto-48|<tuple|3.9.1|10>>
-    <associate|auto-49|<tuple|3.9.1|10>>
-    <associate|auto-5|<tuple|1|3>>
-    <associate|auto-50|<tuple|3.9.2|10>>
-    <associate|auto-51|<tuple|3.9.2|10>>
-    <associate|auto-52|<tuple|3.9.2|10>>
-    <associate|auto-53|<tuple|3.10|11>>
-    <associate|auto-54|<tuple|3.11|12>>
-    <associate|auto-55|<tuple|3.11.1|12>>
-    <associate|auto-56|<tuple|3.11.2|12>>
-    <associate|auto-57|<tuple|3.12|15>>
-    <associate|auto-58|<tuple|III|16>>
-    <associate|auto-59|<tuple|3.13|16>>
-    <associate|auto-6|<tuple|2.2|3>>
-    <associate|auto-60|<tuple|2|16>>
-    <associate|auto-61|<tuple|3.14|16>>
-    <associate|auto-7|<tuple|2.2.1|3>>
-    <associate|auto-8|<tuple|2.2.2|3>>
-    <associate|auto-9|<tuple|2.2.3|3>>
-    <associate|chunk-arguments|<tuple|3.8.1|9>>
-    <associate|code-end--1|<tuple|?a|?>>
-    <associate|code-end-a-1|<tuple|?a|?>>
-    <associate|code-end-a-2|<tuple|?b|?>>
-    <associate|code-label--1|<tuple|[ 1]|?>>
-    <associate|code-label-a-1|<tuple|[a 1]|?>>
-    <associate|code-label-a-2|<tuple|[a 2]|?>>
-    <associate|code-ref--1|<tuple|?a|?>>
-    <associate|code-ref-a-1|<tuple|?a|?>>
-    <associate|code-ref-a-2|<tuple|?b|?>>
-    <associate|feature-table|<tuple|1|3>>
-    <associate|footnote-1|<tuple|1|5>>
-    <associate|footnote-2|<tuple|2|8>>
-    <associate|footnr-1|<tuple|1|5>>
-    <associate|footnr-2|<tuple|2|8>>
-    <associate|hello-world|<tuple||?>>
-    <associate|insert-chunk-params|<tuple|3.6|7>>
-  </collection>
 </references>
 
 <\auxiliary>
-  <\collection>
-    <\associate|idx>
-      <tuple|<tuple|<with|font-family|<quote|ss>|Document>|<with|font-family|<quote|ss>|Style>|<with|font-family|<quote|ss>|article>>|<pageref|auto-19>>
-
-      <tuple|<tuple|<with|font-family|<quote|ss>|Document>|<with|font-family|<quote|ss>|Add
-      package>|<with|font-family|<quote|ss>|fangle>>|<pageref|auto-20>>
-
-      <tuple|<tuple|<with|font-family|<quote|ss>|Tools>|<with|font-family|<quote|ss>|Update>|<with|font-family|<quote|ss>|Styles>>|<pageref|auto-21>>
-
-      <tuple|<tuple|<with|font-family|<quote|ss>|Document>|<with|font-family|<quote|ss>|View>|<with|font-family|<quote|ss>|Create
-      preamble>>|<pageref|auto-22>>
-
-      <tuple|<tuple|<with|font-family|<quote|ss>|Document>|<with|font-family|<quote|ss>|View>|<with|font-family|<quote|ss>|Show
-      preamble>>|<pageref|auto-23>>
-
-      <tuple|<tuple|<with|font-family|<quote|ss>|Document>|<with|font-family|<quote|ss>|View>|<with|font-family|<quote|ss>|Show
-      all parts>>|<pageref|auto-24>>
-
-      <tuple|<tuple|<with|font-family|<quote|ss>|File>|<with|font-family|<quote|ss>|Save>>|<pageref|auto-26>>
-
-      <tuple|<tuple|<with|font-family|<quote|ss>|Insert>|<with|font-family|<quote|ss>|Title>|<with|font-family|<quote|ss>|Insert
-      title>>|<pageref|auto-29>>
-
-      <tuple|<tuple|<with|font-family|<quote|ss>|Insert>|<with|font-family|<quote|ss>|Title>|<with|font-family|<quote|ss>|Abstract>>|<pageref|auto-31>>
-
-      <tuple|<tuple|<with|font-family|<quote|ss>|Insert>|<with|font-family|<quote|ss>|Automatic>|<with|font-family|<quote|ss>|Table
-      of contents>>|<pageref|auto-33>>
-
-      <tuple|<tuple|<with|font-family|<quote|ss>|Insert>|<with|font-family|<quote|ss>|Section>|<with|font-family|<quote|ss>|Section>>|<pageref|auto-35>>
-
-      <tuple|<tuple|<with|font-family|<quote|ss>|Insert>|<with|font-family|<quote|ss>|Section>|<with|font-family|<quote|ss>|Chapter>>|<pageref|auto-36>>
-
-      <tuple|<tuple|<with|font-family|<quote|ss>|Tools>|<with|font-family|<quote|ss>|Update>|<with|font-family|<quote|ss>|Styles>>|<pageref|auto-44>>
-
-      <tuple|<tuple|<with|font-family|<quote|ss>|Insert>|<with|font-family|<quote|ss>|Section>|<with|font-family|<quote|ss>|Subsection>>|<pageref|auto-48>>
-
-      <tuple|<tuple|<with|font-family|<quote|ss>|Insert>|<with|font-family|<quote|ss>|Section>|<with|font-family|<quote|ss>|Section>>|<pageref|auto-49>>
-
-      <tuple|<tuple|<with|font-family|<quote|ss>|Insert>|<with|font-family|<quote|ss>|Section>|<with|font-family|<quote|ss>|Subsection>>|<pageref|auto-51>>
-
-      <tuple|<tuple|<with|font-family|<quote|ss>|Insert>|<with|font-family|<quote|ss>|Section>|<with|font-family|<quote|ss>|Section>>|<pageref|auto-52>>
-
-      <tuple|<tuple|<with|font-family|<quote|ss>|File>|<with|font-family|<quote|ss>|Export\|Verbatim>>|<pageref|auto-60>>
-    </associate>
-    <\associate|table>
-      <tuple|normal|Feature comparison table<label|feature-table>|<pageref|auto-5>>
-    </associate>
-    <\associate|toc>
-      <vspace*|2fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|font-size|<quote|1.19>|I<space|2spc>Getting
-      and Installing Fangle> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-1><vspace|1fn>
-
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|1<space|2spc>Getting
-      Fangle> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-2><vspace|0.5fn>
-
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|2<space|2spc>Installing
-      Fangle> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-3><vspace|0.5fn>
-
-      <with|par-left|<quote|1.5fn>|2.1<space|2spc>Choosing the editing
-      environment <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-4>>
-
-      <with|par-left|<quote|1.5fn>|2.2<space|2spc>For personal use
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-6>>
-
-      <with|par-left|<quote|3fn>|2.2.1<space|2spc>Executables
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-7>>
-
-      <with|par-left|<quote|3fn>|2.2.2<space|2spc>T<rsub|<space|-0.4spc><move|<resize|<with|math-level|<quote|0>|E>||||0.5fn>|0fn|-0.1fn>><space|-0.4spc>X<rsub|<space|-0.4spc><move|<resize|M<space|-0.2spc>A<space|-0.4spc>CS||||0.5fn>|0fn|-0.1fn>>
-      plugins <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-8>>
-
-      <with|par-left|<quote|3fn>|2.2.3<space|2spc>The
-      L<space|-0.1667em><move|Y|0fn|-0.25em><space|-0.125em>X stylesheet
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-9>>
-
-      <with|par-left|<quote|3fn>|2.2.4<space|2spc>The
-      T<rsub|<space|-0.4spc><move|<resize|<with|math-level|<quote|0>|E>||||0.5fn>|0fn|-0.1fn>><space|-0.4spc>X
-      stylesheet <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-10>>
-
-      <with|par-left|<quote|1.5fn>|2.3<space|2spc>For system-wide use
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-11>>
-
-      <with|par-left|<quote|3fn>|2.3.1<space|2spc>Executables
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-12>>
-
-      <with|par-left|<quote|3fn>|2.3.2<space|2spc>The
-      T<rsub|<space|-0.4spc><move|<resize|<with|math-level|<quote|0>|E>||||0.5fn>|0fn|-0.1fn>><space|-0.4spc>X<rsub|<space|-0.4spc><move|<resize|M<space|-0.2spc>A<space|-0.4spc>CS||||0.5fn>|0fn|-0.1fn>>
-      stylesheet <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-13>>
-
-      <with|par-left|<quote|3fn>|2.3.3<space|2spc>The
-      L<space|-0.1667em><move|Y|0fn|-0.25em><space|-0.125em>X stylesheet
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-14>>
-
-      <with|par-left|<quote|3fn>|2.3.4<space|2spc>The
-      T<rsub|<space|-0.4spc><move|<resize|<with|math-level|<quote|0>|E>||||0.5fn>|0fn|-0.1fn>><space|-0.4spc>X
-      stylesheet <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-15>>
-
-      <vspace*|2fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|font-size|<quote|1.19>|II<space|2spc>Authoring
-      with Fangle> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-16><vspace|1fn>
-
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|3<space|2spc>T<rsub|<space|-0.4spc><move|<resize|<with|math-level|<quote|0>|E>||||0.5fn>|0fn|-0.1fn>><space|-0.4spc>X<rsub|<space|-0.4spc><move|<resize|M<space|-0.2spc>A<space|-0.4spc>CS||||0.5fn>|0fn|-0.1fn>>>
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-17><vspace|0.5fn>
-
-      <with|par-left|<quote|1.5fn>|3.1<space|2spc>Load fangle style-sheet
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-18>>
-
-      <with|par-left|<quote|1.5fn>|3.2<space|2spc>Save the document
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-25>>
-
-      <with|par-left|<quote|1.5fn>|3.3<space|2spc>Sandard document parts
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-27>>
-
-      <with|par-left|<quote|3fn>|3.3.1<space|2spc>Insert your title
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-28>>
-
-      <with|par-left|<quote|3fn>|3.3.2<space|2spc>Insert your abstract
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-30>>
-
-      <with|par-left|<quote|3fn>|3.3.3<space|2spc>Insert a table of contents
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-32>>
-
-      <with|par-left|<quote|3fn>|3.3.4<space|2spc>Start a new section (or
-      chapter) <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-34>>
-
-      <with|par-left|<quote|1.5fn>|3.4<space|2spc>Talk about your code
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-37>>
-
-      <with|par-left|<quote|1.5fn>|3.5<space|2spc>Insert your first code
-      chunk <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-38>>
-
-      <with|par-left|<quote|1.5fn>|3.6<space|2spc>Optional chunk parameters
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-39>>
-
-      <with|par-left|<quote|3fn>|3.6.1<space|2spc>Create a tuple
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-40>>
-
-      <with|par-left|<quote|1.5fn>|3.7<space|2spc>Optional language
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-41>>
-
-      <with|par-left|<quote|3fn>|3.7.1<space|2spc>Type the language
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-42>>
-
-      <with|par-left|<quote|1.5fn>|3.8<space|2spc>Typing code
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-43>>
-
-      <with|par-left|<quote|3fn>|3.8.1<space|2spc>Referencing arguments
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-45>>
-
-      <with|par-left|<quote|1.5fn>|3.9<space|2spc>File chunks
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-46>>
-
-      <with|par-left|<quote|3fn>|3.9.1<space|2spc>French hello-world
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-47>>
-
-      <with|par-left|<quote|3fn>|3.9.2<space|2spc>German hello-world
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-50>>
-
-      <with|par-left|<quote|1.5fn>|3.10<space|2spc>The document so far
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-53>>
-
-      <with|par-left|<quote|1.5fn>|3.11<space|2spc>Additional parameters
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-54>>
-
-      <with|par-left|<quote|3fn>|3.11.1<space|2spc>Passing parameters
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-55>>
-
-      <with|par-left|<quote|3fn>|3.11.2<space|2spc>Extra chunklets
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-56>>
-
-      <with|par-left|<quote|1.5fn>|3.12<space|2spc>The completed document
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-57>>
-
-      <vspace*|2fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|font-size|<quote|1.19>|III<space|2spc>Generating
-      the files> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-58><vspace|1fn>
-
-      <with|par-left|<quote|1.5fn>|3.13<space|2spc>Extracting individual
-      files <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-59>>
-
-      <with|par-left|<quote|1.5fn>|3.14<space|2spc>Extracting all files
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-61>>
-    </associate>
-  </collection>
 </auxiliary>

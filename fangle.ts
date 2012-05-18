@@ -1,4 +1,4 @@
-<TeXmacs|1.0.7.10>
+<TeXmacs|1.0.7.15>
 
 <style|source>
 
@@ -167,7 +167,29 @@
     </src-comment>
   </active*>
 
+  <assign|look-up-or|<macro|x|i|o|<if|<and|<equal|<get-label|<arg|x>>|tuple>|<greater|<length|<arg|x>>|<arg|i>>>|<look-up|<arg|x>|<arg|i>>|<arg|o>>>>
+
   <assign|fake-caret|<macro|<space|0.5spc><with|gr-mode|<tuple|edit|line>|gr-frame|<tuple|scale|1fs|<tuple|0.5gw|0.5gh>>|gr-geometry|<tuple|geometry|3ln|1.5ex|bottom>|gr-color|red|gr-auto-crop|false|<graphics||<with|color|red|<line|<point|0gw|1ln>|<point|1gw|1ln>>>|<with|color|red|<line|<point|0.5gw|1ln>|<point|0.5gw|1gh>>>|<with|color|red|<line|<point|0gw|1gh>|<point|1gw|1gh>>>>><space|0.5spc>>>
+
+  <assign|sub-page|<macro|x|<with|ornament-color|#eeeeee|ornament-sunny-color|#000000|ornament-shadow-color|#000000|ornament-borderx|2l|ornament-hpadding|2ex|ornament-vpadding|2ex|<ornament|<surround||<htab|0spc>|<indent-both|1cm|1cm|<arg|x>>>>>>>
+
+  <assign|fake-page-base-name|>
+
+  <assign|fake-page-make-new-label|<macro|x|<merge|<value|fake-page-base-name>|-|<arg|x>>>>
+
+  <assign|fake-page-label|<macro|x|<with|the-label|<tuple|<value|the-label>|<value|page-no>>|<quasi|<old-label|<unquote|<fake-page-make-new-label|<arg|x>>>>>>>>
+
+  <assign|fake-page-pagerefpage|<macro|x|<quasi|<look-up-or|<get-binding|<unquote|<fake-page-make-new-label|<arg|x>>>|0>|1|<uninit>>>>>
+
+  <assign|fake-page-reference|<macro|x|<quasi|<with|b|<get-binding|<unquote|<fake-page-make-new-label|<arg|x>>>|0>|<compound|look-up-or|<value|b>|0|<uninit>>>>>>
+
+  <assign|fake-page-environment|<macro|x|<with|old-label|<value|label>|label|<value|fake-page-label>|pagerefpage|<value|fake-page-pagerefpage>|old-reference|<value|reference>|reference|<value|fake-page-reference>|this-page-no|<macro|<value|page-no>>|fake-page-base-name|<merge|fake-page-|<value|doc>|-|<value|page-no>|-|<value|instance>>|<arg|x>>>>
+
+  <assign|init-or|<macro|x|i|<if|<not|<equal|<uninit>|<arg|x>>>|<arg|x>|<arg|i>>>>
+
+  <assign|fake-page|<macro|content|doc|page-no|instance|<with|doc|<compound|init-or|<arg|doc>|>|page-no|<compound|init-or|<arg|page-no>|0>|instance|<compound|init-or|<arg|instance>|0>|<sub-page|<fake-page-environment|<arg|content>>>>>>
+
+  <assign|this-page-no|<macro|<auto-label><get-binding|<the-auto>|1>>>
 
   <\active*>
     <\src-comment>
@@ -424,7 +446,7 @@
     </src-comment>
   </active*>
 
-  <assign|nf-last-chunklet?|<macro|name|<not|<compound|nf-chunklet-exists?|<nf-chunk-id|<arg|name>|ref|<plus|<compound|<merge|the-code-chunk-|<unquote|<arg|name>>>>|1>>>>>>
+  <assign|nf-last-chunklet?|<macro|name|<not|<nf-chunklet-exists?|<nf-next-chunk-id|<arg|name>>>>>>
 
   <\active*>
     <\src-comment>
@@ -463,7 +485,7 @@
   <value|next_label><value|next>>>>>>>
 
   <assign|fangle-nav|<style-with|src-compact|none|<\macro|name>
-    <with|prev|<if|<equal|<pagerefpage|<nf-prev-chunk-id|<arg|name>>>|<pagerefpage|<nf-this-chunk-id|<arg|name>|label>>>|<math|\<vartriangle\>>|<math|\<vartriangleleft\>>>|prev_label|<if|<not|<nf-first-chunklet?|<arg|name>>>|<reference|<nf-prev-chunk-id|<arg|name>>>>|next|<if|<nf-chunklet-exists?|<nf-next-chunk-id|<arg|name>>>|<if|<equal|<pagerefpage|<nf-next-chunk-id|<arg|name>>>|<pagerefpage|<nf-this-chunk-id|<arg|name>|label>>>|<math|\<triangledown\>>|<math|\<vartriangleright\>>>>|next_label|<if|<nf-chunklet-exists?|<nf-next-chunk-id|<arg|name>>>|
+    <with|prev|<if|<equal|<pagerefpage|<nf-prev-chunk-id|<arg|name>>>|<pagerefpage|<nf-this-chunk-id|<arg|name>|label>>>|<math|\<vartriangle\>>|<math|\<vartriangleleft\>>>|prev_label|<if|<not|<nf-first-chunklet?|<arg|name>>>|<reference|<nf-prev-chunk-id|<arg|name>>>>|next|<if|<not|<nf-last-chunklet?|<arg|name>>>|<if|<equal|<pagerefpage|<nf-next-chunk-id|<arg|name>>>|<pagerefpage|<nf-this-chunk-id|<arg|name>|label>>>|<math|\<triangledown\>>|<math|\<vartriangleright\>>>>|next_label|<if|<not|<nf-last-chunklet?|<arg|name>>>|
     <reference|<nf-next-chunk-id|<arg|name>>>>|<render-fangle-nav>>
 
     <style-with|src-compact|all|>
@@ -719,7 +741,7 @@
 
   <assign|nf-use-page-header|<macro|h|<set-this-page-header|<arg|h>>>>
 
-  <assign|nf-chunk|<macro|name|x|lang|args|<with|the-label||xnv-langle-subst||xnv-rangle-subst||nf-name|<unquote|<arg|name>>|y|<value|pob>|<small|<surround|<nf-chunk-init|<arg|name>|<arg|args>><wide-underlined|<nf-border-if|<nf-first-chunklet?|<value|nf-name>>>|1ln|<no-page-break*><label|<arg|name>><small|<nf-header|<arg|name>|<arg|lang>|<arg|args>>><no-page-break>>|<if|<nf-last-chunklet?|<value|nf-name>>|<wide-bothlined|<nf-border-if|<nf-last-chunklet?|<value|nf-name>>>|0ln|1ln|0ln|<if|<nf-first-chunklet?|<value|nf-name>>|<nf-show-used-by>><htab|5mm*|last>>|<if|<nf-first-chunklet?|<value|nf-name>>|<nf-show-used-by>>>|<\with|item|<value|<merge|code-item-|<unquote|<arg|name>>>>|item-vsep|0fn|current-item|<value|nf-render-line-no>|transform-item|<value|identity>>
+  <assign|nf-chunk|<macro|name|x|lang|args|<with|the-label||xnv-langle-subst||xnv-rangle-subst||nf-name|<unquote|<arg|name>>|y|<value|pob>|<small|<surround|<aligned-space-item|><nf-chunk-init|<arg|name>|<arg|args>><wide-underlined|<nf-border-if|<nf-first-chunklet?|<value|nf-name>>>|1ln|<no-page-break*><label|<arg|name>><small|<nf-header|<arg|name>|<arg|lang>|<arg|args>>><no-page-break>>|<if|<nf-last-chunklet?|<value|nf-name>>|<wide-bothlined|<nf-border-if|<nf-last-chunklet?|<value|nf-name>>>|0ln|1ln|0ln|<if|<nf-first-chunklet?|<value|nf-name>>|<nf-show-used-by>><htab|5mm*|last>>|<if|<nf-first-chunklet?|<value|nf-name>>|<nf-show-used-by>>>|<\with|item|<value|<merge|code-item-|<unquote|<arg|name>>>>|item-vsep|0fn|current-item|<value|nf-render-line-no>|transform-item|<value|identity>>
     <\surround||<nf-chunk-outit|<arg|name>><if|<and|<not|<equal|<value|nf-page>|<pagerefpage|<nf-this-chunk-id|<arg|name>|end>>>>|<ispageref?|<nf-this-chunk-id|<arg|name>|end>>>|<nf-use-page-header|<with|nv-langle|<macro|<with|mode|math|<left|langle>>>|nv-rangle|<macro|<with|mode|math|<right|rangle>>>|<small|<nf-header|<arg|name>|<arg|lang>|<arg|args>>>>>>>
       <no-page-break><nf-verbatim-top|<nf-first-chunklet?|<value|nf-name>>>
 
@@ -741,7 +763,7 @@
     </with>
   </surround>>>>>
 
-  <assign|nf-fake-chunk|<macro|name|x|lang|args|chunk_no|chunk_label|chunk_first_label|prev|prev_label|next|next_label|line-no|<with|the-label||xnv-langle-subst||xnv-rangle-subst||nf-name|<unquote|<arg|name>>|chunk_no|<arg|chunk_no>|chunk_label|<arg|chunk_label>|first_chunk_label|<arg|chunk_first_label>|prev|<arg|prev>|prev_label|<arg|prev_label>|next|<arg|next>|next_label|<arg|next_label>|<small|<surround|<wide-underlined|<nf-border-if|<equal|<value|chunk_no>|1>>|1ln|<no-page-break*><small|<render-fangle-header|<arg|name>|<arg|lang>|<arg|args>><htab|0pt><render-fangle-nav>><no-page-break>>|<if|<equal|<length|<value|next>>|0>|<wide-bothlined|<nf-border-if|<equal|<length|<value|next>>|0>>|0ln|1ln|0ln|<htab|5mm*|last>>|<nf-jags>>|<\with|xitem|<arg|line-no>|item-nr|0|item-vsep|0fn|current-item|<value|nf-render-line-no>|transform-item|<value|identity>>
+  <assign|nf-fake-chunk|<macro|name|x|lang|args|chunk_no|chunk_label|chunk_first_label|prev|prev_label|next|next_label|line-no|<with|the-label||xnv-langle-subst||xnv-rangle-subst||nf-name|<unquote|<arg|name>>|chunk_no|<arg|chunk_no>|chunk_label|<arg|chunk_label>|first_chunk_label|<arg|chunk_first_label>|prev|<arg|prev>|prev_label|<arg|prev_label>|next|<arg|next>|next_label|<arg|next_label>|<small|<surround|<aligned-space-item|><wide-underlined|<nf-border-if|<equal|<value|chunk_no>|1>>|1ln|<no-page-break*><small|<render-fangle-header|<arg|name>|<arg|lang>|<arg|args>><htab|0pt><render-fangle-nav>><no-page-break>>|<if|<equal|<length|<value|next>>|0>|<wide-bothlined|<nf-border-if|<equal|<length|<value|next>>|0>>|0ln|1ln|0ln|<htab|5mm*|last>>|<nf-jags>>|<\with|xitem|<arg|line-no>|item-nr|0|item-vsep|0fn|current-item|<value|nf-render-line-no>|transform-item|<value|identity>>
     <no-page-break><nf-verbatim-top|<nf-first-chunklet?|<value|nf-name>>>
 
     <with|nv-langle-subst|\S|nv-rangle-subst|\T|<nf-pf|<value|nf-name>|<arg|lang>|<arg|x>>>
@@ -924,8 +946,8 @@
 <\initial>
   <\collection>
     <associate|page-medium|automatic>
-    <associate|page-screen-height|768000tmpt>
-    <associate|page-screen-width|1274880tmpt>
+    <associate|page-screen-height|747264tmpt>
+    <associate|page-screen-width|1267200tmpt>
     <associate|preamble|true>
   </collection>
 </initial>
