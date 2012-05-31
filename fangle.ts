@@ -167,31 +167,39 @@
     </src-comment>
   </active*>
 
-  <assign|look-up-or|<macro|x|i|o|<if|<and|<equal|<get-label|<arg|x>>|tuple>|<greater|<length|<arg|x>>|<arg|i>>>|<look-up|<arg|x>|<arg|i>>|<arg|o>>>>
+  <assign|xlook-up-or|<macro|x|i|o|<if|<and|<equal|<get-label|<arg|x>>|tuple>|<greater|<length|<arg|x>>|<arg|i>>>|<look-up|<arg|x>|<arg|i>>|<arg|o>>>>
 
-  <assign|fake-caret|<macro|<space|0.5spc><with|gr-mode|<tuple|edit|line>|gr-frame|<tuple|scale|1fs|<tuple|0.5gw|0.5gh>>|gr-geometry|<tuple|geometry|3ln|1.5ex|bottom>|gr-color|red|gr-auto-crop|false|<graphics||<with|color|red|<line|<point|0gw|1ln>|<point|1gw|1ln>>>|<with|color|red|<line|<point|0.5gw|1ln>|<point|0.5gw|1gh>>>|<with|color|red|<line|<point|0gw|1gh>|<point|1gw|1gh>>>>><space|0.5spc>>>
+  <assign|fxake-caret|<macro|<space|0.5spc><with|gr-mode|<tuple|edit|line>|gr-frame|<tuple|scale|1fs|<tuple|0.5gw|0.5gh>>|gr-geometry|<tuple|geometry|3ln|1.5ex|bottom>|gr-color|red|gr-auto-crop|false|<graphics||<with|color|red|<line|<point|0gw|1ln>|<point|1gw|1ln>>>|<with|color|red|<line|<point|0.5gw|1ln>|<point|0.5gw|1gh>>>|<with|color|red|<line|<point|0gw|1gh>|<point|1gw|1gh>>>>><space|0.5spc>>>
 
-  <assign|sub-page|<macro|x|<with|ornament-color|#eeeeee|ornament-sunny-color|#000000|ornament-shadow-color|#000000|ornament-borderx|2l|ornament-hpadding|2ex|ornament-vpadding|2ex|<ornament|<surround||<htab|0spc>|<indent-both|1cm|1cm|<arg|x>>>>>>>
+  <assign|xsub-page|<macro|x|<with|ornament-color|#eeeeee|ornament-sunny-color|#000000|ornament-shadow-color|#000000|ornament-borderx|2l|ornament-hpadding|2ex|ornament-vpadding|2ex|<ornament|<surround||<htab|0spc>|<indent-both|1cm|1cm|<arg|x>>>>>>>
 
-  <assign|fake-page-base-name|>
+  <assign|xfake-page-base-name|>
 
-  <assign|fake-page-make-new-label|<macro|x|<merge|<value|fake-page-base-name>|-|<arg|x>>>>
+  <assign|xfake-page-make-new-label|<macro|x|<merge|<value|fake-page-base-name>|-|<arg|x>>>>
 
-  <assign|fake-page-label|<macro|x|<with|the-label|<tuple|<value|the-label>|<value|page-no>>|<quasi|<old-label|<unquote|<fake-page-make-new-label|<arg|x>>>>>>>>
+  <assign|xfake-page-label|<macro|x|<with|the-label|<tuple|<value|the-label>|<value|page-no>>|<quasi|<old-label|<unquote|<fake-page-make-new-label|<arg|x>>>>>>>>
 
-  <assign|fake-page-pagerefpage|<macro|x|<quasi|<look-up-or|<get-binding|<unquote|<fake-page-make-new-label|<arg|x>>>|0>|1|<uninit>>>>>
+  <assign|xfake-page-reference|<macro|x|<quasi|<with|b|<get-binding|<unquote|<fake-page-make-new-label|<arg|x>>>|0>|<compound|look-up-or|<value|b>|0|<uninit>>>>>>
 
-  <assign|fake-page-reference|<macro|x|<quasi|<with|b|<get-binding|<unquote|<fake-page-make-new-label|<arg|x>>>|0>|<compound|look-up-or|<value|b>|0|<uninit>>>>>>
+  <assign|xfake-page-environment|<macro|x|<with|old-label|<value|label>|label|<value|fake-page-label>|pagerefpage|<value|fake-page-pagerefpage>|old-reference|<value|reference>|reference|<value|fake-page-reference>|this-page-no|<macro|<value|page-no>>|<arg|x>>>>
 
-  <assign|fake-page-environment|<macro|x|<with|old-label|<value|label>|label|<value|fake-page-label>|pagerefpage|<value|fake-page-pagerefpage>|old-reference|<value|reference>|reference|<value|fake-page-reference>|this-page-no|<macro|<value|page-no>>|<arg|x>>>>
+  <assign|xinit-or|<macro|x|i|<if|<not|<equal|<uninit>|<arg|x>>>|<arg|x>|<arg|i>>>>
 
-  <assign|init-or|<macro|x|i|<if|<not|<equal|<uninit>|<arg|x>>>|<arg|x>|<arg|i>>>>
+  <assign|xdefault-to|<macro|x|i|<if|<not|<equal|<uninit>|<arg|x>>>|<arg|x>|<arg|i>>>>
 
-  <assign|default-to|<macro|x|i|<if|<not|<equal|<uninit>|<arg|x>>>|<arg|x>|<arg|i>>>>
+  <assign|xfake-page|<macro|content|doc|page-no|instance|<with|doc|<compound|init-or|<arg|doc>|>|page-no|<compound|init-or|<arg|page-no>|0>|instance|<init-or|<arg|instance>|0>|fake-page-base-name|<merge|fake-page-|<arg|doc>|-|<arg|page-no>|-|<arg|instance>>|<sub-page|<surround|<new-counter|<nf-id|nf-chunk>>||<fake-page-environment|<arg|content>>>>>>>
 
-  <assign|fake-page|<macro|content|doc|page-no|instance|<with|doc|<compound|init-or|<arg|doc>|>|page-no|<compound|init-or|<arg|page-no>|0>|instance|<init-or|<arg|instance>|0>|fake-page-base-name|<merge|fake-page-|<arg|doc>|-|<arg|page-no>|-|<arg|instance>>|<sub-page|<surround|<new-counter|<nf-id|nf-chunk>>||<fake-page-environment|<arg|content>>>>>>>
+  <assign|xthis-page-no|<macro|<auto-label><get-binding|<the-auto>|1>>>
 
-  <assign|this-page-no|<macro|<auto-label><get-binding|<the-auto>|1>>>
+  \;
+
+  \;
+
+  \;
+
+  \;
+
+  <assign|fake-page-pagerefpage|<macro|x|<quasi|<look-up-default|<get-binding|<unquote|<fake-page-make-new-label|<arg|x>>>|0>|1|<uninit>>>>>
 
   <\active*>
     <\src-comment>
