@@ -1,4 +1,4 @@
-<TeXmacs|1.0.7.15>
+<TeXmacs|1.99.2>
 
 <style|source>
 
@@ -533,7 +533,11 @@
   lang=<with|color|blue|<arg|lang>><nv-rangle>
   <math|<if|<not|<nf-first-chunklet?|<arg|name>>>|+>\<equiv\>><htab|0pt><fangle-nav|<arg|name>>>>
 
-  <assign|nf-header|<macro|name|lang|args|<with|chunk_label|<value|the-label>|chunk_no|<compound|<merge|the-code-chunk-|<unquote|<arg|name>>>>|first_chunk_label|<reference|<nf-chunk-id|<arg|name>|ref|1>>|<fangle-header|<arg|name>|<arg|lang>|<if|<not|<equal|<value|<merge|code-args-|<unquote|<arg|name>>>>|<uninit>>>|<nf-commas|<value|<merge|code-args-|<unquote|<arg|name>>>>>|<arg|args>>><htab|0pt><xnf-nav|<arg|name>>>>>
+  <assign|nf-header|<macro|name|lang|args|<with|chunk_label|<value|the-label>|chunk_no|<compound|<merge|the-code-chunk-|<unquote|<arg|name>>>>|first_chunk_label|<reference|<nf-chunk-id|<arg|name>|ref|1>>|<fangle-header|<arg|name>|<arg|lang>|<if|<not|<equal|<value|<merge|code-args-|<unquote|<arg|name>>>>|<uninit>>>|<if|<nf-first-chunklet?|<arg|name>>|<nf-commas|<arg|args>>|<nf-commas|<value|<merge|code-args-|<unquote|<arg|name>>>>>>|<arg|args>>><htab|0pt><xnf-nav|<arg|name>>>>>
+
+  \;
+
+  <drd-props|nf-header|accessible|all>
 
   <assign|nf-render-commas|<macro|x|<with|color|blue|<arg|x>>>>
 
@@ -950,8 +954,6 @@
 <\initial>
   <\collection>
     <associate|page-medium|automatic>
-    <associate|page-screen-height|747264tmpt>
-    <associate|page-screen-width|1267200tmpt>
     <associate|preamble|true>
   </collection>
 </initial>
