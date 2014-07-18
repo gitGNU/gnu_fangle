@@ -1,0 +1,9 @@
+#! /bin/bash
+
+diff "$1" "$2" &>/dev/null && { rm "$2"; exit; }
+
+fangle -R "" < "$2" | sed -e 's/^[<][<]//;s/[>][>]$//;/^\.\//!d' -e 's/^\.\//\.\//' | while read file
+do fangle -R"$file" < "$2" > "$file"
+done &&
+mv "$2" "$1"
+
