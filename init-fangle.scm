@@ -19,7 +19,7 @@
 
 ; (make (string->symbol "nf-chunk"))
 (define (make-nf-chunk)
-  (insert '(nf-chunk "" "" "" (tuple "")))
+  (insert-go-to '(nf-chunk "" (item) "" (tuple "")) '(0 0))
 )
 
 (define (make-nf-ref)
